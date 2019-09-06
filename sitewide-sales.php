@@ -3,14 +3,14 @@
  * Plugin Name: Sitewide Sales
  * Plugin URI: https://github.com/strangerstudios/sitewide-sales
  * Description: Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday).
- * Author: Paid Memberships Pro
- * Author URI: https://www.paidmembershipspro.com
- * Version: 1.2.3
+ * Author: Stranger Studios
+ * Author URI: https://www.strangerstudios.com
+ * Version: .1
  * Plugin URI:
  * License: GNU GPLv2+
- * Text Domain: pmpro-sitewide-sales
+ * Text Domain: sitewide-sales
  *
- * @package pmpro-sitewide-sales
+ * @package sitewide-sales
  */
 namespace Sitewide_Sales;
 
