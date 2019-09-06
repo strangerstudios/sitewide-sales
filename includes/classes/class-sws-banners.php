@@ -1,12 +1,12 @@
 <?php
-namespace PMPro_Sitewide_Sales\includes\classes;
+namespace Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 /**
  * Handles registering banners and displaying banners on frontend.
  */
-class PMPro_SWS_Banners {
+class SWS_Banners {
 
 	/**
 	 * Adds actions
@@ -16,8 +16,8 @@ class PMPro_SWS_Banners {
 		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 10 );
 		
 		// Run some filters we like on banner content
-		add_filter( 'pmpro_sws_banner_content', 'wpautop', 5, 1 );
-		add_filter( 'pmpro_sws_banner_content', 'do_shortcode', 10, 1 );		
+		add_filter( 'sws_banner_content', 'wpautop', 5, 1 );
+		add_filter( 'sws_banner_content', 'do_shortcode', 10, 1 );		
 	}
 
 	/**
@@ -30,7 +30,7 @@ class PMPro_SWS_Banners {
 
 		$registered_banners = array(
 			'top'          => array(
-				'option_title'  => __( 'Yes, Top of Site', 'pmpro_sitewide_Sales' ),
+				'option_title'  => __( 'Yes, Top of Site', 'sitewide_Sales' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
 					'.pmpro_sws_banner',

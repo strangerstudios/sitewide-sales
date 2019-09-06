@@ -1,5 +1,5 @@
 <?php
-namespace PMPro_Sitewide_Sales;
+namespace Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 function autoload( $class ) {
 
 	// project-specific namespace prefix.
-	$prefix = 'PMPro_Sitewide_Sales\\';
+	$prefix = 'Sitewide_Sales\\';
 
 	// base directory for the namespace prefix.
 	$base_dir = __DIR__ . '/';
