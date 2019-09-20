@@ -6,9 +6,9 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 /**
  * This autoloader looks for class declarations as follows:
  *
- * PMPro_Sitewide_Sales\includes\classes\PMPro_SWS_Settings
+ * Sitewide_Sales\includes\classes\SWSales_Settings
  * ^          ^   ^
- * ^          ^   class-pmpro-sws-settings.php
+ * ^          ^   class-swsale-settings.php
  * ^          in the /classes/ folder
  * Project root
  */

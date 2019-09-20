@@ -1,17 +1,18 @@
 <?php
 
-namespace PMPro_Sitewide_Sales\includes\classes;
+namespace Sitewide_Sales\includes\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-class PMPro_SWS_Settings {
+class SWSales_Settings {
 	/**
 	 * Initial plugin setup
 	 *
-	 * @package pmpro-sitewide-sale/includes
+	 * @package sitewide-sales/includes
 	 */
 	public static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
+		// TODO: Make pmpro_custom_advanced_settings a settings page instead?
 		add_filter( 'pmpro_custom_advanced_settings', array( __CLASS__, 'custom_advanced_settings' ) );
 	}
 
@@ -19,7 +20,7 @@ class PMPro_SWS_Settings {
 	 * Init settings page
 	 */
 	public static function admin_init() {
-		register_setting( 'pmpro-sws-group', 'pmpro_sitewide_sales', array( __CLASS__, 'validate' ) );
+		register_setting( 'swsales-group', 'pmpro_sitewide_sales', array( __CLASS__, 'validate' ) );
 	}
 
 	/**
@@ -31,7 +32,7 @@ class PMPro_SWS_Settings {
 		static $options;
 
 		if ( empty( $options ) ) {
-			$options = get_option( 'pmpro_sitewide_sales' );
+			$options = get_option( 'swsales_options' );
 
 			// Set the defaults.
 			if ( empty( $options ) || ! array_key_exists( 'active_sitewide_sale_id', $options ) ) {
@@ -56,7 +57,7 @@ class PMPro_SWS_Settings {
 	 * @param array $options contains information about sale to be saved.
 	 */
 	public static function save_options( $options ) {
-		update_option( 'pmpro_sitewide_sales', $options, 'no' );
+		update_option( 'swsales_options', $options, 'no' );
 	}
 
 	/**
@@ -104,6 +105,7 @@ class PMPro_SWS_Settings {
 		}
 	}
 
+	
 	/**
 	 * Add an Advanced Setting to allow non-Memberlite themes to enable Templates.
 	 */

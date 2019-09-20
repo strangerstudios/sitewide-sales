@@ -1,0 +1,184 @@
+<?php
+
+namespace Sitewide_Sales\includes\classes;
+
+defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
+
+class SWSales_Setup {
+	/**
+	 *
+	 * Initial plugin setup
+	 *
+	 * @package sitewide-sale/includes
+	 */
+	public static function init() {
+		register_activation_hook( SWSALES_BASENAME, array( __CLASS__, 'swsales_admin_notice_activation_hook' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'swsales_admin_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'swsales_frontend_scripts' ) );
+		//add_filter( 'plugin_row_meta', array( __CLASS__, 'swsales_plugin_row_meta' ), 10, 2 );
+		add_filter( 'plugin_action_links_' . SWSALES_BASENAME, array( __CLASS__, 'swsales_plugin_action_links' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'swsales_admin_notice' ) );
+	}
+
+	/**
+	 * Enqueues selectWoo
+	 */
+	public static function swsales_admin_scripts() {
+		$screen = get_current_screen();
+
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		wp_register_script( 'selectWoo', plugins_url( 'js/selectWoo.full' . $suffix . '.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_enqueue_script( 'selectWoo' );
+		wp_register_style( 'selectWooCSS', plugins_url( 'css/selectWoo' . $suffix . '.css', SWSALES_BASENAME ) );
+		wp_enqueue_style( 'selectWooCSS' );
+
+		wp_register_style( 'swsales_admin', plugins_url( 'css/admin.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
+		wp_enqueue_style( 'swsales_admin_admin' );
+	}
+
+	/**
+	 * Enqueues frontend stylesheet.
+	 */
+	public static function swsales_frontend_scripts() {
+		wp_register_style( 'swsales_admin_frontend', plugins_url( 'css/frontend.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
+		wp_enqueue_style( 'swsales_admin_frontend' );
+
+		/*
+		 * Load Google Fonts depending on selected template.
+		 */
+		// See if any Sitewide Sale CPTs have this post ID set as the Landing Page.
+		$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'swsales_sitewide_sale_id', true );
+
+		if ( ! empty( $sitewide_sale_id ) ) {
+			// Check the landing page custom template, add the custom Google Font.
+			$landing_template = get_post_meta( $sitewide_sale_id, 'swsales_landing_page_template', true );
+			if ( ! empty( $landing_template ) ) {
+				if ( $landing_template === 'vintage' ) {
+					$query_args = array(
+						'family' => 'Lobster',
+						'subset' => 'latin,latin-ext'
+					);
+					wp_enqueue_style( 'swsales_google_font_lobster', add_query_arg( $query_args, "//fonts.googleapis.com/css" ), array(), null );
+				}
+			}
+		}
+
+		// See if there is an active Sitewide Sale and the banner needs a Google Font.
+		$options              = SWSales_Settings::get_options();
+		$active_sitewide_sale_id = $options['active_sitewide_sale_id'];
+		
+		if ( ! empty( $active_sitewide_sale_id ) ) {
+			$banner_template = get_post_meta( $active_sitewide_sale_id, 'swsales_banner_template', true );
+			if ( ! empty( $banner_template ) ) {
+				if ( $banner_template === 'vintage' ) {
+					$query_args = array(
+						'family' => 'Lobster',
+						'subset' => 'latin,latin-ext'
+					);
+					wp_enqueue_style( 'swsales_google_font_lobster', add_query_arg( $query_args, "//fonts.googleapis.com/css" ), null, SWSALES_VERSION );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Runs only when the plugin is activated.
+	 *
+	 * @since 0.0.0
+	 */
+	public static function swsales_admin_notice_activation_hook() {
+		// Create transient data.
+		set_transient( 'swsales-admin-notice', true, 5 );
+	}
+
+	/**
+	 * Returns if the user is on the login page (currently works for TML)
+	 * Can probably switch to is_login_page from PMPro core
+	 */
+	public static function is_login_page() {
+		global $post;
+		$slug = get_site_option( 'tml_login_slug' );
+		if ( false === $slug ) {
+			$slug = 'login';
+		}
+		return ( ( ! empty( $post->post_name ) && $slug === $post->post_name ) || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
+	}
+
+	/**
+	 * Returns true of there are any posts of type sitewide_sale, false otherwise.
+	 */
+	public static function has_sitewide_sales() {
+		global $wpdb;
+		$sale_id = $wpdb->get_var(
+			"SELECT *
+									FROM $wpdb->posts
+									WHERE post_type = 'sitewide_sale'
+										AND post_status <> 'auto-draft'
+									LIMIT 1"
+		);
+		if ( ! empty( $sale_id ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Admin Notice on Activation.
+	 *
+	 * @since 0.1.0
+	 */
+	public static function swsales_admin_notice() {
+		// Check transient, if available display notice.
+		if ( get_transient( 'swsales-admin-notice' ) ) { ?>
+			<div class="updated notice is-dismissible">
+				<p>
+				<?php
+					global $wpdb;
+					$has_sws_post = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'sitewide_sale' LIMIT 1" );
+				if ( $has_sws_post ) {
+					printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'sitewide-sales' ), get_admin_url( null, 'edit.php?post_type=sitewide_sale' ) );
+				} else {
+					printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'sitewide-sales' ), get_admin_url( null, 'post-new.php?post_type=sitewide_sale' ) );
+				}
+				?>
+				</p>
+			</div>
+			<?php
+			// Delete transient, only display this notice once.
+			delete_transient( 'swsales-admin-notice' );
+		}
+	}
+
+	/**
+	 * Function to add links to the plugin action links
+	 *
+	 * @param array $links Array of links to be shown in plugin action links.
+	 */
+	public static function swsales_plugin_action_links( $links ) {
+		if ( current_user_can( 'manage_options' ) ) {
+			$new_links = array(
+				'<a href="' . get_admin_url( null, 'edit.php?post_type=sitewide_sale' ) . '">' . __( 'View Sitewide Sales', 'sitewide-sales' ) . '</a>',
+			);
+		}
+		return array_merge( $new_links, $links );
+	}
+
+	/**
+	 * Function to add links to the plugin row meta
+	 *
+	 * @param array  $links Array of links to be shown in plugin meta.
+	 * @param string $file Filename of the plugin meta is being shown for.
+	 */
+	public static function swsales_plugin_row_meta( $links, $file ) {
+		if ( strpos( $file, 'sitewide-sale.php' ) !== false ) {
+			$new_links = array(
+				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sales/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-sitewide-sales' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro-sitewide-sales' ) . '</a>',
+			);
+			$links     = array_merge( $links, $new_links );
+		}
+		return $links;
+	}
+
+}
