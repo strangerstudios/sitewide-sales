@@ -20,87 +20,56 @@ class SWSales_Sitewide_Sale {
 	protected $name = '';
 
 	/**
-	 * Start date for the sale on format dd/mm/yyyy
+	 * Text on banner
 	 *
 	 * @var string
 	 */
-	protected $start_date = date( 'd-m-Y', current_time( 'timestamp' ) );
-
-	/**
-	 * End date for the sale on format dd/mm/yyyy
-	 *
-	 * @var string
-	 */
-	 protected $end_date = strtotime( '+1 week', current_time( 'timestamp' ) );
-
-	/**
-	 * Module which the sale is using
-	 *
-	 * @var string
-	 */
-	protected $sale_type = '';
-
-	/**
-	 * Landing page ID for the sale
-	 *
-	 * @var int
-	 */
-	protected $landing_page_post_id = 0;
-
-	/**
-	 * Template for the landing page
-	 *
-	 * @var string
-	 */
-	protected $landing_page_template = '';
-
-	/**
-	 * Text to display pre-sale
-	 *
-	 * @var string
-	 */
-	protected $pre_sale_content = '';
-
-	/**
-	 * Text to display during sale
-	 *
-	 * @var string
-	 */
-	protected $sale_content = '';
-
-	/**
-	 * Text to display post-sale
-	 *
-	 * @var string
-	 */
-	protected $post_sale_content = '';
-
-	/**
-	 * Banner for sale
-	 *
-	 * @var SWSales_Banner
-	 */
-	protected $banner;
-
-	/**
-	 * True if this is the active Sitewide Sale
-	 *
-	 * @var bool
-	 */
-	protected $is_active_sitewide_sale;
+	protected $banner_text = 'Save during our Sitewide Sale!';
 
 	/**
 	 * Associative array conatining all post meta
 	 *
 	 * @var array()
 	 */
-	protected $post_meta;
+	protected $post_meta = array();
+
+	/**
+	 * True if this is the active Sitewide Sale
+	 *
+	 * @var bool
+	 */
+	protected $is_active_sitewide_sale = false;
 
 	/**
 	 * Constructor for the Sitewide Sale class.
 	 */
 	public function __construct() {
-		$banner = new SWSales_Banner();
+		// TODO: Maybe set $is_active_sitewide_sale to true if no active sitewide sale.
+
+		// Set default post meta.
+		$default_post_meta = array(
+			'swsales_start_day'             => $this->get_start_day(),
+			'swsales_start_month'           => $this->get_start_month(),
+			'swsales_start_year'            => $this->get_start_year(),
+			'swsales_end_day'               => $this->get_end_day(),
+			'swsales_end_month'             => $this->get_end_month(),
+			'swsales_end_year'              => $this->get_end_year(),
+			'swsales_sale_type'             => $this->get_sale_type(),
+			'swsales_landing_page_post_id'  => $this->get_landing_page_post_id(),
+			'swsales_landing_page_template' => $this->get_landing_page_template(),
+			'swsales_pre_sale_content'      => $this->get_pre_sale_content(),
+			'swsales_sale_content'          => $this->get_sale_content(),
+			'swsales_post_sale_content'     => $this->get_post_sale_content(),
+			'swsales_use_banner'            => $this->get_use_banner(),
+			'swsales_banner_template'       => $this->get_banner_template(),
+			'swsales_banner_title'          => $this->get_banner_title(),
+			'swsales_link_text'             => $this->get_link_text(),
+			'swsales_css_option'            => $this->get_css_option(),
+			'swsales_hide_on_checkout'      => $this->get_hide_on_chechout(),
+		);
+
+		// Filter to add default post meta.
+		$this->$post_meta = apply_filters( 'swsales_default_post_meta', $default_post_meta, $this->get_id() );
 	}
 
 	/**
@@ -110,24 +79,23 @@ class SWSales_Sitewide_Sale {
 	 * @return bool $success
 	 */
 	public function load_sitewide_sale( $sitewide_sale_id ) {
+		$raw_post = get_post( $sitewide_sale_id );
+
 		// Check if $sitewide_sale_id is a valid sitewide sale.
-		if ( ! 'sitewide_sale' === get_post_type( $sitewide_sale_id ) ) {
+		if ( null === $raw_post || ! 'sitewide_sale' !== $raw_post->post_type ) {
 			return false;
 		}
 
-		// TODO: Load all information.
-		$this->raw_metadata = get_metadata( 'post', $sitewide_sale_id );
-		$this->id           = $sitewide_sale_id;
-		$this->name         = get_the_title( $sitewide_sale_id );
-		$start_day          = $this->raw_metadata['swsales_start_day'];
-		$start_month        = $this->raw_metadata['swsales_start_month'];
-		$start_year         = $this->raw_metadata['swsales_start_year'];
-		$this->start_date   = date_i18n( 'Y-m-d', strtotime( $start_month . '/' . $start_day . '/' . $start_year ) );
-		$end_day            = $this->raw_metadata['swsales_end_day'];
-		$end_month          = $this->raw_metadata['swsales_end_month'];
-		$end_year           = $this->raw_metadata['swsales_end_year'];
-		$this->end_date     = date_i18n( 'Y-m-d', strtotime( $end_month . '/' . $end_day . '/' . $end_year ) );
-		$this->sale_type    = $this->raw_metadata['swsales_end_day'];
+		// Load raw info from WP_Post object.
+		$this->id                      = $raw_post->ID;
+		$this->name                    = $raw_post->post_title;
+		$this->banner_text             = $raw_post->post_content;
+
+		// TODO: Determine if this Sitewide Sale is active.
+		$this->is_active_sitewide_sale = false;
+
+		// Merge post meta.
+		$this->post_meta = array_merge( $this->post_meta, get_metadata( 'post', $raw_post->ID ) );
 
 		return false;
 	}
@@ -158,21 +126,16 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns the entire start date
-	 *
-	 * @return string
-	 */
-	public function get_start_date() {
-		return $this->start_date;
-	}
-
-	/**
 	 * Returns the 'day' element of the start date
 	 *
 	 * @return string
 	 */
 	public function get_start_day() {
-		return substr( $this->start_date, 0, 2 );
+		if ( isset( $this->post_meta['swsales_start_day'] ) ) {
+			return $this->post_meta['swsales_start_day'];
+		} else {
+			return date( 'd', current_time( 'timestamp' ) );
+		}
 	}
 
 	/**
@@ -181,7 +144,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_start_month() {
-		return substr( $this->start_date, 3, 2 );
+		if ( isset( $this->post_meta['swsales_start_month'] ) ) {
+			return $this->post_meta['swsales_start_month'];
+		} else {
+			return date( 'm', current_time( 'timestamp' ) );
+		}
 	}
 
 	/**
@@ -190,16 +157,22 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_start_year() {
-		return substr( $this->start_date, 6, 4 );
+		if ( isset( $this->post_meta['swsales_start_year'] ) ) {
+			return $this->post_meta['swsales_start_year'];
+		} else {
+			return date( 'Y', current_time( 'timestamp' ) );
+		}
 	}
 
 	/**
-	 * Returns the entire end date
+	 * Returns the entire start date
 	 *
 	 * @return string
 	 */
-	public function get_end_date() {
-		return $this->end_date;
+	public function get_start_date() {
+		return $this->get_start_month() . '-' .
+			$this->get_start_day() . '-' .
+			$this->get_start_year() . '-';
 	}
 
 	/**
@@ -208,7 +181,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_end_day() {
-		return substr( $this->end_date, 0, 2 );
+		if ( isset( $this->post_meta['swsales_end_day'] ) ) {
+			return $this->post_meta['swsales_end_day'];
+		} else {
+			return date( 'd', strtotime( '+1 week', current_time( 'timestamp' ) ) );
+		}
 	}
 
 	/**
@@ -217,7 +194,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_end_month() {
-		return substr( $this->end_date, 3, 2 );
+		if ( isset( $this->post_meta['swsales_end_month'] ) ) {
+			return $this->post_meta['swsales_end_month'];
+		} else {
+			return date( 'm', strtotime( '+1 week', current_time( 'timestamp' ) ) );
+		}
 	}
 
 	/**
@@ -226,7 +207,22 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_end_year() {
-		return substr( $this->end_date, 6, 4 );
+		if ( isset( $this->post_meta['swsales_end_year'] ) ) {
+			return $this->post_meta['swsales_end_year'];
+		} else {
+			return date( 'Y', strtotime( '+1 week', current_time( 'timestamp' ) ) );
+		}
+	}
+
+	/**
+	 * Returns the entire end date
+	 *
+	 * @return string
+	 */
+	public function get_end_date() {
+		return $this->get_end_month() . '-' .
+			$this->get_end_day() . '-' .
+			$this->get_end_year() . '-';
 	}
 
 	/**
@@ -246,17 +242,25 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_sale_type() {
-		return $this->sale_type;
+		if ( isset( $this->post_meta['swsales_sale_type'] ) ) {
+			return $this->post_meta['swsales_sale_type'];
+		} else {
+			return '';
+		}
 	}
 
 	/**
 	 * Returns the ID of the sale landing page
 	 * or 0 if it is not set.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function get_landing_page_post_id() {
-		return $this->landing_page_post_id;
+		if ( isset( $this->post_meta['swsales_landing_page_post_id'] ) ) {
+			return $this->post_meta['swsales_landing_page_post_id'];
+		} else {
+			return 0;
+		}
 	}
 
 	/**
@@ -265,7 +269,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_landing_page_template() {
-		return $this->landing_page_template;
+		if ( isset( $this->post_meta['swsales_landing_page_template'] ) ) {
+			return $this->post_meta['swsales_landing_page_template'];
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -274,7 +282,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_pre_sale_content() {
-		return $this->pre_sale_content;
+		if ( isset( $this->post_meta['swsales_pre_sale_content'] ) ) {
+			return $this->post_meta['swsales_pre_sale_content'];
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -283,7 +295,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_sale_content() {
-		return $this->sale_content;
+		if ( isset( $this->post_meta['swsales_sale_content'] ) ) {
+			return $this->post_meta['swsales_sale_content'];
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -292,7 +308,11 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_post_sale_content() {
-		return $this->post_sale_content;
+		if ( isset( $this->post_meta['swsales_post_sale_content'] ) ) {
+			return $this->post_meta['swsales_post_sale_content'];
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -308,12 +328,91 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns banner for sale
+	 * Returns the style of banner to use, or
+	 * 'no' if no banner should be used
 	 *
-	 * @return SWSales_Banner
+	 * @return string
 	 */
-	public function get_banner() {
-		return $this->banner;
+	public function get_use_banner() {
+		if ( isset( $this->post_meta['swsales_use_banner'] ) ) {
+			return $this->post_meta['swsales_use_banner'];
+		} else {
+			return 'no';
+		}
+	}
+
+	/**
+	 * Returns banner template
+	 *
+	 * @return string
+	 */
+	public function get_banner_template() {
+		if ( isset( $this->post_meta['swsales_banner_template'] ) ) {
+			return $this->post_meta['swsales_banner_template'];
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Returns landing page template
+	 *
+	 * @return string
+	 */
+	public function get_banner_title() {
+		if ( isset( $this->post_meta['swsales_banner_title'] ) ) {
+			return $this->post_meta['swsales_banner_title'];
+		} else {
+			return 'Limited Time Offer';
+		}
+	}
+
+	/**
+	 * Returns landing page template
+	 *
+	 * @return string
+	 */
+	public function get_banner_text() {
+		return $this->banner_text;
+	}
+
+	/**
+	 * Returns link text
+	 *
+	 * @return string
+	 */
+	public function get_link_text() {
+		if ( isset( $this->post_meta['swsales_link_text'] ) ) {
+			return $this->post_meta['swsales_link_text'];
+		} else {
+			return 'Buy Now';
+		}
+	}
+
+	/**
+	 * Returns css option
+	 *
+	 * @return string
+	 */
+	public function get_css_option() {
+		if ( isset( $this->post_meta['swsales_css_option'] ) ) {
+			return $this->post_meta['swsales_css_option'];
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Returns if banner should be hidden on checkout
+	 *
+	 * @return bool
+	 */
+	public function get_hide_on_chechout() {
+		if ( isset( $this->post_meta['swsales_hide_on_checkout'] ) ) {
+			return $this->post_meta['swsales_hide_on_checkout'];
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -333,8 +432,8 @@ class SWSales_Sitewide_Sale {
 	 * @return mixed metadata
 	 */
 	public function get_meta_value( $meta_key, $default = null ) {
-		if ( isset( $this->$raw_metadata[ $meta_key ] ) ) {
-			return $this->$raw_metadata[ $meta_key ];
+		if ( isset( $this->$post_meta[ $meta_key ] ) ) {
+			return $this->$post_meta[ $meta_key ];
 		}
 		return $default;
 	}
@@ -345,6 +444,6 @@ class SWSales_Sitewide_Sale {
 	 * ----------------
 	 */
 	public function is_running() {
-		return ( is_active_sitewide_sale() && 'current' === get_current_sale_content() );
+		return ( $this->is_active_sitewide_sale() && 'current' === $this->get_current_sale_content() );
 	}
 }
