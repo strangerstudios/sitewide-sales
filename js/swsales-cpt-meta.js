@@ -33,6 +33,9 @@ jQuery( document ).ready(
 			} else {
 				$( '#swsales_edit_landing_page' ).attr( 'href', swsales.admin_url + 'post.php?post=' + landing_page_id + '&action=edit' );
 				$( '#swsales_view_landing_page' ).attr( 'href', swsales.home_url + '?p=' + landing_page_id );
+				if ( swsales.pages_with_shortcodes == null ) {
+					swsales.pages_with_shortcodes = [];
+				}
 				if ( swsales.pages_with_shortcodes.indexOf( landing_page_id ) > -1) {
 					$( '.swsales_shortcode_warning' ).hide();
 				} else {

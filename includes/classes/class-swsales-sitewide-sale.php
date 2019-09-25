@@ -44,8 +44,6 @@ class SWSales_Sitewide_Sale {
 	 * Constructor for the Sitewide Sale class.
 	 */
 	public function __construct() {
-		// TODO: Maybe set $is_active_sitewide_sale to true if no active sitewide sale.
-
 		// Set default post meta.
 		$default_post_meta = array(
 			'swsales_start_day'             => $this->get_start_day(),
@@ -82,22 +80,27 @@ class SWSales_Sitewide_Sale {
 		$raw_post = get_post( $sitewide_sale_id );
 
 		// Check if $sitewide_sale_id is a valid sitewide sale.
-		if ( null === $raw_post || ! 'sitewide_sale' !== $raw_post->post_type ) {
+		if ( null === $raw_post || 'sitewide_sale' !== $raw_post->post_type ) {
 			return false;
 		}
 
 		// Load raw info from WP_Post object.
-		$this->id                      = $raw_post->ID;
-		$this->name                    = $raw_post->post_title;
-		$this->banner_text             = $raw_post->post_content;
+		$this->id          = $raw_post->ID;
+		$this->name        = $raw_post->post_title;
+		$this->banner_text = $raw_post->post_content;
 
-		// TODO: Determine if this Sitewide Sale is active.
-		$this->is_active_sitewide_sale = false;
+		// Determine if this Sitewide Sale is active.
+		$options                       = SWSales_Settings::get_options();
+		$this->is_active_sitewide_sale = ( $options['active_sitewide_sale_id'] == $this->id ? true : false );
 
 		// Merge post meta.
-		$this->post_meta = array_merge( $this->post_meta, get_metadata( 'post', $raw_post->ID ) );
+		$raw_post_meta = get_metadata( 'post', $raw_post->ID );
+		foreach ( $raw_post_meta as $key => $value ) {
+			$raw_post_meta[ $key ] = $value[0];
+		}
+		$this->post_meta = array_merge( $this->post_meta, $raw_post_meta );
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -165,14 +168,14 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns the entire start date
+	 * Returns the entire start date in yyyy-mm-dd format
 	 *
 	 * @return string
 	 */
 	public function get_start_date() {
-		return $this->get_start_month() . '-' .
-			$this->get_start_day() . '-' .
-			$this->get_start_year() . '-';
+		return $this->get_start_year() . '-' .
+			$this->get_start_month() . '-' .
+			$this->get_start_day() . '-';
 	}
 
 	/**
@@ -215,25 +218,33 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns the entire end date
+	 * Returns the entire end date in yyyy-mm-dd format
 	 *
 	 * @return string
 	 */
 	public function get_end_date() {
-		return $this->get_end_month() . '-' .
-			$this->get_end_day() . '-' .
-			$this->get_end_year() . '-';
+		return $this->get_end_year() . '-' .
+			$this->get_end_month() . '-' .
+			$this->get_end_day() . '-';
 	}
 
 	/**
 	 * Returns 'past', 'current' or 'future' based
-	 * on the sale start/end dates and the current date
+	 * on the sale start/end dates and the current date.
+	 * If start date is after end date, returns 'error'
 	 *
 	 * @return string
 	 */
 	public function get_time_period() {
-		// TODO: Implement this.
-		return '';
+		$current_date = date( 'Y-m-d', current_time( 'timestamp' ) );
+		if ( $start_date > $end_date ) {
+			return 'error';
+		} elseif ( $current_date < $start_date ) {
+			return 'future';
+		} elseif ( $current_date > $end_date ) {
+			return 'past';
+		}
+		return 'present';
 	}
 
 	/**
@@ -323,8 +334,16 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_current_sale_content() {
-		// TODO: Implement this.
-		return '';
+		switch ( $this->get_time_period() ) {
+			case 'past':
+				return $this->get_post_sale_content();
+			case 'current':
+				return $this->get_sale_content();
+			case 'future':
+				return $this->get_pre_sale_content();
+			default:
+				return '';
+		}
 	}
 
 	/**

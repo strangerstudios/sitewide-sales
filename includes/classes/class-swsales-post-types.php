@@ -17,8 +17,8 @@ class SWSales_Post_Types {
 		add_action( 'manage_sitewide_sale_posts_custom_column', array( __CLASS__, 'fill_sitewide_sale_columns' ), 10, 2 );
 		//add_filter( 'months_dropdown_results', '__return_empty_array' );
 		//add_filter( 'post_row_actions', array( __CLASS__, 'remove_sitewide_sale_row_actions' ), 10, 2 );
-		//add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
-		//add_action( 'wp_ajax_sws_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+		add_action( 'wp_ajax_swsales_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
 		//add_filter( 'wp_insert_post_data', array( __CLASS__, 'force_publish_status' ), 10, 2 );
 	}
 
@@ -81,7 +81,7 @@ class SWSales_Post_Types {
 	 * @return [type] [description]
 	 */
 	public static function enqueue_scripts() {
-		wp_register_script( 'swsales_set_active_sitewide_sale', plugins_url( 'includes/js/swsales-set-active-sitewide-sale.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_register_script( 'swsales_set_active_sitewide_sale', plugins_url( 'js/swsales-set-active-sitewide-sale.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 		wp_enqueue_script( 'swsales_set_active_sitewide_sale' );
 	}
 
@@ -135,7 +135,7 @@ class SWSales_Post_Types {
 				break;
 			case 'set_active':
 				$options = SWSales_Settings::get_options();
-				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id . '' === $options['active_sitewide_sale_id'] ) {
+				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id == $options['active_sitewide_sale_id'] ) {
 					echo '<button class="button button-primary swsales_column_set_active" id="swsales_column_set_active_' . $post_id . '">' . __( 'Remove Active', 'sitewide-sales' ) . '</button>';
 				} else {
 					echo '<button class="button button-secondary swsales_column_set_active" id="swsales_column_set_active_' . $post_id . '">' . __( 'Set Active', 'sitewide-sales' ) . '</button>';
@@ -151,7 +151,7 @@ class SWSales_Post_Types {
 		$sitewide_sale_id = $_POST['sitewide_sale_id'];
 		$options          = SWSales_Settings::get_options();
 
-		if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $sitewide_sale_id === $options['active_sitewide_sale_id'] ) {
+		if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $sitewide_sale_id == $options['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = false;
 		} else {
 			$options['active_sitewide_sale_id'] = $sitewide_sale_id;

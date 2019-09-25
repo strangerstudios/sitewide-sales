@@ -109,6 +109,7 @@ class SWSales_MetaBoxes {
 			'normal',
 			'high'
 		);
+		/*
 		add_meta_box(
 			'swsales_cpt_step_5',
 			__( 'Step 5: Reports', 'sitewide-sales' ),
@@ -117,6 +118,7 @@ class SWSales_MetaBoxes {
 			'normal',
 			'high'
 		);
+		*/
 
 		// remove some default metaboxes
 		remove_meta_box( 'slugdiv', 'sitewide_sale', 'normal' );
@@ -125,13 +127,21 @@ class SWSales_MetaBoxes {
 
 	public static function publish_sitewide_sale( $post ) {
 		wp_nonce_field( 'custom_nonce_action', 'custom_nonce' );
+
+		global $cur_sale;
+		if ( ! isset( $cur_sale ) ) {
+			$cur_sale = new SWSales_Sitewide_Sale();
+			$cur_sale->load_sitewide_sale( $post->ID );
+		}
+
+		// TODO: Think about whether should automatically be set as active sitewide sale
 		$init_checked = false;
 		if ( isset( $_REQUEST['set_sitewide_sale'] ) && 'true' === $_REQUEST['set_sitewide_sale'] ) {
 			$init_checked = true;
 		} else {
 			$options = SWSales_Settings::get_options();
 			if ( empty( $options['active_sitewide_sale_id'] ) && $post->post_status == 'auto-draft'
-				|| $post->ID . '' === $options['active_sitewide_sale_id'] ) {
+				|| $cur_sale->is_active_sitewide_sale() ) {
 				$init_checked = true;
 			}
 		}
@@ -168,37 +178,10 @@ class SWSales_MetaBoxes {
 	}
 
 	public static function display_step_1( $post ) {
-
-		global $wpdb;
-
-		$start_day   = 0;
-		$start_month = 0;
-		$start_year  = 0;
-		$end_day     = 0;
-		$end_month   = 0;
-		$end_year    = 0;
-
-		$start_date = get_post_meta( $post->ID, 'swsales_start_date', true );
-		$end_date   = get_post_meta( $post->ID, 'swsales_end_date', true );
-
-		if ( ! empty( $start_date ) && ! empty( $end_date ) &&
-					is_string( $start_date ) && is_string( $end_date ) &&
-					count( explode( '-', $start_date ) ) === 3 && count( explode( '-', $end_date ) ) === 3 ) {
-			$start_exploded = explode( '-', $start_date );
-			$end_exploded   = explode( '-', $end_date );
-			$start_day      = $start_exploded[2];
-			$start_month    = $start_exploded[1];
-			$start_year     = $start_exploded[0];
-			$end_day        = $end_exploded[2];
-			$end_month      = $end_exploded[1];
-			$end_year       = $end_exploded[0];
-		} else {
-			$start_day   = date( 'd', current_time( 'timestamp' ) );
-			$start_month = date( 'm', current_time( 'timestamp' ) );
-			$start_year  = date( 'Y', current_time( 'timestamp' ) );
-			$end_day     = date( 'd', strtotime( '+1 week', current_time( 'timestamp' ) ) );
-			$end_month   = date( 'm', strtotime( '+1 week', current_time( 'timestamp' ) ) );
-			$end_year    = date( 'Y', strtotime( '+1 week', current_time( 'timestamp' ) ) );
+		global $wpdb, $cur_sale;
+		if ( ! isset( $cur_sale ) ) {
+			$cur_sale = new SWSales_Sitewide_Sale();
+			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 		?>
 		<p><?php esc_html_e( 'These fields control when the banner (if applicable) and built-in sale reporting will be active for your site. They also control what content is displayed on your sale Landing Page according to the "Landing Page" settings in Step 3 below.', 'sitewide-sales' ); ?></p>
@@ -213,16 +196,16 @@ class SWSales_MetaBoxes {
 							for ( $i = 1; $i < 13; $i++ ) {
 								?>
 								<option value="<?php echo esc_attr( $i ); ?>" 
-														  <?php
-															if ( $i == $start_month ) {
-																?>
-									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/1/' . $start_year, current_time( 'timestamp' ) ) ); ?></option>
+														<?php
+														if ( $i == $cur_sale->get_start_month() ) {
+															?>
+									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/1/' . $cur_sale->get_start_year(), current_time( 'timestamp' ) ) ); ?></option>
 								<?php
 							}
 							?>
 						</select>
-						<input id="swsales_start_day" name="swsales_start_day" type="text" size="2" value="<?php echo esc_attr( $start_day ); ?>" />
-						<input id="swsales_start_year" name="swsales_start_year" type="text" size="4" value="<?php echo esc_attr( $start_year ); ?>" />
+						<input id="swsales_start_day" name="swsales_start_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_day() ); ?>" />
+						<input id="swsales_start_year" name="swsales_start_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_start_year() ); ?>" />
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the first day of your sale.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
@@ -234,16 +217,16 @@ class SWSales_MetaBoxes {
 							for ( $i = 1; $i < 13; $i++ ) {
 								?>
 								<option value="<?php echo esc_attr( $i ); ?>" 
-														  <?php
-															if ( $i == $end_month ) {
-																?>
-									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/1/' . $end_year, current_time( 'timestamp' ) ) ) ); ?></option>
+														<?php
+														if ( $i == $cur_sale->get_end_month() ) {
+															?>
+									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/1/' . $cur_sale->get_end_year(), current_time( 'timestamp' ) ) ) ); ?></option>
 								<?php
 							}
 							?>
 						</select>
-						<input id="swsales_end_day" name="swsales_end_day" type="text" size="2" value="<?php echo esc_attr( $end_day ); ?>" />
-						<input id="swsales_end_year" name="swsales_end_year" type="text" size="4" value="<?php echo esc_attr( $end_year ); ?>" />
+						<input id="swsales_end_day" name="swsales_end_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_day() ); ?>" />
+						<input id="swsales_end_year" name="swsales_end_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_end_year() ); ?>" />
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
@@ -254,13 +237,15 @@ class SWSales_MetaBoxes {
 	}
 
 	public static function display_step_2( $post ) {
-		global $wpdb;
+		global $wpdb, $cur_sale;
+		if ( ! isset( $cur_sale ) ) {
+			$cur_sale = new SWSales_Sitewide_Sale();
+			$cur_sale->load_sitewide_sale( $post->ID );
+		}
 
 		// Each module should add to that array using 'short_name'->'Nice Name'
 		$sale_types = apply_filters( 'swsales_sale_types', array() );
-
-		$current_sale_type = get_post_meta( $post->ID, 'swsales_sale_type', true );
-
+		$current_sale_type = $cur_sale->get_sale_type();
 		?>
 		<table class="form-table">
 			<tbody>
@@ -284,7 +269,7 @@ class SWSales_MetaBoxes {
 					</td>
 				</tr>
 				<?php 
-				// TODO: Add filter to add custom settings from module 
+				// Add filter to add custom settings from module 
 				do_action( 'swsales_after_choose_sale_type', $post );
 				?>
 			</tbody>
@@ -294,32 +279,15 @@ class SWSales_MetaBoxes {
 	}
 
 	public static function display_step_3( $post ) {
-		global $wpdb;
+		global $wpdb, $cur_sale;
+		if ( ! isset( $cur_sale ) ) {
+			$cur_sale = new SWSales_Sitewide_Sale();
+			$cur_sale->load_sitewide_sale( $post->ID );
+		}
+
 		$pages        = get_pages( array( 'post_status' => 'publish,draft' ) );
-		$current_page = get_post_meta( $post->ID, 'swsales_landing_page_post_id', true );
-		if ( empty( $current_page ) ) {
-			$current_page = false;
-		}
-
-		$landing_template = get_post_meta( $post->ID, 'swsales_landing_page_template', true );
-		if ( empty( $landing_template ) ) {
-			$landing_template = false;
-		}
-
-		$pre_sale_content = get_post_meta( $post->ID, 'swsales_pre_sale_content', true );
-		if ( empty( $pre_sale_content ) ) {
-			$pre_sale_content = '';
-		}
-
-		$sale_content = get_post_meta( $post->ID, 'swsales_sale_content', true );
-		if ( empty( $sale_content ) ) {
-			$sale_content = '';
-		}
-
-		$post_sale_content = get_post_meta( $post->ID, 'swsales_post_sale_content', true );
-		if ( empty( $post_sale_content ) ) {
-			$post_sale_content = '';
-		}
+		$current_page = $cur_sale->get_landing_page_post_id();
+		$landing_template = $cur_sale->get_landing_page_template();
 		?>
 		<input type="hidden" id="swsales_old_landing_page_post_id" name="swsales_old_landing_page_post_id" value="<?php echo esc_attr( $current_page ); ?>" />
 		<table class="form-table">
@@ -411,7 +379,7 @@ class SWSales_MetaBoxes {
 					</tr>
 				<?php 
 					} 
-					// TODO: Add filter for modules here.
+					// Add filter for modules here.
 					do_action( 'swsales_after_choose_landing_page', $post );
 				?>
 			</tbody>
@@ -428,7 +396,7 @@ class SWSales_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $pre_sale_content ) ); ?></textarea><br />
+						<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $cur_sale->get_pre_sale_content() ) ); ?></textarea><br />
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'sitewide-sales' ); ?>
 							<?php if ( ! empty( $view_page_url ) ) { ?>
@@ -440,7 +408,7 @@ class SWSales_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Content', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $sale_content ) ); ?></textarea><br />
+						<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $cur_sale->get_sale_content() ) ); ?></textarea><br />
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'sitewide-sales' ); ?>
 							<?php if ( ! empty( $view_page_url ) ) { ?>
@@ -453,7 +421,7 @@ class SWSales_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Post-Sale Content', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $post_sale_content ) ); ?></textarea><br />
+						<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $cur_sale->get_post_sale_content() ) ); ?></textarea><br />
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'sitewide-sales' ); ?>
 							<?php if ( ! empty( $view_page_url ) ) { ?>
@@ -469,11 +437,14 @@ class SWSales_MetaBoxes {
 	}
 
 	public static function display_step_4( $post ) {
-		// This should be optimized to use a single get_post_meta call.
-		$use_banner = get_post_meta( $post->ID, 'swsales_use_banner', true );
-		if ( empty( $use_banner ) ) {
-			$use_banner = 'no';
+		global $cur_sale;
+		if ( ! isset( $cur_sale ) ) {
+			$cur_sale = new SWSales_Sitewide_Sale();
+			$cur_sale->load_sitewide_sale( $post->ID );
 		}
+
+		// This should be optimized to use a single get_post_meta call.
+		$use_banner = $cur_sale->get_use_banner();
 
 		// Set defaults if this is a brand new post.
 		if ( $post->post_status == 'auto-draft' ) {
@@ -481,7 +452,6 @@ class SWSales_MetaBoxes {
 			$banner_text      = sprintf( __( 'Save on %s membership.', 'sitewide-sales' ), get_bloginfo( 'sitename' ) );
 			$link_text        = __( 'Buy Now', 'sitewide-sales' );
 			$css_option       = '';
-			$hide_for_levels  = SWSales_Setup::get_paid_level_ids();
 			$hide_on_checkout = true;
 		} else {
 			$banner_text = $post->post_content;
@@ -491,22 +461,7 @@ class SWSales_MetaBoxes {
 				$banner_template = false;
 			}
 
-			$banner_title = get_post_meta( $post->ID, 'swsales_banner_title', true );
-			if ( empty( $banner_title ) ) {
-				$banner_title = '';
-			}
-			$link_text = get_post_meta( $post->ID, 'swsales_link_text', true );
-			if ( empty( $link_text ) ) {
-				$link_text = 'Buy Now';
-			}
-			$css_option = get_post_meta( $post->ID, 'swsales_css_option', true );
-			if ( empty( $css_option ) ) {
-				$css_option = '';
-			}
-			$hide_on_checkout = get_post_meta( $post->ID, 'swsales_hide_on_checkout', true );
-			if ( empty( $hide_on_checkout ) ) {
-				$hide_on_checkout = false;
-			}
+
 		}
 		?>
 		<table class="form-table">
@@ -533,7 +488,7 @@ class SWSales_MetaBoxes {
 		</table>
 		<table class="form-table" id="swsales_banner_options" 
 		<?php
-		if ( $use_banner == 'no' ) {
+		if ( $use_banner === 'no' ) {
 			?>
 			style="disaply: none;"<?php } ?>>
 			<tbody>
@@ -569,28 +524,28 @@ class SWSales_MetaBoxes {
 				<tr>
 					<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<input type="textbox" name="swsales_banner_title" value="<?php echo esc_attr( $banner_title ); ?>">
+						<input type="textbox" name="swsales_banner_title" value="<?php echo esc_attr( $cur_sale->get_banner_title() ); ?>">
 						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="swsales_banner_text"><?php esc_html_e( 'Banner Text', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo esc_textarea( $banner_text, 'sitewide-sales' ); ?></textarea>
+						<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo esc_textarea( $cur_sale->get_banner_text(), 'sitewide-sales' ); ?></textarea>
 						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<input class="swsales_option" type="text" name="swsales_link_text" value="<?php echo esc_attr( $link_text ); ?>">
+						<input class="swsales_option" type="text" name="swsales_link_text" value="<?php echo esc_attr( $cur_sale->get_link_text() ); ?>">
 						<p><small class="pmpro_lite"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<textarea class="swsales_option" name="swsales_css_option"><?php echo esc_textarea( $css_option ); ?></textarea>
+						<textarea class="swsales_option" name="swsales_css_option"><?php echo esc_textarea( $cur_sale->get_css_option() ); ?></textarea>
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'sitewide-sales' ); ?></small></p>
 
 						<p id="swsales_css_selectors_description" class="description" 
@@ -622,17 +577,17 @@ class SWSales_MetaBoxes {
 				</tr>
 				<tr>
 					<?php
-						$checked_modifier = $hide_on_checkout ? ' checked' : '';
+						$checked_modifier = $cur_sale->get_hide_on_chechout() ? ' checked' : '';
 					?>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="hidden" name="swsales_hide_on_checkout_exists" value="1" />
-						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $hide_on_checkout, 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
+						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $cur_sale->get_hide_on_chechout(), 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 				<?php
-				// TODO: Add filter for modlues (ex. hide banner for level)
+				//  Add filter for modlues (ex. hide banner for level)
 				do_action( 'swsales_after_banners_settings', $post );
 				?>
 			</tbody>
@@ -783,21 +738,16 @@ class SWSales_MetaBoxes {
 				isset( $_POST['swsales_start_year'] ) && is_numeric( $_POST['swsales_start_year'] ) &&
 				isset( $_POST['swsales_end_day'] ) && is_numeric( $_POST['swsales_end_day'] ) &&
 				isset( $_POST['swsales_end_month'] ) && is_numeric( $_POST['swsales_end_month'] ) &&
-				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] )
+				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] ) &&
+				( $_POST['swsales_start_year'] . '-' . $_POST['swsales_start_year'] . '-' . $_POST['swsales_start_year'] ) <
+				( $_POST['swsales_end_year'] . '-' . $_POST['swsales_end_year'] . '-' . $_POST['swsales_end_year'] )
 		) {
-			$start_day   = intval( $_POST['swsales_start_day'] );
-			$start_month = intval( $_POST['swsales_start_month'] );
-			$start_year  = intval( $_POST['swsales_start_year'] );
-			$end_day     = intval( $_POST['swsales_end_day'] );
-			$end_month   = intval( $_POST['swsales_end_month'] );
-			$end_year    = intval( $_POST['swsales_end_year'] );
-
-			// fix up dates
-			$start_date = date_i18n( 'Y-m-d', strtotime( $start_month . '/' . $start_day . '/' . $start_year, current_time( 'timestamp' ) ) );
-			$end_date   = date_i18n( 'Y-m-d', strtotime( $end_month . '/' . $end_day . '/' . $end_year, current_time( 'timestamp' ) ) );
-
-			update_post_meta( $post_id, 'swsales_start_date', $start_date );
-			update_post_meta( $post_id, 'swsales_end_date', $end_date );
+			update_post_meta( $post_id, 'swsales_start_day', $_POST['swsales_start_day'] );
+			update_post_meta( $post_id, 'swsales_start_month', $_POST['swsales_start_month'] );
+			update_post_meta( $post_id, 'swsales_start_year', $_POST['swsales_start_year'] );
+			update_post_meta( $post_id, 'swsales_end_day', $_POST['swsales_end_day'] );
+			update_post_meta( $post_id, 'swsales_end_month', $_POST['swsales_end_month'] );
+			update_post_meta( $post_id, 'swsales_end_year', $_POST['swsales_end_year'] );
 		}
 
 		if ( isset( $_POST['swsales_pre_sale_content'] ) ) {
@@ -848,25 +798,6 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_hide_on_checkout', true );
 		} elseif ( isset( $_POST['swsales_hide_on_checkout_exists'] ) ) {
 			update_post_meta( $post_id, 'swsales_hide_on_checkout', false );
-		}
-
-		if ( isset( $_POST['swsales_upsell_enabled'] ) ) {
-			update_post_meta( $post_id, 'swsales_upsell_enabled', true );
-			if ( isset( $_POST['swsales_upsell_levels'] ) && is_array( $_POST['swsales_upsell_levels'] ) ) {
-				$swsales_upsell_levels = array_map( 'intval', $_POST['swsales_upsell_levels'] );
-				update_post_meta( $post_id, 'swsales_upsell_levels', $swsales_upsell_levels );
-			} else {
-				update_post_meta( $post_id, 'swsales_upsell_levels', array() );
-			}
-			if ( isset( $_POST['swsales_upsell_text'] ) ) {
-				update_post_meta( $post_id, 'swsales_upsell_text', wp_kses_post( stripslashes( $_POST['swsales_upsell_text'] ) ) );
-			} else {
-				update_post_meta( $post_id, 'swsales_upsell_text', '' );
-			}
-		} else {
-			update_post_meta( $post_id, 'swsales_upsell_enabled', false );
-			update_post_meta( $post_id, 'swsales_upsell_levels', array() );
-			update_post_meta( $post_id, 'swsales_upsell_text', '' );
 		}
 
 		$options = SWSales_Settings::get_options();
