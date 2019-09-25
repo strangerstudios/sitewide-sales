@@ -400,7 +400,7 @@ class SWSales_MetaBoxes {
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'sitewide-sales' ); ?>
 							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_content', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
+								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
 							<?php } ?>
 						</small></p>
 					</td>
@@ -412,7 +412,7 @@ class SWSales_MetaBoxes {
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'sitewide-sales' ); ?>
 							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_content', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
+								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
 							<?php } ?>
 						</small></p>
 						</small></p>
@@ -425,7 +425,7 @@ class SWSales_MetaBoxes {
 						<p><small class="pmpro_lite">
 							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'sitewide-sales' ); ?>
 							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_content', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
+								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
 							<?php } ?>
 						</small></p>
 					</td>
@@ -738,9 +738,7 @@ class SWSales_MetaBoxes {
 				isset( $_POST['swsales_start_year'] ) && is_numeric( $_POST['swsales_start_year'] ) &&
 				isset( $_POST['swsales_end_day'] ) && is_numeric( $_POST['swsales_end_day'] ) &&
 				isset( $_POST['swsales_end_month'] ) && is_numeric( $_POST['swsales_end_month'] ) &&
-				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] ) &&
-				( $_POST['swsales_start_year'] . '-' . $_POST['swsales_start_year'] . '-' . $_POST['swsales_start_year'] ) <
-				( $_POST['swsales_end_year'] . '-' . $_POST['swsales_end_year'] . '-' . $_POST['swsales_end_year'] )
+				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] )
 		) {
 			update_post_meta( $post_id, 'swsales_start_day', $_POST['swsales_start_day'] );
 			update_post_meta( $post_id, 'swsales_start_month', $_POST['swsales_start_month'] );

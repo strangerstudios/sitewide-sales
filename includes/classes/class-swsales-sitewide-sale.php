@@ -170,12 +170,15 @@ class SWSales_Sitewide_Sale {
 	/**
 	 * Returns the entire start date in yyyy-mm-dd format
 	 *
+	 * @param string $dateformatstring date_i18n format.
 	 * @return string
 	 */
-	public function get_start_date() {
-		return $this->get_start_year() . '-' .
-			$this->get_start_month() . '-' .
-			$this->get_start_day() . '-';
+	public function get_start_date( $dateformatstring = null ) {
+		if ( null === $dateformatstring ) {
+			$dateformatstring = get_option( 'date_format' );
+		}
+		$start_date = $this->get_start_day() . '-' . $this->get_start_month() . '-' . $this->get_start_year();
+		return date_i18n( $dateformatstring, strtotime( $start_date ) );
 	}
 
 	/**
@@ -220,12 +223,15 @@ class SWSales_Sitewide_Sale {
 	/**
 	 * Returns the entire end date in yyyy-mm-dd format
 	 *
+	 * @param string $dateformatstring date_i18n format.
 	 * @return string
 	 */
-	public function get_end_date() {
-		return $this->get_end_year() . '-' .
-			$this->get_end_month() . '-' .
-			$this->get_end_day() . '-';
+	public function get_end_date( $dateformatstring = null ) {
+		if ( null === $dateformatstring ) {
+			$dateformatstring = get_option( 'date_format' );
+		}
+		$end_date = $this->get_end_day() . '-' . $this->get_end_month() . '-' . $this->get_end_year();
+		return date_i18n( $dateformatstring, strtotime( $end_date ) );
 	}
 
 	/**
@@ -237,11 +243,12 @@ class SWSales_Sitewide_Sale {
 	 */
 	public function get_time_period() {
 		$current_date = date( 'Y-m-d', current_time( 'timestamp' ) );
-		if ( $start_date > $end_date ) {
+
+		if ( $this->get_start_date( 'Y-m-d' ) > $this->get_end_date( 'Y-m-d' ) ) {
 			return 'error';
-		} elseif ( $current_date < $start_date ) {
+		} elseif ( $current_date < $this->get_start_date( 'Y-m-d' ) ) {
 			return 'pre-sale';
-		} elseif ( $current_date > $end_date ) {
+		} elseif ( $current_date > $this->get_end_date( 'Y-m-d' ) ) {
 			return 'post-sale';
 		}
 		return 'sale';

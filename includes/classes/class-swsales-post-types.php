@@ -19,7 +19,7 @@ class SWSales_Post_Types {
 		//add_filter( 'post_row_actions', array( __CLASS__, 'remove_sitewide_sale_row_actions' ), 10, 2 );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'wp_ajax_swsales_set_active_sitewide_sale', array( __CLASS__, 'set_active_sitewide_sale' ) );
-		//add_filter( 'wp_insert_post_data', array( __CLASS__, 'force_publish_status' ), 10, 2 );
+		add_filter( 'wp_insert_post_data', array( __CLASS__, 'force_publish_status' ), 10, 2 );
 	}
 
 	/**

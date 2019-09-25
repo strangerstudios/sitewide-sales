@@ -50,7 +50,6 @@ class SWSales_Landing_Pages {
 			}
 			$sitewide_sale->load_sitewide_sale( $sitewide_sales[0]->ID );
 		}
-
 		$time_period = $sitewide_sale->get_time_period();
 
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_time_period'] ) ) {
@@ -110,7 +109,6 @@ class SWSales_Landing_Pages {
 	 * @param WP_Post $post The current post object.
 	 */
 	public static function add_display_post_states( $post_states, $post ) {
-
 		// Check if this post has an associated Sitewide Sale.
 		$sitewide_sale_id = get_post_meta( $post->ID, 'swsales_sitewide_sale_id', true );
 
@@ -128,7 +126,6 @@ class SWSales_Landing_Pages {
 	 * @param WP_Post $post The current post object.
 	 */
 	public static function add_page_row_actions( $actions, $post ) {
-
 		// Check if this post has an associated Sitewide Sale.
 		$sitewide_sale_id = get_post_meta( $post->ID, 'swsales_sitewide_sale_id', true );
 
