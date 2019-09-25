@@ -29,8 +29,8 @@ includes\classes\SWSales_Banners::init();
 // Handles applying discount automatically and inserting upsell offers.
 //includes\classes\PMPro_SWS_Checkout::init();
 
-// Sets up shortcode [pmpro_sws] and landing page-related code.
-//includes\classes\PMPro_SWS_Landing_Pages::init();
+// Sets up shortcode [swsales] and landing page-related code.
+includes\classes\SWSales_Landing_Pages::init();
 
 // Handles displaying/saving metaboxes for Sitewide Sale CPT and
 // returning from editing a discount code/landing page associated

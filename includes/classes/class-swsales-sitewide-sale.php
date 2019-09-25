@@ -240,11 +240,11 @@ class SWSales_Sitewide_Sale {
 		if ( $start_date > $end_date ) {
 			return 'error';
 		} elseif ( $current_date < $start_date ) {
-			return 'future';
+			return 'pre-sale';
 		} elseif ( $current_date > $end_date ) {
-			return 'past';
+			return 'post-sale';
 		}
-		return 'present';
+		return 'sale';
 	}
 
 	/**
@@ -328,22 +328,32 @@ class SWSales_Sitewide_Sale {
 
 	/**
 	 * Returns the appropriate sale content
+	 * based on passed time period
+	 *
+	 * @return string
+	 */
+	public function get_sale_content_for_time_period( $time_period ) {
+		switch ( $time_period ) {
+			case 'post-sale':
+				return $this->get_post_sale_content();
+			case 'sale':
+				return $this->get_sale_content();
+			case 'pre-sale':
+				return $this->get_pre_sale_content();
+			default:
+				return '';
+		}
+	}
+
+	/**
+	 * Returns the appropriate sale content
 	 * based on if the sale is prior, current,
 	 * or future.
 	 *
 	 * @return string
 	 */
 	public function get_current_sale_content() {
-		switch ( $this->get_time_period() ) {
-			case 'past':
-				return $this->get_post_sale_content();
-			case 'current':
-				return $this->get_sale_content();
-			case 'future':
-				return $this->get_pre_sale_content();
-			default:
-				return '';
-		}
+		get_sale_content_for_time_period( $this->get_time_period() );
 	}
 
 	/**
@@ -463,6 +473,6 @@ class SWSales_Sitewide_Sale {
 	 * ----------------
 	 */
 	public function is_running() {
-		return ( $this->is_active_sitewide_sale() && 'current' === $this->get_current_sale_content() );
+		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_current_sale_content() );
 	}
 }
