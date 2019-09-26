@@ -131,9 +131,18 @@ class SWSales_Sitewide_Sale {
 	 * @return SWSales_Sitewide_Sale active sale
 	 */
 	public static function get_sitewide_sale( $id ) {
-		$sitewide_sale = new SWSales_Sitewide_Sale();
-		$valid_sale    = $sitewide_sale->load_sitewide_sale( $id );
-		return $valid_sale ? $sitewide_sale : null;
+		global $swsales_sitewide_sales;
+		if ( ! isset( $swsales_sitewide_sales ) ) {
+			$swsales_sitewide_sales = array();
+		}
+
+		if ( ! isset( $swsales_sitewide_sales[ $id ] ) ) {
+			$sitewide_sale                 = new SWSales_Sitewide_Sale();
+			$valid_sale                    = $sitewide_sale->load_sitewide_sale( $id );
+			$swsales_sitewide_sales[ $id ] = $valid_sale ? $sitewide_sale : null;
+		}
+
+		return $swsales_sitewide_sales[ $id ];
 	}
 
 	/**
