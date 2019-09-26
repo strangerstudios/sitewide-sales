@@ -104,6 +104,39 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Returns the active SWSales_Sitewide_Sale object
+	 *
+	 * @return SWSales_Sitewide_Sale active sale
+	 */
+	public static function get_active_sitewide_sale() {
+		global $swsales_active_sitewide_sale;
+
+		if ( isset( $swsales_active_sitewide_sale ) ) {
+			return $swsales_active_sitewide_sale;
+		}
+
+		$options = SWSales_Settings::get_options();
+		if ( empty( $options['active_sitewide_sale_id'] ) ) {
+			$swsales_active_sitewide_sale = null;
+		} else {
+			$swsales_active_sitewide_sale = self::get_sitewide_sale( $options['active_sitewide_sale_id'] );
+		}
+		return $swsales_active_sitewide_sale;
+	}
+
+	/**
+	 * Returns the corresponding Sitewide Sale object.
+	 *
+	 * @param int $id of sale to get.
+	 * @return SWSales_Sitewide_Sale active sale
+	 */
+	public static function get_sitewide_sale( $id ) {
+		$sitewide_sale = new SWSales_Sitewide_Sale();
+		$valid_sale    = $sitewide_sale->load_sitewide_sale( $id );
+		return $valid_sale ? $sitewide_sale : null;
+	}
+
+	/**
 	 * ----------------
 	 * GETTER FUNCTIONS
 	 * ----------------
@@ -360,7 +393,7 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_current_sale_content() {
-		get_sale_content_for_time_period( $this->get_time_period() );
+		$this->get_sale_content_for_time_period( $this->get_time_period() );
 	}
 
 	/**

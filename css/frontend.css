@@ -1,51 +1,51 @@
 /* General Banner Styles */
-.pmpro_sws_banner {
+.swsales_banner {
 	background: #DADADA;
 }
-.pmpro_sws_banner a.dismiss,
-.pmpro_sws_banner a.dismiss:active,
-.pmpro_sws_banner a.dismiss:link,
-.pmpro_sws_banner a.dismiss:visited {
+.swsales_banner a.dismiss,
+.swsales_banner a.dismiss:active,
+.swsales_banner a.dismiss:link,
+.swsales_banner a.dismiss:visited {
 	text-decoration: none;
 }
-.pmpro_sws_banner a.dismiss:before {
+.swsales_banner a.dismiss:before {
 	color: #AAA;
 	content: "\2716";
 	font: normal 1em/1 Arial, sans-serif;
 	text-align: center;
 }
-.pmpro_sws_banner a.dismiss:hover {
+.swsales_banner a.dismiss:hover {
 	color: #CCC;
 }
-.pmpro_sws_banner h3 {
+.swsales_banner h3 {
 	margin: 0 0 10px 0;
 	padding: 0;
 }
-.pmpro_sws_banner p {
+.swsales_banner p {
 	margin: 0 0 10px 0;
 	padding: 0;
 }
 
 /* Top Banner Styles */
-#pmpro_sws_banner_top {
+#swsales_banner_top {
 	padding: 1rem;
 	text-align: center;
 	width: 100%;
 }
-#pmpro_sws_banner_top span {
+#swsales_banner_top span {
 	margin-right: 2rem;
 	font-size: 2rem;
 }
-#pmpro_sws_banner_top h3,
-#pmpro_sws_banner_top p,
-#pmpro_sws_banner_top span.pmpro_sws_banner-button {
+#swsales_banner_top h3,
+#swsales_banner_top p,
+#swsales_banner_top span.swsales_banner-button {
 	display: inline;
 	margin: 0 1rem;
 	padding: 0;
 }
 
 /* Bottom Right Banner Styles */
-#pmpro_sws_banner_bottom_right {
+#swsales_banner_bottom_right {
 	bottom: 0;
 	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
 	padding: 20px;
@@ -54,15 +54,15 @@
 	max-width: 300px;
 	z-index: 400;
 }
-#pmpro_sws_banner_bottom_right .pmpro_btn {
+#swsales_banner_bottom_right .pmpro_btn {
 	display: block;
 }
-#pmpro_sws_banner_bottom_right a.dismiss {
+#swsales_banner_bottom_right a.dismiss {
 	float: right;
 }
 
 /* Bottom Banner Styles */
-#pmpro_sws_banner_bottom {
+#swsales_banner_bottom {
 	bottom: 0;
 	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
 	left: 0;
@@ -72,12 +72,12 @@
 	width: 100%;
 	z-index: 400;
 }
-#pmpro_sws_banner_bottom a.dismiss {
+#swsales_banner_bottom a.dismiss {
 	position: absolute;
 	top: 10px;
 	right: 10px;
 }
-#pmpro_sws_banner_bottom .pmpro_sws_banner-inner {
+#swsales_banner_bottom .swsales_banner-inner {
 	display: grid;
 	grid-gap: 20px;
 	grid-template-columns: 3fr 1fr;
@@ -85,17 +85,17 @@
 	max-width: 1170px;
 }
 
-#pmpro_sws_banner_bottom .pmpro_sws_banner-inner-left {
+#swsales_banner_bottom .swsales_banner-inner-left {
 	align-self: center;
 }
-#pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right {
+#swsales_banner_bottom .swsales_banner-inner-right {
 	align-self: center;
 }
-#pmpro_sws_banner_bottom .pmpro_sws_banner-inner-right .pmpro_btn {
+#swsales_banner_bottom .swsales_banner-inner-right .pmpro_btn {
 	display: block;
 }
 @media only screen and (max-width: 767px) {
-	#pmpro_sws_banner_bottom .pmpro_sws_banner-inner {
+	#swsales_banner_bottom .swsales_banner-inner {
 		display: block;
 	}
 }
@@ -112,7 +112,7 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 }
-.pmpro_sitewide_sale_landing_page_template .pmpro_sws_landing_content .sws-features {
+.pmpro_sitewide_sale_landing_page_template .swsales_landing_content .sws-features {
 	display: grid;
 	font-size: 1.8rem;
 	grid-gap: 1rem;
@@ -122,7 +122,7 @@
 	max-width: 1170px;
 	text-align: center;
 }
-.pmpro_sitewide_sale_landing_page_template .pmpro_sws_landing_content .sws-features p {
+.pmpro_sitewide_sale_landing_page_template .swsales_landing_content .sws-features p {
 	margin: 0 0 1.45rem 0;
 	padding: 0;
 }
@@ -139,7 +139,7 @@
 }
 
 /* Gradient Theme */
-.pmpro_sws_banner_template-gradient a.dismiss:before {
+.swsales_banner_template-gradient a.dismiss:before {
 	color: #FFF;
 }
 body.pmpro-sitewide-sale-landing-page-gradient {
@@ -153,15 +153,15 @@ body.pmpro-sitewide-sale-landing-page-gradient {
 #pmpro_sitewide_sale_landing_page_template-gradient {
 	margin: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content h1,
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content h2 {
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content h1,
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content h2 {
 	color: #FFF;
 }
 #pmpro_sitewide_sale_landing_page_template-gradient #pmpro_form {
 	max-width: 800px;
 }
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content,
-.pmpro_sws_banner_template-gradient {
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content,
+.swsales_banner_template-gradient {
 	background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
 	background-size: 600% 600%;
 	color: #FFF;
@@ -169,7 +169,7 @@ body.pmpro-sitewide-sale-landing-page-gradient {
 	-moz-animation: SWSGradient 30s ease infinite;
 	animation: SWSGradient 30s ease infinite;
 }
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content {
 	box-shadow: 0px 10px 40px #000;
 	padding: 5.8rem 5.8rem 11.6rem 5.8rem;
 	text-align: center;
@@ -189,9 +189,9 @@ body.pmpro-sitewide-sale-landing-page-gradient {
 	50%{background-position:100% 50%}
 	100%{background-position:0% 50%}
 }
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content .fa,
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content .fab,
-#pmpro_sitewide_sale_landing_page_template-gradient .pmpro_sws_landing_content .fas {
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content .fa,
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content .fab,
+#pmpro_sitewide_sale_landing_page_template-gradient .swsales_landing_content .fas {
 	font-size: 20rem;
 }
 body.pmpro-sitewide-sale-landing-page-gradient #pmpro_form {
@@ -203,11 +203,11 @@ body.pmpro-sitewide-sale-landing-page-gradient #pmpro_form {
 }
 
 /* Neon Theme */
-.pmpro_sws_banner_template-neon {
+.swsales_banner_template-neon {
 	background: #000 url(../../images/darkness.png) repeat;
 	color: #FFF;
 }
-.pmpro_sws_banner_template-neon h3 {
+.swsales_banner_template-neon h3 {
 	animation-name: SWSNeon2;
 	animation-delay: 1s;
 	animation-duration: 1s;
@@ -221,7 +221,7 @@ body.pmpro-sitewide-sale-landing-page-gradient #pmpro_form {
 	letter-spacing: -2px;
 	text-shadow: 0px 0px 15px #BBB;
 }
-.pmpro_sws_banner_template-neon a.dismiss:before {
+.swsales_banner_template-neon a.dismiss:before {
 	color: #666;
 }
 body.pmpro-sitewide-sale-landing-page-neon {
@@ -231,22 +231,22 @@ body.pmpro-sitewide-sale-landing-page-neon {
 #pmpro_sitewide_sale_landing_page_template-neon {
 	margin: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-neon .pmpro_sws_landing_content_pre-sale,
-#pmpro_sitewide_sale_landing_page_template-neon .pmpro_sws_landing_content_post-sale {
+#pmpro_sitewide_sale_landing_page_template-neon .swsales_landing_content_pre-sale,
+#pmpro_sitewide_sale_landing_page_template-neon .swsales_landing_content_post-sale {
 	color: #FFF;
 	margin: 5.8rem;
 	text-align: center;
 }
-#pmpro_sitewide_sale_landing_page_template-neon .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-neon .swsales_landing_content {
 	color: #FFF;
 	text-align: center;
 }
-#pmpro_sitewide_sale_landing_page_template-neon .pmpro_sws_landing_content h1 {
+#pmpro_sitewide_sale_landing_page_template-neon .swsales_landing_content h1 {
 	color: #FFF;
 	font-weight: 700;
 	margin-top: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-neon .pmpro_sws_landing_content h2 {
+#pmpro_sitewide_sale_landing_page_template-neon .swsales_landing_content h2 {
 	animation-name: SWSNeon;
 	animation-duration: 4s;
 	animation-direction: alternate-reverse;
@@ -262,7 +262,7 @@ body.pmpro-sitewide-sale-landing-page-neon {
 	padding: 0;
 	text-shadow: 0px 0px 15px #BBB;
 }
-#pmpro_sitewide_sale_landing_page_template-neon .pmpro_sws_landing_content h3 {
+#pmpro_sitewide_sale_landing_page_template-neon .swsales_landing_content h3 {
 	animation-name: SWSNeon2;
 	animation-delay: 1s;
 	animation-duration: 1s;
@@ -320,10 +320,10 @@ body.pmpro-sitewide-sale-landing-page-neon {
 }
 
 /* Ocean Theme */
-.pmpro_sws_banner_template-ocean a.dismiss:before {
+.swsales_banner_template-ocean a.dismiss:before {
 	color: #FFF;
 }
-#pmpro_sws_banner_top.pmpro_sws_banner_template-ocean {
+#swsales_banner_top.swsales_banner_template-ocean {
 	background-color: #f67656;
 	background-image: url(../../images/waves.png);
 	background-repeat: repeat-x;
@@ -331,16 +331,16 @@ body.pmpro-sitewide-sale-landing-page-neon {
 	background-size: 30px 30px;
 	color: #FFF;
 }
-#pmpro_sws_banner_top.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner {
+#swsales_banner_top.swsales_banner_template-ocean .swsales_banner-inner {
 	padding: 0 0 30px 0;
 }
-#pmpro_sws_banner_top.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner h3 {
+#swsales_banner_top.swsales_banner_template-ocean .swsales_banner-inner h3 {
 	font-family: 'Brush Script MT', cursive;
 	font-size: 30px;
 	font-weight: 400;
 	line-height: 40px;
 }
-#pmpro_sws_banner_bottom.pmpro_sws_banner_template-ocean {
+#swsales_banner_bottom.swsales_banner_template-ocean {
 	background-color: #f67656;
 	background-image: url(../../images/waves.png);
 	background-repeat: repeat-x;
@@ -348,21 +348,21 @@ body.pmpro-sitewide-sale-landing-page-neon {
 	background-size: 50px 50px;
 	color: #FFF;
 }
-#pmpro_sws_banner_bottom.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner {
+#swsales_banner_bottom.swsales_banner_template-ocean .swsales_banner-inner {
 	padding: 0 0 40px 0;
 }
-#pmpro_sws_banner_bottom.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner h3 {
+#swsales_banner_bottom.swsales_banner_template-ocean .swsales_banner-inner h3 {
 	font-family: 'Brush Script MT', cursive;
 	font-size: 50px;
 	font-weight: 400;
 	line-height: 60px;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean {
+#swsales_banner_bottom_right.swsales_banner_template-ocean {
 	padding: 0;
 	background-color: #4ab1ad;
 	color: #FFF;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner {
+#swsales_banner_bottom_right.swsales_banner_template-ocean .swsales_banner-inner {
 	background-color: #f67656;
 	background-image: url(../../images/waves.png);
 	background-repeat: repeat-x;
@@ -370,13 +370,13 @@ body.pmpro-sitewide-sale-landing-page-neon {
 	background-size: 50px 50px;
 	padding: 20px 20px 40px 20px;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean .pmpro_sws_banner-inner h3 {
+#swsales_banner_bottom_right.swsales_banner_template-ocean .swsales_banner-inner h3 {
 	font-family: 'Brush Script MT', cursive;
 	font-size: 30px;
 	font-weight: 400;
 	line-height: 40px;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-ocean span.pmpro_sws_banner-button {
+#swsales_banner_bottom_right.swsales_banner_template-ocean span.swsales_banner-button {
 	display: block;
 	padding: 0 20px 20px 20px;
 }
@@ -387,7 +387,7 @@ body.pmpro-sitewide-sale-landing-page-ocean {
 #pmpro_sitewide_sale_landing_page_template-ocean {
 	margin: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-ocean .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-ocean .swsales_landing_content {
 	background-color: #f67656;
 	background-image: url(../../images/waves.png);
 	background-repeat: repeat-x;
@@ -397,7 +397,7 @@ body.pmpro-sitewide-sale-landing-page-ocean {
 	padding: 5.8rem 0 110px 0;
 	text-align: center;
 }
-#pmpro_sitewide_sale_landing_page_template-ocean .pmpro_sws_landing_content h1 {
+#pmpro_sitewide_sale_landing_page_template-ocean .swsales_landing_content h1 {
 	color: #FFF;
 	font-family: 'Brush Script MT', cursive;
 	font-size: 120px;
@@ -405,7 +405,7 @@ body.pmpro-sitewide-sale-landing-page-ocean {
 	margin: 1.45rem 0 2.9rem 0;
 	padding: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-ocean .pmpro_sws_landing_content h2 {
+#pmpro_sitewide_sale_landing_page_template-ocean .swsales_landing_content h2 {
 	color: #FFF;
 	margin:  0;
 }
@@ -440,32 +440,32 @@ body.pmpro-sitewide-sale-landing-page-ocean {
 }
 
 /* Photo Theme */
-.pmpro_sws_banner_template-photo {
+.swsales_banner_template-photo {
 	background: rgba( 0, 0, 0, 0.5 );
 	color: #FFF;
 	transition: background 1s ease;
 }
-.pmpro_sws_banner_template-photo:hover {
+.swsales_banner_template-photo:hover {
 	background: rgba( 0, 0, 0, 0.8 );
 }
-#pmpro_sws_banner_top.pmpro_sws_banner_template-photo {
+#swsales_banner_top.swsales_banner_template-photo {
 	border-bottom-left-radius: 40px;
 	border-bottom-right-radius: 40px;
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-photo {
+#swsales_banner_bottom_right.swsales_banner_template-photo {
 	border-top-left-radius: 40px;
 }
-#pmpro_sws_banner_bottom.pmpro_sws_banner_template-photo {
+#swsales_banner_bottom.swsales_banner_template-photo {
 	border-top-left-radius: 40px;
 	border-top-right-radius: 40px;
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
 }
-#pmpro_sws_banner_bottom.pmpro_sws_banner_template-photo a.dismiss {
+#swsales_banner_bottom.swsales_banner_template-photo a.dismiss {
 	bottom: 10px;
 	right: 15px;
 	top: auto;
@@ -480,7 +480,7 @@ body.pmpro-sitewide-sale-landing-page-photo {
 #pmpro_sitewide_sale_landing_page_template-photo .pmpro_sitewide_sale_landing_page_template-background-image {
 	padding-top: 2.9rem;
 }
-#pmpro_sitewide_sale_landing_page_template-photo .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-photo .swsales_landing_content {
 	background: rgba( 0, 0, 0, 0.5 );
 	border-radius: 40px;
 	color: rgba( 255, 255, 255, 0.9);
@@ -491,10 +491,10 @@ body.pmpro-sitewide-sale-landing-page-photo {
 	text-shadow: 0px 0px 5px #000;
 	transition: background 1s ease;
 }
-#pmpro_sitewide_sale_landing_page_template-photo .pmpro_sws_landing_content:hover {
+#pmpro_sitewide_sale_landing_page_template-photo .swsales_landing_content:hover {
 	background: rgba( 0, 0, 0, 0.8 );
 }
-#pmpro_sitewide_sale_landing_page_template-photo .pmpro_sws_landing_content h1 {
+#pmpro_sitewide_sale_landing_page_template-photo .swsales_landing_content h1 {
 	border-bottom: 1px solid #333;
 	color: #FFF;
 	display: inline-block;
@@ -504,7 +504,7 @@ body.pmpro-sitewide-sale-landing-page-photo {
 	margin: 0 0 2.9rem 0;
 	padding: .9rem;
 }
-#pmpro_sitewide_sale_landing_page_template-photo .pmpro_sws_landing_content h2 {
+#pmpro_sitewide_sale_landing_page_template-photo .swsales_landing_content h2 {
 	color: #FFF;
 	margin:  0;
 }
@@ -521,34 +521,34 @@ body.pmpro-sitewide-sale-landing-page-photo {
 }
 
 /* Scroll Theme */
-.pmpro_sws_banner_template-scroll {
+.swsales_banner_template-scroll {
 	background: #E4E3DF;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-scroll {
+#swsales_banner_bottom_right.swsales_banner_template-scroll {
 	padding: 0;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-scroll .pmpro_sws_banner-inner {
+#swsales_banner_bottom_right.swsales_banner_template-scroll .swsales_banner-inner {
 	padding: 20px 20px 0 20px;
 }
-#pmpro_sws_banner_bottom_right.pmpro_sws_banner_template-scroll .pmpro_sws_banner-button {
+#swsales_banner_bottom_right.swsales_banner_template-scroll .swsales_banner-button {
 	background: rgba( 255, 255, 255, 0.4 );
 	display: block;
 	padding: 20px;
 }
-.pmpro_sws_banner_template-scroll a.dismiss:before {
+.swsales_banner_template-scroll a.dismiss:before {
 	color: #B5B5A5;
 }
-.pmpro_sws_banner_template-scroll h3 {
+.swsales_banner_template-scroll h3 {
 	animation: SWSFadeIn 1s;
 }
-.pmpro_sws_banner_template-scroll p {
+.swsales_banner_template-scroll p {
 	animation: SWSFadeIn 2s;
 }
-#pmpro_sws_banner_top.pmpro_sws_banner_template-scroll .pmpro_sws_banner-inner {
+#swsales_banner_top.swsales_banner_template-scroll .swsales_banner-inner {
 	animation: SWSScroll 1s;
 }
-#pmpro_sws_banner_top.pmpro_sws_banner_template-scroll h3,
-#pmpro_sws_banner_bottom.pmpro_sws_banner_template-scroll h3 {
+#swsales_banner_top.swsales_banner_template-scroll h3,
+#swsales_banner_bottom.swsales_banner_template-scroll h3 {
 	background: rgba( 255, 255, 255, 0.4 );
 	display: inline-block;
 	padding: 5px 10px;
@@ -561,7 +561,7 @@ body.pmpro-sitewide-sale-landing-page-scroll {
 #pmpro_sitewide_sale_landing_page_template-scroll {
 	margin-top: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-scroll .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-scroll .swsales_landing_content {
 	overflow: hidden;
 	padding: 2.9rem 0 10rem 0;
 	text-align: center;
@@ -572,12 +572,12 @@ body.pmpro-sitewide-sale-landing-page-scroll {
 	max-width: 800px;
 	padding:  2.9rem;
 }
-#pmpro_sitewide_sale_landing_page_template-scroll .pmpro_sws_landing_content h1 {
+#pmpro_sitewide_sale_landing_page_template-scroll .swsales_landing_content h1 {
 	animation: SWSScroll 1s;
 	font-weight: normal;
 	margin: 0 0 2.9rem 0;
 }
-#pmpro_sitewide_sale_landing_page_template-scroll .pmpro_sws_landing_content h3 {
+#pmpro_sitewide_sale_landing_page_template-scroll .swsales_landing_content h3 {
 	animation: SWSFadeIn 3s;
 	font-weight: normal;
 	margin: 0;
@@ -627,14 +627,14 @@ body.pmpro-sitewide-sale-landing-page-scroll {
 }
 
 /* Vintage Theme */
-.pmpro_sws_banner_template-vintage {
+.swsales_banner_template-vintage {
 	background: #1d2a2f url(../../images/green-dust-and-scratches.png) repeat;
 	color: #e5dfbd;
 	letter-spacing: 2px;
 	text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
 	text-transform: uppercase;
 }
-.pmpro_sws_banner_template-vintage h3 {
+.swsales_banner_template-vintage h3 {
 	color: #e5dfbd;
 	font-family: 'Lobster', sans-serif;
 	font-size: 30px;
@@ -646,7 +646,7 @@ body.pmpro-sitewide-sale-landing-page-scroll {
 	text-shadow: 5px 5px 0px rgba(0,0,0,0.3);
 	text-transform: none;
 }
-.pmpro_sws_banner_template-vintage a.dismiss:before {
+.swsales_banner_template-vintage a.dismiss:before {
 	color: #666;
 }
 
@@ -657,14 +657,14 @@ body.pmpro-sitewide-sale-landing-page-vintage {
 #pmpro_sitewide_sale_landing_page_template-vintage {
 	margin: 0;
 }
-#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content {
+#pmpro_sitewide_sale_landing_page_template-vintage .swsales_landing_content {
 	color: #e5dfbd;
 	letter-spacing: 2px;
 	text-align: center;
 	text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
 	text-transform: uppercase;
 }
-#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h1 {
+#pmpro_sitewide_sale_landing_page_template-vintage .swsales_landing_content h1 {
 	border-top: 10px double #e5dfbd;
 	border-bottom: 10px double #e5dfbd;
 	color: #e5dfbd;
@@ -678,7 +678,7 @@ body.pmpro-sitewide-sale-landing-page-vintage {
 	text-shadow: 10px 10px 0px rgba(0,0,0,0.3);
 	text-transform: none;
 }
-#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h1:before {
+#pmpro_sitewide_sale_landing_page_template-vintage .swsales_landing_content h1:before {
 	content: "\f005";
 	display: block;
 	font-family: "Font Awesome 5 Free";
@@ -689,7 +689,7 @@ body.pmpro-sitewide-sale-landing-page-vintage {
 	text-align: center;
 	text-shadow: none;
 }
-#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h1:after {
+#pmpro_sitewide_sale_landing_page_template-vintage .swsales_landing_content h1:after {
 	content: "\f005";
 	display: block;
 	font-family: "Font Awesome 5 Free";
@@ -700,7 +700,7 @@ body.pmpro-sitewide-sale-landing-page-vintage {
 	text-align: center;
 	text-shadow: none;
 }
-#pmpro_sitewide_sale_landing_page_template-vintage .pmpro_sws_landing_content h2 {
+#pmpro_sitewide_sale_landing_page_template-vintage .swsales_landing_content h2 {
 	color: #e5dfbd;
 	font-weight: 300;
 	letter-spacing: 5px;

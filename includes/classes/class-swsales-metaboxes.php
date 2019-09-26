@@ -443,26 +443,9 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 
-		// This should be optimized to use a single get_post_meta call.
 		$use_banner = $cur_sale->get_use_banner();
+		$banner_template = $cur_sale->get_banner_template()
 
-		// Set defaults if this is a brand new post.
-		if ( $post->post_status == 'auto-draft' ) {
-			$banner_title     = __( 'Limited Time Offer', 'sitewide-sales' );
-			$banner_text      = sprintf( __( 'Save on %s membership.', 'sitewide-sales' ), get_bloginfo( 'sitename' ) );
-			$link_text        = __( 'Buy Now', 'sitewide-sales' );
-			$css_option       = '';
-			$hide_on_checkout = true;
-		} else {
-			$banner_text = $post->post_content;
-
-			$banner_template = get_post_meta( $post->ID, 'swsales_banner_template', true );
-			if ( empty( $banner_template ) ) {
-				$banner_template = false;
-			}
-
-
-		}
 		?>
 		<table class="form-table">
 			<tbody>
@@ -495,7 +478,7 @@ class SWSales_MetaBoxes {
 				<?php
 					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
 				//if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'swsales_allow_template' ) === 'Yes' ) ) {
-				if ( defined( 'MEMBERLITE_VERSION' ) || ( true === 'Yes' ) ) {
+				if ( defined( 'MEMBERLITE_VERSION' ) || true ) {
 					?>
 					<tr>
 						<th><label for="swsales_banner_template"><?php esc_html_e( 'Banner Template', 'sitewide-sales' ); ?></label></th>

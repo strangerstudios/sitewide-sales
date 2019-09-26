@@ -5,6 +5,7 @@ namespace Sitewide_Sales\includes\classes;
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 class SWSales_Settings {
+
 	/**
 	 * Initial plugin setup
 	 *
@@ -12,15 +13,13 @@ class SWSales_Settings {
 	 */
 	public static function init() {
 		add_action( 'admin_init', array( __CLASS__, 'admin_init' ) );
-		// TODO: Make pmpro_custom_advanced_settings a settings page instead?
-		add_filter( 'pmpro_custom_advanced_settings', array( __CLASS__, 'custom_advanced_settings' ) );
 	}
 
 	/**
 	 * Init settings page
 	 */
 	public static function admin_init() {
-		register_setting( 'swsales-group', 'pmpro_sitewide_sales', array( __CLASS__, 'validate' ) );
+		register_setting( 'swsales-group', 'swsales_sitewide_sales', array( __CLASS__, 'validate' ) );
 	}
 
 	/**
@@ -47,7 +46,7 @@ class SWSales_Settings {
 	 */
 	public static function reset_options() {
 		return array(
-			'active_sitewide_sale_id' => false,
+			'active_sitewide_sale_id' => 0,
 		);
 	}
 
@@ -70,7 +69,7 @@ class SWSales_Settings {
 		if ( ! empty( $input['active_sitewide_sale_id'] ) && '-1' !== $input['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = trim( $input['active_sitewide_sale_id'] );
 		} else {
-			$options['active_sitewide_sale_id'] = false;
+			$options['active_sitewide_sale_id'] = 0;
 		}
 		return $options;
 	}
@@ -104,5 +103,4 @@ class SWSales_Settings {
 			return false;
 		}
 	}
-
 }

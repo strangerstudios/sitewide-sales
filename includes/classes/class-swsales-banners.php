@@ -82,41 +82,35 @@ class SWSales_Banners {
 	 * Logic for when to show banners/which banner to show
 	 */
 	public static function choose_banner() {
-		global $pmpro_pages;
-
 		// get some settings
-		$options              = SWSales_Settings::get_options();
-		$active_sitewide_sale = $options['active_sitewide_sale_id'];
+		$options                 = SWSales_Settings::get_options();
+		$active_sitewide_sale_id = $options['active_sitewide_sale_id'];
+		$active_sitewide_sale    = new SWSales_Sitewide_Sale();
 
 		// are we previewing?
 		$preview = false;
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
-			$active_sitewide_sale = intval( $_REQUEST['swsales_preview_sale_banner'] );
+			$active_sitewide_sale = SWSales_Sitewide_Sale::get_sitewide_sale( intval( $_REQUEST['swsales_preview_sale_banner'] ) );
 			$preview              = true;
+		} else {
+			$active_sitewide_sale = SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		}
+
+		if ( null === $active_sitewide_sale ) {
+			return;
 		}
 
 		// unless we are previewing, don't show the banner on certain pages
 		if ( ! $preview ) {
-			// no active sale
-			if ( empty( $active_sitewide_sale ) ) {
-				return;
-			}
-
-			// no discount code
-			$discount_code_id = get_post_meta( $active_sitewide_sale, 'swsales_discount_code_id', true );
-			if ( empty( $discount_code_id ) || $discount_code_id < 0 ) {
-				return;
-			}
 
 			// no landing page or on it
-			$landing_page_post_id = get_post_meta( $active_sitewide_sale, 'swsales_landing_page_post_id', true );
+			$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();
 			if ( empty( $landing_page_post_id ) || $landing_page_post_id < 0 || is_page( $landing_page_post_id ) ) {
 				return;
 			}
 
-			// use banner set to false
-			$use_banner = get_post_meta( $active_sitewide_sale, 'swsales_use_banner', true );
-			if ( empty( $use_banner ) || 'no' === $use_banner ) {
+			// use banner set to no
+			if ( 'no' === $active_sitewide_sale->get_use_banner() ) {
 				return;
 			}
 
@@ -126,29 +120,27 @@ class SWSales_Banners {
 			}
 
 			// don't show on checkout page if set that way
-			$hide_on_checkout = get_post_meta( $active_sitewide_sale, 'swsales_hide_on_checkout', true );
+			$hide_on_checkout = $active_sitewide_sale->get_hide_on_chechout();
 			// TODO: Get checkout page for current module
 			//if ( $hide_on_checkout && is_page( $pmpro_pages['checkout'] ) ) {
 			//	return;
 			//}
 
 			// hide before/after the start/end dates
-			$start_date = get_post_meta( $active_sitewide_sale, 'swsales_start_date', true );
-			$end_date   = get_post_meta( $active_sitewide_sale, 'swsales_end_date', true );
-			$today      = date( 'Y-m-d', current_time( 'timestamp' ) );
-			if ( $today < $start_date || $today > $end_date ) {
+			if ( $active_sitewide_sale->is_running() ) {
 				return;
 			}
 
 			// Show banner filter
-			// TODO: Pass more parameters into filter?
-			$show_banner = apply_filter( 'swsales_show_banner', true );
+			// TODO: Pass more parameters into filter, such as not having a discount code
+			if ( ! apply_filters( 'swsales_show_banner', true ) ) {
+				return;
+			}
 		}
-
 		// Display the appropriate banner
 		// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
 		$registered_banners = self::get_registered_banners();
-		$banner_to_use      = get_post_meta( $active_sitewide_sale, 'swsales_use_banner', true );
+		$banner_to_use      = $active_sitewide_sale->get_use_banner();
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_banner_type'] ) ) {
 			$banner_to_use = $_REQUEST['swsales_preview_banner_type'];
 		}

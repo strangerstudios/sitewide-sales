@@ -15,19 +15,19 @@
 	padding: 1rem;
 	min-height: 4rem;
 }
-#pmpro_sws_options > table:nth-child(6) > tbody > tr > td > span {
+#swsales_options > table:nth-child(6) > tbody > tr > td > span {
 	width: 88%;
 }
-#pmpro_sws_cpt_publish_sitewide_sale .inside {
+#swsales_cpt_publish_sitewide_sale .inside {
 	margin: 0;
 	padding: 0;
 }
 
-#pmpro_sws_cpt_publish_sitewide_sale .misc-pub-section {
+#swsales_cpt_publish_sitewide_sale .misc-pub-section {
 	padding: 0 12px;
 }
 
-.pmpro_sws_banner_css_selectors {
+.swsales_banner_css_selectors {
 	background: aliceblue;
 	padding: 1rem;
 	width: 77%;
@@ -58,64 +58,64 @@ body.post-type-pmpro_sitewide_sale .pmpro-new-install .button {
 }
 
 /* Sitewide Sale Reports Styles */
-.pmpro_sws_reports-box {
+.swsales_reports-box {
 	background: #FFF;
 	border: 1px solid #CCC;
 	margin: 2rem 0;
 	padding: 2rem;
 	text-align: center;
 }
-.post-type-pmpro_sitewide_sale .pmpro_sws_reports-box {
+.post-type-pmpro_sitewide_sale .swsales_reports-box {
 	border: none;
 	margin: 0;
 	padding: 1rem 0 0 0;
 }
-.pmpro_sws_reports-box h1.pmpro_sws_reports-box-title {
+.swsales_reports-box h1.swsales_reports-box-title {
 	color: #999;
 	font-family: Georgia, Times, "Times New Roman", serif;
 	margin: 0;
 	padding: 0;
 }
-.pmpro_admin .pmpro_sws_reports-box hr {
+.pmpro_admin .swsales_reports-box hr {
 	margin: 2rem 0;
 }
-.pmpro_sws_reports-data {
+.swsales_reports-data {
 	display: grid;
 	grid-gap: 1rem;
 }
-.pmpro_sws_reports-data-3col {
+.swsales_reports-data-3col {
 	grid-template-columns: 1fr 1fr 1fr;
 }
-.pmpro_sws_reports-data-4col {
+.swsales_reports-data-4col {
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 }
-.pmpro_sws_reports-data-section {
+.swsales_reports-data-section {
 }
-.pmpro_sws_reports-data-section h1 {
+.swsales_reports-data-section h1 {
 	font-size: 30px;
 	line-height: 40px;
 	margin: 0;
 }
 @media screen and (max-width: 768px) {
-	.pmpro_sws_reports-box {
+	.swsales_reports-box {
 		margin: 0 1rem;
 		padding: 1rem;
 	}
-	.pmpro_sws_reports-box hr {
+	.swsales_reports-box hr {
 		margin: .5rem 0;
 	}
-	.pmpro_sws_reports-data {
+	.swsales_reports-data {
 		display: block;
 	}
-	.pmpro_sws_reports-data-section h1,
-	.pmpro_sws_reports-data-section p {
+	.swsales_reports-data-section h1,
+	.swsales_reports-data-section p {
 		display: inline-block;
 		font-size: 18px;
 	}
-	.pmpro_sws_reports-data-section br {
+	.swsales_reports-data-section br {
 		display: none;
 	}
-	.pmpro_sws_reports-data-section h1:after {
+	.swsales_reports-data-section h1:after {
 		content: ": ";
 	}
 }
