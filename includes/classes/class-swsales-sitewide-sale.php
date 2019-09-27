@@ -512,7 +512,22 @@ class SWSales_Sitewide_Sale {
 		}
 		return $default;
 	}
+	
+	/**
+	 * Magic method.
+	 * If you get $this->key for any property that isn't
+	 * set yet, this will return the cooresponding post meta.
+	 */
+	 function __get( $key ) {    
+	 	if ( isset( $this->data->$key ) ) {
+	         $value = $this->data->$key;
+	     } else {
+	         $value = get_post_meta( $this->id, $key, true );
+	     }
 
+	     return $value;
+	 } 
+	 
 	/**
 	 * ----------------
 	 * HELPER FUNCTIONS
