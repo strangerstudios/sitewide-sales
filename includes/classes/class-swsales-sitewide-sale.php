@@ -67,7 +67,7 @@ class SWSales_Sitewide_Sale {
 		);
 
 		// Filter to add default post meta.
-		$this->$post_meta = apply_filters( 'swsales_default_post_meta', $default_post_meta, $this->get_id() );
+		$this->post_meta = apply_filters( 'swsales_default_post_meta', $default_post_meta, $this->get_id() );
 	}
 
 	/**
