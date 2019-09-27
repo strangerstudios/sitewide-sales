@@ -109,7 +109,7 @@ class SWSales_Sitewide_Sale {
 	 * @return SWSales_Sitewide_Sale active sale
 	 */
 	public static function get_active_sitewide_sale() {
-		global $swsales_active_sitewide_sale;
+		static $swsales_active_sitewide_sale = null;
 
 		if ( isset( $swsales_active_sitewide_sale ) ) {
 			return $swsales_active_sitewide_sale;
@@ -131,10 +131,7 @@ class SWSales_Sitewide_Sale {
 	 * @return SWSales_Sitewide_Sale active sale
 	 */
 	public static function get_sitewide_sale( $id ) {
-		global $swsales_sitewide_sales;
-		if ( ! isset( $swsales_sitewide_sales ) ) {
-			$swsales_sitewide_sales = array();
-		}
+		static $swsales_sitewide_sales = array();
 
 		if ( ! isset( $swsales_sitewide_sales[ $id ] ) ) {
 			$sitewide_sale                 = new SWSales_Sitewide_Sale();
