@@ -50,4 +50,4 @@ includes\classes\SWSales_Settings::init();
 // Enqueues scripts and does other administrative things.
 includes\classes\SWSales_Setup::init();
 
-require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
+//require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
