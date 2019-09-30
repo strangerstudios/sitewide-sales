@@ -42,7 +42,7 @@ includes\classes\SWSales_Post_Types::init();
 
 // Generates report pages and enqueues JS to track interaction
 // with Sitewide Sale.
-//includes\classes\PMPro_SWS_Reports::init();
+includes\classes\SWSales_Reports::init();
 
 // Sets up pmpro_sitewide_sale option.
 includes\classes\SWSales_Settings::init();

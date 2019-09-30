@@ -311,7 +311,7 @@ class SWSales_Banners {
 				<?php echo apply_filters( 'swsales_banner_content', $active_sitewide_sale->get_banner_text() ); ?>
 			</div> <!-- end swsales_banner-inner -->
 			<?php do_action( 'swsales__before_banner_button', $active_sitewide_sale ); ?>
-			<span class="swsales_banner-button"><a class="swsales_btn" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id(), true ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
+			<span class="swsales_banner-button"><a class="swsales_btn" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
 		</div> <!-- end swsales_banner -->
 		<?php
 	}
