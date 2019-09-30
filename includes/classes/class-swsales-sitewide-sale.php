@@ -64,6 +64,8 @@ class SWSales_Sitewide_Sale {
 			'swsales_link_text'             => $this->get_link_text(),
 			'swsales_css_option'            => $this->get_css_option(),
 			'swsales_hide_on_checkout'      => $this->get_hide_on_chechout(),
+			'swsales_banner_impressions'    => $this->get_banner_impressions(),
+			'swsales_landing_page_visits'   => $this->get_landing_page_visits(),
 		);
 
 		// Filter to add default post meta.
@@ -143,9 +145,9 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * ----------------
-	 * GETTER FUNCTIONS
-	 * ----------------
+	 * -----------------------------
+	 * GETTER FUNCTIONS (POST META)
+	 * -----------------------------
 	 */
 
 	/**
@@ -500,6 +502,32 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Returns the number of times this sale's banner has been shown to unique users.
+	 *
+	 * @return int
+	 */
+	public function get_banner_impressions() {
+		if ( isset( $this->post_meta['swsales_banner_impressions'] ) ) {
+			return $this->post_meta['swsales_banner_impressions'];
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Returns the number of times this sale's landing page has been shown to unique users.
+	 *
+	 * @return int
+	 */
+	public function get_landing_page_visits() {
+		if ( isset( $this->post_meta['swsales_landing_page_visits'] ) ) {
+			return $this->post_meta['swsales_landing_page_visits'];
+		} else {
+			return 0;
+		}
+	}
+
+	/**
 	 * Gets specific piece of post meta.
 	 *
 	 * @param  string $meta_key of data.
@@ -512,22 +540,23 @@ class SWSales_Sitewide_Sale {
 		}
 		return $default;
 	}
-	
+
 	/**
 	 * Magic method.
 	 * If you get $this->key for any property that isn't
 	 * set yet, this will return the cooresponding post meta.
+	 *
+	 * @param string $key to get.
 	 */
-	 function __get( $key ) {    
-	 	if ( isset( $this->data->$key ) ) {
-	         $value = $this->data->$key;
-	     } else {
-	         $value = get_post_meta( $this->id, $key, true );
-	     }
+	public function __get( $key ) {
+		if ( isset( $this->data->$key ) ) {
+			$value = $this->data->$key;
+		} else {
+			$value = get_post_meta( $this->id, $key, true );
+		}
+		return $value;
+	}
 
-	     return $value;
-	 } 
-	 
 	/**
 	 * Returns whether this is the active sitewide sale and if the sale is currently running.
 	 *
@@ -538,28 +567,10 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * ----------------
-	 * REPORT FUNCTIONS
-	 * ----------------
+	 * -----------------------------
+	 * GETTER FUNCTIONS (MODULES)
+	 * -----------------------------
 	 */
-
-	/**
-	 * Returns the number of times this sale's banner has been shown to unique users.
-	 *
-	 * @return int
-	 */
-	public function report_banner_impressions() {
-		return 0;
-	}
-
-	/**
-	 * Returns the number of times this sale's landing page has been shown to unique users.
-	 *
-	 * @return int
-	 */
-	public function report_landing_page_visits() {
-		return 0;
-	}
 
 	/**
 	 * Returns the number of checkouts which used the sale's discount code/coupon.
@@ -567,8 +578,8 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @return string
 	 */
-	public function report_checkout_conversions() {
-		return 'N/A';
+	public function get_checkout_conversions() {
+		return apply_filters( 'swsales_get_checkout_conversions', 'N/A', $this );
 	}
 
 	/**
@@ -577,11 +588,16 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @return string
 	 */
-	public function report_revenue() {
-		return 'N/A';
+	public function get_revenue() {
+		return apply_filters( 'swsales_get_revenue', 'N/A', $this );
 	}
 
-	public function show_reports() {
+	/**
+	 * -----------------------------
+	 * HELPER FUNCTIONS
+	 * -----------------------------
+	 */
+	public function show_report() {
 		?>
 		<div class="swsales_reports-box">
 			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'sitewide-sales' ); ?></h1>
@@ -597,11 +613,11 @@ class SWSales_Sitewide_Sale {
 			<hr />
 			<div class="swsales_reports-data swsales_reports-data-4col">
 				<div id="swsales_reports-data-section_banner" class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( $this->report_banner_impressions() ); ?></h1>
+					<h1><?php echo esc_attr( $this->get_banner_impressions() ); ?></h1>
 					<p><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></p>
 				</div>
 				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( $this->report_landing_page_visits() ); ?></h1>
+					<h1><?php echo esc_attr( $this->get_landing_page_visits() ); ?></h1>
 					<p>
 						<?php
 							printf(
@@ -613,17 +629,17 @@ class SWSales_Sitewide_Sale {
 					</p>
 				</div>
 				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( $this->report_checkout_conversions() ); ?></h1>
+					<h1><?php echo esc_attr( $this->get_checkout_conversions() ); ?></h1>
 					<p>
 						<?php
 							printf(
-								wp_kses_post( 'Checkout Conversions', 'sitewide-sales' )
+								esc_html( apply_filters( 'swsales_checkout_conversion_title', __( 'Checkout Conversions', 'sitewide-sales' ), $this ) )
 							);
 						?>
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( $this->report_revenue() ); ?></h1>
+					<h1><?php echo esc_attr( $this->get_revenue() ); ?></h1>
 					<p><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></p>
 				</div>
 			</div>

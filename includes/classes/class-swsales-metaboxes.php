@@ -583,7 +583,7 @@ class SWSales_MetaBoxes {
 			$cur_sale = new SWSales_Sitewide_Sale();
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
-		$cur_sale->show_reports();
+		$cur_sale->show_report();
 	}
 
 	/**
