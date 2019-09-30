@@ -109,7 +109,6 @@ class SWSales_MetaBoxes {
 			'normal',
 			'high'
 		);
-		/*
 		add_meta_box(
 			'swsales_cpt_step_5',
 			__( 'Step 5: Reports', 'sitewide-sales' ),
@@ -118,7 +117,6 @@ class SWSales_MetaBoxes {
 			'normal',
 			'high'
 		);
-		*/
 
 		// remove some default metaboxes
 		remove_meta_box( 'slugdiv', 'sitewide_sale', 'normal' );
@@ -580,67 +578,12 @@ class SWSales_MetaBoxes {
 	}
 
 	public static function display_step_5( $post ) {
-		//$stats = SWSales_Reports::get_stats_for_sale( $post->ID );
-		?>
-		<div class="swsales_reports-box">
-			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'sitewide-sales' ); ?></h1>
-			<p>
-			<?php
-				printf(
-					esc_html__( 'All visitors from %s to %s.', 'sitewide-sales' ),
-					date( get_option( 'date_format' ), strtotime( $stats['start_date'], current_time( 'timestamp' ) ) ),
-					date( get_option( 'date_format' ), strtotime( $stats['end_date'], current_time( 'timestamp' ) ) )
-				);
-			?>
-			</p>
-			<hr />
-			<div class="swsales_reports-data swsales_reports-data-4col">
-				<div id="swsales_reports-data-section_banner" class="swsales_reports-data-section">
-					<h1><?php //echo esc_html( $stats['banner_impressions'] ); ?></h1>
-					<p><?php echo esc_html__( 'Banner Reach', 'sitewide-sales' ); ?></p>
-				</div>
-				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
-					<h1><?php //echo esc_html( $stats['landing_page_visits'] ); ?></h1>
-					<p>
-						<?php
-							$allowed_html = array(
-								'a' => array(
-									'href' => array(),
-									'title' => array()
-								) );
-							printf(
-								wp_kses( __('<a href="%s" title="%s">Landing</a> Page Visits', 'sitewide-sales' ), $allowed_html ),
-								$stats['landing_page_url'],
-								$stats['landing_page_title']
-							);
-						?>
-					</p>
-				</div>
-				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
-					<h1><?php //echo esc_html( $stats['checkout_conversions_with_code'] ); ?></h1>
-					<p>
-						<?php
-							$allowed_html = array(
-								'a' => array(
-									'href' => array(),
-									'title' => array()
-								) );
-							printf(
-								wp_kses( __( 'Checkouts using <a href="%s">%s</a>', 'sitewide-sales' ), $allowed_html ),
-								admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $stats['discount_code_id'] ),
-								$stats['discount_code']
-							);
-						?>
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php //echo esc_html( pmpro_formatPrice( $stats['new_rev_with_code'] ) ); ?></h1>
-					<p><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></p>
-				</div>
-			</div>
-			<p><?php echo '<a class="button button-secondary" href="' . esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) ) . '">' . __( 'View Reports', 'sitewide-sales' ) . '</a>'; ?></p>
-		</div>
-		<?php
+		global $wpdb, $cur_sale;
+		if ( ! isset( $cur_sale ) ) {
+			$cur_sale = new SWSales_Sitewide_Sale();
+			$cur_sale->load_sitewide_sale( $post->ID );
+		}
+		$cur_sale->show_reports();
 	}
 
 	/**

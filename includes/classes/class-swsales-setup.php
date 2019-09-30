@@ -33,7 +33,7 @@ class SWSales_Setup {
 		wp_enqueue_style( 'selectWooCSS' );
 
 		wp_register_style( 'swsales_admin', plugins_url( 'css/admin.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
-		wp_enqueue_style( 'swsales_admin_admin' );
+		wp_enqueue_style( 'swsales_admin' );
 	}
 
 	/**

@@ -10,7 +10,7 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @var int
 	 */
-	protected $id = 0;
+	 protected $id = 0;
 
 	/**
 	 * Name of sale
@@ -517,11 +517,105 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * ----------------
-	 * HELPER FUNCTIONS
-	 * ----------------
+	 * Returns whether this is the active sitewide sale and if the sale is currently running.
+	 *
+	 * @return boolean
 	 */
 	public function is_running() {
 		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_current_sale_content() );
+	}
+
+	/**
+	 * ----------------
+	 * REPORT FUNCTIONS
+	 * ----------------
+	 */
+
+	/**
+	 * Returns the number of times this sale's banner has been shown to unique users.
+	 *
+	 * @return int
+	 */
+	public function report_banner_impressions() {
+		return 0;
+	}
+
+	/**
+	 * Returns the number of times this sale's landing page has been shown to unique users.
+	 *
+	 * @return int
+	 */
+	public function report_landing_page_visits() {
+		return 0;
+	}
+
+	/**
+	 * Returns the number of checkouts which used the sale's discount code/coupon.
+	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 *
+	 * @return string
+	 */
+	public function report_checkout_conversions() {
+		return 'N/A';
+	}
+
+	/**
+	 * Returns the revenue generated during the sale period.
+	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 *
+	 * @return string
+	 */
+	public function report_revenue() {
+		return 'N/A';
+	}
+
+	public function show_reports() {
+		?>
+		<div class="swsales_reports-box">
+			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'sitewide-sales' ); ?></h1>
+			<p>
+			<?php
+				printf(
+					wp_kses_post( 'All visitors from %s to %s.', 'sitewide-sales' ),
+					esc_html( $this->get_start_date() ),
+					esc_html( $this->get_end_date() )
+				);
+			?>
+			</p>
+			<hr />
+			<div class="swsales_reports-data swsales_reports-data-4col">
+				<div id="swsales_reports-data-section_banner" class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $this->report_banner_impressions() ); ?></h1>
+					<p><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></p>
+				</div>
+				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $this->report_landing_page_visits() ); ?></h1>
+					<p>
+						<?php
+							printf(
+								wp_kses_post( '<a href="%s" title="%s">Landing</a> Page Visits', 'sitewide-sales' ),
+								get_permalink( $this->get_landing_page_post_id() ),
+								get_the_title( $this->get_landing_page_post_id() )
+							);
+						?>
+					</p>
+				</div>
+				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $this->report_checkout_conversions() ); ?></h1>
+					<p>
+						<?php
+							printf(
+								wp_kses_post( 'Checkout Conversions', 'sitewide-sales' )
+							);
+						?>
+					</p>
+				</div>
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $this->report_revenue() ); ?></h1>
+					<p><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></p>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 }
