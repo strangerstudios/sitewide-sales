@@ -10,9 +10,69 @@ class SWSales_Reports {
 	 * Adds actions for class
 	 */
 	public static function init() {
+		add_action( 'admin_menu', array( __CLASS__, 'add_reports_page' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		add_action( 'wp_ajax_swsales_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_swsales_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
+	}
+
+	public static function add_reports_page() {
+		add_submenu_page(
+			'edit.php?post_type=sitewide_sale',
+			__( 'Reports', 'sitewide-sales' ),
+			__( 'Reports', 'sitewide-sales' ),
+			'manage_options',
+			'sitewide_sale_reports',
+			array( __CLASS__, 'show_reports_page' )
+		);
+	}
+
+	public static function show_reports_page() {
+		// Get all sitewide_sale ids.
+		$all_sitewide_sales = get_posts(
+			array(
+				'fields'         => 'ids',
+				'posts_per_page' => -1,
+				'post_type'      => 'sitewide_sale',
+			)
+		);
+
+		// Choose sale to show.
+		$sale_to_show = null;
+		if ( isset( $_REQUEST['sitewide_sale'] ) ) {
+			$sale_to_show = SWSales_Sitewide_Sale::get_sitewide_sale( $_REQUEST['sitewide_sale'] );
+		}
+		if ( null === $sale_to_show ) {
+			$sale_to_show = SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		}
+
+		// Select field to choose a sitewide sale.
+		?>
+			<form method="get" action="/wp-admin/edit.php?post_type=sitewide_sale&page=sitewide_sale_reports">
+				<input type="hidden" name="post_type" value="sitewide_sale" />
+				<input type="hidden" name="page" value="sitewide_sale_reports" />
+				<label for="sitewide_sale">Choose a Sitewide Sale to show reports for:</label>
+				<select id="swsales_select_report" name="sitewide_sale" onchange="this.form.submit()">
+					<option value=""></option>
+					<?php
+					foreach ( $all_sitewide_sales as $sitewide_sale_id ) {
+							$sale              = SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sale_id );
+							$selected_modifier = ( ! ( null === $sale_to_show ) && $sale->get_id() === $sale_to_show->get_id() ) ? 'selected="selected"' : '';
+						?>
+							<option value="<?php echo( esc_html( $sale->get_id() ) ); ?>" <?php echo( esc_html( $selected_modifier ) ); ?>>
+								<?php echo( esc_html( $sale->get_name() ) ); ?>
+							</option>
+							<?php
+					}
+					?>
+				</select>
+			</form>
+		<?php
+
+		// Show report for sitewide sale if applicable.
+		if ( null !== $sale_to_show ) {
+			$sale_to_show->show_report();
+		}
 	}
 
 	/**
