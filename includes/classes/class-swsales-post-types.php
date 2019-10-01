@@ -109,21 +109,22 @@ class SWSales_Post_Types {
 	 * @return [type]          [description]
 	 */
 	public static function fill_sitewide_sale_columns( $column, $post_id ) {
+		$sitewide_sale = SWSales_Sitewide_Sale::get_sitewide_sale( $post_id );
+
 		switch ( $column ) {
 			case 'sale_date':
-				$start_date = date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $post_id, 'swsales_start_date', true ) ) )->format( 'U' ) );
-				$end_date   = date_i18n( get_option( 'date_format' ), ( new \DateTime( get_post_meta( $post_id, 'swsales_end_date', true ) ) )->format( 'U' ) );
-				echo $start_date;
-				echo ' - ';
-				echo $end_date;
+				echo esc_html( $sitewide_sale->get_start_date() . ' - ' . $sitewide_sale->get_end_date() );
 				break;
 			case 'sale_type':
 				$sale_type = get_post_meta( $post_id, 'swsales_sale_type', true );
-				echo esc_html( $sale_type );
+				if ( 0 !== $sale_type ) {
+					$sale_types = apply_filters( 'swsales_sale_types', array() );
+					echo esc_html( $sale_types[ $sale_type ] );
+				}
 				break;
 			case 'landing_page':
-				$landing_page = get_post_meta( $post_id, 'swsales_landing_page_post_id', true );
-				if ( false !== $landing_page ) {
+				$landing_page = $sitewide_sale->get_landing_page_post_id();
+				if ( 0 !== $landing_page ) {
 					$title = get_the_title( $landing_page );
 					if ( ! empty( $title ) ) {
 						echo '<a href="' . esc_url( get_permalink( $landing_page ) ) . '">' . esc_html( $title ) . '</a>';
