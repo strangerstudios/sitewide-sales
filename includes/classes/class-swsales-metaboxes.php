@@ -584,6 +584,9 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 		$cur_sale->show_report();
+		?>
+		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
+		<?php
 	}
 
 	/**

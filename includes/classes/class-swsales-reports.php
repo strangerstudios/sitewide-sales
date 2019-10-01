@@ -22,7 +22,7 @@ class SWSales_Reports {
 			__( 'Reports', 'sitewide-sales' ),
 			__( 'Reports', 'sitewide-sales' ),
 			'manage_options',
-			'sitewide_sale_reports',
+			'sitewide_sales_reports',
 			array( __CLASS__, 'show_reports_page' )
 		);
 	}
@@ -48,7 +48,7 @@ class SWSales_Reports {
 
 		// Select field to choose a sitewide sale.
 		?>
-			<form method="get" action="/wp-admin/edit.php?post_type=sitewide_sale&page=sitewide_sale_reports">
+			<form method="get" action="/wp-admin/edit.php?post_type=sitewide_sale&page=sitewide_sales_reports">
 				<input type="hidden" name="post_type" value="sitewide_sale" />
 				<input type="hidden" name="page" value="sitewide_sale_reports" />
 				<label for="sitewide_sale">Choose a Sitewide Sale to show reports for:</label>

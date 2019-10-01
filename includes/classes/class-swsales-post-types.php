@@ -131,7 +131,7 @@ class SWSales_Post_Types {
 				}
 				break;
 			case 'reports':
-					echo '<a class="button button-primary" href="' . admin_url( 'admin.php?page=pmpro-reports&report=swsales_reports&swsales_sitewide_sale_id=' . $post_id ) . '">' . esc_html__( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
+					echo '<a class="button button-primary" href="' . admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post_id ) . '">' . esc_html__( 'View Reports', 'pmpro-sitewide-sales' ) . '</a>';
 				break;
 			case 'set_active':
 				$options = SWSales_Settings::get_options();
