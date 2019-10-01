@@ -104,5 +104,18 @@ jQuery( document ).ready(
 			}
 		);
 		swsales_toggle_banner_settings();
+		
+		// Hiding/Showing module fields
+		function swsales_toggle_module_rows() {
+			var module = $( '#swsales_sale_type_select' ).val();
+			$( '.swsales-module-row' ).hide();
+			$( '.swsales-module-row-' + module ).show();
+		}
+		$( '#swsales_sale_type_select' ).change(
+			function(){
+				swsales_toggle_module_rows();
+			}
+		);
+		swsales_toggle_module_rows();
 	}
 );
