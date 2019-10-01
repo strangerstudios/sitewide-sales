@@ -268,7 +268,7 @@ class SWSales_MetaBoxes {
 				</tr>
 				<?php 
 				// Add filter to add custom settings from module 
-				do_action( 'swsales_after_choose_sale_type', $post );
+				do_action( 'swsales_after_choose_sale_type', $cur_sale );
 				?>
 			</tbody>
 		</table>
@@ -378,7 +378,7 @@ class SWSales_MetaBoxes {
 				<?php 
 					} 
 					// Add filter for modules here.
-					do_action( 'swsales_after_choose_landing_page', $post );
+					do_action( 'swsales_after_choose_landing_page', $cur_sale );
 				?>
 			</tbody>
 		</table>
@@ -569,7 +569,7 @@ class SWSales_MetaBoxes {
 				</tr>
 				<?php
 				//  Add filter for modlues (ex. hide banner for level)
-				do_action( 'swsales_after_banners_settings', $post );
+				do_action( 'swsales_after_banners_settings', $cur_sale );
 				?>
 			</tbody>
 		</table>

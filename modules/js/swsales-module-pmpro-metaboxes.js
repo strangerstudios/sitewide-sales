@@ -2,33 +2,33 @@ jQuery( document ).ready(
 	function($) {
 
 		// multiselects
-		$( "#swsales_discount_code_select" ).selectWoo();
-		$( "#swsales_hide_levels_select" ).selectWoo();
-		$( "#swsales_upsell_levels" ).selectWoo();
+		$( "#swsales_pmpro_discount_code_select" ).selectWoo();
+		$( "#swsales_pmpro_hide_levels_select" ).selectWoo();
+		$( "#swsales_pmpro_upsell_levels" ).selectWoo();
 
 		// toggling the discount code input layout
-		function swsales_toggle_discount_code() {
-			var discount_code_id = $( '#swsales_discount_code_select' ).val();
+		function swsales_pmpro_toggle_discount_code() {
+			var discount_code_id = $( '#swsales_pmpro_discount_code_select' ).val();
 
 			if (discount_code_id == 0) {
-				$( '#swsales_after_discount_code_select' ).hide();
+				$( '#swsales_pmpro_after_discount_code_select' ).hide();
 			} else {
-				$( '#swsales_edit_discount_code' ).attr( 'href', swsales.admin_url + 'admin.php?page=pmpro-discountcodes&edit=' + discount_code_id );
-				$( '#swsales_after_discount_code_select' ).show();
+				$( '#swsales_pmpro_edit_discount_code' ).attr( 'href', swsales.admin_url + 'admin.php?page=pmpro-discountcodes&edit=' + discount_code_id );
+				$( '#swsales_pmpro_after_discount_code_select' ).show();
 			}
 		}
-		$( '#swsales_discount_code_select' ).change(
+		$( '#swsales_pmpro_discount_code_select' ).change(
 			function(){
-				swsales_toggle_discount_code();
+				swsales_pmpro_toggle_discount_code();
 			}
 		);
-		swsales_toggle_discount_code();
+		swsales_pmpro_toggle_discount_code();
 
 		// create new discount code AJAX
-		$( '#swsales_create_discount_code' ).click(
+		$( '#swsales_pmpro_create_discount_code' ).click(
 			function() {
 				var data = {
-					'action': 'swsales_create_discount_code',
+					'action': 'swsales_pmpro_create_discount_code',
 					'swsales_pmpro_id': $( '#post_ID' ).val(),
 					'swsales_start': $( '#swsales_start_year' ).val() + '-'
 							 + $( '#swsales_start_month' ).val() + '-'
@@ -47,9 +47,9 @@ jQuery( document ).ready(
 							alert( response.error );
 						} else {
 							// success
-							$( '#swsales_discount_code_select' ).append( '<option value="' + response.code.id + '">' + response.code.code + '</option>' );
-							$( '#swsales_discount_code_select' ).val( response.code.id );
-							swsales_toggle_discount_code();
+							$( '#swsales_pmpro_discount_code_select' ).append( '<option value="' + response.code.id + '">' + response.code.code + '</option>' );
+							$( '#swsales_pmpro_discount_code_select' ).val( response.code.id );
+							swsales_pmpro_toggle_discount_code();
 						}
 					}
 				);
@@ -57,12 +57,12 @@ jQuery( document ).ready(
 		);
 
 		// toggling the upsell settings
-		$( '#swsales_upsell_enabled' ).change(
+		$( '#swsales_pmpro_upsell_enabled' ).change(
 			function(){
 				if (this.checked) {
-					$( '.swsales_upsell_settings' ).show();
+					$( '.swsales_pmpro_upsell_settings' ).show();
 				} else {
-					$( '.swsales_upsell_settings' ).hide();
+					$( '.swsales_pmpro_upsell_settings' ).hide();
 				}
 			}
 		);

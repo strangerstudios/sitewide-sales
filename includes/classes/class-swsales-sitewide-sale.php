@@ -96,7 +96,7 @@ class SWSales_Sitewide_Sale {
 		$this->is_active_sitewide_sale = ( $options['active_sitewide_sale_id'] == $this->id ? true : false );
 
 		// Merge post meta.
-		$raw_post_meta = get_metadata( 'post', $raw_post->ID );
+		$raw_post_meta = get_post_meta( $raw_post->ID );
 		foreach ( $raw_post_meta as $key => $value ) {
 			$raw_post_meta[ $key ] = $value[0];
 		}
@@ -535,8 +535,8 @@ class SWSales_Sitewide_Sale {
 	 * @return mixed metadata
 	 */
 	public function get_meta_value( $meta_key, $default = null ) {
-		if ( isset( $this->$post_meta[ $meta_key ] ) ) {
-			return $this->$post_meta[ $meta_key ];
+		if ( isset( $this->post_meta[ $meta_key ] ) ) {
+			return $this->post_meta[ $meta_key ];
 		}
 		return $default;
 	}

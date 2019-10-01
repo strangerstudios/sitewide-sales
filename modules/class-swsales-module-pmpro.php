@@ -24,18 +24,20 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_save_metaboxes', array( __CLASS__, 'save_metaboxes' ), 10, 3 );
 
 		// Enqueue JS for Edit Sitewide Sale page.
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+		//add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 
 		// SWSale compatibility when editing/saving a discount code.
-		add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
-		add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
-		add_action( 'wp_ajax_pmpro_sws_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
+		//add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
+		//add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
+		//add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 
 		// TODO: Default level for sale page.
 
 		// TODO: Custom PMPro banner rules (hide for levels and hide at checkout).
 
 		// TODO: PMPro automatic discount application.
+
+		// TODO: PMPro-specific reports.
 
 	}
 
@@ -44,20 +46,19 @@ class SWSales_Module_PMPro {
 		return $sale_types;
 	} // end register_sale_type()
 
-	public static function add_choose_discount_code( $post ) {
-		global $wpdb;
-		$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
-		$current_discount = get_post_meta( $post->ID, 'swsales_pmpro_discount_code_id', true );
-		if ( empty( $current_discount ) ) {
-			$current_discount = false;
-		}
+	public static function add_choose_discount_code( $cur_sale ) {
 		?>
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
 			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
 				<th></th>
 				<td><?php _e( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></td>
-			
-			<?php } else { ?>
+
+				<?php
+			} else {
+				global $wpdb;
+				$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
+				$current_discount = $cur_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
+				?>
 					<th><label for="swsales_pmpro_discount_code_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
 					<td>
 						<select class="discount_code_select swsales_option" id="swsales_pmpro_discount_code_select" name="swsales_pmpro_discount_code_id">
@@ -97,20 +98,22 @@ class SWSales_Module_PMPro {
 		<?php
 	} // end add_choose_discount_code()
 
-	public static function add_set_landing_page_default_level( $post ) {
-		$default_level = get_post_meta( $post->ID, 'pmpro_sws_landing_page_default_level_id', true );
+	public static function add_set_landing_page_default_level( $cur_sale ) {
 		?>
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
 			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
 				<th></th>
 				<td><?php _e( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></td>
-			<?php } else { ?>
+				<?php
+			} else {
+				?>
 				<th><label for="swsales_pmpro_landing_page_default_level"><?php esc_html_e( 'Checkout Level', 'sitewide-sales' ); ?></label></th>
 				<td>
 					<select id="swsales_pmpro_landing_page_default_level" name="swsales_pmpro_landing_page_default_level">
 					<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
 					<?php
 						$all_levels = pmpro_getAllLevels( true, true );
+						$default_level = $cur_sale->get_meta_value( 'swsales_pmpro_landing_page_default_level', null );
 					foreach ( $all_levels as $level ) {
 						?>
 						<option value="<?php echo esc_attr( $level->id ); ?>" <?php selected( $default_level, $level->id ); ?>><?php echo esc_textarea( $level->name ); ?></option>
@@ -125,23 +128,23 @@ class SWSales_Module_PMPro {
 		<?php
 	} // end add_set_landing_page_default_level
 
-	public static function add_hide_banner_by_level( $post ) {
-		$hide_for_levels = get_post_meta( $post->ID, 'pmpro_sws_hide_for_levels', true );
-			if ( empty( $hide_for_levels ) ) {
-				$hide_for_levels = array();
-			}
+	public static function add_hide_banner_by_level( $cur_sale ) {
 		?>
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
 			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
 				<th></th>
 				<td><?php _e( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></td>
-			<?php } else { ?>
+				<?php
+			} else {
+				?>
 				<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner by Membership Level', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="hidden" name="swsales_pmpro_hide_for_levels_exists" value="1" />
 						<select multiple class="swsales_option" id="swsales_pmpro_hide_levels_select" name="swsales_pmpro_hide_for_levels[]" style="width:12em">
 						<?php
 							$all_levels = pmpro_getAllLevels( true, true );
+							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', array() ) );
+							//$hide_for_levels = get_post_meta( $cur_sale->get_id(), 'swsales_pmpro_hide_for_levels', true );
 						foreach ( $all_levels as $level ) {
 							$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
 							echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
@@ -152,6 +155,9 @@ class SWSales_Module_PMPro {
 					</td>
 					<?php
 			}
+			?>
+		</tr>
+		<?php
 	}
 
 	public static function save_metaboxes( $post_id, $post ) {
@@ -161,11 +167,12 @@ class SWSales_Module_PMPro {
 		if ( isset( $_POST['swsales_pmpro_landing_page_default_level'] ) ) {
 			update_post_meta( $post_id, 'swsales_pmpro_landing_page_default_level', intval( $_POST['swsales_pmpro_landing_page_default_level'] ) );
 		}
+
 		if ( ! empty( $_POST['swsales_pmpro_hide_for_levels'] ) && is_array( $_POST['swsales_pmpro_hide_for_levels'] ) ) {
-			$pmpro_sws_hide_for_levels = array_map( 'intval', $_POST['swsales_pmpro_hide_for_levels'] );
-			update_post_meta( $post_id, 'swsales_pmpro_hide_for_levels', $pmpro_sws_hide_for_levels );
-		} elseif ( isset( $_POST['swsales_pmpro_hide_for_levels'] ) ) {
-			update_post_meta( $post_id, 'swsales_pmpro_hide_for_levels', false );
+			$swsales_pmpro_hide_for_levels = array_map( 'intval', $_POST['swsales_pmpro_hide_for_levels'] );
+			update_post_meta( $post_id, 'swsales_pmpro_hide_for_levels', wp_json_encode( $swsales_pmpro_hide_for_levels ) );
+		} else {
+			update_post_meta( $post_id, 'swsales_pmpro_hide_for_levels', wp_json_encode( array() ) );
 		}
 	}
 
@@ -197,7 +204,7 @@ class SWSales_Module_PMPro {
 
 		}
 	} // end enqueue_scripts()
-	
+
 	/**
 	 * Updates Sitewide Sale's discount code id on save
 	 *
