@@ -24,12 +24,12 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_save_metaboxes', array( __CLASS__, 'save_metaboxes' ), 10, 3 );
 
 		// Enqueue JS for Edit Sitewide Sale page.
-		//add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 
 		// SWSale compatibility when editing/saving a discount code.
 		//add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
 		//add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
-		//add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
+		add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 
 		// TODO: Default level for sale page.
 
@@ -197,7 +197,7 @@ class SWSales_Module_PMPro {
 				'swsales_module_pmpro_metaboxes',
 				'swsales',
 				array(
-					'create_discount_code_nonce' => wp_create_nonce( 'swsales_create_discount_code' ),
+					'create_discount_code_nonce' => wp_create_nonce( 'swsales_pmpro_create_discount_code' ),
 					'admin_url'                  => admin_url(),
 				)
 			);
