@@ -95,40 +95,37 @@ class SWSales_Banners {
 			return;
 		}
 
-		// unless we are previewing, don't show the banner on certain pages
+		// Unless we are previewing, don't show the banner on certain pages.
 		if ( ! $preview ) {
 
-			// no landing page or on it
+			// Sale doesn't have landing page, or user is on landing page.
 			$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();
 			if ( empty( $landing_page_post_id ) || $landing_page_post_id < 0 || is_page( $landing_page_post_id ) ) {
 				return;
 			}
 
-			// use banner set to no
+			// Use banner set to no.
 			if ( 'no' === $active_sitewide_sale->get_use_banner() ) {
 				return;
 			}
 
-			// don't show on login page
+			// Don't show on login page.
 			if ( SWSales_Setup::is_login_page() ) {
 				return;
 			}
 
-			// don't show on checkout page if set that way
-			$hide_on_checkout = $active_sitewide_sale->get_hide_on_chechout();
-			// TODO: Get checkout page for current module
-			//if ( $hide_on_checkout && is_page( $pmpro_pages['checkout'] ) ) {
-			//	return;
-			//}
+			// Don't show on checkout page if option is set and user is on checkout page.
+			if ( $active_sitewide_sale->get_hide_on_chechout() && apply_filters( 'swsales_is_checkout_page', false, $active_sitewide_sale ) ) {
+				return;
+			}
 
-			// hide before/after the start/end dates
+			// Hide before/after the start/end dates.
 			if ( $active_sitewide_sale->is_running() ) {
 				return;
 			}
 
-			// Show banner filter
-			// TODO: Pass more parameters into filter, such as not having a discount code
-			if ( ! apply_filters( 'swsales_show_banner', true ) ) {
+			// Show banner filter.
+			if ( ! apply_filters( 'swsales_show_banner', true, $active_sitewide_sale ) ) {
 				return;
 			}
 		}

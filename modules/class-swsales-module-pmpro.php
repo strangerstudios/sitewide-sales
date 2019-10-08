@@ -22,6 +22,11 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_after_choose_landing_page', array( __CLASS__, 'add_set_landing_page_default_level' ) );
 		add_action( 'swsales_after_banners_settings', array( __CLASS__, 'add_hide_banner_by_level' ) );
 
+		// Bail on additional functionality if PMPro is not installed.
+		if ( ! defined( 'PMPRO_VERSION' ) ) {
+			return;
+		}
+
 		// Enable saving of fields added above.
 		add_action( 'swsales_save_metaboxes', array( __CLASS__, 'save_metaboxes' ), 10, 3 );
 
@@ -37,6 +42,8 @@ class SWSales_Module_PMPro {
 		add_action( 'wp', array( __CLASS__, 'load_pmpro_preheader' ), 0 ); // Priority 0 so that the discount code applies.
 
 		// TODO: Custom PMPro banner rules (hide for levels and hide at checkout).
+		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
+		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );
 
 		// TODO: PMPro automatic discount application.
 
@@ -377,6 +384,28 @@ class SWSales_Module_PMPro {
 			return;
 		}
 		require_once PMPRO_DIR . '/preheaders/checkout.php';
+	}
+
+	public static function is_checkout_page( $is_checkout_page, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $is_checkout_page;
+		}
+		global $pmpro_pages;
+		return is_page( $pmpro_pages['checkout'] ) ? true : $is_checkout_page;
+	}
+
+	public static function show_banner( $show_banner, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $show_banner;
+		}
+		// Hide for users with membership in $hide_for_levels.
+		$hide_for_levels  = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', array() ) );
+		$membership_level = pmpro_getMembershipLevelForUser();
+		if ( ! empty( $hide_for_levels ) && ! empty( $membership_level )
+			&& in_array( $membership_level->ID, $hide_for_levels ) ) {
+			return false;
+		}
+		return $show_banner;
 	}
 
 }
