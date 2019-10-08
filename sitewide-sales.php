@@ -21,7 +21,6 @@ define( 'SWSALES_DIR', dirname( __FILE__ ) );
 define( 'SWSALES_BASENAME', plugin_basename( __FILE__ ) );
 
 require 'autoload.php';
-//require 'includes/reports.php'; // must be manually loaded
 
 // Handles registering banners and displaying banners on frontend.
 includes\classes\SWSales_Banners::init();
