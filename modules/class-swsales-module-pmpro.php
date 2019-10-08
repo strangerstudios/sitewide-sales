@@ -2,6 +2,8 @@
 
 namespace Sitewide_Sales\modules;
 
+use Sitewide_Sales\includes\classes;
+
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 class SWSales_Module_PMPro {
@@ -31,7 +33,8 @@ class SWSales_Module_PMPro {
 		//add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 
-		// TODO: Default level for sale page.
+		// Default level for sale page.
+		add_action( 'wp', array( __CLASS__, 'load_pmpro_preheader' ), 0 ); // Priority 0 so that the discount code applies.
 
 		// TODO: Custom PMPro banner rules (hide for levels and hide at checkout).
 
@@ -144,7 +147,6 @@ class SWSales_Module_PMPro {
 						<?php
 							$all_levels = pmpro_getAllLevels( true, true );
 							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', array() ) );
-							//$hide_for_levels = get_post_meta( $cur_sale->get_id(), 'swsales_pmpro_hide_for_levels', true );
 						foreach ( $all_levels as $level ) {
 							$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
 							echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
@@ -293,6 +295,89 @@ class SWSales_Module_PMPro {
 		echo json_encode( $r );
 		exit;
 	} // end create_discount_code_ajax()
+
+	/**
+	 * Get the default level to use on a landing page
+	 *
+	 * @param $post_id Post ID of the landing page
+	 */
+	public static function get_default_level( $post_id = null ) {
+		global $post, $wpdb;
+
+		// Guess.
+		$all_levels = pmpro_getAllLevels( true, true );
+		if ( ! empty( $all_levels ) ) {
+			$keys     = array_keys( $all_levels );
+			$level_id = $keys[0];
+		} else {
+			return false;
+		}
+		// Default post_id.
+		if ( empty( $post_id ) ) {
+			$post_id = $post->ID;
+		}
+		// Must have a post_id.
+		if ( empty( $post_id ) ) {
+			return $level_id;
+		}
+		// Get sale for this $post_id.
+		$sitewide_sale = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $post_id );
+		if ( null !== $sitewide_sale ) {
+			// Check for setting.
+			$default_level_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_landing_page_default_level' );
+			// No default set? get the discount code for this sale.
+			if ( ! empty( $default_level_id ) ) {
+				// Use the setting.
+				$level_id = $default_level_id;
+			} else {
+				// Check for discount code.
+				$discount_code_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
+				// Get first level that uses this code.
+				if ( ! empty( $discount_code_id ) ) {
+					$first_code_level_id = $wpdb->get_var( "SELECT level_id FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = '" . esc_sql( $discount_code_id ) . "' ORDER BY level_id LIMIT 1" );
+					if ( ! empty( $first_code_level_id ) ) {
+						$level_id = $first_code_level_id;
+					}
+				}
+			}
+		}
+		return $level_id;
+	}
+	/**
+	 * Load the checkout preheader on the landing page.
+	 */
+	public static function load_pmpro_preheader() {
+		global $wpdb;
+		// Make sure PMPro is loaded.
+		if ( ! defined( 'PMPRO_DIR' ) ) {
+			return;
+		}
+		// Don't do this in the dashboard.
+		if ( is_admin() ) {
+			return;
+		}
+		// Check if this is the landing page.
+		$queried_object = get_queried_object();
+		if ( empty( $queried_object ) || empty( $queried_object->ID ) || null === classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID ) ) {
+			return;
+		}
+
+		// Choose a default level if none specified.
+		if ( empty( $_REQUEST['level'] ) ) {
+			$_REQUEST['level'] = self::get_default_level( $queried_object->ID );
+		}
+		// Set the discount code if none specified.
+		if ( empty( $_REQUEST['discount_code'] ) ) {
+			$sitewide_sale             = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID );
+			$discount_code_id          = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
+			$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+		}
+
+		if ( ! has_shortcode( $queried_object->post_content, 'swsales' ) ) {
+			return;
+		}
+		require_once PMPRO_DIR . '/preheaders/checkout.php';
+	}
 
 }
 SWSales_Module_PMPro::init();
