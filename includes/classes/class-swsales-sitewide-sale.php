@@ -106,6 +106,24 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Returns the corresponding Sitewide Sale object.
+	 *
+	 * @param int $id of sale to get.
+	 * @return SWSales_Sitewide_Sale active sale
+	 */
+	public static function get_sitewide_sale( $id ) {
+		static $swsales_sitewide_sales = array();
+
+		if ( ! isset( $swsales_sitewide_sales[ $id ] ) ) {
+			$sitewide_sale                 = new SWSales_Sitewide_Sale();
+			$valid_sale                    = $sitewide_sale->load_sitewide_sale( $id );
+			$swsales_sitewide_sales[ $id ] = $valid_sale ? $sitewide_sale : null;
+		}
+
+		return $swsales_sitewide_sales[ $id ];
+	}
+
+	/**
 	 * Returns the active SWSales_Sitewide_Sale object
 	 *
 	 * @return SWSales_Sitewide_Sale active sale
@@ -127,21 +145,19 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns the corresponding Sitewide Sale object.
+	 * Returns the SWSales_Sitewide_Sale object for a given landing page ID
 	 *
-	 * @param int $id of sale to get.
-	 * @return SWSales_Sitewide_Sale active sale
+	 * @param int $landing_page_id to get Sitewide Sale for.
+	 * @return SWSales_Sitewide_Sale for landing page or null if not found
 	 */
-	public static function get_sitewide_sale( $id ) {
+	public static function get_sitewide_sale_for_landing_page( $landing_page_id ) {
 		static $swsales_sitewide_sales = array();
 
-		if ( ! isset( $swsales_sitewide_sales[ $id ] ) ) {
-			$sitewide_sale                 = new SWSales_Sitewide_Sale();
-			$valid_sale                    = $sitewide_sale->load_sitewide_sale( $id );
-			$swsales_sitewide_sales[ $id ] = $valid_sale ? $sitewide_sale : null;
+		if ( ! isset( $swsales_sitewide_sales[ $landing_page_id ] ) ) {
+			$sitewide_sale_id                           = get_post_meta( $landing_page_id, 'swsales_sitewide_sale_id', true );
+			$swsales_sitewide_sales[ $landing_page_id ] = self::get_sitewide_sale( $sitewide_sale_id );
 		}
-
-		return $swsales_sitewide_sales[ $id ];
+		return $swsales_sitewide_sales[ $landing_page_id ];
 	}
 
 	/**
