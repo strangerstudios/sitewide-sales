@@ -413,11 +413,14 @@ class SWSales_Module_PMPro {
 	 * Automatically applies discount code if user has the cookie set from sale page
 	 */
 	public static function automatic_discount_application() {
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( 'pmpro' !== $active_sitewide_sale->get_sale_type() ) {
+			return;
+		}
 		global $wpdb, $pmpro_pages;
 		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 			return;
 		}
-		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		$discount_code_id     = $active_sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
 		if ( null === $discount_code_id || ! $active_sitewide_sale->is_running() ) {
 			return;
