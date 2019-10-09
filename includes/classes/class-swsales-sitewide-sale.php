@@ -661,6 +661,6 @@ class SWSales_Sitewide_Sale {
 			</div>
 		</div>
 		<?php
-		do_action( 'swsales_additinal_reports', $this );
+		do_action( 'swsales_additional_reports', $this );
 	}
 }
