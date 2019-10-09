@@ -579,7 +579,7 @@ class SWSales_Sitewide_Sale {
 	 * @return boolean
 	 */
 	public function is_running() {
-		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_current_sale_content() );
+		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
 	}
 
 	/**
