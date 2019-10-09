@@ -649,7 +649,7 @@ class SWSales_Sitewide_Sale {
 					<p>
 						<?php
 							printf(
-								esc_html( apply_filters( 'swsales_checkout_conversion_title', __( 'Checkout Conversions', 'sitewide-sales' ), $this ) )
+								wp_kses_post( apply_filters( 'swsales_checkout_conversions_title', __( 'Checkout Conversions', 'sitewide-sales' ), $this ) )
 							);
 						?>
 					</p>

@@ -41,14 +41,17 @@ class SWSales_Module_PMPro {
 		// Default level for sale page.
 		add_action( 'wp', array( __CLASS__, 'load_pmpro_preheader' ), 0 ); // Priority 0 so that the discount code applies.
 
-		// TODO: Custom PMPro banner rules (hide for levels and hide at checkout).
+		// Custom PMPro banner rules (hide for levels and hide at checkout).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
 		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );
 
-		// TODO: PMPro automatic discount application.
+		// PMPro automatic discount application.
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
 
 		// TODO: PMPro-specific reports.
+		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
+		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
+		add_filter( 'swsales_get_revenue', array( __CLASS__, 'total_revenue' ), 10, 2 );
 
 	}
 
@@ -421,7 +424,7 @@ class SWSales_Module_PMPro {
 		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 			return;
 		}
-		$discount_code_id     = $active_sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
+		$discount_code_id = $active_sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
 		if ( null === $discount_code_id || ! $active_sitewide_sale->is_running() ) {
 			return;
 		}
@@ -430,6 +433,70 @@ class SWSales_Module_PMPro {
 			return;
 		}
 		$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+	}
+
+	public static function checkout_conversions_title( $cur_title, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_title;
+		}
+		global $wpdb;
+		$discount_code_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
+		$discount_code = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );;
+
+		if ( null === $discount_code_id || empty( $discount_code ) ) {
+			return $cur_title;
+		}
+
+		return sprintf(
+			__( 'Checkouts using <a href="%s">%s</a>', 'sitewide-sales' ),
+			admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $discount_code_id ),
+			$discount_code
+		);
+	}
+
+	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_conversions;
+		}
+		global $wpdb;
+
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT COUNT(*)
+				FROM $wpdb->pmpro_discount_codes_uses
+				WHERE code_id = %d
+					AND timestamp >= %s
+					AND timestamp < %s
+			",
+				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
+				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
+				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+			) . ''
+		);
+	}
+
+	public static function total_revenue( $cur_revenue, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+		global $wpdb;
+
+		return pmpro_formatprice(
+			$wpdb->get_var(
+				$wpdb->prepare(
+					"
+					SELECT SUM(mo.total)
+					FROM $wpdb->pmpro_membership_orders mo
+					WHERE mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
+				",
+					$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
+					$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+				) . ''
+			)
+		);
 	}
 
 }
