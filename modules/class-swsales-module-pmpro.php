@@ -46,6 +46,7 @@ class SWSales_Module_PMPro {
 		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );
 
 		// TODO: PMPro automatic discount application.
+		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
 
 		// TODO: PMPro-specific reports.
 
@@ -406,6 +407,26 @@ class SWSales_Module_PMPro {
 			return false;
 		}
 		return $show_banner;
+	}
+
+	/**
+	 * Automatically applies discount code if user has the cookie set from sale page
+	 */
+	public static function automatic_discount_application() {
+		global $wpdb, $pmpro_pages;
+		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
+			return;
+		}
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		$discount_code_id     = $active_sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
+		if ( null === $discount_code_id || ! $active_sitewide_sale->is_running() ) {
+			return;
+		}
+		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
+		if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1' ) ) {
+			return;
+		}
+		$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
 	}
 
 }
