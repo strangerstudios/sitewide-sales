@@ -48,7 +48,7 @@ class SWSales_Module_PMPro {
 		// PMPro automatic discount application.
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
 
-		// TODO: PMPro-specific reports.
+		// PMPro-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
 		add_filter( 'swsales_get_revenue', array( __CLASS__, 'total_revenue' ), 10, 2 );
@@ -56,11 +56,22 @@ class SWSales_Module_PMPro {
 
 	}
 
+	/**
+	 * Register PMPro module with SWSales
+	 *
+	 * @param  array $sale_types that are registered in SWSales.
+	 * @return array
+	 */
 	public static function register_sale_type( $sale_types ) {
 		$sale_types['pmpro'] = 'Paid Memberships Pro';
 		return $sale_types;
 	} // end register_sale_type()
 
+	/**
+	 * Adds option to choose discount code in Edit Sitewide Sale page.
+	 *
+	 * @param SWSales_Sitewide_Sale $cur_sale that is being edited.
+	 */
 	public static function add_choose_discount_code( $cur_sale ) {
 		?>
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
@@ -113,6 +124,12 @@ class SWSales_Module_PMPro {
 		<?php
 	} // end add_choose_discount_code()
 
+	/**
+	 * Adds option to choose the default level for checkout on SWSale
+	 * landing page in Edit Sitewide Sale page.
+	 *
+	 * @param SWSales_Sitewide_Sale $cur_sale that is being edited.
+	 */
 	public static function add_set_landing_page_default_level( $cur_sale ) {
 		?>
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
@@ -143,6 +160,12 @@ class SWSales_Module_PMPro {
 		<?php
 	} // end add_set_landing_page_default_level
 
+	/**
+	 * Adds option to hide banners for users who have certain levels
+	 * in Edit Sitewide Sale page.
+	 *
+	 * @param SWSales_Sitewide_Sale $cur_sale that is being edited.
+	 */
 	public static function add_hide_banner_by_level( $cur_sale ) {
 		?>
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
@@ -174,6 +197,12 @@ class SWSales_Module_PMPro {
 		<?php
 	}
 
+	/**
+	 * Saves PMPro module fields when saving Sitewide Sale.
+	 *
+	 * @param int     $post_id of the sitewide sale being edited.
+	 * @param WP_Post $post object of the sitewide sale being edited.
+	 */
 	public static function save_metaboxes( $post_id, $post ) {
 		if ( isset( $_POST['swsales_pmpro_discount_code_id'] ) ) {
 			update_post_meta( $post_id, 'swsales_pmpro_discount_code_id', intval( $_POST['swsales_pmpro_discount_code_id'] ) );
@@ -220,6 +249,7 @@ class SWSales_Module_PMPro {
 	} // end enqueue_scripts()
 
 	/**
+	 * COMMENTED OUT
 	 * Updates Sitewide Sale's discount code id on save
 	 *
 	 * @param int $saveid discount code being saved.
@@ -236,6 +266,7 @@ class SWSales_Module_PMPro {
 	} // end discount_code_on_save()
 
 	/**
+	 * COMMENTED OUT
 	 * Displays a link back to Sitewide Sale when discount code is edited/saved
 	 */
 	public static function return_from_editing_discount_code_box() {
@@ -311,7 +342,7 @@ class SWSales_Module_PMPro {
 	/**
 	 * Get the default level to use on a landing page
 	 *
-	 * @param $post_id Post ID of the landing page
+	 * @param int $post_id Post ID of the landing page.
 	 */
 	public static function get_default_level( $post_id = null ) {
 		global $post, $wpdb;
@@ -355,6 +386,7 @@ class SWSales_Module_PMPro {
 		}
 		return $level_id;
 	}
+
 	/**
 	 * Load the checkout preheader on the landing page.
 	 */
@@ -391,6 +423,14 @@ class SWSales_Module_PMPro {
 		require_once PMPRO_DIR . '/preheaders/checkout.php';
 	}
 
+	/**
+	 * Returns whether the current page is the landing page
+	 * for the passed Sitewide Sale.
+	 *
+	 * @param boolean               $is_checkout_page current value from filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
+	 * @return boolean
+	 */
 	public static function is_checkout_page( $is_checkout_page, $sitewide_sale ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $is_checkout_page;
@@ -399,6 +439,13 @@ class SWSales_Module_PMPro {
 		return is_page( $pmpro_pages['checkout'] ) ? true : $is_checkout_page;
 	}
 
+	/**
+	 * Returns whether the banner should be shown for the current Sitewide Sale.
+	 *
+	 * @param boolean               $show_banner current value from filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
+	 * @return boolean
+	 */
 	public static function show_banner( $show_banner, $sitewide_sale ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $show_banner;
@@ -436,6 +483,13 @@ class SWSales_Module_PMPro {
 		$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
 	}
 
+	/**
+	 * Set PMPro module checkout conversion title for Sitewide Sale report.
+	 *
+	 * @param string               $cur_title     set by filter.
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
 	public static function checkout_conversions_title( $cur_title, $sitewide_sale ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_title;
@@ -455,6 +509,13 @@ class SWSales_Module_PMPro {
 		);
 	}
 
+	/**
+	 * Set PMPro module checkout conversions for Sitewide Sale report.
+	 *
+	 * @param string               $cur_conversions set by filter.
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
 	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_conversions;
@@ -477,6 +538,14 @@ class SWSales_Module_PMPro {
 		);
 	}
 
+	/**
+	 * Set PMPro module total revenue for Sitewide Sale report.
+	 *
+	 * @param string               $cur_revenue set by filter.
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param bool                 $format_price whether to run output through pmpro_formatPrice().
+	 * @return string
+	 */
 	public static function total_revenue( $cur_revenue, $sitewide_sale, $format_price = true ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
@@ -499,6 +568,12 @@ class SWSales_Module_PMPro {
 		return $format_price ? pmpro_formatPrice( $total_rev ) : $total_rev;
 	}
 
+	/**
+	 * Add additional PMPro module revenue report for Sitewide Sale.
+	 *
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
 	public static function additional_report( $sitewide_sale ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return;
