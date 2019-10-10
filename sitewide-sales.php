@@ -25,9 +25,6 @@ require 'autoload.php';
 // Handles registering banners and displaying banners on frontend.
 includes\classes\SWSales_Banners::init();
 
-// Handles applying discount automatically and inserting upsell offers.
-//includes\classes\PMPro_SWS_Checkout::init();
-
 // Sets up shortcode [swsales] and landing page-related code.
 includes\classes\SWSales_Landing_Pages::init();
 

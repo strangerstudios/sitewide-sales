@@ -4,7 +4,6 @@ jQuery( document ).ready(
 		// multiselects
 		$( "#swsales_pmpro_discount_code_select" ).selectWoo();
 		$( "#swsales_pmpro_hide_levels_select" ).selectWoo();
-		$( "#swsales_pmpro_upsell_levels" ).selectWoo();
 
 		// toggling the discount code input layout
 		function swsales_pmpro_toggle_discount_code() {
@@ -53,17 +52,6 @@ jQuery( document ).ready(
 						}
 					}
 				);
-			}
-		);
-
-		// toggling the upsell settings
-		$( '#swsales_pmpro_upsell_enabled' ).change(
-			function(){
-				if (this.checked) {
-					$( '.swsales_pmpro_upsell_settings' ).show();
-				} else {
-					$( '.swsales_pmpro_upsell_settings' ).hide();
-				}
 			}
 		);
 	}
