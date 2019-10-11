@@ -35,6 +35,7 @@ class SWSales_Module_WC {
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
 
 		// Automatic coupon application.
+		add_filter( 'wp', array( __CLASS__, 'automatic_coupon_application' ) );
 
 		// WC-specific reports.
 	}
@@ -159,6 +160,22 @@ class SWSales_Module_WC {
 			return $is_checkout_page;
 		}
 		return is_page( wc_get_page_id( 'cart' ) ) ? true : $is_checkout_page;
+	}
+
+	// TODO: Change this to also auto-apply whenenver cookie set that user has seen landing page
+	public static function automatic_coupon_application() {
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( 'wc' !== $active_sitewide_sale->get_sale_type() ) {
+			return;
+		}
+		if ( ! is_page( $active_sitewide_sale->get_landing_page_post_id() ) ) {
+			return;
+		}
+		$cart = WC()->cart;
+		$coupon = new \WC_Coupon( $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
+		if ( ! $cart->has_discount( $coupon->get_code() ) && $coupon->is_valid() ) {
+			$cart->apply_coupon( $coupon->get_code() );
+		}
 	}
 
 }
