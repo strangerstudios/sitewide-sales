@@ -32,6 +32,7 @@ class SWSales_Module_WC {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 
 		// Custom WC banner rules (hide at checkout).
+		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
 
 		// Automatic coupon application.
 
@@ -144,6 +145,21 @@ class SWSales_Module_WC {
 
 		}
 	} // end enqueue_scripts()
+
+	/**
+	 * Returns whether the current page is the landing page
+	 * for the passed Sitewide Sale.
+	 *
+	 * @param boolean               $is_checkout_page current value from filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
+	 * @return boolean
+	 */
+	public static function is_checkout_page( $is_checkout_page, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $is_checkout_page;
+		}
+		return is_page( wc_get_page_id( 'cart' ) ) ? true : $is_checkout_page;
+	}
 
 }
 SWSales_Module_WC::init();

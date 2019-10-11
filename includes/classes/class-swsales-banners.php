@@ -120,7 +120,7 @@ class SWSales_Banners {
 			}
 
 			// Hide before/after the start/end dates.
-			if ( $active_sitewide_sale->is_running() ) {
+			if ( ! $active_sitewide_sale->is_running() ) {
 				return;
 			}
 
