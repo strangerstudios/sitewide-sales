@@ -46,5 +46,8 @@ includes\classes\SWSales_Settings::init();
 // Enqueues scripts and does other administrative things.
 includes\classes\SWSales_Setup::init();
 
-require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
-require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';
+function swsales_load_modules() {
+	require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
+	require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';
+}
+add_action( 'init', 'Sitewide_Sales\\swsales_load_modules', 1 );

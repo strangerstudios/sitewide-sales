@@ -22,13 +22,13 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_after_choose_landing_page', array( __CLASS__, 'add_set_landing_page_default_level' ) );
 		add_action( 'swsales_after_banners_settings', array( __CLASS__, 'add_hide_banner_by_level' ) );
 
-		// Bail on additional functionality if PMPro is not installed.
+		// Bail on additional functionality if PMPro is not active.
 		if ( ! defined( 'PMPRO_VERSION' ) ) {
 			return;
 		}
 
 		// Enable saving of fields added above.
-		add_action( 'swsales_save_metaboxes', array( __CLASS__, 'save_metaboxes' ), 10, 3 );
+		add_action( 'swsales_save_metaboxes', array( __CLASS__, 'save_metaboxes' ), 10, 2 );
 
 		// Enqueue JS for Edit Sitewide Sale page.
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
@@ -220,21 +220,13 @@ class SWSales_Module_PMPro {
 	}
 
 	/**
-	 * Enqueues js/pmpro-sws-cpt-meta.js
+	 * Enqueues /modules/js/swsales-module-pmpro-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
 			wp_register_script( 'swsales_module_pmpro_metaboxes', plugins_url( 'modules/js/swsales-module-pmpro-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_pmpro_metaboxes' );
-
-			$pages_with_swsales_shortcode = $wpdb->get_col(
-				"SELECT ID
-				 FROM $wpdb->posts
-				 WHERE post_type = 'page'
-				 	AND post_status IN( 'publish', 'draft' )
-					AND post_content LIKE '%[swsales%'"
-			);
 
 			wp_localize_script(
 				'swsales_module_pmpro_metaboxes',
