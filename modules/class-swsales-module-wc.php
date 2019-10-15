@@ -168,15 +168,18 @@ class SWSales_Module_WC {
 		if ( 'wc' !== $active_sitewide_sale->get_sale_type() ) {
 			return;
 		}
-		if ( ! is_page( $active_sitewide_sale->get_landing_page_post_id() ) ) {
-			return;
-		}
-		$cart = WC()->cart;
-		$coupon = new \WC_Coupon( $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
-		if ( ! $cart->has_discount( $coupon->get_code() ) && $coupon->is_valid() ) {
-			$cart->apply_coupon( $coupon->get_code() );
+		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
+		if (
+			is_page( $active_sitewide_sale->get_landing_page_post_id() ) ||
+			( isset( $_COOKIE[ $cookie_name ] ) &&
+			false !== strpos( $_COOKIE[ $cookie_name ], ';1' ) )
+		) {
+			$cart = WC()->cart;
+			$coupon = new \WC_Coupon( $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
+			if ( ! $cart->has_discount( $coupon->get_code() ) && $coupon->is_valid() ) {
+				$cart->apply_coupon( $coupon->get_code() );
+			}
 		}
 	}
-
 }
 SWSales_Module_WC::init();
