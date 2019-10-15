@@ -22,21 +22,19 @@ jQuery( document ).ready(
 		);
 		swsales_wc_toggle_coupon();
 
-		// create new discount code AJAX
-		// TODO: Update this function to wc coupons.
-		/*
-		$( '#swsales_pmpro_create_discount_code' ).click(
+		// create new coupon AJAX
+		$( '#swsales_wc_create_coupon' ).click(
 			function() {
 				var data = {
-					'action': 'swsales_pmpro_create_discount_code',
-					'swsales_pmpro_id': $( '#post_ID' ).val(),
+					'action': 'swsales_wc_create_coupon',
+					'swsales_wc_id': $( '#post_ID' ).val(),
 					'swsales_start': $( '#swsales_start_year' ).val() + '-'
 							 + $( '#swsales_start_month' ).val() + '-'
 							 + $( '#swsales_start_day' ).val(),
 					'swsales_end': $( '#swsales_end_year' ).val() + '-'
 							 + $( '#swsales_end_month' ).val() + '-'
 							 + $( '#swsales_end_day' ).val(),
-					'nonce': swsales.create_discount_code_nonce,
+					'nonce': swsales.create_coupon_nonce,
 				};
 				$.post(
 					ajaxurl,
@@ -47,14 +45,13 @@ jQuery( document ).ready(
 							alert( response.error );
 						} else {
 							// success
-							$( '#swsales_pmpro_discount_code_select' ).append( '<option value="' + response.code.id + '">' + response.code.code + '</option>' );
-							$( '#swsales_pmpro_discount_code_select' ).val( response.code.id );
-							swsales_pmpro_toggle_discount_code();
+							$( '#swsales_wc_coupon_select' ).append( '<option value="' + response.coupon_id + '">' + response.coupon_code + '</option>' );
+							$( '#swsales_wc_coupon_select' ).val( response.coupon_id );
+							swsales_wc_toggle_coupon();
 						}
 					}
 				);
 			}
 		);
-		*/
 	}
 );

@@ -31,6 +31,9 @@ class SWSales_Module_WC {
 		// Enqueue JS for Edit Sitewide Sale page.
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 
+		// Generate coupons from editing sitewide sale.
+		add_action( 'wp_ajax_swsales_wc_create_coupon', array( __CLASS__, 'create_coupon_ajax' ) );
+
 		// Custom WC banner rules (hide at checkout).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
 
@@ -136,7 +139,7 @@ class SWSales_Module_WC {
 			wp_enqueue_script( 'swsales_module_wc_metaboxes' );
 
 			wp_localize_script(
-				'swsales_module_pmpro_metaboxes',
+				'swsales_module_wc_metaboxes',
 				'swsales',
 				array(
 					'create_coupon_nonce' => wp_create_nonce( 'swsales_wc_create_coupon' ),
@@ -146,6 +149,71 @@ class SWSales_Module_WC {
 
 		}
 	} // end enqueue_scripts()
+
+	/**
+	 * AJAX callback to create a new coupon for your sale
+	 */
+	public static function create_coupon_ajax() {
+		global $wpdb;
+		check_ajax_referer( 'swsales_wc_create_coupon', 'nonce' );
+
+		$sitewide_sale_id = intval( $_REQUEST['swsales_wc_id'] );
+		if ( empty( $sitewide_sale_id ) ) {
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'No sitewide sale ID given. Try doing it manually.',
+						'sitewide-sales'
+					),
+				)
+			);
+			exit;
+		}
+
+		/**
+		 * Create a coupon programatically
+		 */
+		global $wpdb;
+		while ( empty( $coupon_code ) ) {
+			$scramble = md5( AUTH_KEY . current_time( 'timestamp' ) . SECURE_AUTH_KEY );
+			$coupon_code = strtoupper( substr( $scramble, 0, 10 ) );
+			if ( get_page_by_title( $coupon_code, OBJECT, 'shop_coupon' ) !== null || is_numeric( $coupon_code ) ) {
+				$coupon_code = null;
+			}
+		}
+		$amount        = '50'; // Amount.
+		$discount_type = 'percent'; // Type: fixed_cart, percent, fixed_product, percent_product.
+
+		$coupon = array(
+			'post_title'   => $coupon_code,
+			'post_content' => '',
+			'post_status'  => 'publish',
+			'post_author'  => 1,
+			'post_type'    => 'shop_coupon',
+		);
+
+		$new_coupon_id = wp_insert_post( $coupon );
+
+		// Add meta.
+		update_post_meta( $new_coupon_id, 'discount_type', $discount_type );
+		update_post_meta( $new_coupon_id, 'coupon_amount', $amount );
+		update_post_meta( $new_coupon_id, 'individual_use', 'no' );
+		update_post_meta( $new_coupon_id, 'product_ids', '' );
+		update_post_meta( $new_coupon_id, 'exclude_product_ids', '' );
+		update_post_meta( $new_coupon_id, 'usage_limit', '' );
+		update_post_meta( $new_coupon_id, 'expiry_date', '' );
+		update_post_meta( $new_coupon_id, 'apply_before_tax', 'yes' );
+		update_post_meta( $new_coupon_id, 'free_shipping', 'no' );
+
+		$r = array(
+			'status'      => 'success',
+			'coupon_id'   => $new_coupon_id,
+			'coupon_code' => $coupon_code,
+		);
+		echo wp_json_encode( $r );
+		exit;
+	} // end create_discount_code_ajax()
 
 	/**
 	 * Returns whether the current page is the landing page
@@ -162,7 +230,6 @@ class SWSales_Module_WC {
 		return is_page( wc_get_page_id( 'cart' ) ) ? true : $is_checkout_page;
 	}
 
-	// TODO: Change this to also auto-apply whenenver cookie set that user has seen landing page
 	public static function automatic_coupon_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		if ( 'wc' !== $active_sitewide_sale->get_sale_type() ) {
