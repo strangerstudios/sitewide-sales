@@ -230,7 +230,7 @@ class SWSales_Module_PMPro {
 
 			wp_localize_script(
 				'swsales_module_pmpro_metaboxes',
-				'swsales',
+				'swsales_pmpro_metaboxes',
 				array(
 					'create_discount_code_nonce' => wp_create_nonce( 'swsales_pmpro_create_discount_code' ),
 					'admin_url'                  => admin_url(),

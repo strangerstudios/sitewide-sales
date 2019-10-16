@@ -144,7 +144,7 @@ class SWSales_Module_WC {
 
 			wp_localize_script(
 				'swsales_module_wc_metaboxes',
-				'swsales',
+				'swsales_wc_metaboxes',
 				array(
 					'create_coupon_nonce' => wp_create_nonce( 'swsales_wc_create_coupon' ),
 					'admin_url'           => admin_url(),

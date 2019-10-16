@@ -11,7 +11,7 @@ jQuery( document ).ready(
 			if (coupon_id == 0) {
 				$( '#swsales_wc_after_coupon_select' ).hide();
 			} else {
-				$( '#swsales_wc_edit_coupon' ).attr( 'href', swsales.admin_url + 'post.php?action=edit&post=' + coupon_id );
+				$( '#swsales_wc_edit_coupon' ).attr( 'href', swsales_wc_metaboxes.admin_url + 'post.php?action=edit&post=' + coupon_id );
 				$( '#swsales_wc_after_coupon_select' ).show();
 			}
 		}
@@ -34,7 +34,7 @@ jQuery( document ).ready(
 					'swsales_end': $( '#swsales_end_year' ).val() + '-'
 							 + $( '#swsales_end_month' ).val() + '-'
 							 + $( '#swsales_end_day' ).val(),
-					'nonce': swsales.create_coupon_nonce,
+					'nonce': swsales_wc_metaboxes.create_coupon_nonce,
 				};
 				$.post(
 					ajaxurl,
