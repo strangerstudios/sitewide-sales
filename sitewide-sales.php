@@ -46,6 +46,13 @@ includes\classes\SWSales_Settings::init();
 // Enqueues scripts and does other administrative things.
 includes\classes\SWSales_Setup::init();
 
+// Handle templates
+includes\classes\SWSales_Templates::init();
+
+// Helper functions
+require_once ( 'includes/functions.php' );
+
+// Load Ecommerce Modules
 function swsales_load_modules() {
 	require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
 	require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';

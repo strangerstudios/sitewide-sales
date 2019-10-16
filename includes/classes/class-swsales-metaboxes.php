@@ -358,14 +358,7 @@ class SWSales_MetaBoxes {
 							<select class="landing_page_select_template swsales_option" id="swsales_landing_page_template" name="swsales_landing_page_template">
 								<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
 								<?php
-								$templates = array(
-									'gradient' => 'Gradient',
-									'neon'     => 'Neon',
-									'ocean'    => 'Ocean',
-									'photo'    => 'Photo',
-									'scroll'   => 'Scroll',
-									'vintage'  => 'Vintage',
-								);
+								$templates = SWSales_Templates::get_templates();
 								$templates = apply_filters( 'swsales_landing_page_templates', $templates );
 								foreach ( $templates as $key => $value ) {
 									echo '<option value="' . esc_attr( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
@@ -484,14 +477,7 @@ class SWSales_MetaBoxes {
 							<select class="banner_select_template swsales_option" id="swsales_banner_template" name="swsales_banner_template">
 								<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
 								<?php
-								$templates = array(
-									'gradient' => 'Gradient',
-									'neon'     => 'Neon',
-									'ocean'    => 'Ocean',
-									'photo'    => 'Photo',
-									'scroll'   => 'Scroll',
-									'vintage'  => 'Vintage',
-								);
+								$templates = SWSales_Templates::get_templates();
 								$templates = apply_filters( 'swsales_banner_templates', $templates );
 								foreach ( $templates as $key => $value ) {
 									echo '<option value="' . esc_attr( $key ) . '" ' . selected( $banner_template, $key ) . '>' . esc_html( $value ) . '</option>';
