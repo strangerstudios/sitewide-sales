@@ -322,9 +322,6 @@ class SWSales_Module_WC {
 			return $cur_conversions;
 		}
 
-		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
-		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
-
 		$orders = wc_get_orders(
 			array(
 				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
@@ -333,11 +330,7 @@ class SWSales_Module_WC {
 
 		$total_revenue = 0.00;
 		foreach ( $orders as $order ) {
-			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
-				if ( strtoupper( $coupon_code ) === strtoupper( $order_coupon_code ) ) {
-					$total_revenue += $order->total;
-				}
-			}
+			$total_revenue += $order->total;
 		}
 
 		return wp_strip_all_tags( wc_price( $total_revenue ) );
