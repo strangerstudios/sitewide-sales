@@ -16,13 +16,10 @@ class SWSales_MetaBoxes {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
 		add_action( 'load-post-new.php', array( __CLASS__, 'init_metabox' ) );
-		//add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
-		//add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
 		add_action( 'enter_title_here', array( __CLASS__, 'update_title_placeholder_text' ), 10, 2 );
 		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 		add_action( 'wp_ajax_swsales_create_landing_page', array( __CLASS__, 'create_landing_page_ajax' ) );
-		//add_action( 'wp_ajax_swsales_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 	}
 
 	/**

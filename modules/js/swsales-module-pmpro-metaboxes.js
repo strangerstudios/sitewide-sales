@@ -12,7 +12,7 @@ jQuery( document ).ready(
 			if (discount_code_id == 0) {
 				$( '#swsales_pmpro_after_discount_code_select' ).hide();
 			} else {
-				$( '#swsales_pmpro_edit_discount_code' ).attr( 'href', swsales.admin_url + 'admin.php?page=pmpro-discountcodes&edit=' + discount_code_id );
+				$( '#swsales_pmpro_edit_discount_code' ).attr( 'href', swsales_pmpro_metaboxes.admin_url + 'admin.php?page=pmpro-discountcodes&edit=' + discount_code_id );
 				$( '#swsales_pmpro_after_discount_code_select' ).show();
 			}
 		}
@@ -35,7 +35,7 @@ jQuery( document ).ready(
 					'swsales_end': $( '#swsales_end_year' ).val() + '-'
 							 + $( '#swsales_end_month' ).val() + '-'
 							 + $( '#swsales_end_day' ).val(),
-					'nonce': swsales.create_discount_code_nonce,
+					'nonce': swsales_pmpro_metaboxes.create_discount_code_nonce,
 				};
 				$.post(
 					ajaxurl,

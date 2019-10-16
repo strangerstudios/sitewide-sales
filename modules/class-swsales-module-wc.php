@@ -44,6 +44,7 @@ class SWSales_Module_WC {
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
 		add_filter( 'swsales_get_revenue', array( __CLASS__, 'total_revenue' ), 10, 2 );
+		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 	}
 
 	/**
@@ -143,7 +144,7 @@ class SWSales_Module_WC {
 
 			wp_localize_script(
 				'swsales_module_wc_metaboxes',
-				'swsales',
+				'swsales_wc_metaboxes',
 				array(
 					'create_coupon_nonce' => wp_create_nonce( 'swsales_wc_create_coupon' ),
 					'admin_url'           => admin_url(),
@@ -235,7 +236,7 @@ class SWSales_Module_WC {
 
 	public static function automatic_coupon_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
-		if ( 'wc' !== $active_sitewide_sale->get_sale_type() ) {
+		if ( 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
 			return;
 		}
 		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
@@ -294,10 +295,9 @@ class SWSales_Module_WC {
 
 		$orders = wc_get_orders(
 			array(
-				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
+				'date_paid' => $sitewide_sale->get_start_date( 'U' ) . '...' . strval( intval( $sitewide_sale->get_end_date( 'U' ) ) + DAY_IN_SECONDS ),
 			)
 		);
-
 		$conversion_count = 0;
 		foreach ( $orders as $order ) {
 			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
@@ -335,5 +335,83 @@ class SWSales_Module_WC {
 
 		return wp_strip_all_tags( wc_price( $total_revenue ) );
 	}
+
+	/**
+	 * Add additional PMPro module revenue report for Sitewide Sale.
+	 *
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
+	public static function additional_report( $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return;
+		}
+
+		$total_rev            = 0;
+		$new_rev_with_code    = 0;
+		$new_rev_without_code = 0;
+
+		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
+
+		$orders = wc_get_orders(
+			array(
+				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
+			)
+		);
+
+		foreach ( $orders as $order ) {
+			$total_rev  += $order->total;
+			$used_coupon = false;
+			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
+				if ( strtoupper( $coupon_code ) === strtoupper( $order_coupon_code ) ) {
+					$used_coupon = true;
+				}
+			}
+			if ( $used_coupon ) {
+				$new_rev_with_code += $order->total;
+			} else {
+				$new_rev_without_code += $order->total;
+			}
+		}
+		?>
+		<div class="swsales_reports-box">
+			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
+			<p>
+				<?php
+				printf(
+					wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
+					$sitewide_sale->get_start_date(),
+					$sitewide_sale->get_end_date()
+				);
+				?>
+			</p>
+			<hr />
+			<div class="swsales_reports-data swsales_reports-data-3col">
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_with_code ) ) ); ?></h1>
+					<p>
+						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
+						<br />
+						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
+					</p>
+				</div>
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_without_code ) ) ); ?></h1>
+					<p>
+						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
+						<br />
+						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
+					</p>
+				</div>
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $total_rev ) ) ); ?></h1>
+					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
 }
 SWSales_Module_WC::init();
