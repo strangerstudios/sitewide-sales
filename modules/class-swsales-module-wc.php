@@ -294,10 +294,9 @@ class SWSales_Module_WC {
 
 		$orders = wc_get_orders(
 			array(
-				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
+				'date_paid' => $sitewide_sale->get_start_date( 'U' ) . '...' . strval( intval( $sitewide_sale->get_end_date( 'U' ) ) + DAY_IN_SECONDS ),
 			)
 		);
-
 		$conversion_count = 0;
 		foreach ( $orders as $order ) {
 			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
