@@ -236,7 +236,7 @@ class SWSales_Module_WC {
 
 	public static function automatic_coupon_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
-		if ( 'wc' !== $active_sitewide_sale->get_sale_type() ) {
+		if ( 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
 			return;
 		}
 		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
