@@ -666,7 +666,7 @@ class SWSales_Module_PMPro {
 					<p>
 						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
 						<br />
-						(<?php echo esc_html( round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ); ?>%)
+						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
@@ -674,7 +674,7 @@ class SWSales_Module_PMPro {
 					<p>
 						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
 						<br />
-						(<?php echo esc_html( round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ); ?>%)
+						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
@@ -682,7 +682,7 @@ class SWSales_Module_PMPro {
 					<p>
 						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
 						<br />
-						(<?php echo esc_html( round( ( $renewals / $total_rev ) * 100, 2 ) ); ?>%)
+						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
