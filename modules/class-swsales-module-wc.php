@@ -41,6 +41,9 @@ class SWSales_Module_WC {
 		add_filter( 'wp', array( __CLASS__, 'automatic_coupon_application' ) );
 
 		// WC-specific reports.
+		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
+		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
+		add_filter( 'swsales_get_revenue', array( __CLASS__, 'total_revenue' ), 10, 2 );
 	}
 
 	/**
@@ -247,6 +250,97 @@ class SWSales_Module_WC {
 				$cart->apply_coupon( $coupon->get_code() );
 			}
 		}
+	}
+
+	/**
+	 * Set WC module checkout conversion title for Sitewide Sale report.
+	 *
+	 * @param string               $cur_title     set by filter.
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
+	public static function checkout_conversions_title( $cur_title, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_title;
+		}
+		$coupon_id = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
+
+		if ( null === $coupon_id || empty( $coupon_code ) ) {
+			return $cur_title;
+		}
+
+		return sprintf(
+			__( 'Purchases using <a href="%s">%s</a>', 'sitewide-sales' ),
+			get_edit_post_link( $coupon_id ),
+			$coupon_code
+		);
+	}
+
+	/**
+	 * Set WC module checkout conversions for Sitewide Sale report.
+	 *
+	 * @param string               $cur_conversions set by filter.
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
+	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_conversions;
+		}
+
+		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
+
+		$orders = wc_get_orders(
+			array(
+				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
+			)
+		);
+
+		$conversion_count = 0;
+		foreach ( $orders as $order ) {
+			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
+				if ( strtoupper( $coupon_code ) === strtoupper( $order_coupon_code ) ) {
+					$conversion_count++;
+				}
+			}
+		}
+
+		return strval( $conversion_count );
+	}
+
+	/**
+	 * Set WC module total revenue for Sitewide Sale report.
+	 *
+	 * @param string               $cur_revenue set by filter.
+	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @return string
+	 */
+	public static function total_revenue( $cur_revenue, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_conversions;
+		}
+
+		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
+
+		$orders = wc_get_orders(
+			array(
+				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
+			)
+		);
+
+		$total_revenue = 0.00;
+		foreach ( $orders as $order ) {
+			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
+				if ( strtoupper( $coupon_code ) === strtoupper( $order_coupon_code ) ) {
+					$total_revenue += $order->total;
+				}
+			}
+		}
+
+		return wp_strip_all_tags( wc_price( $total_revenue ) );
 	}
 }
 SWSales_Module_WC::init();
