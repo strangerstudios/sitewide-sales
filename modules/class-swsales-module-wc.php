@@ -319,7 +319,7 @@ class SWSales_Module_WC {
 	 */
 	public static function total_revenue( $cur_revenue, $sitewide_sale ) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
-			return $cur_conversions;
+			return $cur_revenue;
 		}
 
 		$orders = wc_get_orders(
