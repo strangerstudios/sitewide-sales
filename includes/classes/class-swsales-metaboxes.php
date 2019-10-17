@@ -742,7 +742,7 @@ class SWSales_MetaBoxes {
 		$options = SWSales_Settings::get_options();
 		if ( isset( $_POST['swsales_set_as_sitewide_sale'] ) ) {
 			$options['active_sitewide_sale_id'] = $post_id;
-		} elseif ( $options['active_sitewide_sale_id'] === $post_id . '' ) {
+		} elseif ( $options['active_sitewide_sale_id'] == $post_id ) {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		SWSales_Settings::save_options( $options );
