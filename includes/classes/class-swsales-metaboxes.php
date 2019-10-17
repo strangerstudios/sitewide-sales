@@ -225,6 +225,35 @@ class SWSales_MetaBoxes {
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
+					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?>:</label></th>
+					<td>
+						<?php
+						$sale_status_active = ( 'sale' === $cur_sale->get_time_period() && $cur_sale->is_active_sitewide_sale() );
+						$error_message = '';
+
+						echo( '<p><strong>' . ( $sale_status_active ? 'Active' : 'Inactive' ) . '</strong></p>' );
+						if ( ! $sale_status_active ) {
+							if ( ! $cur_sale->is_active_sitewide_sale() ) {
+								$error_message = 'This is not the active sitewide sale.';
+							} else {
+								switch ( $cur_sale->get_time_period() ) {
+									case 'error':
+										$error_message = 'Invalid timeframe.';
+										break;
+									case 'pre-sale':
+										$error_message = 'Sale has not yet started.';
+										break;
+									case 'post-sale':
+										$error_message = 'Sale has ended.';
+										break;
+								}
+							}
+							echo( '<p><small> ' . esc_html( $error_message ) . ' Banner will not be shown.</small></p>' );
+						}
+						?>
+					</td>
+				<tr>
+				</tr>
 			</tbody>
 		</table>
 		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
