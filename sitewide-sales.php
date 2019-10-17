@@ -25,7 +25,7 @@ require 'autoload.php';
 // Handles registering banners and displaying banners on frontend.
 includes\classes\SWSales_Banners::init();
 
-// Sets up shortcode [swsales] and landing page-related code.
+// Sets up shortcode [sitewide_sales] and landing page-related code.
 includes\classes\SWSales_Landing_Pages::init();
 
 // Handles displaying/saving metaboxes for Sitewide Sale CPT and
