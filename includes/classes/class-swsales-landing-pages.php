@@ -17,6 +17,7 @@ class SWSales_Landing_Pages {
 		add_filter( 'body_class', array( __CLASS__, 'add_body_class' ) );
 		add_filter( 'display_post_states', array( __CLASS__, 'add_display_post_states' ), 10, 2 );
 		add_filter( 'page_row_actions', array( __CLASS__, 'add_page_row_actions' ), 10, 2 );
+		add_action( 'add_meta_boxes', array( __CLASS__, 'add_edit_swsales_metabox' ) );
 	}
 
 	/**
@@ -167,5 +168,32 @@ class SWSales_Landing_Pages {
 		}
 
 		return $actions;
+	}
+
+	/**
+	 * Register meta box(es).
+	 */
+	public static function add_edit_swsales_metabox() {
+		$post_id = $_REQUEST['post'];
+		if ( ! empty( get_post_meta( $post_id, 'swsales_sitewide_sale_id', true ) ) ) {
+			add_meta_box( 'swsales_edit_sitewide_sale', "<span style='color:#bd2300'>" . __( 'Sitewide Sale Landing Page', 'sitewide-sales' ) . '</span>', array( __CLASS__, 'edit_swsales_metabox_content' ), 'page', 'side', 'high' );
+		}
+	}
+
+	/**
+	 * Meta box display callback.
+	 *
+	 * @param WP_Post $post Current post object.
+	 */
+	public static function edit_swsales_metabox_content( $post ) {
+		?>
+		<p>
+		<?php esc_html_e( 'Use the [sitewide_sales] shortcode to display your sale content on this landing page.', 'sitewide-sales' ); ?>
+	</p>
+	</br>
+	<p>
+		<?php printf( "<a href='%s' target='_blank'>" . __( 'Edit your Sitewide Sale', 'sitewide-sales' ) . '</a>', esc_url( get_edit_post_link( get_post_meta( $post->ID, 'swsales_sitewide_sale_id', true ) ) ) ); ?>
+	</p>
+		<?php
 	}
 }
