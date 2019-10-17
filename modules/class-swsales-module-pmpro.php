@@ -457,7 +457,7 @@ class SWSales_Module_PMPro {
 	 */
 	public static function automatic_discount_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
-		if ( 'pmpro' !== $active_sitewide_sale->get_sale_type() ) {
+		if ( null === $active_sitewide_sale || 'pmpro' !== $active_sitewide_sale->get_sale_type() ) {
 			return;
 		}
 		global $wpdb, $pmpro_pages;
