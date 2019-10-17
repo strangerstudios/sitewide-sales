@@ -228,11 +228,11 @@ class SWSales_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?>:</label></th>
 					<td>
 						<?php
-						$sale_status_active = ( 'sale' === $cur_sale->get_time_period() && $cur_sale->is_active_sitewide_sale() );
+						$sale_status_running = $cur_sale->is_running();
 						$error_message = '';
 
-						echo( '<p><strong>' . ( $sale_status_active ? 'Active' : 'Inactive' ) . '</strong></p>' );
-						if ( ! $sale_status_active ) {
+						echo( '<p><strong>' . ( $sale_status_running ? 'Running' : 'Not Running' ) . '</strong></p>' );
+						if ( ! $sale_status_running ) {
 							if ( ! $cur_sale->is_active_sitewide_sale() ) {
 								$error_message = 'This is not the active sitewide sale.';
 							} else {
