@@ -36,7 +36,7 @@ class SWSales_MetaBoxes {
 				 FROM $wpdb->posts
 				 WHERE post_type = 'page'
 				 	AND post_status IN( 'publish', 'draft' )
-					AND post_content LIKE '%[swsales%'"
+					AND post_content LIKE '%[sitewide_sale%'"
 			);
 
 			wp_localize_script(
@@ -311,7 +311,7 @@ class SWSales_MetaBoxes {
 						</select><br />
 						<?php
 							$current_page_post = get_post( $current_page );
-						if ( ! empty( $current_page_post->post_content ) && strpos( $current_page_post->post_content, '[swsales' ) !== false ) {
+						if ( ! empty( $current_page_post->post_content ) && strpos( $current_page_post->post_content, '[sitewides_sale' ) !== false ) {
 							$show_shortcode_warning = false;
 						} else {
 							$show_shortcode_warning = true;
@@ -321,7 +321,7 @@ class SWSales_MetaBoxes {
 						<?php
 						if ( ! $show_shortcode_warning ) {
 						?>
-  style="display: none;"<?php } ?> class="swsales_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [swsales] shortcode was not found in this post.', 'sitewide-sales' ); ?></small></p>
+  style="display: none;"<?php } ?> class="swsales_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [sitewide_sales] shortcode was not found in this post.', 'sitewide-sales' ); ?></small></p>
 
 						<p>
 							<span id="swsales_after_landing_page_select" 
@@ -373,12 +373,12 @@ class SWSales_MetaBoxes {
 			</tbody>
 		</table>
 		<hr />
-		<p><?php _e( 'Use the [swsales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'sitewide-sales' ); ?></p>
+		<p><?php _e( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'sitewide-sales' ); ?></p>
 		<p
 		<?php
 		if ( ! $show_shortcode_warning ) {
 			?>
-  style="display: none;"<?php } ?> class="swsales_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [swsales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?></small></p>
+  style="display: none;"<?php } ?> class="swsales_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?></small></p>
 		<table class="form-table">
 			<tbody>
 				<tr>
@@ -790,7 +790,7 @@ class SWSales_MetaBoxes {
 		$landing_page_post_id = wp_insert_post(
 			array(
 				'post_title'   => $landing_page_title,
-				'post_content' => '[swsales]',
+				'post_content' => '[sitewide_sales]',
 				'post_type'    => 'page',
 				'post_status'  => 'draft',
 			)

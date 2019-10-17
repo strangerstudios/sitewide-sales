@@ -11,7 +11,8 @@ class SWSales_Landing_Pages {
 	 * @package sitewide-sale/includes
 	 */
 	public static function init() {
-		add_shortcode( 'swsales', array( __CLASS__, 'shortcode' ) );
+		add_shortcode( 'sitewide_sales', array( __CLASS__, 'shortcode' ) );
+		add_shortcode( 'sitewide_sale', array( __CLASS__, 'shortcode' ) );
 		add_filter( 'edit_form_after_title', array( __CLASS__, 'add_edit_form_after_title' ) );
 		add_filter( 'body_class', array( __CLASS__, 'add_body_class' ) );
 		add_filter( 'display_post_states', array( __CLASS__, 'add_display_post_states' ), 10, 2 );
@@ -90,7 +91,7 @@ class SWSales_Landing_Pages {
 			$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template -->';
 		}
 
-		// Filter for themes and plugins to modify the [swsales] shortcode output.
+		// Filter for themes and plugins to modify the [sitewide_sales] shortcode output.
 		$r = apply_filters( 'swsales_landing_page_content', $r, $atts );
 
 		return $r;
