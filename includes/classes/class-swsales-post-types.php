@@ -59,7 +59,7 @@ class SWSales_Post_Types {
 		$args['publicly_queryable']  = false;
 		$args['show_ui']             = true;
 		$args['show_in_menu']        = true;
-		$args['menu_position']       = 5;
+		$args['menu_position']       = 56;
 		$args['show_in_nav_menus']   = true;
 		$args['can_export']          = true;
 		$args['has_archive']         = false;
