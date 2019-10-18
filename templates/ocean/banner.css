@@ -1,0 +1,66 @@
+/**
+ * Ocean Template for Sitewide Sales
+ *
+ * Banner Styles 
+ */
+
+.swsales_banner_template-ocean a.dismiss:before {
+	color: #FFF;
+}
+#swsales_banner_top.swsales_banner_template-ocean {
+	background-color: #f67656;
+	background-image: url(../../images/waves.png);
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-size: 30px 30px;
+	color: #FFF;
+}
+#swsales_banner_top.swsales_banner_template-ocean .swsales_banner-inner {
+	padding: 0 0 30px 0;
+}
+#swsales_banner_top.swsales_banner_template-ocean .swsales_banner-inner h3 {
+	font-family: 'Brush Script MT', cursive;
+	font-size: 30px;
+	font-weight: 400;
+	line-height: 40px;
+}
+#swsales_banner_bottom.swsales_banner_template-ocean {
+	background-color: #f67656;
+	background-image: url(../../images/waves.png);
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-size: 50px 50px;
+	color: #FFF;
+}
+#swsales_banner_bottom.swsales_banner_template-ocean .swsales_banner-inner {
+	padding: 0 0 40px 0;
+}
+#swsales_banner_bottom.swsales_banner_template-ocean .swsales_banner-inner h3 {
+	font-family: 'Brush Script MT', cursive;
+	font-size: 50px;
+	font-weight: 400;
+	line-height: 60px;
+}
+#swsales_banner_bottom_right.swsales_banner_template-ocean {
+	padding: 0;
+	background-color: #4ab1ad;
+	color: #FFF;
+}
+#swsales_banner_bottom_right.swsales_banner_template-ocean .swsales_banner-inner {
+	background-color: #f67656;
+	background-image: url(../../images/waves.png);
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-size: 50px 50px;
+	padding: 20px 20px 40px 20px;
+}
+#swsales_banner_bottom_right.swsales_banner_template-ocean .swsales_banner-inner h3 {
+	font-family: 'Brush Script MT', cursive;
+	font-size: 30px;
+	font-weight: 400;
+	line-height: 40px;
+}
+#swsales_banner_bottom_right.swsales_banner_template-ocean span.swsales_banner-button {
+	display: block;
+	padding: 0 20px 20px 20px;
+}

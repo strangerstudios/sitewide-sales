@@ -13,6 +13,12 @@ class SWSales_Templates {
 	 */
 	public static function init() {
 	      require_once( SWSALES_DIR . '/templates/fancy-coupon/fancy-coupon.php' );
+          require_once( SWSALES_DIR . '/templates/gradient/gradient.php' );
+          require_once( SWSALES_DIR . '/templates/neon/neon.php' );
+          require_once( SWSALES_DIR . '/templates/ocean/ocean.php' );
+          require_once( SWSALES_DIR . '/templates/photo/photo.php' );
+          require_once( SWSALES_DIR . '/templates/scroll/scroll.php' );
+          require_once( SWSALES_DIR . '/templates/vintage/vintage.php' );
 	}
     
     /**
@@ -21,16 +27,6 @@ class SWSales_Templates {
      * @return array of templates
      */
     public static function get_templates() {
-        // TODO: Move all of these into the templates folder.
-        $templates = array(
-            'gradient' => 'Gradient',
-            'neon'     => 'Neon',
-            'ocean'    => 'Ocean',
-            'photo'    => 'Photo',
-            'scroll'   => 'Scroll',
-            'vintage'  => 'Vintage',
-        );
-        
         $templates = apply_filters( 'swsale_templates', $templates );
 		
 		asort( $templates );

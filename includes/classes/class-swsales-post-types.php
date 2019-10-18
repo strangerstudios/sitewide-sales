@@ -124,11 +124,13 @@ class SWSales_Post_Types {
 				break;
 			case 'landing_page':
 				$landing_page = $sitewide_sale->get_landing_page_post_id();
-				if ( 0 !== $landing_page ) {
+				if ( ! empty( $landing_page ) ) {
 					$title = get_the_title( $landing_page );
 					if ( ! empty( $title ) ) {
 						echo '<a href="' . esc_url( get_permalink( $landing_page ) ) . '">' . esc_html( $title ) . '</a>';
 					}
+				} else {
+					echo '-';
 				}
 				break;
 			case 'reports':

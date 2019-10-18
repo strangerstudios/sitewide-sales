@@ -68,7 +68,11 @@ class SWSales_Module_WC {
 		<tr class='swsales-module-row swsales-module-row-wc'>
 			<?php if ( ! class_exists( 'WooCommerce', false ) ) { ?>
 				<th></th>
-				<td><?php _e( 'The WooCommerce plugin is not active.', 'sitewide-sales' ); ?></td>
+				<td>
+					<div class="sitewide_sales_message sitewide_sales_error">
+						<p><?php echo esc_html( 'The WooCommerce plugin is not active.', 'sitewide-sales' ); ?></p>
+					</div>
+				</td>
 				<?php
 			} else {
 				$args = array(
