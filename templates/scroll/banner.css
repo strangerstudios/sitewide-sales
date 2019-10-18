@@ -1,0 +1,38 @@
+/**
+ * Scroll Template for Sitewide Sales
+ *
+ * Banner Styles 
+ */
+
+.swsales_banner_template-scroll {
+	background: #E4E3DF;
+}
+#swsales_banner_bottom_right.swsales_banner_template-scroll {
+	padding: 0;
+}
+#swsales_banner_bottom_right.swsales_banner_template-scroll .swsales_banner-inner {
+	padding: 20px 20px 0 20px;
+}
+#swsales_banner_bottom_right.swsales_banner_template-scroll .swsales_banner-button {
+	background: rgba( 255, 255, 255, 0.4 );
+	display: block;
+	padding: 20px;
+}
+.swsales_banner_template-scroll a.dismiss:before {
+	color: #B5B5A5;
+}
+.swsales_banner_template-scroll h3 {
+	animation: SWSFadeIn 1s;
+}
+.swsales_banner_template-scroll p {
+	animation: SWSFadeIn 2s;
+}
+#swsales_banner_top.swsales_banner_template-scroll .swsales_banner-inner {
+	animation: SWSScroll 1s;
+}
+#swsales_banner_top.swsales_banner_template-scroll h3,
+#swsales_banner_bottom.swsales_banner_template-scroll h3 {
+	background: rgba( 255, 255, 255, 0.4 );
+	display: inline-block;
+	padding: 5px 10px;
+}

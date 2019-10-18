@@ -1,0 +1,81 @@
+/**
+ * Ocean Template for Sitewide Sales
+ *
+ * landing Page Styles 
+ */
+
+body.swsales-landing-page-ocean {
+	background: #4ab1ad;
+	padding: 0 0 5.8rem 0;
+}
+#swsale-landing-page-wrap-ocean {
+	margin-top: 0;
+}
+.swsales-landing-page-ocean .swsales-landing-page-content {
+	background-color: #f67656;
+	background-image: url(images/waves.png);
+	background-repeat: repeat-x;
+	background-position: bottom left;
+	background-size: 100px 100px;
+	color: #FFF;
+	padding: 5.8rem 0 110px 0;
+	text-align: center;
+}
+.swsales-landing-page-ocean .swsales-landing-page-content a {
+	color: #FFF;
+}
+.swsales-landing-page-ocean .swsales-landing-page-content h1 {
+	color: #FFF;
+	font-family: 'Brush Script MT', cursive;
+	font-size: 120px;
+	font-weight: 400;
+	margin: 1.45rem 0 2.9rem 0;
+	padding: 0;
+}
+.swsales-landing-page-ocean .swsales-landing-page-content h2 {
+	color: #FFF;
+	margin:  0;
+}
+
+
+/* Paid Memberships Pro Integration Specific Styles */
+.swsales-landing-page-ocean #pmpro_form {
+	margin: 0 auto;
+	max-width: 800px;
+}
+.swsales-landing-page-ocean form#pmpro_form .pmpro_checkout {
+	margin: 0 0 2.9rem 0;
+}
+.swsales-landing-page-ocean form#pmpro_form .pmpro_checkout-fields,
+.swsales-landing-page-ocean form#pmpro_form .pmpro_checkout-fields-display-seal {
+	background-color: #FFF;
+}
+.swsales-landing-page-ocean form#pmpro_form hr {
+	display: none;
+}
+.swsales-landing-page-ocean form#pmpro_form .pmpro_checkout h3 {
+	background: rgba( 255, 255, 255, 0.5);
+	border: none;
+	margin: 0;
+}
+.swsales-landing-page-ocean form#pmpro_form .pmpro_checkout .pmpro_sslseal {
+	text-align: center;
+}
+.swsales-landing-page-ocean form#pmpro_form .pmpro_submit {
+	background: rgba( 255, 255, 255, 0.5);
+	padding: 2.9rem 2.9rem 1rem 2.9rem;
+	text-align: center;
+}
+.swsales-landing-page-ocean form#pmpro_form #pmpro_processing_message {
+	margin: 0;
+	text-align: center;
+}
+
+
+/* WooCommerce Integration Specific Styles */
+.swsales-landing-page-ocean .woocommerce { 
+	background: rgba( 255, 255, 255, 0.5);
+	margin: 0 auto;
+	max-width: 800px;
+	padding: 2.9rem;
+}

@@ -61,38 +61,18 @@ class SWSales_Landing_Pages {
 
 		// Our return string.
 		$r = '';
-
-		// Display the wrapping div for selected template if using Memberlite or Advanced Setting set to "Yes".
-		//if ( defined( 'MEMBERLITE_VERSION' ) || pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' ) {
-		if ( true ) {
-			$landing_template = $sitewide_sale->get_landing_page_template();
-			if ( ! empty( $landing_template ) ) {
-				$r .= '<div id="pmpro_sitewide_sale_landing_page_template-' . esc_html( $landing_template ) . '" class="pmpro_sitewide_sale_landing_page_template">';
-				// Display the wrapping div for photo background image if specified in $landing_template.
-				if ( in_array( $landing_template, array( 'photo', 'scroll' ) ) ) {
-					$background_image = wp_get_attachment_image_src( get_post_thumbnail_id( get_queried_object_id() ), 'full' );
-					if ( ! empty( $background_image[0] ) ) {
-						$r .= '<div class="pmpro_sitewide_sale_landing_page_template-background-image" style="background-image: url(' . $background_image[0] . ')">';
-					}
-				}
-			}
-		}
-
-		$r .= '<div class="swsales_landing_content swsales_landing_content_' . $time_period . '">';
+		$r .= '<div class="swsales-landing-page-content swsales-landing-page-content-' . $time_period . '">';
 		$r .= apply_filters( 'the_content', $sitewide_sale->get_sale_content_for_time_period( $time_period ) );
 		$r .= '</div> <!-- .swsales_landing_content -->';
 
-		// Display the closing div for selected template if using Memberlite or Advanced Setting set to "Yes".
-		//if ( defined( 'MEMBERLITE_VERSION' ) || pmpro_getOption( 'pmpro_sws_allow_template' ) === 'Yes' && ! empty( $landing_template ) ) {
+		// Template specific filter.
+		$landing_template = $sitewide_sale->get_landing_page_template();
 		if ( ! empty( $landing_template ) ) {
-			if ( ! empty( $background_image[0] ) ) {
-				$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template-background-image -->';
-			}
-			$r .= '</div> <!-- .pmpro_sitewide_sale_landing_page_template -->';
+			$r = apply_filters( 'swsales_landing_page_content_' . $landing_template, $r );
 		}
 
-		// Filter for themes and plugins to modify the [sitewide_sales] shortcode output.
-		$r = apply_filters( 'swsales_landing_page_content', $r, $atts );
+		// Filter for themes and plugins to modify the [sitewide_sales] shortcode output.	
+		$r = apply_filters( 'swsales_landing_page_content', $r, $landing_template );
 
 		return $r;
 	}
@@ -124,7 +104,11 @@ class SWSales_Landing_Pages {
 
 		if ( ! empty( $sitewide_sale_id ) ) {
 			// This is a landing page, add the custom class.
-			$classes[] = 'swsales-sitewide-sale-landing-page';
+			$classes[] = 'swsales-landing-page';
+			$landing_template = get_post_meta( $sitewide_sale_id, 'swsales_landing_page_template', true );
+			if ( ! empty( $landing_template ) ) {
+				$classes[] = 'swsales-landing-page-' . esc_html( $landing_template );
+			}
 		}
 
 		return $classes;

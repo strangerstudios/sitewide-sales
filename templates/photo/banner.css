@@ -1,0 +1,37 @@
+/**
+ * Photo Template for Sitewide Sales
+ *
+ * Banner Styles 
+ */
+
+.swsales_banner_template-photo {
+	background: rgba( 0, 0, 0, 0.5 );
+	color: #FFF;
+	transition: background 1s ease;
+}
+.swsales_banner_template-photo:hover {
+	background: rgba( 0, 0, 0, 0.8 );
+}
+#swsales_banner_top.swsales_banner_template-photo {
+	border-bottom-left-radius: 40px;
+	border-bottom-right-radius: 40px;
+	margin-left: 10px;
+	margin-right: 10px;
+	width: auto;
+}
+#swsales_banner_bottom_right.swsales_banner_template-photo {
+	border-top-left-radius: 40px;
+}
+#swsales_banner_bottom.swsales_banner_template-photo {
+	border-top-left-radius: 40px;
+	border-top-right-radius: 40px;
+	margin-left: 10px;
+	margin-right: 10px;
+	width: auto;
+}
+#swsales_banner_bottom.swsales_banner_template-photo a.dismiss {
+	bottom: 10px;
+	right: 15px;
+	top: auto;
+}
+

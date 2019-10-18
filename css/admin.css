@@ -1,60 +1,95 @@
-.edit-php.post-type-pmpro_sitewide_sale .wrap:before,
-.post-php.post-type-pmpro_sitewide_sale .wrap:before,
-.post-new-php.post-type-pmpro_sitewide_sale .wrap:before {
-	background-image: url( '../../images/Paid-Memberships-Pro.png' );
+/* Admin Header */
+.sitewide_sales_admin .sitewide_sales_banner {
+    display: grid;
+    grid-template-areas: "logo meta";
+    grid-template-columns: 360px auto;
+}
+.sitewide_sales_admin .sitewide_sales_banner a {
+	cursor: pointer;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_logo img {
+    height: auto;
+    width: 100%;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta {
+    align-self: center;
+    grid-area: meta;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta .sitewide_sales_version {
+    color: #6991ac;
+    display: inline-block;
+    font-weight: bold;
+    padding: 5px 10px 0px 2px;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a {
+    border-left: 1px solid #CCC;
+	color: #6991ac;
+    padding: 5px 10px;
+}
+
+/* Admin Messages */
+.sitewide_sales_message {
+    background: #FFF;
+    border-left: 4px solid #FFF;
+    margin-right: 15px;
+    padding: 15px;
+}
+.sitewide_sales_message.sitewide_sales_success {
+    background-color: rgba( 70, 180, 80, 0.1 );
+    border-left-color: rgb( 70, 180, 80 );
+}
+.sitewide_sales_message.sitewide_sales_error {
+    background-color: rgba( 220, 50, 50, 0.1 );
+    border-left-color: rgb( 220, 50, 50 );
+}
+.sitewide_sales_message.sitewide_sales_alert {
+    background-color: rgba( 255, 185, 0, 0.1 );
+    border-left-color: rgb( 255, 185, 0 );
+}
+.sitewide_sales_message.sitewide_sales_success a {
+    color: #208A1B;
+}
+.sitewide_sales_message.sitewide_sales_error a {
+    color: #CC0000;
+}
+.sitewide_sales_message.sitewide_sales_alert a {
+    color: #CF8516;
+}
+
+/* Sitewide Sales Custom Post Type */
+.edit-php.post-type-sitewide_sale .wrap:before,
+.post-php.post-type-sitewide_sale .wrap:before,
+.post-new-php.post-type-sitewide_sale .wrap:before {
+	background-image: url( '../images/Sitewide-Sales.png' );
 	background-size: contain;
 	background-repeat: no-repeat;
 	content: '';
 	display: block;
-	height: 75px;
+	height: 100px;
 }
-.post-type-pmpro_sitewide_sale textarea {
+.post-type-sitewide_sale textarea {
 	line-height: 1.4;
 	resize: vertical;
 	width: 88%;
 	padding: 1rem;
 	min-height: 4rem;
 }
-#swsales_options > table:nth-child(6) > tbody > tr > td > span {
-	width: 88%;
-}
-#swsales_cpt_publish_sitewide_sale .inside {
+.post-type-sitewide_sale .form-table tr th small a {
+	font-weight: normal;
+} 
+.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .inside {
 	margin: 0;
 	padding: 0;
 }
-
-#swsales_cpt_publish_sitewide_sale .misc-pub-section {
+.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .misc-pub-section {
 	padding: 0 12px;
 }
-
-.swsales_banner_css_selectors {
+.post-type-sitewide_sale .swsales_banner_css_selectors {
 	background: aliceblue;
 	padding: 1rem;
 	width: 77%;
-}
-
-/* Custom Box for PMPro 1.10 Welcome Experience */
-body.post-type-pmpro_sitewide_sale .pmpro-new-install {
-	padding: 2rem;
-	text-align: center;
-}
-body.post-type-pmpro_sitewide_sale .pmpro-new-install h2 {
-	color: #AAA;
-	font-size: 2rem;
-}
-body.post-type-pmpro_sitewide_sale .pmpro-new-install h2:before {
-	display: block;
-	font: 400 5rem/1.5 dashicons;
-}
-body.post-type-pmpro_sitewide_sale .pmpro-new-install h2:before {
-	content: "\f323";
-}
-body.post-type-pmpro_sitewide_sale .pmpro-new-install .button-primary,
-body.post-type-pmpro_sitewide_sale .pmpro-new-install .button {
-	font-size: 1.2em;
-	height: auto;
-	margin-bottom: .5rem;
-	padding: .75em 1.5em;
 }
 
 /* Sitewide Sale Reports Styles */
