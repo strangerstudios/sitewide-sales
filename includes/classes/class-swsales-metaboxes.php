@@ -144,12 +144,12 @@ class SWSales_MetaBoxes {
 		<div id="misc-publishing-actions">
 			<div class="misc-pub-section">
 				<p>
-					<label for="swsales_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale:', 'sitewide-sales' ); ?></strong></label>
+					<label for="swsales_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale', 'sitewide-sales' ); ?></strong></label>
 					<input name="swsales_set_as_sitewide_sale" id="swsales_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true ); ?> />
 				</p>
 			</div>
 			<div class="misc-pub-section">
-				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'admin.php?page=pmpro-reports&report=pmpro_sws_reports&pmpro_sws_sitewide_sale_id=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'sitewide-sales' ); ?></a></p>
+				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'sitewide-sales' ); ?></a></p>
 			</div>
 		</div>
 		<div id="major-publishing-actions">
@@ -184,7 +184,7 @@ class SWSales_MetaBoxes {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label for="swsales_start_date"><?php esc_html_e( 'Sale Start Date', 'sitewide-sales' ); ?>:</label></th>
+					<th scope="row" valign="top"><label for="swsales_start_date"><?php esc_html_e( 'Sale Start Date', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select id="swsales_start_month" name="swsales_start_month">
 							<?php
@@ -205,7 +205,7 @@ class SWSales_MetaBoxes {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row" valign="top"><label for="swsales_end_date"><?php esc_html_e( 'Sale End Date', 'sitewide-sales' ); ?>:</label></th>
+					<th scope="row" valign="top"><label for="swsales_end_date"><?php esc_html_e( 'Sale End Date', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select id="swsales_end_month" name="swsales_end_month">
 							<?php
@@ -225,7 +225,7 @@ class SWSales_MetaBoxes {
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?>:</label></th>
+					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<?php
 						$sale_status_running = $cur_sale->is_running();
@@ -411,40 +411,39 @@ class SWSales_MetaBoxes {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Pre-Sale Content', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top">
+						<label><?php esc_html_e( 'Pre-Sale Content', 'sitewide-sales' ); ?></label>
+						<?php if ( ! empty( $view_page_url ) ) { ?>
+							<br />
+							<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
+						<?php } ?>
+					</th>
 					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $cur_sale->get_pre_sale_content() ) ); ?></textarea><br />
-						<p><small class="pmpro_lite">
-							<?php esc_html_e( 'Mention when the sale is starting and how awesome it will be.', 'sitewide-sales' ); ?>
-							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
-							<?php } ?>
-						</small></p>
+						<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $cur_sale->get_pre_sale_content() ) ); ?></textarea>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Content', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top">
+						<label><?php esc_html_e( 'Sale Content', 'sitewide-sales' ); ?></label>
+						<?php if ( ! empty( $view_page_url ) ) { ?>
+							<br />
+							<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
+						<?php } ?>
+					</th>
 					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $cur_sale->get_sale_content() ) ); ?></textarea><br />
-						<p><small class="pmpro_lite">
-							<?php esc_html_e( 'A membership checkout form will automatically be included when the sale is active.', 'sitewide-sales' ); ?>
-							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
-							<?php } ?>
-						</small></p>
-						</small></p>
+						<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $cur_sale->get_sale_content() ) ); ?></textarea>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Post-Sale Content', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top">
+						<label><?php esc_html_e( 'Post-Sale Content', 'sitewide-sales' ); ?></label>
+						<?php if ( ! empty( $view_page_url ) ) { ?>
+							<br />
+							<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
+						<?php } ?>
+					</th>
 					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $cur_sale->get_post_sale_content() ) ); ?></textarea><br />
-						<p><small class="pmpro_lite">
-							<?php esc_html_e( 'Mention that the sale has ended and thank your customers.', 'sitewide-sales' ); ?>
-							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a>
-							<?php } ?>
-						</small></p>
+						<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $cur_sale->get_post_sale_content() ) ); ?></textarea>
 					</td>
 				</tr>
 			</tbody>
@@ -570,12 +569,12 @@ class SWSales_MetaBoxes {
 				</tr>
 				<tr>
 					<?php
-						$checked_modifier = $cur_sale->get_hide_on_chechout() ? ' checked' : '';
+						$checked_modifier = $cur_sale->get_hide_on_checkout() ? ' checked' : '';
 					?>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="hidden" name="swsales_hide_on_checkout_exists" value="1" />
-						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $cur_sale->get_hide_on_chechout(), 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
+						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $cur_sale->get_hide_on_checkout(), 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
 						<p><small class="pmpro_lite"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>

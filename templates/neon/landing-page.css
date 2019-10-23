@@ -1,0 +1,114 @@
+/**
+ * Neon Template for Sitewide Sales
+ *
+ * Landing Page Styles 
+ */
+
+body.swsales-landing-page-neon {
+	background: #000 url(images/darkness.png) repeat;
+	padding: 5.8rem 0;
+}
+#swsale-landing-page-wrap-neon {
+	margin-top: 0;
+}
+.swsales-landing-page-neon .swsales-landing-page-content_pre-sale,
+.swsales-landing-page-neon .swsales-landing-page-content_post-sale {
+	color: #FFF;
+	margin: 5.8rem;
+	text-align: center;
+}
+.swsales-landing-page-neon .swsales-landing-page-content {
+	color: #FFF;
+	text-align: center;
+}
+.swsales-landing-page-neon .swsales-landing-page-content a {
+	color: #FFF;
+}
+.swsales-landing-page-neon .swsales-landing-page-content h1 {
+	color: #FFF;
+	font-weight: 700;
+	margin-top: 0;
+}
+.swsales-landing-page-neon .swsales-landing-page-content h1 {
+	animation-name: SWSNeon;
+	animation-duration: 4s;
+	animation-direction: alternate-reverse;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	color: #55f47e;
+	font-size: 60px;
+	font-style: italic;
+	font-weight: 900;
+	line-height: 75px;
+	letter-spacing: -2px;
+	margin: 0;
+	padding: 0;
+	text-shadow: 0px 0px 15px #BBB;
+}
+.swsales-landing-page-neon .swsales-landing-page-content h3 {
+	animation-name: SWSNeon2;
+	animation-delay: 1s;
+	animation-duration: 1s;
+	animation-direction: alternate-reverse;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	color: #f084e7;
+	font-size: 40px;
+	font-style: italic;
+	font-weight: 900;
+	letter-spacing: -2px;
+	margin: 0 0 1em 0;
+	padding: 0;
+	text-shadow: 0px 0px 15px #BBB;
+}
+@keyframes SWSNeon {
+	0%{opacity: 1;}
+	2%{opacity: 0;}
+	4%{opacity: 1;}
+	80%{opacity: 1;}
+	82%{opacity: 0;}
+	84%{opacity: 1;}
+	100%{opacity: 1;}
+}
+@keyframes SWSNeon2 {
+	0%{opacity: 1;}
+	5%{opacity: 0;}
+	10%{opacity: 1;}
+	15%{opacity: 0;}
+	20%{opacity: 1;}
+	90%{opacity: 1;}
+	95%{opacity: 0;}
+	100%{opacity: 1;}
+}
+
+/* Paid Memberships Pro Integration Specific Styles */
+.swsales-landing-page-neon #pmpro_form {
+	margin: 0 auto;
+	max-width: 800px;
+}
+.swsales-landing-page-neon #pmpro_form hr {
+	display: none;
+}
+.swsales-landing-page-neon form#pmpro_form .pmpro_checkout {
+	background: #FFF;
+	margin: 2rem 0;
+}
+.swsales-landing-page-neon form#pmpro_form .pmpro_checkout h3 {
+	background: #0EBFE9;
+	border: none;
+	color: #FFF;
+}
+.swsales-landing-page-neon form#pmpro_form .pmpro_checkout h3 span.pmpro_checkout-h3-msg a {
+	color: #FFF;
+}
+.swsales-landing-page-neon form#pmpro_form .pmpro_checkout .pmpro_sslseal {
+	text-align: center;
+}
+
+/* WooCommerce Integration Specific Styles */
+.swsales-landing-page-neon .woocommerce { 
+	background: #FFF;
+	margin: 0 auto;
+	max-width: 800px;
+	padding: 2.9rem;
+}

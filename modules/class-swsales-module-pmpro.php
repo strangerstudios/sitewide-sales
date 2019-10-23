@@ -77,8 +77,11 @@ class SWSales_Module_PMPro {
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
 			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
 				<th></th>
-				<td><?php _e( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></td>
-
+				<td>
+					<div class="sitewide_sales_message sitewide_sales_error">
+						<p><?php echo esc_html( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></p>
+					</div>
+				</td>
 				<?php
 			} else {
 				global $wpdb;
@@ -135,7 +138,11 @@ class SWSales_Module_PMPro {
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
 			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
 				<th></th>
-				<td><?php _e( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></td>
+				<td>
+					<div class="sitewide_sales_message sitewide_sales_error">
+						<p><?php echo esc_html( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></p>
+					</div>
+				</td>
 				<?php
 			} else {
 				?>
@@ -171,7 +178,11 @@ class SWSales_Module_PMPro {
 		<tr class='swsales-module-row swsales-module-row-pmpro'>
 			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
 				<th></th>
-				<td><?php _e( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></td>
+				<td>
+					<div class="sitewide_sales_message sitewide_sales_error">
+						<p><?php echo esc_html( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></p>
+					</div>
+				</td>
 				<?php
 			} else {
 				?>

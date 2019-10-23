@@ -1,0 +1,28 @@
+/**
+ * Vintage Template for Sitewide Sales
+ *
+ * Banner Styles 
+ */
+
+.swsales_banner_template-vintage {
+	background: #1d2a2f url(../../images/green-dust-and-scratches.png) repeat;
+	color: #e5dfbd;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+	text-transform: uppercase;
+}
+.swsales_banner_template-vintage h3 {
+	color: #e5dfbd;
+	font-family: 'Lobster', sans-serif;
+	font-size: 30px;
+	font-variant: small-caps;
+	font-weight: 400;
+	line-height: 40px;
+	margin: 0;
+	padding: 0;
+	text-shadow: 5px 5px 0px rgba(0,0,0,0.3);
+	text-transform: none;
+}
+.swsales_banner_template-vintage a.dismiss:before {
+	color: #666;
+}

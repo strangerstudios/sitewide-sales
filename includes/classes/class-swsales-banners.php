@@ -115,7 +115,7 @@ class SWSales_Banners {
 			}
 
 			// Don't show on checkout page if option is set and user is on checkout page.
-			if ( $active_sitewide_sale->get_hide_on_chechout() && apply_filters( 'swsales_is_checkout_page', false, $active_sitewide_sale ) ) {
+			if ( $active_sitewide_sale->get_hide_on_checkout() && apply_filters( 'swsales_is_checkout_page', false, $active_sitewide_sale ) ) {
 				return;
 			}
 

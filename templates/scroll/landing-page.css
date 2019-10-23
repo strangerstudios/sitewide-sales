@@ -1,0 +1,98 @@
+/**
+ * Scroll Template for Sitewide Sales
+ *
+ * Landing Page Styles 
+ */
+
+body.swsales-landing-page-scroll {
+	background: #E4E3DF;
+	padding: 0 0 5.8rem 0;
+}
+#swsale-landing-page-wrap-scroll {
+	margin-top: 0;
+}
+#swsale-landing-page-wrap-scroll .swsales-landing-page-background-image {
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	padding: 2.9rem .9rem 12.9rem .9rem;
+}
+#swsale-landing-page-wrap-scroll .swsales-landing-page-content {
+	overflow: hidden;
+	padding: 0;
+	text-align: center;
+}
+#swsale-landing-page-wrap-scroll .swsales-landing-page-inner {
+	background: rgba( 255, 255, 255, 0.4 );
+	margin: 0 auto;
+	max-width: 800px;
+}
+#swsale-landing-page-wrap-scroll .swsales-landing-page-content h1 {
+	animation: SWSScroll 1s;
+	font-weight: normal;
+	margin: 2.9rem 2.9rem 0 2.9rem;
+}
+#swsale-landing-page-wrap-scroll .swsales-landing-page-content h3 {
+	animation: SWSFadeIn 3s;
+	font-weight: normal;
+	margin: 0 2.9rem 2.9rem 2.9rem;
+}
+@keyframes SWSScroll {
+	from {
+		margin-left: 100%;
+		width: 300%;
+	}
+	to {
+		margin-left: 0%;
+		width: 100%;
+	}
+}
+@keyframes SWSFadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Paid Memberships Pro Integration Specific Styles */
+.swsales-landing-page-scroll #pmpro_form {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -10rem;
+	max-width: 800px;
+}
+.swsales-landing-page-scroll #pmpro_form hr {
+	display: none;
+}
+.swsales-landing-page-scroll #pmpro_form .pmpro_checkout {
+	background: #FFF;
+	border: 1px solid #CCC;
+	margin-bottom: 2.9rem;
+	padding: 2.9rem;
+}
+.swsales-landing-page-scroll #pmpro_form .pmpro_checkout h3 {
+	background: none;
+	border: none;
+	margin: 0 0 1.45rem 0;
+	padding: 0;
+}
+.swsales-landing-page-scroll #pmpro_form .pmpro_checkout h3 span.pmpro_checkout-h3-name {
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+.swsales-landing-page-scroll #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
+	padding:  0;
+}
+
+/* WooCommerce Integration Specific Styles */
+.swsales-landing-page-scroll .woocommerce { 
+	background: #FFF;
+	border: 1px solid #CCC;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: -10rem;
+	max-width: 800px;
+	padding: 2.9rem;
+}

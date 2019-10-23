@@ -63,7 +63,7 @@ class SWSales_Sitewide_Sale {
 			'swsales_banner_title'          => $this->get_banner_title(),
 			'swsales_link_text'             => $this->get_link_text(),
 			'swsales_css_option'            => $this->get_css_option(),
-			'swsales_hide_on_checkout'      => $this->get_hide_on_chechout(),
+			'swsales_hide_on_checkout'      => $this->get_hide_on_checkout(),
 			'swsales_banner_impressions'    => $this->get_banner_impressions(),
 			'swsales_landing_page_visits'   => $this->get_landing_page_visits(),
 		);
@@ -500,7 +500,7 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @return bool
 	 */
-	public function get_hide_on_chechout() {
+	public function get_hide_on_checkout() {
 		if ( isset( $this->post_meta['swsales_hide_on_checkout'] ) ) {
 			return $this->post_meta['swsales_hide_on_checkout'];
 		} else {

@@ -1,0 +1,37 @@
+/**
+ * Neon Template for Sitewide Sales
+ *
+ * Banner Styles 
+ */
+
+.swsales_banner_template-neon {
+	background: #000 url(../../images/darkness.png) repeat;
+	color: #FFF;
+}
+.swsales_banner_template-neon h3 {
+	animation-name: SWSNeon2;
+	animation-delay: 1s;
+	animation-duration: 1s;
+	animation-direction: alternate-reverse;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+	color: #f084e7;
+	font-size: 30px;
+	font-style: italic;
+	font-weight: 900;
+	letter-spacing: -2px;
+	text-shadow: 0px 0px 15px #BBB;
+}
+.swsales_banner_template-neon a.dismiss:before {
+	color: #666;
+}
+@keyframes SWSNeon2 {
+	0%{opacity: 1;}
+	5%{opacity: 0;}
+	10%{opacity: 1;}
+	15%{opacity: 0;}
+	20%{opacity: 1;}
+	90%{opacity: 1;}
+	95%{opacity: 0;}
+	100%{opacity: 1;}
+}

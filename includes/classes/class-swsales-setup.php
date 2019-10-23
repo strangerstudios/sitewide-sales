@@ -40,8 +40,8 @@ class SWSales_Setup {
 	 * Enqueues frontend stylesheet.
 	 */
 	public static function swsales_frontend_scripts() {
-		wp_register_style( 'swsales_admin_frontend', plugins_url( 'css/frontend.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
-		wp_enqueue_style( 'swsales_admin_frontend' );
+		wp_register_style( 'swsales_frontend', plugins_url( 'css/frontend.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
+		wp_enqueue_style( 'swsales_frontend' );
 
 		/*
 		 * Load Google Fonts depending on selected template.
