@@ -39,6 +39,7 @@ class SWSales_Module_WC {
 
 		// Automatic coupon application.
 		add_filter( 'wp', array( __CLASS__, 'automatic_coupon_application' ) );
+		add_filter( 'woocommerce_get_price_html', array( __CLASS__, 'strike_prices' ), 10, 2 );
 
 		// WC-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
@@ -251,6 +252,54 @@ class SWSales_Module_WC {
 				$cart->apply_coupon( $coupon->get_code() );
 			}
 		}
+	}
+
+	/**
+	 * Strike out prices when a coupon code is applied.
+	 *
+	 * @param  string     $price   being displayed.
+	 * @param  WC_Product $product that price is being generated for.
+	 * @return string     new price.
+	 */
+	public static function strike_prices( $price, $product ) {
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
+			return $price;
+		}
+
+		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		if ( null !== $coupon_id && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) {
+			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
+			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product, $values ) ) {
+				// Get pricing for simple products.
+				if ( 'simple' === $product->product_type ) {
+					// Get normal price.
+					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
+					$sale_price    = get_post_meta( $product->get_id(), '_sale_price', true );
+					// Set price to sale price if available.
+					if ( ! empty( $sale_price ) ) {
+						$regular_price = $sale_price;
+					}
+
+					$discount_amount  = $coupon->get_discount_amount( $regular_price );
+					$discount_amount  = min( $regular_price, $discount_amount );
+					$discounted_price = max( $regular_price - $discount_amount, 0 );
+					// Update price variable so we can return it later.
+					$price = '<del>' . wc_price( $regular_price ) . '</del> ' . wc_price( $discounted_price );
+				}
+
+				// Get pricing for variable products.
+				if ( 'variable' === $product->product_type ) {
+					$prices           = $product->get_variation_prices( true );
+					$min_price        = current( $prices['price'] );
+					$max_price        = end( $prices['price'] );
+					$regular_range    = wc_format_price_range( $min_price, $max_price );
+					$discounted_range = wc_format_price_range( $coupon->get_discount_amount( $min_price ), $coupon->get_discount_amount( $max_price ) );
+					$price            = '<del>' . $regular_range . '</del> ' . $discounted_range;
+				}
+			}
+		}
+		return $price;
 	}
 
 	/**
