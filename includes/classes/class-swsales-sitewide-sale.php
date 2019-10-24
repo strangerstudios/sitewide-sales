@@ -351,10 +351,10 @@ class SWSales_Sitewide_Sale {
 	public function should_apply_automatic_discount() {
 		switch ( $this->get_automatic_discount() ) {
 			case 'all':
-				return true;
+				return $this->is_running();
 			case 'landing':
 				$cookie_name = 'swsales_' . $this->get_id() . '_tracking';
-				return ( isset( $_COOKIE[ $cookie_name ] ) && false !== strpos( $_COOKIE[ $cookie_name ], ';1' ) );
+				return ( $this->is_running() && isset( $_COOKIE[ $cookie_name ] ) && false !== strpos( $_COOKIE[ $cookie_name ], ';1' ) );
 			default:
 				return false;
 		}

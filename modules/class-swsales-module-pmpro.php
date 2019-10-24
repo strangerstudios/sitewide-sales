@@ -478,7 +478,7 @@ class SWSales_Module_PMPro {
 	 */
 	public static function automatic_discount_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
-		if ( null === $active_sitewide_sale || 'pmpro' !== $active_sitewide_sale->get_sale_type() ) {
+		if ( null === $active_sitewide_sale || 'pmpro' !== $active_sitewide_sale->get_sale_type() || ! $active_sitewide_sale->should_apply_automatic_discount() ) {
 			return;
 		}
 		global $wpdb, $pmpro_pages;
@@ -486,11 +486,7 @@ class SWSales_Module_PMPro {
 			return;
 		}
 		$discount_code_id = $active_sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
-		if ( null === $discount_code_id || ! $active_sitewide_sale->is_running() ) {
-			return;
-		}
-		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
-		if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1' ) ) {
+		if ( null === $discount_code_id ) {
 			return;
 		}
 		$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
