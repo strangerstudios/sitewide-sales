@@ -201,7 +201,7 @@ class SWSales_MetaBoxes {
 						</select>
 						<input id="swsales_start_day" name="swsales_start_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_day() ); ?>" />
 						<input id="swsales_start_year" name="swsales_start_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_start_year() ); ?>" />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the first day of your sale.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'Set this date to the first day of your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -222,34 +222,39 @@ class SWSales_MetaBoxes {
 						</select>
 						<input id="swsales_end_day" name="swsales_end_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_day() ); ?>" />
 						<input id="swsales_end_year" name="swsales_end_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_end_year() ); ?>" />
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<?php
-						$sale_status_running = $cur_sale->is_running();
-						$error_message = '';
+							$sale_status_running = $cur_sale->is_running();
 
-						echo( '<p><strong>' . ( $sale_status_running ? 'Running' : 'Not Running' ) . '</strong></p>' );
-						if ( ! $sale_status_running ) {
-							if ( ! $cur_sale->is_active_sitewide_sale() ) {
-								$error_message = 'This is not the active sitewide sale.';
+							if ( $sale_status_running === true ) {
+								echo '<p class="sitewide_sales_message sitewide_sales_success">';
+								echo '<strong>' . esc_html( 'Running.', 'sitewide-sales' ) . '</strong>';
 							} else {
-								switch ( $cur_sale->get_time_period() ) {
-									case 'error':
-										$error_message = 'Invalid timeframe.';
-										break;
-									case 'pre-sale':
-										$error_message = 'Sale has not yet started.';
-										break;
-									case 'post-sale':
-										$error_message = 'Sale has ended.';
-										break;
+								echo '<div class="sitewide_sales_message sitewide_sales_alert">';
+								echo '<strong>' . esc_html( 'Not Running.', 'sitewide-sales' ) . '</strong>';
+
+								if ( ! $cur_sale->is_active_sitewide_sale() ) {
+									$error_message = 'This is not the active sitewide sale.';
+								} else {
+									switch ( $cur_sale->get_time_period() ) {
+										case 'error':
+											$error_message = esc_html( 'Invalid timeframe.', 'sitewide-sales' );
+											break;
+										case 'pre-sale':
+											$error_message = esc_html( 'Sale has not yet started.', 'sitewide-sales' );
+											break;
+										case 'post-sale':
+											$error_message = esc_html( 'Sale has ended.', 'sitewide-sales' );
+											break;
+									}
 								}
+								echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' );
 							}
-							echo( '<p><small> ' . esc_html( $error_message ) . ' Banner will not be shown.</small></p>' );
-						}
+							echo '</p>';
 						?>
 					</td>
 				<tr>
@@ -337,7 +342,8 @@ class SWSales_MetaBoxes {
 								echo '<option value="' . esc_attr( $page->ID ) . '"' . $selected_modifier . '>' . esc_html( $page->post_title ) . $status_part . '</option>';
 							}
 							?>
-						</select><br />
+						</select>
+
 						<?php
 							$current_page_post = get_post( $current_page );
 						if ( ! empty( $current_page_post->post_content ) && strpos( $current_page_post->post_content, '[sitewides_sale' ) !== false ) {
@@ -346,11 +352,10 @@ class SWSales_MetaBoxes {
 							$show_shortcode_warning = true;
 						}
 						?>
-						<p
-						<?php
-						if ( ! $show_shortcode_warning ) {
-						?>
-  style="display: none;"<?php } ?> class="swsales_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The [sitewide_sales] shortcode was not found in this post.', 'sitewide-sales' ); ?></small></p>
+						<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
+							<?php if ( ! $show_shortcode_warning ) { ?>style="display: none;"<?php } ?>>
+							<?php echo wp_kses_post( '<strong>Warning:</strong> The [sitewide_sales] shortcode was not found in this post.', 'sitewide-sales' ); ?>
+						</p>
 
 						<p>
 							<span id="swsales_after_landing_page_select" 
@@ -373,41 +378,36 @@ class SWSales_MetaBoxes {
 						</p>
 					</td>
 				</tr>
-				<?php
-					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
-				//if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'swsales_allow_template' ) === 'Yes' ) ) {
-				if ( defined( 'MEMBERLITE_VERSION' ) || true ) {
-					?>
-					<tr>
-						<th><label for="swsales_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'sitewide-sales' ); ?></label></th>
-						<td>
-							<select class="landing_page_select_template swsales_option" id="swsales_landing_page_template" name="swsales_landing_page_template">
-								<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
-								<?php
-								$templates = SWSales_Templates::get_templates();
-								$templates = apply_filters( 'swsales_landing_page_templates', $templates );
-								foreach ( $templates as $key => $value ) {
-									echo '<option value="' . esc_attr( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
-								}
-								?>
-							</select>
-							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></small></p>
-						</td>
-					</tr>
+				<tr>
+					<th><label for="swsales_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'sitewide-sales' ); ?></label></th>
+					<td>
+						<select class="landing_page_select_template swsales_option" id="swsales_landing_page_template" name="swsales_landing_page_template">
+							<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
+							<?php
+							$templates = SWSales_Templates::get_templates();
+							$templates = apply_filters( 'swsales_landing_page_templates', $templates );
+							foreach ( $templates as $key => $value ) {
+								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+							}
+							?>
+						</select>
+						<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
+					</td>
+				</tr>
+
 				<?php 
-					} 
 					// Add filter for modules here.
 					do_action( 'swsales_after_choose_landing_page', $cur_sale );
 				?>
+
 			</tbody>
 		</table>
 		<hr />
 		<p><?php _e( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'sitewide-sales' ); ?></p>
-		<p
-		<?php
-		if ( ! $show_shortcode_warning ) {
-			?>
-  style="display: none;"<?php } ?> class="swsales_shortcode_warning"><small class="pmpro_red"><?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?></small></p>
+		<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
+			<?php if ( ! $show_shortcode_warning ) { ?> style="display: none;"<?php } ?>>
+			<?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?>
+		</p>
 		<table class="form-table">
 			<tbody>
 				<tr>
@@ -480,65 +480,55 @@ class SWSales_MetaBoxes {
 							?>
 						</select>
 						<input type="submit" class="button button-secondary" id="swsales_preview" name="swsales_preview" value="<?php esc_attr_e( 'Save and Preview', 'sitewide-sales' ); ?>">
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Optionally display a banner, which you can customize using additional settings below, to advertise your sale.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'Optionally display a banner, which you can customize using additional settings below, to advertise your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<table class="form-table" id="swsales_banner_options" 
-		<?php
-		if ( $use_banner === 'no' ) {
-			?>
-			style="disaply: none;"<?php } ?>>
+		<table class="form-table" id="swsales_banner_options"<?php if ( $use_banner === 'no' ) { ?> style="display: none;"<?php } ?>>
 			<tbody>
-				<?php
-					// Allow template selection if using Memberlite or set the Advanced Setting to "Yes".
-				//if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'swsales_allow_template' ) === 'Yes' ) ) {
-				if ( defined( 'MEMBERLITE_VERSION' ) || true ) {
-					?>
-					<tr>
-						<th><label for="swsales_banner_template"><?php esc_html_e( 'Banner Template', 'sitewide-sales' ); ?></label></th>
-						<td>
-							<select class="banner_select_template swsales_option" id="swsales_banner_template" name="swsales_banner_template">
-								<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
-								<?php
-								$templates = SWSales_Templates::get_templates();
-								$templates = apply_filters( 'swsales_banner_templates', $templates );
-								foreach ( $templates as $key => $value ) {
-									echo '<option value="' . esc_attr( $key ) . '" ' . selected( $banner_template, $key ) . '>' . esc_html( $value ) . '</option>';
-								}
-								?>
-							</select>
-							<p><small class="pmpro_lite"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></small></p>
-						</td>
-					</tr>
-				<?php } ?>
+				<tr>
+					<th><label for="swsales_banner_template"><?php esc_html_e( 'Banner Template', 'sitewide-sales' ); ?></label></th>
+					<td>
+						<select class="banner_select_template swsales_option" id="swsales_banner_template" name="swsales_banner_template">
+							<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
+							<?php
+							$templates = SWSales_Templates::get_templates();
+							$templates = apply_filters( 'swsales_banner_templates', $templates );
+							foreach ( $templates as $key => $value ) {
+								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $banner_template, $key ) . '>' . esc_html( $value ) . '</option>';
+							}
+							?>
+						</select>
+						<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
+					</td>
+				</tr>
 				<tr>
 					<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="textbox" name="swsales_banner_title" value="<?php echo esc_attr( $cur_sale->get_banner_title() ); ?>">
-						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="swsales_banner_text"><?php esc_html_e( 'Banner Text', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo esc_textarea( $cur_sale->get_banner_text(), 'sitewide-sales' ); ?></textarea>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input class="swsales_option" type="text" name="swsales_link_text" value="<?php echo esc_attr( $cur_sale->get_link_text() ); ?>">
-						<p><small class="pmpro_lite"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<textarea class="swsales_option" name="swsales_css_option"><?php echo esc_textarea( $cur_sale->get_css_option() ); ?></textarea>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'sitewide-sales' ); ?></p>
 
 						<p id="swsales_css_selectors_description" class="description" 
 						<?php
@@ -575,7 +565,7 @@ class SWSales_MetaBoxes {
 					<td>
 						<input type="hidden" name="swsales_hide_on_checkout_exists" value="1" />
 						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $cur_sale->get_hide_on_checkout(), 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<?php
