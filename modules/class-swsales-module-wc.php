@@ -277,14 +277,7 @@ class SWSales_Module_WC {
 			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
 				if ( is_a( $product, 'WC_Product_Simple' ) ) {
-					// Get normal price.
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
-					$sale_price    = get_post_meta( $product->get_id(), '_sale_price', true );
-					// Set price to sale price if available.
-					if ( ! empty( $sale_price ) ) {
-						$regular_price = $sale_price;
-					}
-
 					$discount_amount  = $coupon->get_discount_amount( $regular_price );
 					$discount_amount  = min( $regular_price, $discount_amount );
 					$discounted_price = max( $regular_price - $discount_amount, 0 );
@@ -297,8 +290,17 @@ class SWSales_Module_WC {
 					$prices           = $product->get_variation_prices( true );
 					$min_price        = current( $prices['price'] );
 					$max_price        = end( $prices['price'] );
+
+					$min_discount_amount  = $coupon->get_discount_amount( $min_price );
+					$min_discount_amount  = min( $min_price, $min_discount_amount );
+					$min_discounted_price = max( $min_price - $min_discount_amount, 0 );
+
+					$max_discount_amount  = $coupon->get_discount_amount( $max_price );
+					$max_discount_amount  = min( $max_price, $max_discount_amount );
+					$max_discounted_price = max( $max_price - $max_discount_amount, 0 );
+
 					$regular_range    = wc_format_price_range( $min_price, $max_price );
-					$discounted_range = wc_format_price_range( $coupon->get_discount_amount( $min_price ), $coupon->get_discount_amount( $max_price ) );
+					$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
 					$price            = '<del>' . $regular_range . '</del> ' . $discounted_range;
 				}
 			}
