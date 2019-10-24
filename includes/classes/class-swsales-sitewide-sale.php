@@ -343,6 +343,24 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Returns whether the current user should have the sitewide sale's discount
+	 * automatically applied.
+	 *
+	 * @return bool
+	 */
+	public function should_apply_automatic_discount() {
+		switch ( $this->get_automatic_discount() ) {
+			case 'all':
+				return true;
+			case 'landing':
+				$cookie_name = 'swsales_' . $this->get_id() . '_tracking';
+				return ( isset( $_COOKIE[ $cookie_name ] ) && false !== strpos( $_COOKIE[ $cookie_name ], ';1' ) );
+			default:
+				return false;
+		}
+	}
+
+	/**
 	 * Returns the ID of the sale landing page
 	 * or 0 if it is not set.
 	 *
