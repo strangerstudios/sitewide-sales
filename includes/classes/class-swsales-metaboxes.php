@@ -293,9 +293,35 @@ class SWSales_MetaBoxes {
 					</td>
 				</tr>
 				<?php 
-				// Add filter to add custom settings from module 
+				// Filter to add custom settings from module .
 				do_action( 'swsales_after_choose_sale_type', $cur_sale );
 				?>
+				<tr>
+					<th><label for="swsales_automatic_discount"><?php esc_html_e( 'Apply Discount Automatically', 'sitewide-sales' ); ?></label></th>
+					<td>
+						<select class="swsales_option" id="swsales_automatic_discount_select" name="swsales_automatic_discount">
+							<option value="none"
+								<?php
+								$cur_sale_automatic_discount = $cur_sale->get_automatic_discount();
+								echo( 'none' === $cur_sale_automatic_discount ? " selected='selected'>" : '>' );
+								esc_html_e( 'Do not apply discount automatically.', 'sitewide-sales' );
+								?>
+							</option>
+							<option value="landing"
+								<?php
+								echo( 'landing' === $cur_sale_automatic_discount ? " selected='selected'>" : '>' );
+								esc_html_e( 'Apply discount automatically if user has seen the landing page.', 'sitewide-sales' );
+								?>
+							</option>
+							<option value="all"
+								<?php
+								echo( 'all' === $cur_sale_automatic_discount ? " selected='selected'>" : '>' );
+								esc_html_e( 'Always apply discount automatically.', 'sitewide-sales' );
+								?>
+							</option>
+						</select>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
@@ -659,6 +685,10 @@ class SWSales_MetaBoxes {
 
 		if ( isset( $_POST['swsales_sale_type'] ) ) {
 			update_post_meta( $post_id, 'swsales_sale_type', sanitize_text_field( $_POST['swsales_sale_type'] ) );
+		}
+
+		if ( isset( $_POST['swsales_automatic_discount'] ) ) {
+			update_post_meta( $post_id, 'swsales_automatic_discount', sanitize_text_field( $_POST['swsales_automatic_discount'] ) );
 		}
 
 		if ( ! empty( $_POST['swsales_landing_page_post_id'] ) ) {
