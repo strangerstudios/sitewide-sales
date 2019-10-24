@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Sitewide Sales
- * Plugin URI: https://github.com/strangerstudios/sitewide-sales
- * Description: Create, manage, and view advanced reports for a sitewide or flash sale on membership (Black Friday or Cyber Monday).
+ * Plugin URI: https://sitewidesales.com
+ * Description: Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
  * Author: Stranger Studios
  * Author URI: https://www.strangerstudios.com
  * Version: .1
