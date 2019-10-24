@@ -320,6 +320,7 @@ class SWSales_MetaBoxes {
 								?>
 							</option>
 						</select>
+						<p><small><?php esc_html_e( 'Caching plugins may interfere with this functionality. If using caching on your site, consider never giving an automatic discount or always giving an automatic discount.', 'sitewide-sales' ); ?></small></p>
 					</td>
 				</tr>
 			</tbody>
