@@ -97,17 +97,25 @@ class SWSales_Module_WC {
 								$selected_modifier = '';
 								if ( $coupon->ID === $current_coupon ) {
 									$selected_modifier = ' selected="selected"';
-									$coupon_found        = true;
+									$coupon_found      = $coupon;
 								}
 								echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
 							}
 							?>
 						</select>
+						<?php
+						if ( false !== $coupon_found ) {
+							$coupon_obj = new \WC_Coupon( $coupon_found->ID );
+							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date("Y-m-d") >= ( $coupon_obj->get_date_expires() )->date( 'Y-m-d' ) ) {
+								echo '<p>This coupon expires on or before the Sitewide Sale\'s end date.</p>';
+							}
+						}
+						?>
 						<p>
 							<span id="swsales_wc_after_coupon_select">
 							<?php
-							if ( $coupon_found ) {
-								$edit_coupon_url = get_edit_post_link( $coupon->ID );
+							if ( false !== $coupon_found ) {
+								$edit_coupon_url = get_edit_post_link( $coupon_found->ID );
 							} else {
 								$edit_coupon_url = '#';
 							}
