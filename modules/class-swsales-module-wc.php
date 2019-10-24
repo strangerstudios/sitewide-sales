@@ -276,7 +276,7 @@ class SWSales_Module_WC {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
 			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product, $values ) ) {
 				// Get pricing for simple products.
-				if ( 'simple' === $product->product_type ) {
+				if ( is_a( $product, 'WC_Product_Simple' ) ) {
 					// Get normal price.
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
 					$sale_price    = get_post_meta( $product->get_id(), '_sale_price', true );
@@ -293,7 +293,7 @@ class SWSales_Module_WC {
 				}
 
 				// Get pricing for variable products.
-				if ( 'variable' === $product->product_type ) {
+				if ( is_a( $product, 'WC_Product_Variable' ) ) {
 					$prices           = $product->get_variation_prices( true );
 					$min_price        = current( $prices['price'] );
 					$max_price        = end( $prices['price'] );
