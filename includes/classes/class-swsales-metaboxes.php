@@ -166,7 +166,7 @@ class SWSales_MetaBoxes {
 	 */
 	public static function update_title_placeholder_text( $text, $post ) {
 		if ( $post->post_type == 'sitewide_sale' ) {
-			$text = esc_html__( 'Enter title here. (For reference only.)', 'sitewide-sales' );
+			$text = esc_html__( 'Enter title here (Internal use only).', 'sitewide-sales' );
 		}
 
 		return $text;
