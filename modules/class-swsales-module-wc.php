@@ -274,7 +274,7 @@ class SWSales_Module_WC {
 		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
 		if ( null !== $coupon_id && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
-			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product, $values ) ) {
+			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
 				if ( is_a( $product, 'WC_Product_Simple' ) ) {
 					// Get normal price.
