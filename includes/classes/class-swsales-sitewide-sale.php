@@ -53,6 +53,7 @@ class SWSales_Sitewide_Sale {
 			'swsales_end_month'             => $this->get_end_month(),
 			'swsales_end_year'              => $this->get_end_year(),
 			'swsales_sale_type'             => $this->get_sale_type(),
+			'swsales_automatic_discount'    => $this->get_automatic_discount(),
 			'swsales_landing_page_post_id'  => $this->get_landing_page_post_id(),
 			'swsales_landing_page_template' => $this->get_landing_page_template(),
 			'swsales_pre_sale_content'      => $this->get_pre_sale_content(),
@@ -321,6 +322,41 @@ class SWSales_Sitewide_Sale {
 			return $this->post_meta['swsales_sale_type'];
 		} else {
 			return '';
+		}
+	}
+
+	/**
+	 * Returns whether to apply discount automatically.
+	 * Options are 'none', 'landing','all'.
+	 * 'none' if no users should get automatic discount
+	 * 'landing' if users who have seen the landing page should get automatic discount
+	 * 'all' if all users should get automatic discount
+	 *
+	 * @return string
+	 */
+	public function get_automatic_discount() {
+		if ( isset( $this->post_meta['swsales_automatic_discount'] ) ) {
+			return $this->post_meta['swsales_automatic_discount'];
+		} else {
+			return 'none';
+		}
+	}
+
+	/**
+	 * Returns whether the current user should have the sitewide sale's discount
+	 * automatically applied.
+	 *
+	 * @return bool
+	 */
+	public function should_apply_automatic_discount() {
+		switch ( $this->get_automatic_discount() ) {
+			case 'all':
+				return $this->is_running();
+			case 'landing':
+				$cookie_name = 'swsales_' . $this->get_id() . '_tracking';
+				return ( $this->is_running() && isset( $_COOKIE[ $cookie_name ] ) && false !== strpos( $_COOKIE[ $cookie_name ], ';1' ) );
+			default:
+				return false;
 		}
 	}
 

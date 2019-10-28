@@ -88,7 +88,7 @@ class SWSales_Module_PMPro {
 				$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
 				$current_discount = $cur_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
 				?>
-					<th><label for="swsales_pmpro_discount_code_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
+					<th><label for="swsales_pmpro_discount_code_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="discount_code_select swsales_option" id="swsales_pmpro_discount_code_select" name="swsales_pmpro_discount_code_id">
 							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
@@ -98,16 +98,26 @@ class SWSales_Module_PMPro {
 								$selected_modifier = '';
 								if ( $code->id === $current_discount ) {
 									$selected_modifier = ' selected="selected"';
-									$code_found        = true;
+									$code_found        = $code;
 								}
-								echo '<option value="' . esc_attr( $code->id ) . '"' . $selected_modifier . '>' . esc_html( $code->code ) . '</option>';
+								echo '<option value="' . esc_attr( $code->id ) . '"' . esc_html( $selected_modifier ) . '>' . esc_html( $code->code ) . '</option>';
 							}
 							?>
 						</select>
+						<?php
+						if ( false !== $code_found ) {
+							if ( $cur_sale->get_end_date( 'Y-m-d' ) > $code_found->expires ) {
+								echo "<p class='swsale_pmpro_discount_code_error'>" . __( "This discount code expires before the Sitewide Sale's end date. ", 'sitewide-sales' ) . '</p>';
+							}
+							if ( $cur_sale->get_start_date( 'Y-m-d' ) < $code_found->starts ) {
+								echo "<p class='swsale_pmpro_discount_code_error'>" . __( "This discount code starts after the Sitewide Sale's start date. ", 'sitewide-sales' ) . '</p>';
+							}
+						}
+						?>
 						<p>
 							<span id="swsales_pmpro_after_discount_code_select">
 							<?php
-							if ( $code_found ) {
+							if ( false !== $code_found ) {
 								$edit_code_url = admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $current_discount );
 							} else {
 								$edit_code_url = '#';
@@ -116,7 +126,7 @@ class SWSales_Module_PMPro {
 								<a target="_blank" class="button button-secondary" id="swsales_pmpro_edit_discount_code" href="<?php echo esc_url( $edit_code_url ); ?>"><?php esc_html_e( 'edit code', 'sitewide-sales' ); ?></a>
 								<?php
 								esc_html_e( ' or ', 'sitewide-sales' );
-							?>
+								?>
 							</span>
 							<button type="button" id="swsales_pmpro_create_discount_code" class="button button-secondary"><?php esc_html_e( 'create a new discount code', 'sitewide-sales' ); ?></button>
 							<p class="description"><?php esc_html_e( 'Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page.', 'sitewide-sales' ); ?></p>
@@ -468,7 +478,7 @@ class SWSales_Module_PMPro {
 	 */
 	public static function automatic_discount_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
-		if ( null === $active_sitewide_sale || 'pmpro' !== $active_sitewide_sale->get_sale_type() ) {
+		if ( null === $active_sitewide_sale || 'pmpro' !== $active_sitewide_sale->get_sale_type() || ! $active_sitewide_sale->should_apply_automatic_discount() ) {
 			return;
 		}
 		global $wpdb, $pmpro_pages;
@@ -476,11 +486,7 @@ class SWSales_Module_PMPro {
 			return;
 		}
 		$discount_code_id = $active_sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
-		if ( null === $discount_code_id || ! $active_sitewide_sale->is_running() ) {
-			return;
-		}
-		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
-		if ( ! isset( $_COOKIE[ $cookie_name ] ) || false == strpos( $_COOKIE[ $cookie_name ], ';1' ) ) {
+		if ( null === $discount_code_id ) {
 			return;
 		}
 		$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );

@@ -97,17 +97,25 @@ class SWSales_Module_WC {
 								$selected_modifier = '';
 								if ( $coupon->ID === $current_coupon ) {
 									$selected_modifier = ' selected="selected"';
-									$coupon_found        = true;
+									$coupon_found      = $coupon;
 								}
 								echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
 							}
 							?>
 						</select>
+						<?php
+						if ( false !== $coupon_found ) {
+							$coupon_obj = new \WC_Coupon( $coupon_found->ID );
+							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date("Y-m-d") >= ( $coupon_obj->get_date_expires() )->date( 'Y-m-d' ) ) {
+								echo "<p id='swsale_wc_coupon_expiry_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+							}
+						}
+						?>
 						<p>
 							<span id="swsales_wc_after_coupon_select">
 							<?php
-							if ( $coupon_found ) {
-								$edit_coupon_url = get_edit_post_link( $coupon->ID );
+							if ( false !== $coupon_found ) {
+								$edit_coupon_url = get_edit_post_link( $coupon_found->ID );
 							} else {
 								$edit_coupon_url = '#';
 							}
@@ -241,20 +249,13 @@ class SWSales_Module_WC {
 
 	public static function automatic_coupon_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
-		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
+		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() || ! $active_sitewide_sale->should_apply_automatic_discount() ) {
 			return;
 		}
-		$cookie_name = 'swsales_' . $active_sitewide_sale->get_id() . '_tracking';
-		if (
-			is_page( $active_sitewide_sale->get_landing_page_post_id() ) ||
-			( isset( $_COOKIE[ $cookie_name ] ) &&
-			false !== strpos( $_COOKIE[ $cookie_name ], ';1' ) )
-		) {
-			$cart = WC()->cart;
-			$coupon = new \WC_Coupon( $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
-			if ( ! $cart->has_discount( $coupon->get_code() ) && $coupon->is_valid() ) {
-				$cart->apply_coupon( $coupon->get_code() );
-			}
+		$cart = WC()->cart;
+		$coupon = new \WC_Coupon( $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
+		if ( ! $cart->has_discount( $coupon->get_code() ) && $coupon->is_valid() ) {
+			$cart->apply_coupon( $coupon->get_code() );
 		}
 	}
 
@@ -274,17 +275,10 @@ class SWSales_Module_WC {
 		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
 		if ( null !== $coupon_id && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
-			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product, $values ) ) {
+			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
-				if ( 'simple' === $product->product_type ) {
-					// Get normal price.
+				if ( is_a( $product, 'WC_Product_Simple' ) ) {
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
-					$sale_price    = get_post_meta( $product->get_id(), '_sale_price', true );
-					// Set price to sale price if available.
-					if ( ! empty( $sale_price ) ) {
-						$regular_price = $sale_price;
-					}
-
 					$discount_amount  = $coupon->get_discount_amount( $regular_price );
 					$discount_amount  = min( $regular_price, $discount_amount );
 					$discounted_price = max( $regular_price - $discount_amount, 0 );
@@ -293,12 +287,21 @@ class SWSales_Module_WC {
 				}
 
 				// Get pricing for variable products.
-				if ( 'variable' === $product->product_type ) {
+				if ( is_a( $product, 'WC_Product_Variable' ) ) {
 					$prices           = $product->get_variation_prices( true );
 					$min_price        = current( $prices['price'] );
 					$max_price        = end( $prices['price'] );
+
+					$min_discount_amount  = $coupon->get_discount_amount( $min_price );
+					$min_discount_amount  = min( $min_price, $min_discount_amount );
+					$min_discounted_price = max( $min_price - $min_discount_amount, 0 );
+
+					$max_discount_amount  = $coupon->get_discount_amount( $max_price );
+					$max_discount_amount  = min( $max_price, $max_discount_amount );
+					$max_discounted_price = max( $max_price - $max_discount_amount, 0 );
+
 					$regular_range    = wc_format_price_range( $min_price, $max_price );
-					$discounted_range = wc_format_price_range( $coupon->get_discount_amount( $min_price ), $coupon->get_discount_amount( $max_price ) );
+					$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
 					$price            = '<del>' . $regular_range . '</del> ' . $discounted_range;
 				}
 			}

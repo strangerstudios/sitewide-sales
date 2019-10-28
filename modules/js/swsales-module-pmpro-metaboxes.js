@@ -18,6 +18,7 @@ jQuery( document ).ready(
 		}
 		$( '#swsales_pmpro_discount_code_select' ).change(
 			function(){
+				$( '.swsale_pmpro_discount_code_error' ).hide();
 				swsales_pmpro_toggle_discount_code();
 			}
 		);
