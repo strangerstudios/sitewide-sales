@@ -430,10 +430,18 @@ class SWSales_Module_PMPro {
 			$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
 		}
 
-		if ( ! has_shortcode( $queried_object->post_content, 'swsales' ) ) {
+		if ( ! has_shortcode( $queried_object->post_content, 'sitewide_sales' ) ) {
 			return;
 		}
+
+		// May be overwritten by PMPro.
+		add_shortcode( 'pmpro_checkout', array( __CLASS__, 'manual_pmpro_checkout_shortcode_implementation' ) );
 		require_once PMPRO_DIR . '/preheaders/checkout.php';
+	}
+
+	public static function manual_pmpro_checkout_shortcode_implementation() {
+		$temp_content = pmpro_loadTemplate( 'checkout', 'local', 'pages' );
+		return apply_filters( 'pmpro_pages_shortcode_checkout', $temp_content );
 	}
 
 	/**
