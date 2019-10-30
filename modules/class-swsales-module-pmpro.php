@@ -401,7 +401,7 @@ class SWSales_Module_PMPro {
 	}
 
 	/**
-	 * Load the checkout preheader on the landing page.
+	 * Load the checkout and levels preheaders on the landing page.
 	 */
 	public static function load_pmpro_preheader() {
 		global $wpdb;
@@ -437,11 +437,18 @@ class SWSales_Module_PMPro {
 		// May be overwritten by PMPro.
 		add_shortcode( 'pmpro_checkout', array( __CLASS__, 'manual_pmpro_checkout_shortcode_implementation' ) );
 		require_once PMPRO_DIR . '/preheaders/checkout.php';
+		add_shortcode( 'pmpro_levels', array( __CLASS__, 'manual_pmpro_levels_shortcode_implementation' ) );
+		require_once PMPRO_DIR . '/preheaders/levels.php';
 	}
 
 	public static function manual_pmpro_checkout_shortcode_implementation() {
 		$temp_content = pmpro_loadTemplate( 'checkout', 'local', 'pages' );
 		return apply_filters( 'pmpro_pages_shortcode_checkout', $temp_content );
+	}
+
+	public static function manual_pmpro_levels_shortcode_implementation() {
+		$temp_content = pmpro_loadTemplate( 'levels', 'local', 'pages' );
+		return apply_filters( 'pmpro_pages_shortcode_levels', $temp_content );
 	}
 
 	/**
