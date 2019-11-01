@@ -126,7 +126,7 @@ class SWSales_Module_WC {
 								?>
 							</span>
 							<button type="button" id="swsales_wc_create_coupon" class="button button-secondary"><?php esc_html_e( 'create a new coupon', 'sitewide-sales' ); ?></button>
-							<p><small><?php esc_html_e( 'Select the coupon that will be automatically applied for users when they visit your Landing Page.', 'sitewide-sales' ); ?></small></p>
+							<p class="description"><?php esc_html_e( 'Select the coupon that will be automatically applied for users when they visit your Landing Page.', 'sitewide-sales' ); ?></p>
 						</p>
 					</td>
 				<?php } ?>

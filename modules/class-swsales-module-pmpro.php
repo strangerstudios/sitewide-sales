@@ -129,7 +129,7 @@ class SWSales_Module_PMPro {
 								?>
 							</span>
 							<button type="button" id="swsales_pmpro_create_discount_code" class="button button-secondary"><?php esc_html_e( 'create a new discount code', 'sitewide-sales' ); ?></button>
-							<p><small class="pmpro_lite"><?php esc_html_e( 'Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page.', 'sitewide-sales' ); ?></small></p>
+							<p class="description"><?php esc_html_e( 'Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page.', 'sitewide-sales' ); ?></p>
 						</p>
 					</td>
 				<?php } ?>
@@ -170,7 +170,7 @@ class SWSales_Module_PMPro {
 					}
 					?>
 				</select>
-				<p><small class="pmpro_lite"><?php esc_html_e( 'Using the [pmpro_checkout] shortcode on your Landing Page will display a checkout form for this level.', 'sitewide-sales' ); ?></small></p>
+				<p class="description"><?php esc_html_e( 'Using the [pmpro_checkout] shortcode on your Landing Page will display a checkout form for this level.', 'sitewide-sales' ); ?></p>
 				</td>
 				<?php } ?>
 				</tr>
@@ -209,7 +209,7 @@ class SWSales_Module_PMPro {
 						}
 						?>
 						</select>
-						<p><small class="pmpro_lite"><?php esc_html_e( 'This setting will hide the banner for members of the selected levels.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'This setting will hide the banner for members of the selected levels.', 'sitewide-sales' ); ?></p>
 					</td>
 					<?php
 			}

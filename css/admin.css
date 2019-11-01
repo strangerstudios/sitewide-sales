@@ -30,23 +30,28 @@
 }
 
 /* Admin Messages */
-.sitewide_sales_message {
-    background: #FFF;
-    border-left: 4px solid #FFF;
-    margin-right: 15px;
+.sitewide_sales_message,
+.form-table td p.sitewide_sales_message {
+	background-color: #f7fcfe;
+    border-left: 4px solid #00a0d2;
+    margin-bottom: 1em;
+    margin-right: 1.5em;
     padding: 15px;
 }
-.sitewide_sales_message.sitewide_sales_success {
-    background-color: rgba( 70, 180, 80, 0.1 );
-    border-left-color: rgb( 70, 180, 80 );
+.sitewide_sales_message.sitewide_sales_success,
+.form-table td p.sitewide_sales_message.sitewide_sales_success {
+    border-left-color: #4ab866;
+    background-color: #eff9f1;
 }
-.sitewide_sales_message.sitewide_sales_error {
-    background-color: rgba( 220, 50, 50, 0.1 );
-    border-left-color: rgb( 220, 50, 50 );
+.sitewide_sales_message.sitewide_sales_error,
+.form-table td p.sitewide_sales_message.sitewide_sales_error {
+    border-left-color: #d94f4f;
+    background-color: #f9e2e2;
 }
-.sitewide_sales_message.sitewide_sales_alert {
-    background-color: rgba( 255, 185, 0, 0.1 );
-    border-left-color: rgb( 255, 185, 0 );
+.sitewide_sales_message.sitewide_sales_alert,
+.form-table td p.sitewide_sales_message.sitewide_sales_alert {
+    border-left-color: #f0b849;
+    background-color: #fef8ee;
 }
 .sitewide_sales_message.sitewide_sales_success a {
     color: #208A1B;

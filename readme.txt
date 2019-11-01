@@ -5,15 +5,15 @@ Requires at least:
 Tested up to: 5.2.3
 Stable tag: .1
 
-Create, manage, and view advanced reports for a sitewide or flash sale (Black Friday or Cyber Monday) using WooCommerce or Paid Memberships Pro.
+Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
 
 == Description ==
 
-This plugin requires WooCommerce or Paid Memberships Pro to function. New integrations will be built as requested.
-
-The Sitewide Sales plugin allows you to create flash or sitewide sales. A Sitewide Sale CPT allows you to create multiple sales, each with an associated discount code and landing page. The plugin will automatically apply a discount code for users who visit the sale landing page.
+The Sitewide Sales plugin allows you to create flash or sitewide sales. Use the Sitewide Sale CPT to create multiple sales, each with an associated discount code, banners and landing page. The plugin will automatically apply a discount code for users who comlete checkout after visiting the sale landing page. 
 
 The plugin also adds the option to display sitewide page banners to advertise your sale and gives you statistics about the outcome of your sale.
+
+This plugin requires WooCommerce or Paid Memberships Pro to function. New integrations will be built as requested.
 
 == Installation ==
 
