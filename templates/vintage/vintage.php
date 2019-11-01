@@ -33,6 +33,24 @@ function wp_enqueue_scripts() {
 }
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
 
+/**
+ * Filter to add the vintage template wrapper for this banner template.
+ *
+ */
+function swsales_banner_content_vintage( $content ) {
+	$content_before = '<div id="swsale-banner-wrap-vintage" class="swsales-banner-wrap">';
+	$content_after = '</div>';
+
+	$content = $content_before . $content . $content_after;
+
+	return $content;
+}
+add_action( 'swsales_banner_content_vintage', __NAMESPACE__ . '\swsales_banner_content_vintage' );
+
+/**
+ * Filter to add the vintage template wrapper for this landing page template.
+ *
+ */
 function swsales_landing_page_content_vintage( $content ) {
 	$content_before = '<div id="swsale-landing-page-wrap-vintage" class="swsales-landing-page-wrap">';
 	$content_after = '</div>';

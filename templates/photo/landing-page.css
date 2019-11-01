@@ -6,7 +6,7 @@
 
 body.swsales-landing-page-photo {
 	background: #FAFAFA;
-	padding: 0 0 5.8rem 0;
+	padding: 0 0 50px 0;
 }
 #swsale-landing-page-wrap-photo {
 	margin: 0;
@@ -15,7 +15,7 @@ body.swsales-landing-page-photo {
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	padding: 2.9rem .9rem 12.9rem .9rem;
+	padding: 20px 10px 120px 10px;
 }
 #swsale-landing-page-wrap-photo .swsales-landing-page-content {
 	background: rgba( 0, 0, 0, 0.5 );
@@ -23,7 +23,7 @@ body.swsales-landing-page-photo {
 	color: rgba( 255, 255, 255, 0.9);
 	margin: 0 auto;
 	max-width: 1170px;
-	padding: 2.9rem 0;
+	padding: 20px 0;
 	text-align: center;
 	text-shadow: 0px 0px 5px #000;
 	transition: background 1s ease;
@@ -38,8 +38,8 @@ body.swsales-landing-page-photo {
 	font-size: 4.8rem;
 	font-weight: 900;
 	line-height: 7.5rem;
-	margin: 0 0 2.9rem 0;
-	padding: .9rem;
+	margin: 0 0 20px 0;
+	padding: 10px;
 }
 #swsale-landing-page-wrap-photo .swsales-landing-page-content h3 {
 	color: #FFF;
@@ -51,9 +51,9 @@ body.swsales-landing-page-photo {
 	background: #FAFAFA;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: -10rem;
+	margin-top: -100px;
 	max-width: 800px;
-	padding: 2.9rem;
+	padding: 20px;
 }
 .swsales-landing-page-photo #pmpro_form hr {
 	display: none;
@@ -67,7 +67,7 @@ body.swsales-landing-page-photo {
 	background: #FAFAFA;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: -10rem;
+	margin-top: -100px;
 	max-width: 800px;
-	padding: 2.9rem;
+	padding: 20px;
 }

@@ -34,6 +34,24 @@ function wp_enqueue_scripts() {
 }
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
 
+/**
+ * Filter to add the ocean template wrapper for this banner template.
+ *
+ */
+function swsales_banner_content_ocean( $content ) {
+	$content_before = '<div id="swsale-banner-wrap-ocean" class="swsales-banner-wrap">';
+	$content_after = '</div>';
+
+	$content = $content_before . $content . $content_after;
+
+	return $content;
+}
+add_action( 'swsales_banner_content_ocean', __NAMESPACE__ . '\swsales_banner_content_ocean' );
+
+/**
+ * Filter to add the ocean template wrapper for this landing page template.
+ *
+ */
 function swsales_landing_page_content_ocean( $content ) {
 	$content_before = '<div id="swsale-landing-page-wrap-ocean" class="swsales-landing-page-wrap">';
 	$content_after = '</div>';

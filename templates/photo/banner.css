@@ -4,34 +4,34 @@
  * Banner Styles 
  */
 
-.swsales_banner_template-photo {
+#swsale-banner-wrap-photo .swsales-banner {
 	background: rgba( 0, 0, 0, 0.5 );
 	color: #FFF;
 	transition: background 1s ease;
 }
-.swsales_banner_template-photo:hover {
+#swsale-banner-wrap-photo .swsales-banner:hover {
 	background: rgba( 0, 0, 0, 0.8 );
 }
-#swsales_banner_top.swsales_banner_template-photo {
-	border-bottom-left-radius: 40px;
-	border-bottom-right-radius: 40px;
+#swsale-banner-wrap-photo #swsales-banner-top {
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
 }
-#swsales_banner_bottom_right.swsales_banner_template-photo {
-	border-top-left-radius: 40px;
+#swsale-banner-wrap-photo #swsales-banner-top .swsales-banner-title {
+	margin-right: 10px;
 }
-#swsales_banner_bottom.swsales_banner_template-photo {
-	border-top-left-radius: 40px;
-	border-top-right-radius: 40px;
+#swsale-banner-wrap-photo #swsales-banner-top .swsales-banner-content {
+	margin-right: 10px;
+}
+#swsale-banner-wrap-photo #swsales-banner-bottom {
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
 }
-#swsales_banner_bottom.swsales_banner_template-photo a.dismiss {
-	bottom: 10px;
-	right: 15px;
-	top: auto;
+#swsale-banner-wrap-photo #swsales-banner-bottom-right {
+	border-top-left-radius: 20px;
 }
-

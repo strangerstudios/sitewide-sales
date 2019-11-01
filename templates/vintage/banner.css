@@ -4,25 +4,41 @@
  * Banner Styles 
  */
 
-.swsales_banner_template-vintage {
-	background: #1d2a2f url(../../images/green-dust-and-scratches.png) repeat;
+#swsale-banner-wrap-vintage .swsales-banner {
+	background: #1d2a2f url(images/green-dust-and-scratches.png) repeat;
 	color: #e5dfbd;
-	letter-spacing: 2px;
-	text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
-	text-transform: uppercase;
 }
-.swsales_banner_template-vintage h3 {
+#swsale-banner-wrap-vintage .swsales-banner-title {
 	color: #e5dfbd;
-	font-family: 'Lobster', sans-serif;
-	font-size: 30px;
-	font-variant: small-caps;
-	font-weight: 400;
+	font-size: 26px;
+	font-family: serif;
+	font-weight: 700;
 	line-height: 40px;
 	margin: 0;
 	padding: 0;
-	text-shadow: 5px 5px 0px rgba(0,0,0,0.3);
+	text-shadow: 5px 5px 0px rgba( 0,0,0,0.3 );
 	text-transform: none;
 }
-.swsales_banner_template-vintage a.dismiss:before {
+#swsale-banner-wrap-vintage .swsales-banner-content {
+	font-family: serif;
+	text-shadow: 2px 2px 0px rgba( 0,0,0,0.3 );
+}
+#swsale-banner-wrap-vintage a.swsales-dismiss:before {
 	color: #666;
+}
+#swsale-banner-wrap-vintage .swsales-banner a.swsales-banner-button,
+#swsale-banner-wrap-vintage .swsales-banner a.swsales-banner-button:focus,
+#swsale-banner-wrap-vintage .swsales-banner a.swsales-banner-button:visited {
+	background: #e5dfbd;
+	color: #1d2a2f;
+}
+#swsale-banner-wrap-vintage .swsales-banner a.swsales-banner-button:hover {
+	background: #f4f0d8;
+	color: #1d2a2f;
+}
+#swsale-banner-wrap-vintage #swsales-banner-top .swsales-banner-title {
+	margin-right: 10px;
+}
+#swsale-banner-wrap-vintage #swsales-banner-top .swsales-banner-content {
+	margin-right: 10px;
 }

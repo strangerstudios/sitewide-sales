@@ -33,35 +33,38 @@ class SWSales_Banners {
 				'option_title'  => __( 'Yes, Top of Site', 'sitewide_Sales' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
-					'.swsales_banner',
-					'#swsales_banner_top',
-					'#swsales_banner_top h3',
-					'#swsales_banner_top .swsales_btn',
+					'#swsales-banner-top',
+					'#swsales-banner-top .swsales-banner-title',
+					'#swsales-banner-top .swsales-banner-content',
+					'#swsales-banner-top .swsales-banner-button-wrap',
+					'#swsales-banner-top .swsales-banner-button',
 				),
 			),
 			'bottom'       => array(
 				'option_title'  => __( 'Yes, Bottom of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_banner' ),
 				'css_selectors' => array(
-					'.swsales_banner',
-					'#swsales_banner_bottom',
-					'#swsales_banner_bottom .dismiss',
-					'.swsales_banner-inner',
-					'.swsales_banner-inner-left',
-					'.swsales_banner-inner-left h3',
-					'.swsales_banner-inner-right',
-					'.swsales_banner-inner-right .swsales_btn',
+					'#swsales-banner-bottom',
+					'#swsales-banner-bottom .swsales-dismiss',
+					'#swsales-banner-bottom .swsales-banner-title',
+					'#swsales-banner-bottom .swsales-banner-content',
+					'#swsales-banner-bottom .swsales-banner-button-wrap',
+					'#swsales-banner-bottom .swsales-banner-button',
+					'#swsales-banner-bottom .swsales-banner-inner',
+					'#swsales-banner-bottom .swsales-banner-inner-left',
+					'#swsales-banner-bottom .swsales-banner-inner-right',
 				),
 			),
 			'bottom_right' => array(
 				'option_title'  => __( 'Yes, Bottom Right of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
 				'css_selectors' => array(
-					'.swsales_banner',
-					'#swsales_banner_bottom_right',
-					'#swsales_banner_bottom_right .dismiss',
-					'#swsales_banner_bottom_right h3',
-					'#swsales_banner_bottom_right .swsales_btn',
+					'#swsales-banner-bottom-right',
+					'#swsales-banner-bottom-right .swsales-dismiss',
+					'#swsales-banner-bottom-right .swsales-banner-title',
+					'#swsales-banner-bottom-right .swsales-banner-content',
+					'#swsales-banner-bottom-right .swsales-banner-button-wrap',
+					'#swsales-banner-bottom-right .swsales-banner-button',
 				),
 			),
 		);
@@ -133,8 +136,8 @@ class SWSales_Banners {
 		// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
 		$registered_banners = self::get_registered_banners();
 		$banner_to_use      = $active_sitewide_sale->get_use_banner();
-		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_banner_type'] ) ) {
-			$banner_to_use = $_REQUEST['swsales_preview_banner_type'];
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner_type'] ) ) {
+			$banner_to_use = $_REQUEST['swsales_preview_sale_banner_type'];
 		}
 		if ( array_key_exists( $banner_to_use, $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_to_use ] ) ) {
 			$callback_func = $registered_banners[ $banner_to_use ]['callback'];
@@ -196,30 +199,33 @@ class SWSales_Banners {
 			$active_sitewide_sale = SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		}
 
-		// Display the wrapping div for selected template.
-		// if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'swsales_allow_template' ) === 'Yes' ) ) {
-		if ( defined( 'MEMBERLITE_VERSION' ) || true ) {
-			$banner_template = $active_sitewide_sale->get_banner_template();
-			if ( empty( $banner_template ) ) {
-				$banner_template = false;
-			}
-		}
-		/* Maybe use JavaScript here to detect the height of the bar and adjust margin-top of html elemenet. */
+		/* Maybe use JavaScript here to detect the height of the bar and adjust margin-top of html element. */
+		ob_start(); 
 		?>
-		<div id="swsales_banner_top" class="swsales_banner
+		<div id="swsales-banner-top" class="swsales-banner">
+			<div class="swsales-banner-inner">
+				<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
+				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text() ); ?></p>
+				<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
+				<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo esc_html( $active_sitewide_sale->get_link_text() ); ?></a></span>
+			</div> <!-- end swsales-banner-inner -->
+		</div> <!-- end swsales-banner -->
 		<?php
+
+		$content = ob_get_contents();
+		ob_end_clean();
+
+		// Filter for templates to modify the banner content.
+		$banner_template = $active_sitewide_sale->get_banner_template();
 		if ( ! empty( $banner_template ) ) {
-			echo ' swsales_banner_template-' . esc_html( $banner_template ); }
-		?>
-		">
-			<div class="swsales_banner-inner">
-				<h3><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></h3>
-				<?php echo apply_filters( 'swsales_banner_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>
-				<?php do_action( 'swsales__before_banner_button', $active_sitewide_sale ); ?>
-				<span class="swsales_banner-button"><a class="swsales_btn" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo esc_html( $active_sitewide_sale->get_link_text() ); ?></a></span>
-			</div>
-		</div> <!-- end swsales_banner -->
-		<?php
+			$content = apply_filters( 'swsales_banner_content_' . $banner_template, $content, 'top' );
+		}
+
+		// Filter for themes and plugins to modify the banner content.
+		$content = apply_filters( 'swsales_banner_content', $content, $banner_template, 'top' );
+
+		// Echo the banner content.	
+		echo $content;
 	}
 
 	/**
@@ -239,36 +245,39 @@ class SWSales_Banners {
 			$active_sitewide_sale = SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		}
 
-		// Display the wrapping div for selected template.
-		// if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'swsales_allow_template' ) === 'Yes' ) ) {
-		if ( defined( 'MEMBERLITE_VERSION' ) || true ) {
-			$banner_template = $active_sitewide_sale->get_banner_template();
-			if ( empty( $banner_template ) ) {
-				$banner_template = false;
-			}
-		}
+		ob_start(); 
 		?>
-		<div id="swsales_banner_bottom" class="swsales_banner
+		<div id="swsales-banner-bottom" class="swsales-banner">
+			<div class="swsales-banner-inner">
+				<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"></a>
+				<div class="swsales-banner-inner-left">
+					<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
+					<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text() ); ?></p>
+				</div>
+				<div class="swsales-banner-inner-right">
+					<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
+					<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
+				</div>
+			</div> <!-- end swsales-banner-inner -->
+		</div> <!-- end swsales-banner -->
 		<?php
+
+		$content = ob_get_contents();
+		ob_end_clean();
+
+		// Filter for templates to modify the banner content.
+		$banner_template = $active_sitewide_sale->get_banner_template();
 		if ( ! empty( $banner_template ) ) {
-			echo ' swsales_banner_template-' . esc_html( $banner_template );
+			$content = apply_filters( 'swsales_banner_content_' . $banner_template, $content, 'bottom' );
 		}
-		?>
-		">
-			<div class="swsales_banner-inner">
-			<a href="javascript:void(0);" onclick="document.getElementById('swsales_banner_bottom').style.display = 'none';" class="dismiss" title="Dismiss"></a>
-				<div class="swsales_banner-inner-left">
-					<h3><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></h3>
-					<?php echo apply_filters( 'swsales_banner_content', get_post_field( 'post_content', $active_sitewide_sale ) ); ?>					
-				</div>
-				<div class="swsales_banner-inner-right">
-					<?php do_action( 'swsales__before_banner_button', $active_sitewide_sale ); ?>
-					<span class="swsales_banner-button"><a class="swsales_btn" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
-				</div>
-			</div> <!-- end swsales_banner-inner -->
-		</div> <!-- end swsales_banner -->
-		<?php
+
+		// Filter for themes and plugins to modify the banner content.
+		$content = apply_filters( 'swsales_banner_content', $content, $banner_template, 'bottom' );
+
+		// Echo the banner content.	
+		echo $content;
 	}
+
 
 	/**
 	 * Sets bottom right banner to be added
@@ -287,29 +296,32 @@ class SWSales_Banners {
 			$active_sitewide_sale = SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		}
 
-		// Display the wrapping div for selected template.
-		// if ( defined( 'MEMBERLITE_VERSION' ) || ( pmpro_getOption( 'swsales_allow_template' ) === 'Yes' ) ) {
-		if ( defined( 'MEMBERLITE_VERSION' ) || true ) {
-			$banner_template = $active_sitewide_sale->get_banner_template();
-			if ( empty( $banner_template ) ) {
-				$banner_template = false;
-			}
-		}
+		ob_start(); 
 		?>
-		<div id="swsales_banner_bottom_right" class="swsales_banner
+		<div id="swsales-banner-bottom-right" class="swsales-banner">
+			<div class="swsales-banner-inner">
+				<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"></a>
+				<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
+				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text() ); ?></p>
+			</div> <!-- end swsales-banner-inner -->
+			<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
+			<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
+		</div> <!-- end swsales-banner -->
 		<?php
+
+		$content = ob_get_contents();
+		ob_end_clean();
+
+		// Filter for templates to modify the banner content.
+		$banner_template = $active_sitewide_sale->get_banner_template();
 		if ( ! empty( $banner_template ) ) {
-			echo ' swsales_banner_template-' . esc_html( $banner_template ); }
-		?>
-		">
-			<div class="swsales_banner-inner">
-				<a href="javascript:void(0);" onclick="document.getElementById('swsales_banner_bottom_right').style.display = 'none';" class="dismiss" title="Dismiss"></a>
-				<h3><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></h3>
-				<?php echo apply_filters( 'swsales_banner_content', $active_sitewide_sale->get_banner_text() ); ?>
-			</div> <!-- end swsales_banner-inner -->
-			<?php do_action( 'swsales__before_banner_button', $active_sitewide_sale ); ?>
-			<span class="swsales_banner-button"><a class="swsales_btn" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
-		</div> <!-- end swsales_banner -->
-		<?php
+			$content = apply_filters( 'swsales_banner_content_' . $banner_template, $content, 'bottom_right' );
+		}
+
+		// Filter for themes and plugins to modify the banner content.
+		$content = apply_filters( 'swsales_banner_content', $content, $banner_template, 'bottom_right' );
+
+		// Echo the banner content.	
+		echo $content;
 	}
 }

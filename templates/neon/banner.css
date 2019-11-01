@@ -3,29 +3,50 @@
  *
  * Banner Styles 
  */
-
-.swsales_banner_template-neon {
-	background: #000 url(../../images/darkness.png) repeat;
+#swsale-banner-wrap-neon .swsales-banner {
+	-webkit-animation: swsalesNeonAnimatedBackground 80s linear infinite;
+	animation: swsalesNeonAnimatedBackground 80s linear infinite;
+	background: #000 url(images/darkness.png) repeat;
 	color: #FFF;
 }
-.swsales_banner_template-neon h3 {
-	animation-name: SWSNeon2;
+#swsale-banner-wrap-neon a.swsales-dismiss:before {
+	color: #666;
+}
+#swsale-banner-wrap-neon .swsales-banner-title {
+	-webkit-animation-name: swsalesNeonAnimatedh2;
+	animation-name: swsalesNeonAnimatedh2;
+	-webkit-animation-delay: 1s;
 	animation-delay: 1s;
+	-webkit-animation-duration: 1s;
 	animation-duration: 1s;
 	animation-direction: alternate-reverse;
+	-webkit-animation-iteration-count: infinite;
 	animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
 	animation-timing-function: linear;
 	color: #f084e7;
 	font-size: 30px;
 	font-style: italic;
 	font-weight: 900;
 	letter-spacing: -2px;
+	margin-right: 15px;
 	text-shadow: 0px 0px 15px #BBB;
 }
-.swsales_banner_template-neon a.dismiss:before {
-	color: #666;
+#swsale-banner-wrap-neon .swsales-banner-content {
+	margin-right: 15px;
 }
-@keyframes SWSNeon2 {
+#swsale-banner-wrap-neon .swsales-banner a.swsales-banner-button,
+#swsale-banner-wrap-neon .swsales-banner a.swsales-banner-button:focus,
+#swsale-banner-wrap-neon .swsales-banner a.swsales-banner-button:visited {
+	background: #55f47e;
+	color: #000;
+}
+#swsale-banner-wrap-neon .swsales-banner a.swsales-banner-button:hover {
+	background: #a2f2b7;
+	color: #000;
+}
+
+@keyframes swsalesNeonAnimatedh2 {
 	0%{opacity: 1;}
 	5%{opacity: 0;}
 	10%{opacity: 1;}
@@ -34,4 +55,8 @@
 	90%{opacity: 1;}
 	95%{opacity: 0;}
 	100%{opacity: 1;}
+}
+@keyframes swsalesNeonAnimatedBackground {
+	from { background-position: 0 50%; }
+	to { background-position: 100% 0; }
 }

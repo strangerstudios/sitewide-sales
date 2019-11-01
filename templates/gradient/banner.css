@@ -4,10 +4,15 @@
  * Banner Styles 
  */
 
-.swsales_banner_template-gradient a.dismiss:before {
+#swsale-banner-wrap-gradient a.swsales-dismiss:before {
 	color: #FFF;
 }
-.swsales_banner_template-gradient {
+#swsale-banner-wrap-gradient #swsales-banner-top p.swsales-banner-title {
+	border-right: 1px solid rgba( 255, 255, 255, 0.3 );
+	margin-right: 15px;
+	padding-right: 15px;
+}
+#swsale-banner-wrap-gradient .swsales-banner {
 	background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
 	background-size: 600% 600%;
 	color: #FFF;
@@ -15,7 +20,6 @@
 	-moz-animation: SWSGradient 30s ease infinite;
 	animation: SWSGradient 30s ease infinite;
 }
-
 @-webkit-keyframes SWSGradient {
 	0%{background-position:0% 50%}
 	50%{background-position:100% 50%}
