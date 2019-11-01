@@ -42,43 +42,6 @@ class SWSales_Setup {
 	public static function swsales_frontend_scripts() {
 		wp_register_style( 'swsales_frontend', plugins_url( 'css/frontend.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
 		wp_enqueue_style( 'swsales_frontend' );
-
-		/*
-		 * Load Google Fonts depending on selected template.
-		 */
-		// See if any Sitewide Sale CPTs have this post ID set as the Landing Page.
-		$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'swsales_sitewide_sale_id', true );
-
-		if ( ! empty( $sitewide_sale_id ) ) {
-			// Check the landing page custom template, add the custom Google Font.
-			$landing_template = get_post_meta( $sitewide_sale_id, 'swsales_landing_page_template', true );
-			if ( ! empty( $landing_template ) ) {
-				if ( $landing_template === 'vintage' ) {
-					$query_args = array(
-						'family' => 'Lobster',
-						'subset' => 'latin,latin-ext'
-					);
-					wp_enqueue_style( 'swsales_google_font_lobster', add_query_arg( $query_args, "//fonts.googleapis.com/css" ), array(), null );
-				}
-			}
-		}
-
-		// See if there is an active Sitewide Sale and the banner needs a Google Font.
-		$options              = SWSales_Settings::get_options();
-		$active_sitewide_sale_id = $options['active_sitewide_sale_id'];
-		
-		if ( ! empty( $active_sitewide_sale_id ) ) {
-			$banner_template = get_post_meta( $active_sitewide_sale_id, 'swsales_banner_template', true );
-			if ( ! empty( $banner_template ) ) {
-				if ( $banner_template === 'vintage' ) {
-					$query_args = array(
-						'family' => 'Lobster',
-						'subset' => 'latin,latin-ext'
-					);
-					wp_enqueue_style( 'swsales_google_font_lobster', add_query_arg( $query_args, "//fonts.googleapis.com/css" ), null, SWSALES_VERSION );
-				}
-			}
-		}
 	}
 
 	/**
