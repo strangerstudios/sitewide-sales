@@ -1,129 +1,164 @@
 /* General Banner Styles */
-.swsales_banner {
+.swsales-banner {
 	background: #DADADA;
 }
-.swsales_banner a.dismiss,
-.swsales_banner a.dismiss:active,
-.swsales_banner a.dismiss:link,
-.swsales_banner a.dismiss:visited {
+.swsales-banner a.swsales-dismiss,
+.swsales-banner a.swsales-dismiss:active,
+.swsales-banner a.swsales-dismiss:link,
+.swsales-banner a.swsales-dismiss:visited {
 	text-decoration: none;
 }
-.swsales_banner a.dismiss:before {
+.swsales-banner a.swsales-dismiss:before {
 	color: #AAA;
 	content: "\2716";
 	font: normal 1em/1 Arial, sans-serif;
 	text-align: center;
 }
-.swsales_banner a.dismiss:hover {
+.swsales-banner a.swsales-dismiss:hover {
 	color: #CCC;
 }
-.swsales_banner h3 {
+.swsales-banner .swsales-banner-title {
+	font-weight: 700;
+}
+.swsales-banner .swsales-banner-content p {
 	margin: 0 0 10px 0;
 	padding: 0;
 }
-.swsales_banner p {
-	margin: 0 0 10px 0;
-	padding: 0;
+.swsales-banner a.swsales-banner-button,
+.swsales-banner a.swsales-banner-button:focus,
+.swsales-banner a.swsales-banner-button:visited {
+	background: #111;
+	border: none;
+	border-radius: 5px;
+	box-sizing: border-box;
+	color: #FFF;
+	display: inline-block;
+	font-weight: 700;
+	line-height: 30px;
+	outline: none;
+	padding: 4px 12px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	word-break: break-all;
+}
+.swsales-banner a.swsales-banner-button:hover {
+    background: #555;
+}
+.swsales-banner a.swsales-banner-button:hover,
+.swsales-banner a.swsales-banner-button:visited {
+    color: #FFF;
 }
 
 /* Top Banner Styles */
-#swsales_banner_top {
-	padding: 1rem;
+#swsales-banner-top {
+	padding: 15px;
 	text-align: center;
 	width: 100%;
 }
-#swsales_banner_top span {
-	margin-right: 2rem;
-	font-size: 2rem;
-}
-#swsales_banner_top h3,
-#swsales_banner_top p,
-#swsales_banner_top span.swsales_banner-button {
-	display: inline;
-	margin: 0 1rem;
+#swsales-banner-top p {
+	display: inline-block;
+	margin: 0;
 	padding: 0;
 }
 
-/* Bottom Right Banner Styles */
-#swsales_banner_bottom_right {
+/* Bottom Banner Styles */
+#swsales-banner-bottom {
 	bottom: 0;
-	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
-	padding: 20px;
+	box-shadow: 0 0 15px 0 rgba( 0, 0, 0, 0.6 );
+	left: 0;
+	position: fixed;
+	right: 0;
+	width: 100%;
+	z-index: 400;
+}
+#swsales-banner-bottom a.swsales-dismiss {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 100;
+}
+#swsales-banner-bottom .swsales-banner-inner {
+	margin: 0 auto;
+	max-width: 1170px;
+	padding: 20px 25px 20px 15px;
+}
+#swsales-banner-bottom .swsales-banner-inner:after {
+	content: '';
+	clear: both;
+	display: block;
+}
+#swsales-banner-bottom .swsales-banner-inner-left {
+	float: left;
+	width: 70%;
+}
+#swsales-banner-bottom .swsales-banner-inner-right {
+	float: right;
+	width: 20%;
+}
+#swsales-banner-bottom p.swsales-banner-title {
+	margin: 0;
+	padding: 0;
+}
+#swsales-banner-bottom p.swsales-banner-content {
+	margin: 8px 0 0 0;
+	padding: 0;
+}
+#swsales-banner-bottom .swsales-banner-inner-right .swsales-banner-button-wrap {
+	display: block;
+	margin-top: 20px;
+} 
+#swsales-banner-bottom .swsales-banner-inner-right a.swsales-banner-button {
+	display: block;
+}
+@media only screen and (max-width: 767px) {
+	#swsales-banner-bottom .swsales-banner-inner-left,
+	#swsales-banner-bottom .swsales-banner-inner-right {
+		float: none;
+		text-align: center;
+		width: auto;
+	}
+}
+
+/* Bottom Right Banner Styles */
+#swsales-banner-bottom-right {
+	bottom: 0;
+	box-shadow: 0 0 15px 0 rgba( 0, 0, 0, 0.6 );
+	padding: 20px 15px;
 	position: fixed;
 	right: 0;
 	max-width: 300px;
 	z-index: 400;
 }
-#swsales_banner_bottom_right .pmpro_btn {
-	display: block;
-}
-#swsales_banner_bottom_right a.dismiss {
-	float: right;
-}
-
-/* Bottom Banner Styles */
-#swsales_banner_bottom {
-	bottom: 0;
-	box-shadow: 0 2px 20px 0 rgba(0,0,0,.2);
-	left: 0;
-	padding: 20px 0;
-	position: fixed;
-	right: 0;
-	width: 100%;
-	z-index: 400;
-}
-#swsales_banner_bottom a.dismiss {
+#swsales-banner-bottom-right a.swsales-dismiss {
 	position: absolute;
 	top: 10px;
 	right: 10px;
+	z-index: 100;
 }
-#swsales_banner_bottom .swsales_banner-inner {
-	display: grid;
-	grid-gap: 20px;
-	grid-template-columns: 3fr 1fr;
-	margin: 0 auto;
-	max-width: 1170px;
-}
-
-#swsales_banner_bottom .swsales_banner-inner-left {
-	align-self: center;
-}
-#swsales_banner_bottom .swsales_banner-inner-right {
-	align-self: center;
-}
-#swsales_banner_bottom .swsales_banner-inner-right .pmpro_btn {
-	display: block;
-}
-@media only screen and (max-width: 767px) {
-	#swsales_banner_bottom .swsales_banner-inner {
-		display: block;
-	}
-}
-
-/* Landing Page Templates */
-.swsales-landing-page-wrap {  }
-
-/* These should move to specific templates too */
-.swsales-landing-page-wrap .swsales-landing-page-background-image {
-	background-position: top center;
-	background-repeat: no-repeat;
-	background-size: contain;
-}
-.swsales-landing-page-wrap .swsales-landing-page-content .sws-features {
-	display: grid;
-	font-size: 1.8rem;
-	grid-gap: 1rem;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	line-height: 2.9rem;
-	margin: 0 auto;
-	max-width: 1170px;
-	text-align: center;
-}
-.swsales-landing-page-wrap .swsales-landing-page-content .sws-features p {
-	margin: 0 0 1.45rem 0;
+#swsales-banner-bottom-right p.swsales-banner-title {
+	margin: 0;
 	padding: 0;
 }
+#swsales-banner-bottom-right p.swsales-banner-content {
+	margin: 8px 0 0 0;
+	padding: 0;
+}
+#swsales-banner-bottom-right .swsales-banner-button-wrap {
+	display: block;
+	margin-top: 8px;
+}
+#swsales-banner-bottom-right a.swsales-banner-button {
+	display: block;
+}
 
+@media only screen and (max-width: 767px) {
+	#swsales-banner-bottom-right {
+		max-width: 100%;
+		text-align: center;
+		width: 100%;
+	}
+}
 
 /* Paid Memberships Pro Integration Specific Styles */
 .swsales-landing-page-wrap #pmpro_form {
@@ -141,3 +176,18 @@
 	margin: 0;
 	padding: 1.45rem;
 }
+
+/* Theme Compatibility Specific Styles */
+
+/* Twenty Nineteen */
+.theme-twentynineteen .swsales-landing-page-wrap h1:not(.site-title):before,
+.theme-twentynineteen .swsales-landing-page-wrap h2:before {
+	background: none;
+	content: '';
+	display: inline;
+	height: auto;
+	margin: 0;
+	width: auto;
+}
+
+

@@ -10,7 +10,7 @@ body.swsales-landing-page-gradient {
 		#272727, #272727 10px,
 		#373737 0, #373737 20px
 	);
-	padding: 0 0 5.8rem 0;
+	padding: 0 0 50px 0;
 }
 #swsale-landing-page-wrap-gradient {
 	margin-top: 0;
@@ -21,17 +21,22 @@ body.swsales-landing-page-gradient {
 	color: #FFF;
 }
 .swsales-landing-page-gradient .swsales-landing-page-content {
+	color: #FFF;
+	text-align: center;
+}
+.swsales-landing-page-gradient .swsales-landing-page-content:after {
+	-webkit-animation: SWSGradient 30s ease infinite;
+	animation: SWSGradient 30s ease infinite;
 	background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
 	background-size: 600% 600%;
-	color: #FFF;
-	-webkit-animation: SWSGradient 30s ease infinite;
-	-moz-animation: SWSGradient 30s ease infinite;
-	animation: SWSGradient 30s ease infinite;
-}
-.swsales-landing-page-gradient .swsales-landing-page-content {
 	box-shadow: 0px 10px 40px #000;
-	padding: 5.8rem 5.8rem 11.6rem 5.8rem;
-	text-align: center;
+	content: '';
+	display: block;
+	height: 600px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: -1;
 }
 .swsales-landing-page-gradient .swsales-landing-page-content .fa,
 .swsales-landing-page-gradient .swsales-landing-page-content .fab,
@@ -57,23 +62,28 @@ body.swsales-landing-page-gradient {
 /* Paid Memberships Pro Integration Specific Styles */
 .swsales-landing-page-gradient #pmpro_form {
 	background-color: #FFF;
-	border-radius: 1rem;
+	border-radius: 10px;
 	box-shadow: 0px 0px 10px rgba( 0, 0, 0, 0.2 );
-	margin-top: -8.7rem;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
 	max-width: 800px;
-	padding: 2.9rem;
+	padding: 20px;
 }
-
+.swsales-landing-page-gradient #pmpro_form .pmpro_checkout h3 {
+	margin: 0;
+}
+.swsales-landing-page-gradient #pmpro_form .pmpro_checkout h3 span.pmpro_checkout-h3-name {
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+.swsales-landing-page-gradient #pmpro_form hr {
+	margin: 40px 0;
+}
 /* WooCommerce Integration Specific Styles */
 .swsales-landing-page-gradient .woocommerce { 
 	background-color: #FFF;
-	border-radius: 1rem;
+	border-radius: 10px;
 	box-shadow: 0px 0px 10px rgba( 0, 0, 0, 0.2 );
-	margin-top: -8.7rem;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 0 auto;
 	max-width: 800px;
-	padding: 2.9rem;
+	padding: 20px;
 }

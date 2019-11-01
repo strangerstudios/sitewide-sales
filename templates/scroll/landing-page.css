@@ -6,7 +6,7 @@
 
 body.swsales-landing-page-scroll {
 	background: #E4E3DF;
-	padding: 0 0 5.8rem 0;
+	padding: 0 0 50px 0;
 }
 #swsale-landing-page-wrap-scroll {
 	margin-top: 0;
@@ -15,7 +15,7 @@ body.swsales-landing-page-scroll {
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	padding: 2.9rem .9rem 12.9rem .9rem;
+	padding: 20px 10px 100px 10px;
 }
 #swsale-landing-page-wrap-scroll .swsales-landing-page-content {
 	overflow: hidden;
@@ -28,16 +28,16 @@ body.swsales-landing-page-scroll {
 	max-width: 800px;
 }
 #swsale-landing-page-wrap-scroll .swsales-landing-page-content h1 {
-	animation: SWSScroll 1s;
+	animation: swsalesScrollSlideIn 1s;
 	font-weight: normal;
-	margin: 2.9rem 2.9rem 0 2.9rem;
+	margin: 20px 20px 0 20px;
 }
 #swsale-landing-page-wrap-scroll .swsales-landing-page-content h3 {
-	animation: SWSFadeIn 3s;
+	animation: swsalesScrollFadeIn 3s;
 	font-weight: normal;
-	margin: 0 2.9rem 2.9rem 2.9rem;
+	margin: 20px;
 }
-@keyframes SWSScroll {
+@keyframes swsalesScrollSlideIn {
 	from {
 		margin-left: 100%;
 		width: 300%;
@@ -47,7 +47,7 @@ body.swsales-landing-page-scroll {
 		width: 100%;
 	}
 }
-@keyframes SWSFadeIn {
+@keyframes swsalesScrollFadeIn {
 	from {
 		opacity: 0;
 	}

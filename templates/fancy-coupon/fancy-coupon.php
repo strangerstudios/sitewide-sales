@@ -34,13 +34,32 @@ function wp_enqueue_scripts() {
 }
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
 
+/**
+ * Filter to add the fancy coupon template wrapper for this banner template.
+ *
+ */
+function swsales_banner_content_fancy_coupon( $content ) {
+	$content_before = '<div id="swsale-banner-wrap-fancy-coupon" class="swsales-banner-wrap">';
+	$content_after = '</div>';
+
+	$content = $content_before . $content . $content_after;
+
+	return $content;
+}
+add_action( 'swsales_banner_content_fancy_coupon', __NAMESPACE__ . '\swsales_banner_content_fancy_coupon' );
+
+/**
+ * Filter to add the fancy coupon template wrapper for this landing page template.
+ *
+ */
 function swsales_landing_page_content_fancy_coupon( $content ) {
 	$content_before = '<div id="swsale-landing-page-wrap-fancy-coupon" class="swsales-landing-page-wrap">';
-	
-	$content_after = '<div class="swsales-landing-page-fancy-coupon-coupon">';
-	$content_after .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
-	$content_after .= '-- get code here --';
-	$content_after .= '</h3></div>';
+	$content_before .= '<div class="swsales-landing-page-fancy-coupon-coupon">';
+	$content_before .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
+	$content_before .= '== CODE ==';
+	$content_before .= '</h3></div>';
+
+	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;
 

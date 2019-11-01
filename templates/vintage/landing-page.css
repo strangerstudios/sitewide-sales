@@ -6,18 +6,18 @@
 
 body.swsales-landing-page-vintage {
 	background: #000 url(images/green-dust-and-scratches.png) repeat;
-	padding: 2.9rem 0;
+	padding: 20px 0;
 }
 #swsale-landing-page-wrap-vintage {
-	margin-top: 0;
+	margin: 0 auto;
+	max-width: 1170px;
 }
 .swsales-landing-page-vintage .swsales-landing-page-content {
 	color: #e5dfbd;
 	letter-spacing: 2px;
-	margin: 0 2.9rem;
+	margin: 0 20px;
 	text-align: center;
 	text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
-	text-transform: uppercase;
 }
 .swsales-landing-page-vintage .swsales-landing-page-content a {
 	color: #e5dfbd;
@@ -26,24 +26,18 @@ body.swsales-landing-page-vintage {
 	border-top: 10px double #e5dfbd;
 	border-bottom: 10px double #e5dfbd;
 	color: #e5dfbd;
-	font-family: 'Lobster', sans-serif;
-	font-size: 125px;
-	font-variant: small-caps;
-	font-weight: 400;
-	line-height: 120px;
+	font-family: serif;
+	font-weight: 700;
 	margin: 40px 0;
 	padding: 30px 0 40px 0;
 	text-shadow: 10px 10px 0px rgba(0,0,0,0.3);
-	text-transform: none;
 }
-.swsales-landing-page-vintage .swsales-landing-page-content h2 {
+.swsales-landing-page-vintage .swsales-landing-page-content h3 {
 	color: #e5dfbd;
+	font-family: serif;
 	font-weight: 300;
-	letter-spacing: 5px;
-	line-height: 55px;
 	margin: 0;
 	padding: 0;
-	text-transform: uppercase;
 }
 
 /* Paid Memberships Pro Integration Specific Styles */
@@ -56,7 +50,7 @@ body.swsales-landing-page-vintage {
 }
 .swsales-landing-page-vintage form#pmpro_form .pmpro_checkout {
 	background: #FFF;
-	margin: 2rem 0;
+	margin: 20px 0;
 }
 .swsales-landing-page-vintage form#pmpro_form .pmpro_checkout h3 {
 	background: #e5dfbd;
@@ -78,5 +72,5 @@ body.swsales-landing-page-vintage {
 	border: 10px double #e5dfbd;
 	margin: 0 auto;
 	max-width: 800px;
-	padding: 2.9rem;
+	padding: 20px;
 }
