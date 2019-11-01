@@ -34,33 +34,30 @@
          return false;
      }
 
+     // Get the landing page template for the specific sale.
      $template = get_post_meta( $sitewide_sale_id, 'swsales_landing_page_template', true );
      return $template;
  }
 
  /**
-  * What is the template for the banner on this page?
+  * What is the template for the active sitewide sale banner?
   * Returns false if there is no sale or banner.
   */
- function swsales_banner_template( $post_id = null ) {
-     // Default to queried object.
-     if ( empty( $post_id ) ) {
-         $post_id = get_queried_object_id();
-     }
+ function swsales_banner_template( ) {
 
-     // Return false if no post.
-     if ( empty( $post_id ) ) {
-         return false;
-     }
-     
-     // Get active sitewide sale.
-     $active_sitewide_sale_id = swsales_active_sitewide_sale_id();
-     
+    // Get the active sitewide sale or the sale being previewed.
+    if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
+        $sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
+    } else {
+        $sitewide_sale_id = swsales_active_sitewide_sale_id();
+    }
+
      // Return false if no sale.
-     if ( empty( $active_sitewide_sale_id ) ) {
+     if ( empty( $sitewide_sale_id ) ) {
          return false;
      }
      
-     $template = get_post_meta( $active_sitewide_sale_id, 'swsales_banner_template', true );
+     // Get the banner template for the specific sale.
+     $template = get_post_meta( $sitewide_sale_id, 'swsales_banner_template', true );
      return $template;
  }
