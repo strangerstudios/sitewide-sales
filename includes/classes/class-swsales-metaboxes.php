@@ -272,7 +272,7 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 
-		// Each module should add to that array using 'short_name'->'Nice Name'
+		// Additional modules can be added via this filter in the format array( 'short_name' => 'Nice Name', )
 		$sale_types = apply_filters( 'swsales_sale_types', array() );
 		$current_sale_type = $cur_sale->get_sale_type();
 		?>
