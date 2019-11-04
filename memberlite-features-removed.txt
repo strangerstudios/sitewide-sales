@@ -1,3 +1,0 @@
----Location---                          ---Description---
-class-swsales-landing-pages.php       Wrapping div in shortcode(), 2 blocks (one to open and one to close)
-class-swsales-landing-pages.php       Add landing page class in add_body_class()
