@@ -49,6 +49,9 @@ includes\classes\SWSales_Setup::init();
 // Handle templates
 includes\classes\SWSales_Templates::init();
 
+// Add blank page template
+includes\classes\SWSales_Page_Template::init();
+
 // Helper functions
 require_once ( 'includes/functions.php' );
 
