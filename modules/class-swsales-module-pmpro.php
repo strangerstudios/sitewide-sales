@@ -38,6 +38,9 @@ class SWSales_Module_PMPro {
 		//add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
 		add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 
+		// For the swsales_coupon helper function
+		add_filter( 'swsales_coupon', array( __CLASS__, 'swsales_coupon' ), 10, 2 );
+
 		// Default level for sale page.
 		add_action( 'wp', array( __CLASS__, 'load_pmpro_preheader' ), 0 ); // Priority 0 so that the discount code applies.
 
@@ -277,6 +280,26 @@ class SWSales_Module_PMPro {
 			<?php
 		}
 	} // end discount_code_on_save()
+
+	/**
+	 * Get the coupon for a sitewide sale.
+	 * Callback for the swsales_coupon filter.
+	 */
+	public static function swsales_coupon( $coupon, $sitewide_sale_id ) {
+		global $wpdb;
+		
+		$sitewide_sale = new \Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale();
+		$sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+		
+		if ( $sitewide_sale->get_sale_type() === 'pmpro' ) {
+			$discount_code_id = $sitewide_sale->swsales_pmpro_discount_code_id;
+			if ( ! empty( $discount_code_id ) ) {
+				$coupon = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+			}
+		}
+		
+		return $coupon;
+	}
 
 	/**
 	 * COMMENTED OUT

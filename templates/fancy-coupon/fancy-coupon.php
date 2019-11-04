@@ -77,7 +77,7 @@ function swsales_landing_page_content_fancy_coupon( $content ) {
 	$content_before = '<div id="swsale-landing-page-wrap-fancy_coupon" class="swsales-landing-page-wrap">';
 	$content_before .= '<div class="swsales-landing-page-fancy_coupon-coupon">';
 	$content_before .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
-	$content_before .= '== CODE ==';
+	$content_before .= swsales_coupon();
 	$content_before .= '</h3></div>';
 
 	$content_after = '</div>';

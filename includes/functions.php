@@ -61,3 +61,27 @@
      $template = get_post_meta( $sitewide_sale_id, 'swsales_banner_template', true );
      return $template;
  }
+ 
+ /**
+  * What is the coupon for the active sitewide sale?
+  * Returns false if there is no sale or coupon chosen yet.
+  */
+function swsales_coupon() {
+    // Get the active sitewide sale or the sale being previewed.
+    if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
+        $sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
+    } else {
+        $sitewide_sale_id = swsales_active_sitewide_sale_id();
+    }
+
+    // Return false if no sale.
+    if ( empty( $sitewide_sale_id ) ) {
+        // Note when this happens we don't run the filter below
+        return false;
+    }
+
+    // Different modules store their coupons in different places. Let them filter it.
+    $coupon = apply_filters( 'swsales_coupon', false, $sitewide_sale_id );
+
+    return $coupon;
+}

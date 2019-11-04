@@ -36,6 +36,9 @@ class SWSales_Module_WC {
 
 		// Custom WC banner rules (hide at checkout).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
+		
+		// For the swsales_coupon helper function
+		add_filter( 'swsales_coupon', array( __CLASS__, 'swsales_coupon' ), 10, 2 );
 
 		// Automatic coupon application.
 		add_filter( 'wp', array( __CLASS__, 'automatic_coupon_application' ) );
@@ -245,6 +248,24 @@ class SWSales_Module_WC {
 			return $is_checkout_page;
 		}
 		return is_page( wc_get_page_id( 'cart' ) ) ? true : $is_checkout_page;
+	}
+	
+	/**
+	 * Get the coupon for a sitewide sale.
+	 * Callback for the swsales_coupon filter.
+	 */
+	public static function swsales_coupon( $coupon, $sitewide_sale_id ) {
+		$sitewide_sale = new \Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale();
+		$sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+		
+		if ( $sitewide_sale->get_sale_type() === 'wc' ) {
+			$coupon_object = new \WC_Coupon( $sitewide_sale->swsales_wc_coupon_id );
+			if ( !empty( $coupon_object ) ) {
+				$coupon = $coupon_object->get_code();
+			}
+		}
+		
+		return $coupon;
 	}
 
 	public static function automatic_coupon_application() {
