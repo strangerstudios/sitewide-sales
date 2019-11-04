@@ -39,8 +39,9 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
  *
  */
 function swsales_banner_content_fancy_coupon( $content ) {
-	$content_before = '<div id="swsale-banner-wrap-fancy-coupon" class="swsales-banner-wrap">';
-	$content_after = '</div>';
+	$content_before = '<div id="swsale-banner-wrap-fancy_coupon" class="swsales-banner-wrap">';
+
+	$content_after .= '</div>';
 
 	$content = $content_before . $content . $content_after;
 
@@ -49,12 +50,32 @@ function swsales_banner_content_fancy_coupon( $content ) {
 add_action( 'swsales_banner_content_fancy_coupon', __NAMESPACE__ . '\swsales_banner_content_fancy_coupon' );
 
 /**
+ * Filter to add the coupon into the banner content.
+ *
+ */
+function swsales_banner_text_fancy_coupon( $content, $location, $active_sitewide_sale ) {
+
+	// Get the active or preview sale's banner template.
+	$swsales_banner_template = $active_sitewide_sale->swsales_banner_template;
+
+	// Filter the content if the template is Fancy Coupon.
+	if ( $swsales_banner_template === 'fancy_coupon' ) {
+		$content_after = '<div class="swsales-banner-fancy_coupon-coupon">';
+		$content_after .= '<span class="swsales-coupon">' . 'CODE' . '</span>';
+		$content_after .= '</div>';		
+		$content = $content . $content_after;
+	}
+	return $content;
+}
+add_filter( 'swsales_banner_text', __NAMESPACE__ . '\swsales_banner_text_fancy_coupon', 10, 3 ); 
+
+/**
  * Filter to add the fancy coupon template wrapper for this landing page template.
  *
  */
 function swsales_landing_page_content_fancy_coupon( $content ) {
-	$content_before = '<div id="swsale-landing-page-wrap-fancy-coupon" class="swsales-landing-page-wrap">';
-	$content_before .= '<div class="swsales-landing-page-fancy-coupon-coupon">';
+	$content_before = '<div id="swsale-landing-page-wrap-fancy_coupon" class="swsales-landing-page-wrap">';
+	$content_before .= '<div class="swsales-landing-page-fancy_coupon-coupon">';
 	$content_before .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
 	$content_before .= '== CODE ==';
 	$content_before .= '</h3></div>';

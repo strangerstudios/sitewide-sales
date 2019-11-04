@@ -205,7 +205,7 @@ class SWSales_Banners {
 		<div id="swsales-banner-top" class="swsales-banner">
 			<div class="swsales-banner-inner">
 				<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
-				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text() ); ?></p>
+				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text(), 'top', $active_sitewide_sale ); ?></p>
 				<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
 				<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo esc_html( $active_sitewide_sale->get_link_text() ); ?></a></span>
 			</div> <!-- end swsales-banner-inner -->
@@ -252,7 +252,7 @@ class SWSales_Banners {
 				<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"></a>
 				<div class="swsales-banner-inner-left">
 					<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
-					<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text() ); ?></p>
+					<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text(), 'bottom', $active_sitewide_sale ); ?></p>
 				</div>
 				<div class="swsales-banner-inner-right">
 					<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
@@ -302,7 +302,7 @@ class SWSales_Banners {
 			<div class="swsales-banner-inner">
 				<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"></a>
 				<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
-				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text() ); ?></p>
+				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text(), 'bottom_right', $active_sitewide_sale ); ?></p>
 			</div> <!-- end swsales-banner-inner -->
 			<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
 			<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
