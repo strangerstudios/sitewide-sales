@@ -28,6 +28,10 @@
 	color: #6991ac;
     padding: 5px 10px;
 }
+.sitewide_sales_admin .sitewide_sales_icon {
+    max-width: 200px;
+    height: auto;
+}
 
 /* Admin Messages */
 .sitewide_sales_message,
@@ -181,3 +185,20 @@
 	body.post-type-pmpro_sitewide_sale .pmpro-new-install .button-primary,
 	body.post-type-pmpro_sitewide_sale .pmpro-new-install .button { display: block; }
 }
+
+/* Sitewide Sales About Page */
+.sitewide_sale_page_sitewide_sales_about .about-wrap h2 {
+    text-align: left;
+}
+.sitewide_sale_page_sitewide_sales_about .about-wrap h3 {
+    border-top: 1px solid rgba(0,0,0,.1);
+    padding-top: 1.25em;
+}
+.sitewide_sale_page_sitewide_sales_about .about-wrap .sitewide_sales_icon {
+    margin-top: 20px;
+}
+.sitewide_sale_page_sitewide_sales_about .about-wrap ul {
+	line-height: 1.5;
+	font-size: 16px;
+}
+
