@@ -30,11 +30,11 @@ class SWSales_Reports {
 	public static function show_reports_page() { ?>
 		<div class="wrap sitewide_sales_admin">
 			<div class="sitewide_sales_banner">
-				<a class="sitewide_sales_logo" title="Sitewide Sales" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ); ?>" border="0" alt="Sitewide Sales(c) - All Rights Reserved" /></a>
+				<a class="sitewide_sales_logo" title="<?php esc_html_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ); ?>" border="0" alt="<?php esc_html_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
 				<div class="sitewide_sales_meta">
 					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
-					<a target="_blank" href="#"><?php _e('Documentation', 'sitewide-sales' );?></a>
-					<a target="_blank" href="#"><?php _e('Get Support', 'sitewide-sales' );?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_html_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 				</div>
 			</div>
 			<h1><?php echo esc_html( 'Reports', 'sitewide-sales' ); ?></h1>

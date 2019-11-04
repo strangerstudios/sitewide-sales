@@ -70,7 +70,7 @@ class SWSales_Banners {
 		);
 
 		/**
-		 * Modify Registerted Banners
+		 * Modify Registered Banners
 		 *
 		 * @since 0.0.1
 		 *

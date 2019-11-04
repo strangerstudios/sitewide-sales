@@ -49,8 +49,13 @@ includes\classes\SWSales_Setup::init();
 // Handle templates
 includes\classes\SWSales_Templates::init();
 
+<<<<<<< HEAD
 // Add blank page template
 includes\classes\SWSales_Page_Template::init();
+=======
+// Add a general About admin page.
+includes\classes\SWSales_About::init();
+>>>>>>> e26b71aadc844831d76501f4fe361b1c103e1238
 
 // Helper functions
 require_once ( 'includes/functions.php' );

@@ -75,6 +75,14 @@ class SWSales_MetaBoxes {
 			'high'
 		);
 		add_meta_box(
+			'swsales_documentation',
+			__( 'Documentation', 'sitewide-sales' ),
+			array( __CLASS__, 'documentation' ),
+			array( 'sitewide_sale' ),
+			'side',
+			'default'
+		);
+		add_meta_box(
 			'swsales_cpt_step_1',
 			__( 'Step 1: Start and End Dates', 'sitewide-sales' ),
 			array( __CLASS__, 'display_step_1' ),
@@ -158,6 +166,45 @@ class SWSales_MetaBoxes {
 			</div>
 			<div class="clear"></div>
 		</div>
+		<?php
+	}
+
+	public static function documentation( $post ) { ?>
+		<p><?php esc_html_e( 'Explore how to set up a sale using the Sitewide Sales plugin.' ); ?></p>
+		<ul>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=about-plugin" target="_blank" title="<?php esc_html_e( 'About the Plugin', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'About the Plugin', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-start-and-end-date/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/landing-page/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-banners/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/reports/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/action-and-filter-hooks/?utm_source=plugin&utm_medium=edit-swsale-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>">
+				<?php esc_html_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>
+				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
+			</a></li>
+		</ul>
 		<?php
 	}
 
@@ -272,7 +319,7 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 
-		// Each module should add to that array using 'short_name'->'Nice Name'
+		// Additional modules can be added via this filter in the format array( 'short_name' => 'Nice Name', )
 		$sale_types = apply_filters( 'swsales_sale_types', array() );
 		$current_sale_type = $cur_sale->get_sale_type();
 		?>
@@ -325,7 +372,7 @@ class SWSales_MetaBoxes {
 								?>
 							</option>
 						</select>
-						<p><small><?php esc_html_e( 'Caching plugins may interfere with this functionality. If using caching on your site, consider never giving an automatic discount or always giving an automatic discount.', 'sitewide-sales' ); ?></small></p>
+						<p class="description"><?php esc_html_e( 'Caching plugins may interfere with this functionality. If using caching on your site, consider never giving an automatic discount or always giving an automatic discount.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 			</tbody>
@@ -430,7 +477,18 @@ class SWSales_MetaBoxes {
 			</tbody>
 		</table>
 		<hr />
-		<p><?php _e( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content.', 'sitewide-sales' ); ?></p>
+		<p>
+			<?php
+				$allowed_html = array (
+					'a' => array (
+						'href' => array(),
+						'target' => array(),
+						'title' => array(),
+					),
+				);
+			 	printf( wp_kses( __( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content. <a href="%s" target="_blank">Explore suggested sample content for these fields here</a>.', 'sitewide-sales' ), $allowed_html ), 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/landing-page/?utm_source=plugin&utm_medium=step-3-landing-page&utm_campaign=documentation' );
+		 	?>
+		</p>
 		<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
 			<?php if ( ! $show_shortcode_warning ) { ?> style="display: none;"<?php } ?>>
 			<?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?>
