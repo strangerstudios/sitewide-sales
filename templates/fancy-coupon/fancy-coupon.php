@@ -61,7 +61,7 @@ function swsales_banner_text_fancy_coupon( $content, $location, $active_sitewide
 	// Filter the content if the template is Fancy Coupon.
 	if ( $swsales_banner_template === 'fancy_coupon' ) {
 		$content_after = '<div class="swsales-banner-fancy_coupon-coupon">';
-		$content_after .= '<span class="swsales-coupon">' . 'CODE' . '</span>';
+		$content_after .= '<span class="swsales-coupon">' . swsales_coupon() . '</span>';
 		$content_after .= '</div>';		
 		$content = $content . $content_after;
 	}
