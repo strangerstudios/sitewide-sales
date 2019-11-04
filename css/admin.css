@@ -97,6 +97,20 @@
 	width: 77%;
 }
 
+/* Documentation Meta Box */
+#swsales_documentation.postbox {
+	background: #F5F5F5;
+}
+#swsales_documentation.postbox h2 {
+	border-bottom: 1px solid #DDD;
+}
+#swsales_documentation.postbox ul li {
+	margin-bottom: 15px;
+}
+#swsales_documentation.postbox ul li:last-child {
+	margin-bottom: 0;
+}
+
 /* Sitewide Sale Reports Styles */
 .swsales_reports-box {
 	background: #FFF;
