@@ -30,14 +30,14 @@ class SWSales_Reports {
 	public static function show_reports_page() { ?>
 		<div class="wrap sitewide_sales_admin">
 			<div class="sitewide_sales_banner">
-				<a class="sitewide_sales_logo" title="<?php esc_html_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ); ?>" border="0" alt="<?php esc_html_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
+				<a class="sitewide_sales_logo" title="<?php esc_attr_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ) ); ?>" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
 				<div class="sitewide_sales_meta">
 					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_html_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 				</div>
 			</div>
-			<h1><?php echo esc_html( 'Reports', 'sitewide-sales' ); ?></h1>
+			<h1><?php esc_html_e( 'Reports', 'sitewide-sales' ); ?></h1>
 			<?php
 				// Get all sitewide_sale ids.
 				$all_sitewide_sales = get_posts(
@@ -62,17 +62,17 @@ class SWSales_Reports {
 					<form method="get" action="/wp-admin/edit.php">
 						<input type="hidden" name="post_type" value="sitewide_sale" />
 						<input type="hidden" name="page" value="sitewide_sales_reports" />
-						<label for="sitewide_sale"><?php echo esc_html( 'Show reports for', 'sitewide-sales' ); ?></label>
+						<label for="sitewide_sale"><?php esc_html_e( 'Show reports for', 'sitewide-sales' ); ?></label>
 						<select id="swsales_select_report" name="sitewide_sale" onchange="this.form.submit()">
 							<?php
 							foreach ( $all_sitewide_sales as $sitewide_sale_id ) {
 									$sale              = SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sale_id );
 									$selected_modifier = ( ! ( null === $sale_to_show ) && $sale->get_id() === $sale_to_show->get_id() ) ? 'selected="selected"' : '';
 								?>
-									<option value="<?php echo( esc_html( $sale->get_id() ) ); ?>" <?php echo( esc_html( $selected_modifier ) ); ?>>
-										<?php echo( esc_html( $sale->get_name() ) ); ?>
-									</option>
-									<?php
+								<option value="<?php esc_attr_e( $sale->get_id() ); ?>" <?php echo( esc_html( $selected_modifier ) ); ?>>
+									<?php echo( esc_html( $sale->get_name() ) ); ?>
+								</option>
+								<?php
 							}
 							?>
 						</select>

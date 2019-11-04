@@ -27,11 +27,11 @@ class SWSales_About {
 	public static function show_about_page() { ?>
 		<div class="wrap sitewide_sales_admin">
 			<div class="sitewide_sales_banner">
-				<a class="sitewide_sales_logo" title="<?php esc_html_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ); ?>" border="0" alt="<?php esc_html_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
+				<a class="sitewide_sales_logo" title="<?php esc_attr_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ) ); ?>" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
 				<div class="sitewide_sales_meta">
 					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_html_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 				</div>
 			</div>
 			
@@ -54,10 +54,10 @@ class SWSales_About {
 					?>
 
 					<?php
-						echo '<h3>' . wp_kses( __( 'Getting Started', 'sitewide-sales' ), $allowed_html ) . '</h3>'; 
+						echo '<h3>' . esc_html( 'Getting Started', 'sitewide-sales' ) . '</h3>';
 					?>
 
-					<img class="sitewide_sales_icon alignright" src="<?php echo plugins_url( 'images/Sitewide-Sales_icon.png', SWSALES_BASENAME ); ?>" border="0" alt="<?php esc_html_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" />
+					<img class="sitewide_sales_icon alignright" src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales_icon.png', SWSALES_BASENAME ) ); ?>" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" />
 
 					<?php
 						echo '<p>' . wp_kses( __( 'This plugin handles your banners, notification bars, landing pages, and reporting. Running a sale like this used to require three or more separate plugins. Now you can run your sale with a single tool. At the same time, the Sitewide Sales plugin is flexible enough that you can use specific banner and landing page plugins if wanted.', 'sitewide-sales' ), $allowed_html ) . '</p>';
@@ -76,13 +76,13 @@ class SWSales_About {
 						<li><?php esc_html_e( 'What general look and feel do you want to use as part of the marketing surrounding your sale?', 'sitewide-sales' ); ?></li>
 					</ul>
 
-					<h3>We're here to help make your sale a measurable success.</h3>
+					<h3><?php esc_html_e( "We're here to help make your sale a measurable success.", 'sitewide-sales' ); ?></h3>
 
 					<?php
 						echo '<p>' . wp_kses( __( 'Check out the Sitewide Sales documentation site for additional setup instructions, sample landing page and banner content, as well as developer documentation to further extend the templates, reporting, and integration options.', 'sitewide-sales' ), $allowed_html ) . '</p>';
 					?>
 
-					<p><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=documentation" target="_blank" title="<?php echo esc_html( 'Documentation', 'sitewide-sales' ); ?>"><?php echo esc_html( 'Documentation', 'sitewide-sales' ); ?></a> | <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=support" target="_blank" title="<?php echo esc_html( 'View Support Options &raquo;', 'sitewide-sales' ); ?>"><?php echo esc_html( 'View Support Options &raquo;', 'sitewide-sales' ); ?></a></p>
+					<p><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a> | <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?>"><?php esc_html_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?></a></p>
 
 				</div> <!-- end about-text -->
 			</div> <!-- end about-wrap -->
@@ -90,5 +90,4 @@ class SWSales_About {
 		</div> <!-- sitewide-sales_admin -->
 		<?php
 	}
-
 }
