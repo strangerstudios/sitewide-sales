@@ -896,10 +896,11 @@ class SWSales_MetaBoxes {
 
 		$landing_page_post_id = wp_insert_post(
 			array(
-				'post_title'   => $landing_page_title,
-				'post_content' => '[sitewide_sales]',
-				'post_type'    => 'page',
-				'post_status'  => 'draft',
+				'post_title'    => $landing_page_title,
+				'post_content'  => '[sitewide_sales]',
+				'post_type'     => 'page',
+				'post_status'   => 'draft',
+				'page_template' => 'swsales-page-template.php',
 			)
 		);
 
