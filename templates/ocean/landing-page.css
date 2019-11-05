@@ -22,7 +22,7 @@ body.swsales-landing-page-fancy_coupon article {
 .swsales-landing-page-ocean .swsales-landing-page-content h1,
 .swsales-landing-page-ocean .swsales-landing-page-content h3:not(.pmpro_checkout h3),
 .swsales-landing-page-ocean .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-ocean .swsales-landing-page-content a:not(.pmpro_checkout a) {
+.swsales-landing-page-ocean .swsales-landing-page-content a:not(.pmpro_checkout a):not(.woocommerce a) {
 	color: #FFF;
 	text-align: center;
 }
@@ -98,7 +98,7 @@ body.swsales-landing-page-fancy_coupon article {
 	padding: 100px 0;
 }
 .swsales-landing-page-ocean .woocommerce .products { 
-	background: rgba( 255, 255, 255, 0.5);
+	background: rgba( 255, 255, 255, 0.6 );
 	margin: 0 auto;
 	max-width: 800px;
 	padding: 20px;

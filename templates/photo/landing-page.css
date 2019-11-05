@@ -12,7 +12,7 @@
 #swsale-landing-page-wrap-photo .swsales-landing-page-background-image {
 	background-position: top center;
 	background-repeat: no-repeat;
-	background-size: contain;
+	background-size: 100% auto;
 	padding: 20px 10px;
 }
 .swsales-landing-page-photo .swsales-landing-page-content {
@@ -20,14 +20,16 @@
 }
 .swsales-landing-page-photo .swsales-landing-page-content h1,
 .swsales-landing-page-photo .swsales-landing-page-content h3:not(.pmpro_checkout h3),
-.swsales-landing-page-photo .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-photo .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
+.swsales-landing-page-photo .swsales-landing-page-content p:not(.pmpro_checkout p) {
 	background: rgba( 0, 0, 0, 0.5 );
 	color: rgba( 255, 255, 255, 0.9);
 	margin: 0;
 	padding: 10px;
 	text-align: center;
 	text-shadow: 0px 0px 5px #000;
+}
+.swsales-landing-page-photo .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
+	color: rgba( 255, 255, 255, 0.9);
 }
 #swsale-landing-page-wrap-photo .swsales-landing-page-content h1 {
 	font-weight: 900;
@@ -43,15 +45,20 @@
 	padding: 20px;
 	text-align: left;
 }
-#swsale-landing-page-wrap-photo #pmpro_form .pmpro_checkout h3,
+.swsales-landing-page-photo #pmpro_form .pmpro_checkout {
+	background: #FAFAFA;
+	margin-bottom: 20px;
+}
+#swsale-landing-page-wrap-photo #pmpro_form .pmpro_checkout h3 {
+	border: none;
+	margin-bottom: 10px;
+	padding: 0;
+}
 #swsale-landing-page-wrap-photo #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
 	padding: 0;
 }
 .swsales-landing-page-photo #pmpro_form hr {
 	display: none;
-}
-.swsales-landing-page-photo #pmpro_form .pmpro_checkout {
-	background: #FAFAFA;
 }
 
 /* WooCommerce Integration Specific Styles */

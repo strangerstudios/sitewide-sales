@@ -20,10 +20,10 @@
 	padding: 0;
 }
 .swsales-landing-page-scroll .swsales-landing-page-content h1,
-.swsales-landing-page-scroll .swsales-landing-page-content h2:not(.pmpro_checkout h2),
+.swsales-landing-page-scroll .swsales-landing-page-content h2:not(.pmpro_checkout h2):not(.woocommerce h2),
 .swsales-landing-page-scroll .swsales-landing-page-content h3:not(.pmpro_checkout h3),
 .swsales-landing-page-scroll .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-scroll .swsales-landing-page-content a:not(.pmpro_checkout a) {
+.swsales-landing-page-scroll .swsales-landing-page-content a:not(.pmpro_checkout a):not(.woocommerce a) {
 	text-align: center;
 }
 #swsale-landing-page-wrap-scroll .swsales-landing-page-content h1:not(.pmpro_checkout h1) {
@@ -80,7 +80,7 @@
 	text-transform: uppercase;
 }
 .swsales-landing-page-scroll form#pmpro_form .pmpro_checkout .pmpro_checkout-fields {
-	padding: 0 20px;
+	padding: 0 20px 10px 20px;
 }
 
 .swsales-landing-page-scroll form#pmpro_form #pmpro_billing_address_fields .pmpro_checkout-fields,

@@ -20,10 +20,12 @@ body.swsales-landing-page-gradient article {
 	position: relative;
 	z-index: 10;
 }
+
 .swsales-landing-page-gradient .swsales-landing-page-content h1,
+.swsales-landing-page-gradient .swsales-landing-page-content h2:not(.pmpro_checkout h2):not(.woocommerce h2),
 .swsales-landing-page-gradient .swsales-landing-page-content h3:not(.pmpro_checkout h3),
 .swsales-landing-page-gradient .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-gradient .swsales-landing-page-content a:not(.pmpro_checkout a) {
+.swsales-landing-page-gradient .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
 	color: #FFF;
 	text-align: center;
 }
@@ -79,7 +81,12 @@ body.swsales-landing-page-gradient article {
 	position: relative;
 	z-index: 10;
 }
-#swsale-landing-page-wrap-gradient #pmpro_form .pmpro_checkout h3,
+#swsale-landing-page-wrap-gradient #pmpro_form .pmpro_checkout h3 {
+	background: none;
+	border: none;
+	margin: 0 0 10px 0;
+	padding: 0;
+}
 #swsale-landing-page-wrap-gradient #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
 	margin: 0;
 	padding: 0;

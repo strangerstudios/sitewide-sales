@@ -19,10 +19,11 @@
 	margin: 50px;
 	text-align: center;
 }
-.swsales-landing-page-neon .swsales-landing-page-content h2:not(.pmpro_checkout h2),
+.swsales-landing-page-neon .swsales-landing-page-content h1,
+.swsales-landing-page-neon .swsales-landing-page-content h2:not(.pmpro_checkout h2):not(.woocommerce h2),
 .swsales-landing-page-neon .swsales-landing-page-content h3:not(.pmpro_checkout h3),
 .swsales-landing-page-neon .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-neon .swsales-landing-page-content a:not(.pmpro_checkout a) {
+.swsales-landing-page-neon .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
 	color: #FFF;
 	text-align: center;
 }

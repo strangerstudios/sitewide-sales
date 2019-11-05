@@ -5,7 +5,7 @@
  */
 
 #swsale-landing-page-wrap-vintage {
-	background: #000 url(images/green-dust-and-scratches.png) repeat;
+	background: #1d2a2f url(images/green-dust-and-scratches.png) repeat;
 	padding: 20px 0 40px 0;
 }
 .swsales-landing-page-vintage .swsales-landing-page-content {
@@ -19,23 +19,21 @@
 	color: #e5dfbd;
 	letter-spacing: 1px;
 	text-align: center;
-	text-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+	text-shadow: 2px 2px 0px rgba( 0,0,0,0.3 );
 }
 .swsales-landing-page-vintage .swsales-landing-page-content h1 {
 	border-top: 10px double rgba( 229, 223, 189, 0.3 );
 	border-bottom: 10px double rgba( 229, 223, 189, 0.3 );
 	color: #e5dfbd;
-	font-family: serif;
 	font-weight: 700;
 	margin: 40px 0;
 	padding: 30px 0 40px 0;
-	text-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+	text-shadow: 6px 6px 0px rgba( 0,0,0,0.3 );
 }
 .swsales-landing-page-vintage .swsales-landing-page-content h3:not(.pmpro_checkout h3) {
 	color: #e5dfbd;
-	font-family: serif;
 	font-weight: 300;
-	margin: 0;
+	margin: 0 0 20px 0;
 	padding: 0;
 }
 
@@ -43,7 +41,7 @@
 .swsales-landing-page-vintage #pmpro_form {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 80px;
+	margin-top: 40px;
 	max-width: 800px;
 }
 .swsales-landing-page-vintage #pmpro_form hr {
@@ -73,7 +71,7 @@
 	background: #FFF;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 80px;
+	margin-top: 40px;
 	max-width: 800px;
 	outline: 10px double rgba( 229, 223, 189, 0.3 );
 	padding: 20px;
