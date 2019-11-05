@@ -4,7 +4,7 @@
  * Landing Page Styles 
  */
 
-body.swsales-landing-page-neon {
+#swsale-landing-page-wrap-neon {
 	-webkit-animation: swsalesNeonAnimatedBackground 80s linear infinite;
 	animation: swsalesNeonAnimatedBackground 80s linear infinite;
 	background: #000 url(images/darkness.png) repeat;
@@ -19,17 +19,17 @@ body.swsales-landing-page-neon {
 	margin: 50px;
 	text-align: center;
 }
-.swsales-landing-page-neon .swsales-landing-page-content {
+.swsales-landing-page-neon .swsales-landing-page-content h2:not(.pmpro_checkout h2),
+.swsales-landing-page-neon .swsales-landing-page-content h3:not(.pmpro_checkout h3),
+.swsales-landing-page-neon .swsales-landing-page-content p:not(.pmpro_checkout p),
+.swsales-landing-page-neon .swsales-landing-page-content a:not(.pmpro_checkout a) {
 	color: #FFF;
 	text-align: center;
 }
-.swsales-landing-page-neon .swsales-landing-page-content a {
-	color: #FFF;
-}
 .swsales-landing-page-neon .swsales-landing-page-content h1 {
-	color: #FFF;
 	font-weight: 700;
 	margin-top: 0;
+	text-align: center;
 }
 .swsales-landing-page-neon .swsales-landing-page-content h1 {
 	-webkit-animation-name: swsalesNeonAnimatedh1;
@@ -52,7 +52,7 @@ body.swsales-landing-page-neon {
 	padding: 0;
 	text-shadow: 0px 0px 15px #BBB;
 }
-.swsales-landing-page-neon .swsales-landing-page-content h3 {
+.swsales-landing-page-neon .swsales-landing-page-content h3:not(.pmpro_checkout h3) {
 	-webkit-animation-name: swsalesNeonAnimatedh2;
 	animation-name: swsalesNeonAnimatedh2;
 	-webkit-animation-delay: 1s;

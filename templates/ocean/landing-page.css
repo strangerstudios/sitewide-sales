@@ -1,28 +1,30 @@
 /**
  * Ocean Template for Sitewide Sales
  *
- * landing Page Styles 
+ * Landing Page Styles 
  */
 
-body.swsales-landing-page-ocean {
+html,
+body.swsales-landing-page-fancy_coupon,
+body.swsales-landing-page-fancy_coupon article {
 	background: #4ab1ad;
-	padding: 0 0 50px 0;
+	height: 100%;
 }
 #swsale-landing-page-wrap-ocean {
+	background: #4ab1ad;
 	margin-top: 0;
+	padding: 0 0 50px 0;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content {
 	background-color: #f67656;
-	background-image: url(images/waves.png);
-	background-repeat: repeat-x;
-	background-position: bottom left;
-	background-size: 100px 100px;
-	color: #FFF;
-	padding: 50px 0 110px 0;
-	text-align: center;
+	padding: 50px 0 0 0;
 }
-.swsales-landing-page-ocean .swsales-landing-page-content a {
+.swsales-landing-page-ocean .swsales-landing-page-content h1,
+.swsales-landing-page-ocean .swsales-landing-page-content h3:not(.pmpro_checkout h3),
+.swsales-landing-page-ocean .swsales-landing-page-content p:not(.pmpro_checkout p),
+.swsales-landing-page-ocean .swsales-landing-page-content a:not(.pmpro_checkout a) {
 	color: #FFF;
+	text-align: center;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content h1 {
 	color: #FFF;
@@ -33,12 +35,18 @@ body.swsales-landing-page-ocean {
 	padding: 0;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content h2 {
-	color: #FFF;
 	margin:  0;
 }
 
-
 /* Paid Memberships Pro Integration Specific Styles */
+.swsales-landing-page-ocean div[id^='pmpro_level-'] {
+	background: #4ab1ad;
+	background-image: url(images/waves-alt.png);
+	background-repeat: repeat-x;
+	background-position: top left;
+	background-size: 100px 100px;
+	padding: 100px 0;
+}
 .swsales-landing-page-ocean #pmpro_form {
 	margin: 0 auto;
 	max-width: 800px;
@@ -82,6 +90,14 @@ body.swsales-landing-page-ocean {
 
 /* WooCommerce Integration Specific Styles */
 .swsales-landing-page-ocean .woocommerce { 
+	background: #4ab1ad;
+	background-image: url(images/waves-alt.png);
+	background-repeat: repeat-x;
+	background-position: top left;
+	background-size: 100px 100px;
+	padding: 100px 0;
+}
+.swsales-landing-page-ocean .woocommerce .products { 
 	background: rgba( 255, 255, 255, 0.5);
 	margin: 0 auto;
 	max-width: 800px;
