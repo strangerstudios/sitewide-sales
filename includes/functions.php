@@ -70,7 +70,7 @@
  * @return string
  */
 function swsales_coupon( $sitewide_sale = null ) {
-	if ( 'Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale' !== get_class( $sitewide_sale ) ) {
+	if ( 'object' !== gettype( $sitewide_sale ) || 'Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale' !== get_class( $sitewide_sale ) ) {
 		$sitewide_sale_id = swsales_active_sitewide_sale_id();
 		if ( is_numeric( $sitewide_sale ) ) {
 			$sitewide_sale_id = intval( $sitewide_sale );
