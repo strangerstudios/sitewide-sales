@@ -61,27 +61,30 @@
      $template = get_post_meta( $sitewide_sale_id, 'swsales_banner_template', true );
      return $template;
  }
- 
- /**
-  * What is the coupon for the active sitewide sale?
-  * Returns false if there is no sale or coupon chosen yet.
-  */
-function swsales_coupon() {
-    // Get the active sitewide sale or the sale being previewed.
-    if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
-        $sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
-    } else {
-        $sitewide_sale_id = swsales_active_sitewide_sale_id();
-    }
 
-    // Return false if no sale.
-    if ( empty( $sitewide_sale_id ) ) {
-        // Note when this happens we don't run the filter below
-        return false;
-    }
+/**
+ * Gets the coupon for a given sitewide sale.
+ * Filterable by modules using "swsales_coupon" filter.
+ *
+ * @param int|SWSales_Sitewide_Sale $sitewide_sale to get coupon for. Defaults to active.
+ * @return string
+ */
+function swsales_coupon( $sitewide_sale = null ) {
+	if ( 'Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale' !== get_class( $sitewide_sale ) ) {
+		$sitewide_sale_id = swsales_active_sitewide_sale_id();
+		if ( is_numeric( $sitewide_sale ) ) {
+			$sitewide_sale_id = intval( $sitewide_sale );
+		} elseif ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
+			$sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
+		}
+		$sitewide_sale = \Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sale_id );
+	}
 
-    // Different modules store their coupons in different places. Let them filter it.
-    $coupon = apply_filters( 'swsales_coupon', false, $sitewide_sale_id );
+	// Return null if no sale.
+	if ( empty( $sitewide_sale ) ) {
+		// Note when this happens we don't run the filter in $sitewide_sale->get_coupon().
+		return null;
+	}
 
-    return $coupon;
+	return $sitewide_sale->get_coupon();
 }

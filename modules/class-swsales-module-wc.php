@@ -249,22 +249,19 @@ class SWSales_Module_WC {
 		}
 		return is_page( wc_get_page_id( 'cart' ) ) ? true : $is_checkout_page;
 	}
-	
+
 	/**
 	 * Get the coupon for a sitewide sale.
 	 * Callback for the swsales_coupon filter.
 	 */
-	public static function swsales_coupon( $coupon, $sitewide_sale_id ) {
-		$sitewide_sale = new \Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale();
-		$sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
-		
+	public static function swsales_coupon( $coupon, $sitewide_sale ) {
 		if ( $sitewide_sale->get_sale_type() === 'wc' ) {
 			$coupon_object = new \WC_Coupon( $sitewide_sale->swsales_wc_coupon_id );
-			if ( !empty( $coupon_object ) ) {
+			if ( ! empty( $coupon_object ) ) {
 				$coupon = $coupon_object->get_code();
 			}
 		}
-		
+
 		return $coupon;
 	}
 

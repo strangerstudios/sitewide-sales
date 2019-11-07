@@ -580,6 +580,16 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Gets the coupon code for the curent sitewide sale.
+	 * Must be filtered by module.
+	 *
+	 * @return string
+	 */
+	public function get_coupon() {
+		return apply_filters( 'swsales_coupon', null, $this );
+	}
+
+	/**
 	 * Gets specific piece of post meta.
 	 *
 	 * @param  string $meta_key of data.
