@@ -241,7 +241,7 @@ class SWSales_MetaBoxes {
 														<?php
 														if ( $i == $cur_sale->get_start_month() ) {
 															?>
-									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/1/' . $cur_sale->get_start_year(), current_time( 'timestamp' ) ) ); ?></option>
+									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_start_year(), current_time( 'timestamp' ) ) ); ?></option>
 								<?php
 							}
 							?>
@@ -262,7 +262,7 @@ class SWSales_MetaBoxes {
 														<?php
 														if ( $i == $cur_sale->get_end_month() ) {
 															?>
-									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/1/' . $cur_sale->get_end_year(), current_time( 'timestamp' ) ) ) ); ?></option>
+									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_end_year(), current_time( 'timestamp' ) ) ) ); ?></option>
 								<?php
 							}
 							?>
