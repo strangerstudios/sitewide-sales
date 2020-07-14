@@ -55,8 +55,12 @@ includes\classes\SWSales_Page_Template::init();
 // Add a general About admin page.
 includes\classes\SWSales_About::init();
 
+// Add a license admin page.
+includes\classes\SWSales_License::init();
+
 // Helper functions
 require_once ( 'includes/functions.php' );
+require_once ( 'includes/license.php' );
 
 // Load Ecommerce Modules
 function swsales_load_modules() {
