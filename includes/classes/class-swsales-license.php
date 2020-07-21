@@ -25,7 +25,7 @@ class SWSales_License{
 
         //only let admins get here
         if ( ! function_exists( 'current_user_can' ) || ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'sws_license') ) ) {
-            die( __( 'You do not have permissions to perform this action.', 'paid-memberships-pro' ) );
+            die( __( 'You do not have permissions to perform this action.', 'sitewide-sales' ) );
         } ?>
         <div class="wrap sitewide_sales_admin">
 			<div class="sitewide_sales_banner">
@@ -64,11 +64,11 @@ class SWSales_License{
 
             <div class="about-text">
                 <?php if(!sws_license_is_valid() && empty($key)) { ?>
-                    <p class="sitewide_sales_message sitewide_sales_alert"><strong><?php _e('Enter your support license key.</strong> Your license key can be found in your membership email receipt or in your <a href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fmembership-account%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dmembership-account%26utm_content%3Dno-key" target="_blank">Membership Account</a>.', 'paid-memberships-pro' );?></p>
+                    <p class="sitewide_sales_message sitewide_sales_alert"><strong><?php _e('Enter your support license key.</strong> Your license key can be found in your membership email receipt or in your <a href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fmembership-account%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dmembership-account%26utm_content%3Dno-key" target="_blank">Membership Account</a>.', 'sitewide-sales' );?></p>
                 <?php } elseif(!sws_license_is_valid()) { ?>
-                    <p class="sitewide_sales_message sitewide_sales_error"><strong><?php _e('Your license is invalid or expired.', 'paid-memberships-pro' );?></strong> <?php _e('Visit the PMPro <a href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fmembership-account%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dmembership-account%26utm_content%3Dkey-not-valid" target="_blank">Membership Account</a> page to confirm that your account is active and to find your license key.', 'paid-memberships-pro' );?></p>
+                    <p class="sitewide_sales_message sitewide_sales_error"><strong><?php _e('Your license is invalid or expired.', 'sitewide-sales' );?></strong> <?php _e('Visit the PMPro <a href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fmembership-account%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dmembership-account%26utm_content%3Dkey-not-valid" target="_blank">Membership Account</a> page to confirm that your account is active and to find your license key.', 'sitewide-sales' );?></p>
                 <?php } else { ?>													
-                    <p class="sitewide_sales_message sitewide_sales_success"><?php printf(__('<strong>Thank you!</strong> A valid <strong>%s</strong> license key has been used to activate your support license on this site.', 'paid-memberships-pro' ), ucwords($sws_license_check['license']));?></p>
+                    <p class="sitewide_sales_message sitewide_sales_success"><?php printf(__('<strong>Thank you!</strong> A valid <strong>%s</strong> license key has been used to activate your support license on this site.', 'sitewide-sales' ), ucwords($sws_license_check['license']));?></p>
                 <?php } ?>
             </div>
 
@@ -88,11 +88,11 @@ class SWSales_License{
 
             <p>
 				<?php if ( ! sws_license_is_valid() ) { ?>
-					<a class="button button-primary button-hero" href="https://www.paidmembershipspro.com/membership-checkout/?level=20&utm_source=plugin&utm_medium=pmpro-license&utm_campaign=plus-checkout&utm_content=buy-plus" target="_blank"><?php echo esc_html( 'Buy Plus License', 'paid-memberships-pro' ); ?></a>
-					<a class="button button-hero" href="https://www.paidmembershipspro.com/pricing/?utm_source=plugin&utm_medium=pmpro-license&utm_campaign=pricing&utm_content=view-license-options" target="_blank"><?php echo esc_html( 'View Support License Options', 'paid-memberships-pro' ); ?></a>
+					<a class="button button-primary button-hero" href="https://www.paidmembershipspro.com/membership-checkout/?level=20&utm_source=plugin&utm_medium=pmpro-license&utm_campaign=plus-checkout&utm_content=buy-plus" target="_blank"><?php echo esc_html( 'Buy Plus License', 'sitewide-sales' ); ?></a>
+					<a class="button button-hero" href="https://www.paidmembershipspro.com/pricing/?utm_source=plugin&utm_medium=pmpro-license&utm_campaign=pricing&utm_content=view-license-options" target="_blank"><?php echo esc_html( 'View Support License Options', 'sitewide-sales' ); ?></a>
 				<?php } else { ?>
-					<a class="button button-primary button-hero" href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fmembership-account%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dmembership-account%26utm_content%3Dview-account" target="_blank"><?php echo esc_html( 'Manage My Account', 'paid-memberships-pro' ); ?></a>
-					<a class="button button-hero" href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fnew-topic%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dsupport%26utm_content%3Dnew-support-ticket" target="_blank"><?php echo esc_html( 'Open Support Ticket', 'paid-memberships-pro' ); ?></a>
+					<a class="button button-primary button-hero" href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fmembership-account%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dmembership-account%26utm_content%3Dview-account" target="_blank"><?php echo esc_html( 'Manage My Account', 'sitewide-sales' ); ?></a>
+					<a class="button button-hero" href="https://www.paidmembershipspro.com/membership-account/?redirect_to=%2Fnew-topic%2F%3Futm_source%3Dplugin%26utm_medium%3Dpmpro-license%26utm_campaign%3Dsupport%26utm_content%3Dnew-support-ticket" target="_blank"><?php echo esc_html( 'Open Support Ticket', 'sitewide-sales' ); ?></a>
 				<?php } ?>
 			</p>
 
@@ -102,7 +102,7 @@ class SWSales_License{
 
             <img class="sws_icon alignright" src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales_icon.png', SWSALES_BASENAME ) ); ?>" border="0" alt="Sitewide Sales Logo" />
             <?php
-                $allowed_pmpro_license_strings_html = array (
+                $allowed_sws_license_strings_html = array (
                     'a' => array (
                         'href' => array(),
                         'target' => array(),
@@ -113,18 +113,18 @@ class SWSales_License{
             ?>
 
             <?php
-                echo '<p>' . sprintf( wp_kses( __( 'Sitewide Sales is distributed under the <a href="%s" title="GPLv2 license" target="_blank">GPLv2 license</a>. This means, among other things, that you may use the software on this site or any other site free of charge.', 'paid-memberships-pro' ), $allowed_pmpro_license_strings_html ), '#' ) . '</p>';
+                echo '<p>' . sprintf( wp_kses( __( 'Sitewide Sales is distributed under the <a href="%s" title="GPLv2 license" target="_blank">GPLv2 license</a>. This means, among other things, that you may use the software on this site or any other site free of charge.', 'sitewide-sales' ), $allowed_sws_license_strings_html ), '#' ) . '</p>';
             ?>
 
             <?php
-                echo '<p>' . wp_kses( __( '<strong>Sitewide Sales offers plans for automatic updates and premium support.</strong> These plans include a Plus license key which we recommend for all public websites running Sitewide Sales. A Plus license key allows you to automatically update when a new security, bug fix, or feature enhancement is released.' ), $allowed_pmpro_license_strings_html ) . '</p>';
+                echo '<p>' . wp_kses( __( '<strong>Sitewide Sales offers plans for automatic updates and premium support.</strong> These plans include a Plus license key which we recommend for all public websites running Sitewide Sales. A Plus license key allows you to automatically update when a new security, bug fix, or feature enhancement is released.' ), $allowed_sws_license_strings_html ) . '</p>';
             ?>
 
             <?php
-                echo '<p>' . wp_kses( __( '<strong>Need help?</strong> Your license allows you to open new tickets in our private support area. Purchases are backed by a 30 day, no questions asked refund policy.' ), $allowed_pmpro_license_strings_html ) . '</p>';
+                echo '<p>' . wp_kses( __( '<strong>Need help?</strong> Your license allows you to open new tickets in our private support area. Purchases are backed by a 30 day, no questions asked refund policy.' ), $allowed_sws_license_strings_html ) . '</p>';
             ?>
 
-            <p><a href="#" target="_blank"><?php echo esc_html( 'View Support License Options &raquo;', 'paid-memberships-pro' ); ?></a></p>
+            <p><a href="#" target="_blank"><?php echo esc_html( 'View Support License Options &raquo;', 'sitewide-sales' ); ?></a></p>
 
             </div> <!-- end about-text -->
             </div> <!-- end about-wrap -->

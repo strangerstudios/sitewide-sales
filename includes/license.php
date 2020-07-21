@@ -18,7 +18,7 @@ register_activation_hook( __FILE__, 'sws_license_activation' );
 function sws_license_deactivation() {
 	wp_clear_scheduled_hook( 'sws_license_check_key' );
 }
-register_deactivation_hook( __FILE__, 'pmpro_deactivation' );
+register_deactivation_hook( __FILE__, 'sws_license_deactivation' );
 
 /**
  * Check to see if customer has a valid license key.
