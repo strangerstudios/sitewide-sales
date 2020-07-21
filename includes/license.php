@@ -163,7 +163,7 @@ function sws_license_nag() {
 
     //okay, show nag
     ?>
-    <div class="<?php if(!empty($key)) { ?>sitewide_sales_message sitewide_sales_error<?php } else { ?>sitewide_sales_message sitewide_sales_error<?php } ?> fade">		
+    <div class="<?php if(!empty($key)) { ?>sitewide_sales_message sitewide_sales_error<?php } else { ?>sitewide_sales_message sitewide_sales_warning<?php } ?> fade">		
         <p>
             <?php
                 //only show the invalid part if they've entered a key
