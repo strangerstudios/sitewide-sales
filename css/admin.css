@@ -202,3 +202,12 @@
 	font-size: 16px;
 }
 
+/* License Page CSS */
+.sitewide_sale_page_sitewide_sales_license h2 {
+	text-align: left;
+}
+
+.sitewide_sale_page_sitewide_sales_license img.sws_icon{
+	height:auto;
+	width:250px;
+}

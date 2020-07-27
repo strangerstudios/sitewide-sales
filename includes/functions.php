@@ -88,3 +88,23 @@ function swsales_coupon( $sitewide_sale = null ) {
 
 	return $sitewide_sale->get_coupon();
 }
+
+/**
+ * Set a cron event if there's no cron available. Wrapper for wp_schedule_event.
+ * 
+ * @param string $timestamp When to next run the event
+ * @param string $recurrence the frequency of the cron job.
+ * @param string $hook Action hook of the event.
+ * @param array $args Arguments for hook callback.
+ * 
+ * Ref: https://developer.wordpress.org/reference/functions/wp_schedule_event/
+ */
+function sws_maybe_schedule_event( $timestamp, $recurrence, $hook, $args = array() ) {
+    $next = wp_next_scheduled( $hooks, $args );
+
+    if ( empty( $next ) ) {
+        return wp_schedule_event( $timestamp, $recurrence, $hook, $args );
+    } else {
+        return false;
+    }
+}
