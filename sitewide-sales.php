@@ -46,6 +46,9 @@ includes\classes\SWSales_Settings::init();
 // Enqueues scripts and does other administrative things.
 includes\classes\SWSales_Setup::init();
 
+// Enqueues settings for privacy policy page
+includes\classes\SWSales_Privacy::init();
+
 // Handle templates
 includes\classes\SWSales_Templates::init();
 
