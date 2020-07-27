@@ -64,7 +64,7 @@ class SWSales_Setup {
 		if ( false === $slug ) {
 			$slug = 'login';
 		}
-		return ( ( ! empty( $post->post_name ) && $slug === $post->post_name ) || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) );
+		return ( ( ! empty( $post->post_name ) && $slug === $post->post_name ) || is_page( 'login' ) || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) || ( function_exists( 'pmpro_is_login_page' ) && pmpro_is_login_page() ) || ( function_exists( 'is_account_page' ) && ! is_user_logged_in() && is_account_page() ) );
 	}
 
 	/**
