@@ -24,9 +24,33 @@
     padding: 5px 10px 0px 2px;
 }
 .sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a {
-    border-left: 1px solid #CCC;
+	border-left: 1px solid #CCC;
 	color: #6991ac;
-    padding: 5px 10px;
+	padding: 5px 10px;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag {
+	font-weight: bold;
+	text-decoration: none;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag:before {
+	display: inline-block;
+	font: 400 20px/1 dashicons;
+	left: 0;
+	position: relative;
+	text-decoration: none;
+	vertical-align: bottom;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-valid {
+	color: rgb( 70, 180, 80 );
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-valid:before {
+	content: "\f147";
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-invalid {
+	color: #AAA;
+}
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-invalid:before {
+	content: "\f335";
 }
 .sitewide_sales_admin .sitewide_sales_icon {
     max-width: 200px;
@@ -187,17 +211,37 @@
 }
 
 /* Sitewide Sales About Page */
-.sitewide_sale_page_sitewide_sales_about .about-wrap h2 {
-    text-align: left;
+.sws-wrap {
+	font-size:15px;
+	margin: 25px 40px 0 20px;
+	max-width: 1050px;
+	position: relative;
+}	
+.sws-wrap .sws-text {
+    color:#555d66;
 }
-.sitewide_sale_page_sitewide_sales_about .about-wrap h3 {
-    border-top: 1px solid rgba(0,0,0,.1);
-    padding-top: 1.25em;
+.sws-wrap h2 {
+	font-size: 2.7em;
+	font-weight: 300;
+	line-height: 1.3;
+	margin: 40px 0 .6em;
+	text-align: left;
 }
-.sitewide_sale_page_sitewide_sales_about .about-wrap .sitewide_sales_icon {
+.sws-wrap h3 {
+	border-top: 1px solid rgba(0,0,0,.1);
+	font-size: 1.4em;
+	line-height:1.5;
+	margin: 1.25em 0 .6em;
+	padding-top: 1.25em;
+}
+.sws-wrap .sws-text p {
+	line-height: 1.5;
+	font-size:16px;
+}
+.sitewide_sale_page_sitewide_sales_about .sws-wrap .sitewide_sales_icon {
     margin-top: 20px;
 }
-.sitewide_sale_page_sitewide_sales_about .about-wrap ul {
+.sitewide_sale_page_sitewide_sales_about .sws-wrap ul {
 	line-height: 1.5;
 	font-size: 16px;
 }
@@ -210,4 +254,10 @@
 .sitewide_sale_page_sitewide_sales_license img.sws_icon{
 	height:auto;
 	width:250px;
+}
+
+@media screen and (max-width: 782px) {
+	.sws-wrap .sws-text {
+		margin-right: 0;
+	}
 }

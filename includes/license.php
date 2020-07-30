@@ -163,16 +163,17 @@ function sws_license_nag() {
 
     //okay, show nag
     ?>
-    <div class="<?php if(!empty($key)) { ?>sitewide_sales_message sitewide_sales_error<?php } else { ?>sitewide_sales_message sitewide_sales_warning<?php } ?> fade">		
-        <p>
+	<div class="<?php if ( ! empty( $key ) ) { ?>error<?php } else { ?>notice notice-warning<?php } ?> fade">
+		<p>
             <?php
                 //only show the invalid part if they've entered a key
-                
-                if(!empty($key)) {
-                    ?><strong><?php _e('Invalid Sitewide Sales License Key.', 'sitewide-sales' );?></strong><?php
-                } 
-            ?>
-            <?php _e("If you're running Sitewide Sales on a production website, we recommend an annual support license.", 'sitewide-sales' );?>
+				if ( ! empty( $key ) ) { ?>
+					<strong><?php _e( 'Your Sitewide Sales license key is invalid or expired.', 'sitewide-sales' );?></strong>
+				<?php } else { ?>
+					<strong><?php _e( 'Enter your Sitewide Sales license key.', 'sitewide-sales' ); ?></strong>
+				<?php }
+			?>
+            <?php _e( 'A license key is required to receive automatic updates and support.', 'sitewide-sales' );?>
             <a href="<?php echo admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license');?>"><?php _e('More Info', 'sitewide-sales' );?></a>&nbsp;|&nbsp;<a href="<?php echo add_query_arg('sws_nag_paused', '1', $_SERVER['REQUEST_URI']);?>"><?php _e('Dismiss', 'sitewide-sales' );?></a>
         </p>
     </div>
