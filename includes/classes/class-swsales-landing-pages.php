@@ -158,6 +158,9 @@ class SWSales_Landing_Pages {
 	 * Register meta box(es).
 	 */
 	public static function add_edit_swsales_metabox() {
+		if ( empty( $_REQUEST['post'] ) ) {
+			return;
+		}
 		$post_id = $_REQUEST['post'];
 		if ( ! empty( get_post_meta( $post_id, 'swsales_sitewide_sale_id', true ) ) ) {
 			add_meta_box( 'swsales_edit_sitewide_sale', "<span style='color:#bd2300'>" . __( 'Sitewide Sale Landing Page', 'sitewide-sales' ) . '</span>', array( __CLASS__, 'edit_swsales_metabox_content' ), 'page', 'side', 'high' );
