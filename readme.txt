@@ -2,8 +2,8 @@
 Contributors: strangerstudios, dlparker1005, pbrocks
 Tags: sales, sale, woocommerce, paid memberships pro, pmpro, black friday, cyber monday, discount
 Requires at least:
-Tested up to: 5.2.3
-Stable tag: .1
+Tested up to: 5.4.2
+Stable tag: .2
 
 Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
 
@@ -22,6 +22,8 @@ This plugin requires WooCommerce or Paid Memberships Pro to function. New integr
 1. Create a new `Sitewide Sale` under `Sitewide Sales` > `Add New`.
 
 == Changelog ==
+= .2 =
+* ENHANCEMENT: Adding support for updates through the Stranger Studios license server.
 
 = .1 =
 * Ported from PMPro Sitewide Sales

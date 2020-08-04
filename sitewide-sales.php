@@ -5,7 +5,7 @@
  * Description: Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
  * Author: Stranger Studios
  * Author URI: https://www.strangerstudios.com
- * Version: .1
+ * Version: .2
  * Plugin URI:
  * License: GNU GPLv2+
  * Text Domain: sitewide-sales
@@ -16,7 +16,7 @@ namespace Sitewide_Sales;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
-define( 'SWSALES_VERSION', '0.1' );
+define( 'SWSALES_VERSION', '0.2' );
 define( 'SWSALES_DIR', dirname( __FILE__ ) );
 define( 'SWSALES_BASENAME', plugin_basename( __FILE__ ) );
 
