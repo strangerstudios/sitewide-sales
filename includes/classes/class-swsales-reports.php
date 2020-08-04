@@ -35,6 +35,11 @@ class SWSales_Reports {
 					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
 					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
 					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
+					<?php if ( sws_license_is_valid() ) { ?>
+						<?php printf(__( '<a class="sws_license_tag sws_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					<?php } elseif ( ! defined( 'SWS_LICENSE_NAG' ) || SWS_LICENSE_NAG == true ) { ?>
+						<?php printf(__( '<a class="sws_license_tag sws_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					<?php } ?>
 				</div>
 			</div>
 			<h1><?php esc_html_e( 'Reports', 'sitewide-sales' ); ?></h1>
@@ -58,7 +63,7 @@ class SWSales_Reports {
 				}
 
 				// Select field to choose a sitewide sale.
-				?>
+				if ( ! empty ( $all_sitewide_sales ) ) { ?>
 					<form method="get" action="/wp-admin/edit.php">
 						<input type="hidden" name="post_type" value="sitewide_sale" />
 						<input type="hidden" name="page" value="sitewide_sales_reports" />
@@ -78,7 +83,11 @@ class SWSales_Reports {
 						</select>
 					</form>
 					<hr />
-				<?php
+					<?php
+				} else { ?>
+					<div class="sitewide_sales_message sitewide_sales_alert"><?php printf(__( 'No Sitewide Sales found. <a href="%s">Create your first Sitewide Sale &raquo;</a>', 'sitewide-sales' ), admin_url( 'post-new.php?post_type=sitewide_sale' ) ); ?></div>
+					<?php
+				}
 
 				// Show report for sitewide sale if applicable.
 				if ( null !== $sale_to_show ) {
