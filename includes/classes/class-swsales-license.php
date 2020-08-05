@@ -71,7 +71,7 @@ class SWSales_License{
                 <?php } elseif(!sws_license_is_valid()) { ?>
                     <p class="sitewide_sales_message sitewide_sales_error"><strong><?php _e('Your license is invalid or expired.', 'sitewide-sales' );?></strong> <?php _e('Visit the <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dsws-license%26utm_campaign%3Daccount%26utm_content%3Dkey-not-valid" target="_blank">account area</a> to confirm that your account is active and to find your license key.', 'sitewide-sales' );?></p>
                 <?php } else { ?>													
-                    <p class="sitewide_sales_message sitewide_sales_success"><?php printf(__('<strong>Thank you!</strong> A valid <strong>%s</strong> license key has been used to activate your support license on this site.', 'sitewide-sales' ), ucwords($sws_license_check['license']));?></p>
+                    <p class="sitewide_sales_message sitewide_sales_success"><?php _e('<strong>Thank you!</strong> A valid license key has been used to activate your support license on this site.', 'sitewide-sales');?></p>
                 <?php } ?>
 
             <form action="" method="post">
