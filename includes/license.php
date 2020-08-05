@@ -200,12 +200,14 @@ add_action( 'init', 'sws_updates_setup' );
  * @since  1.0
  */
 function sws_get_updates() {
-	// check if forcing a pull from the server
-	$updates = get_option( 'sws_addons', array() );
+	static $connection_error = false;
+    
+    // check if forcing a pull from the server
+	$updates = get_option( 'sws_updates', array() );
 	$updates_timestamp = get_option( 'sws_updates_timestamp', 0 );
 
 	// if no updates locally, we need to hit the server
-	if ( empty( $updates ) || ! empty( $_REQUEST['force-check'] ) || current_time( 'timestamp' ) > $updates_timestamp + 86400 ) {
+	if ( empty( $updates ) || ! empty( $_REQUEST['force-check'] ) || current_time( 'timestamp' ) > $updates_timestamp + 86400 && ! $connection_error ) {
 		/**
 		 * Filter to change the timeout for this wp_remote_get() request.
 		 *
@@ -225,8 +227,15 @@ function sws_get_updates() {
 
 		// test response
 		if ( is_wp_error( $remote_updates ) ) {
-			// error
-			//_e( 'Could not connect to the Stranger Studios License Server to get update information. Try again later.', 'error' );
+			// Error. Make sure to only show it once.
+            if ( ! $connection_error ) {
+                $connection_error = true;
+                ?>
+                <div class="error">
+                <p><?php _e( 'Could not connect to the Stranger Studios License Server to get update information. Try again later.', 'error' ); ?></p>
+                </div>
+                <?php
+            }
 		} elseif ( ! empty( $remote_updates ) && $remote_updates['response']['code'] == 200 ) {
 			// update addons in cache
 			$updates = json_decode( wp_remote_retrieve_body( $remote_updates ), true );
