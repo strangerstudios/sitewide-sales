@@ -95,7 +95,7 @@ class SWSales_Settings {
 			return false;
 		}
 
-		$landing_page_id = get_post_meta( $options['active_sitewide_sale_id'], 'pmpro_sws_landing_page_post_id', true );
+		$landing_page_id = get_post_meta( $options['active_sitewide_sale_id'], 'swsales_landing_page_post_id', true );
 
 		if ( ! empty( $landing_page_id ) && $landing_page_id == $post_id ) {
 			return true;
