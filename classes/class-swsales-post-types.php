@@ -50,7 +50,7 @@ class SWSales_Post_Types {
 		$labels['uploaded_to_this_item'] = __( 'Uploaded to this Sitewide Sale', 'sitewide-sales' );
 		$labels['items_list']            = __( 'Sitewide Sales list', 'sitewide-sales' );
 		$labels['items_list_navigation'] = __( 'Sitewide Sales list navigation', 'sitewide-sales' );
-		$labels['filter_items_list']     = __( 'Filter sitewide sales list', 'sitewide-sales' );
+		$labels['filter_items_list']     = __( 'Filter Sitewide Sales list', 'sitewide-sales' );
 
 		// Build the post type args.
 		$args['labels']              = __( 'Sitewide Sales', 'sitewide-sales' );
