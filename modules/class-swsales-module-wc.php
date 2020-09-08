@@ -47,7 +47,7 @@ class SWSales_Module_WC {
 		// WC-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-		add_filter( 'swsales_get_revenue', array( __CLASS__, 'total_revenue' ), 10, 2 );
+		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
 		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 	}
 
@@ -392,25 +392,31 @@ class SWSales_Module_WC {
 	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
-	public static function total_revenue( $cur_revenue, $sitewide_sale ) {
+	public static function sale_revenue( $cur_revenue, $sitewide_sale ) {
 		global $wpdb;
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
 		}
+
 		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
-		$total_revenue = $wpdb->get_var( "
+		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
+		$sale_revenue = $wpdb->get_var( "
 			SELECT DISTINCT SUM(pm.meta_value)
 			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
 			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
 			WHERE p.post_type = 'shop_order'
 			AND p.post_status IN ('wc-processing','wc-completed')
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
+			AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
+			AND wcoi.order_item_type = 'coupon'
 			AND pm.meta_key = '_order_total'
-    	" );
+		" );
 
-		return wp_strip_all_tags( wc_price( $total_revenue ) );
+		return wp_strip_all_tags( wc_price( $sale_revenue ) );
 	}
 
 	/**
