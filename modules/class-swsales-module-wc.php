@@ -360,6 +360,7 @@ class SWSales_Module_WC {
 	 * @return string
 	 */
 	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
+		global $wpdb;
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_conversions;
 		}
@@ -367,19 +368,19 @@ class SWSales_Module_WC {
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
 		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
 
-		$orders = wc_get_orders(
-			array(
-				'date_paid' => $sitewide_sale->get_start_date( 'U' ) . '...' . strval( intval( $sitewide_sale->get_end_date( 'U' ) ) + DAY_IN_SECONDS ),
-			)
-		);
-		$conversion_count = 0;
-		foreach ( $orders as $order ) {
-			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
-				if ( strtoupper( $coupon_code ) === strtoupper( $order_coupon_code ) ) {
-					$conversion_count++;
-				}
-			}
-		}
+		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
+		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
+		$conversion_count = $wpdb->get_var( "
+			SELECT COUNT(*)
+			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
+			WHERE p.post_type = 'shop_order'
+			AND p.post_status IN ('wc-processing','wc-completed')
+			AND p.post_date >= '{$sale_start_date}'
+			AND p.post_date <= '{$sale_end_date}'
+			AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
+			AND wcoi.order_item_type = 'coupon'
+		" );
 
 		return strval( $conversion_count );
 	}
@@ -392,20 +393,22 @@ class SWSales_Module_WC {
 	 * @return string
 	 */
 	public static function total_revenue( $cur_revenue, $sitewide_sale ) {
+		global $wpdb;
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
 		}
-
-		$orders = wc_get_orders(
-			array(
-				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
-			)
-		);
-
-		$total_revenue = 0.00;
-		foreach ( $orders as $order ) {
-			$total_revenue += $order->total;
-		}
+		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
+		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
+		$total_revenue = $wpdb->get_var( "
+			SELECT DISTINCT SUM(pm.meta_value)
+			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
+			WHERE p.post_type = 'shop_order'
+			AND p.post_status IN ('wc-processing','wc-completed')
+			AND p.post_date >= '{$sale_start_date}'
+			AND p.post_date <= '{$sale_end_date}'
+			AND pm.meta_key = '_order_total'
+    	" );
 
 		return wp_strip_all_tags( wc_price( $total_revenue ) );
 	}
@@ -417,37 +420,41 @@ class SWSales_Module_WC {
 	 * @return string
 	 */
 	public static function additional_report( $sitewide_sale ) {
+		global $wpdb;
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return;
 		}
 
-		$total_rev            = 0;
-		$new_rev_with_code    = 0;
-		$new_rev_without_code = 0;
-
+		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
+		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
 		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
 
-		$orders = wc_get_orders(
-			array(
-				'date_paid' => $sitewide_sale->get_start_date( 'Y-m-d' ) . '...' . $sitewide_sale->get_end_date( 'Y-m-d' ),
-			)
-		);
+		$total_rev = $wpdb->get_var( "
+			SELECT DISTINCT SUM(pm.meta_value)
+			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
+			WHERE p.post_type = 'shop_order'
+			AND p.post_status IN ('wc-processing','wc-completed')
+			AND p.post_date >= '{$sale_start_date}'
+			AND p.post_date <= '{$sale_end_date}'
+			AND pm.meta_key = '_order_total'
+		" );
+		$new_rev_with_code = $wpdb->get_var( "
+			SELECT DISTINCT SUM(pm.meta_value)
+			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
+			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
+			WHERE p.post_type = 'shop_order'
+			AND p.post_status IN ('wc-processing','wc-completed')
+			AND p.post_date >= '{$sale_start_date}'
+			AND p.post_date <= '{$sale_end_date}'
+			AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
+			AND wcoi.order_item_type = 'coupon'
+			AND pm.meta_key = '_order_total'
+		" );
+		$new_rev_without_code = $total_rev - $new_rev_with_code;
 
-		foreach ( $orders as $order ) {
-			$total_rev  += $order->total;
-			$used_coupon = false;
-			foreach ( $order->get_used_coupons() as $order_coupon_code ) {
-				if ( strtoupper( $coupon_code ) === strtoupper( $order_coupon_code ) ) {
-					$used_coupon = true;
-				}
-			}
-			if ( $used_coupon ) {
-				$new_rev_with_code += $order->total;
-			} else {
-				$new_rev_without_code += $order->total;
-			}
-		}
 		?>
 		<div class="swsales_reports-box">
 			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
