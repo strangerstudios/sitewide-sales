@@ -33,7 +33,7 @@ function swsales_send_ajax(report) {
 
 function swsales_track() {
 	var cookie = swsales_get_tracking_cookie();
-	if ( jQuery( '.swsales_banner' ).length ) {
+	if ( jQuery( '.swsales-banner' ).length ) {
 		if ( cookie['banner'] == 0 ) {
 			cookie['banner'] = 1;
 			swsales_send_ajax( 'swsales_banner_impressions' );
