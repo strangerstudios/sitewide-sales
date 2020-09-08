@@ -2,7 +2,7 @@
 
 namespace Sitewide_Sales\modules;
 
-use Sitewide_Sales\includes\classes;
+use Sitewide_Sales\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 

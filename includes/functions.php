@@ -7,7 +7,7 @@
   * What is the active sitewide sale id?
   */
  function swsales_active_sitewide_sale_id() {
-     $options = \Sitewide_Sales\includes\classes\SWSales_Settings::get_options();
+     $options = \Sitewide_Sales\classes\SWSales_Settings::get_options();
      return $options['active_sitewide_sale_id'];
  }
  
@@ -70,14 +70,14 @@
  * @return string
  */
 function swsales_coupon( $sitewide_sale = null ) {
-	if ( 'object' !== gettype( $sitewide_sale ) || 'Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale' !== get_class( $sitewide_sale ) ) {
+	if ( 'object' !== gettype( $sitewide_sale ) || 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' !== get_class( $sitewide_sale ) ) {
 		$sitewide_sale_id = swsales_active_sitewide_sale_id();
 		if ( is_numeric( $sitewide_sale ) ) {
 			$sitewide_sale_id = intval( $sitewide_sale );
 		} elseif ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
 			$sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
 		}
-		$sitewide_sale = \Sitewide_Sales\includes\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sale_id );
+		$sitewide_sale = \Sitewide_Sales\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sale_id );
 	}
 
 	// Return null if no sale.

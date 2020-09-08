@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 /**
  * This autoloader looks for class declarations as follows:
  *
- * Sitewide_Sales\includes\classes\SWSales_Settings
+ * Sitewide_Sales\classes\SWSales_Settings
  * ^          ^   ^
  * ^          ^   class-swsale-settings.php
  * ^          in the /classes/ folder

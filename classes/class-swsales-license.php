@@ -1,6 +1,6 @@
 <?php
 
-namespace Sitewide_Sales\includes\classes;
+namespace Sitewide_Sales\classes;
 
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
