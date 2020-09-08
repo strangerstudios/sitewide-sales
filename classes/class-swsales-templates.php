@@ -27,7 +27,7 @@ class SWSales_Templates {
      * @return array of templates
      */
     public static function get_templates() {
-        $templates = apply_filters( 'swsale_templates', $templates );
+        $templates = apply_filters( 'swsale_templates', array() );
 		
 		asort( $templates );
         
