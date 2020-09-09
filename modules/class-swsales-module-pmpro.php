@@ -110,10 +110,10 @@ class SWSales_Module_PMPro {
 						<?php
 						if ( false !== $code_found ) {
 							if ( $cur_sale->get_end_date( 'Y-m-d' ) > $code_found->expires ) {
-								echo "<p class='swsale_pmpro_discount_code_error'>" . __( "This discount code expires before the Sitewide Sale's end date. ", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsale_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							}
 							if ( $cur_sale->get_start_date( 'Y-m-d' ) < $code_found->starts ) {
-								echo "<p class='swsale_pmpro_discount_code_error'>" . __( "This discount code starts after the Sitewide Sale's start date. ", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsale_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>

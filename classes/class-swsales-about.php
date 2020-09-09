@@ -40,7 +40,21 @@ class SWSales_About {
 
 				</div>
 			</div>
-			
+
+			<div class="notice notice-warning notice-large inline">
+				<h3><?php esc_html_e( 'Migrate Your Previous Sales Data', 'sitewide-sales' ); ?></h3>
+				<p><?php esc_html_e( 'We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient.', 'sitewide-sales' ); ?>
+				</p>
+				<p class="submit">
+					<a href="#" class="button-primary">
+						<?php esc_html_e( 'Migrate PMPro Sitewide Sales Data', 'sitewide-sales' ); ?>
+					</a>
+					<a href="#" class="button-secondary">
+						<?php esc_html_e( 'Dismiss This Notice', 'sitewide-sales' ); ?>
+					</a>
+				</p>
+			</div>
+
 			<div class="sws-wrap">
 				<h2><?php esc_html_e( 'About Sitewide Sales', 'sitewide-sales' ); ?></h2>
 				<div class="sws-text">
