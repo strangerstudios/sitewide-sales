@@ -9,7 +9,7 @@
 }
 .sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_logo img {
     height: auto;
-    width: 100%;
+    max-height: 100px;
 }
 .sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta {
     align-self: center;
@@ -202,14 +202,6 @@
 	}
 }
 
-@media screen and (max-width: 782px) {
-	body.post-type-pmpro_sitewide_sale .pmpro-new-install { padding: 0; }
-	body.post-type-pmpro_sitewide_sale .pmpro-new-install h2 { font-size: 1.4rem; }
-
-	body.post-type-pmpro_sitewide_sale .pmpro-new-install .button-primary,
-	body.post-type-pmpro_sitewide_sale .pmpro-new-install .button { display: block; }
-}
-
 /* Sitewide Sales About Page */
 .sws-wrap {
 	font-size:15px;
@@ -257,6 +249,12 @@
 }
 
 @media screen and (max-width: 782px) {
+	.sitewide_sales_admin .sitewide_sales_banner {
+		display: block;
+	}
+	.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta {
+		text-align: center;
+	}
 	.sws-wrap .sws-text {
 		margin-right: 0;
 	}
