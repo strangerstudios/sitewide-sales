@@ -21,6 +21,10 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_after_choose_sale_type', array( __CLASS__, 'add_choose_discount_code' ) );
 		add_action( 'swsales_after_choose_landing_page', array( __CLASS__, 'add_set_landing_page_default_level' ) );
 		add_action( 'swsales_after_banners_settings', array( __CLASS__, 'add_hide_banner_by_level' ) );
+	
+		// Migration functionality from PMPro SWS
+		add_action( 'admin_init', array( __CLASS__, 'migrate_from_pmprosws' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'migration_notice' ) );
 
 		// Bail on additional functionality if PMPro is not active.
 		if ( ! defined( 'PMPRO_VERSION' ) ) {
@@ -219,6 +223,174 @@ class SWSales_Module_PMPro {
 			?>
 		</tr>
 		<?php
+	}
+
+	/**
+	 * Show notice to migrate from PMPro SWS.
+	 */
+	static function migration_notice() {
+		global $wpdb, $pagenow;
+		static $sws_migration_notice_shown;
+
+		// Did we already show the migration notice?
+		if ( ! empty( $sws_migration_notice_shown ) ) {
+			return;
+		}
+		$sws_migration_notice_shown = true;
+
+		// Is this a SWS page?
+		if ( empty( $_REQUEST['post_type'] ) || $_REQUEST['post_type'] !== 'sitewide_sale' ) {
+			return;
+		}
+
+		// Is this the "Add New Sitewide Sale" page?
+		if ( 'post-new.php' === $pagenow ) {
+			return;
+		}
+
+		// Was this notice already dismissed?
+		$sws_migration_notice_dismissed = get_option( 'sws_pmpro_migration_notice_dismissed', 0 );
+		if ( $sws_migration_notice_dismissed ) {
+			return;
+		} elseif ( ! empty($_REQUEST['swsales_pmpro_migration_notice_dismissed'] ) && current_user_can( 'manage_options' ) ) {
+			update_option('swswsales_pmpro_migration_notice_dismissed_nag_paused', 1, 'no');
+			return;
+		}
+
+		// Are there PMPro SWS to migrate
+		$sql = "SELECT count(*)
+			FROM $wpdb->posts
+			WHERE post_type = 'pmpro_sitewide_sale'
+		";
+		if ( empty( $wpdb->get_var( $sql ) ) ) {
+			return;
+		}
+
+		// Okay, show migration notice.
+		?>
+		<div class="notice notice-warning notice-large inline">
+				<h3><?php esc_html_e( 'Migrate Your Previous Sales Data', 'sitewide-sales' ); ?></h3>
+				<p><?php esc_html_e( 'We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient.', 'sitewide-sales' ); ?>
+				</p>
+				<p class="submit">
+					<a href="<?php echo wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ); ?>" class="button-primary">
+						<?php esc_html_e( 'Migrate PMPro Sitewide Sales Data', 'sitewide-sales' ); ?>
+					</a>
+					<a href="<?php echo add_query_arg('swsales_pmpro_migration_notice_dismissed', '1', $_SERVER['REQUEST_URI']);?>" class="button-secondary">
+						<?php esc_html_e( 'Dismiss This Notice', 'sitewide-sales' ); ?>
+					</a>
+				</p>
+			</div>
+		<?php
+	} // end migration_notice()
+
+	public static function migrate_from_pmprosws() {
+		global $wpdb, $pagenow;
+
+		// Is this a SWS page?
+		if ( empty( $_REQUEST['post_type'] ) || $_REQUEST['post_type'] !== 'sitewide_sale' ) {
+			return;
+		}
+
+		// Is this the "Add New Sitewide Sale" page?
+		if ( 'post-new.php' === $pagenow ) {
+			return;
+		}
+
+		// Is URL param set to migrate PMPro data?
+		if ( empty( $_REQUEST['swsales_pmpro_migrate'] ) ) {
+			return;
+		}
+		check_admin_referer( 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' );
+
+		// Perform migration from PMPro SWS.
+		$pmpro_sws_sale_ids = $wpdb->get_results( "SELECT id
+			FROM $wpdb->posts
+			WHERE post_type = 'pmpro_sitewide_sale'
+		" );
+		if ( empty( $pmpro_sws_sale_ids ) ) {
+			return;
+		}
+		$metadata_migrations = array(
+			'pmpro_sws_landing_page_post_id'                => 'swsales_landing_page_post_id',
+			'pmpro_sws_landing_page_template'               => 'swsales_landing_page_template',
+			'pmpro_sws_pre_sale_content'                    => 'swsales_pre_sale_content',
+			'pmpro_sws_sale_content'                        => 'swsales_sale_content',
+			'pmpro_sws_post_sale_content'                   => 'swsales_post_sale_content',
+			'pmpro_sws_use_banner'                          => 'swsales_use_banner',
+			'pmpro_sws_banner_template'                     => 'swsales_banner_template',
+			'pmpro_sws_banner_title'                        => 'swsales_banner_title',
+			'pmpro_sws_link_text'                           => 'swsales_link_text',
+			'pmpro_sws_css_option'                          => 'swsales_css_option',
+			'pmpro_sws_hide_on_checkout'                    => 'swsales_hide_on_checkout',
+			'pmpro_sws_discount_code_id'                    => 'swsales_pmpro_discount_code_id',
+			'pmpro_sws_landing_page_default_level_id' => 'swsales_pmpro_landing_page_default_level',
+			'pmpro_sws_hide_for_levels'                     => 'swsales_pmpro_hide_for_levels',
+		);
+		foreach ( $pmpro_sws_sale_ids as $pmpro_sws_sale ) {
+			$pmpro_sws_sale_id = $pmpro_sws_sale->id;
+
+			// Migrate post meta.
+			$post_meta = get_post_meta( $pmpro_sws_sale_id );
+			foreach ( $post_meta as $key => $value_obj ) {
+				$value = $value_obj[0];
+				switch( $key ) {
+					case 'pmpro_sws_start_date':
+						$is_start_date = true;
+					case 'pmpro_sws_end_date':
+						$time_period = isset( $is_start_date ) ? 'start' : 'end';
+						unset( $is_start_date );
+						$date = strtotime( $value );
+						update_post_meta( $pmpro_sws_sale_id, 'swsales_' . $time_period . '_day', date("d", $date) );
+						update_post_meta( $pmpro_sws_sale_id, 'swsales_' . $time_period . '_month', date("n", $date) );
+						update_post_meta( $pmpro_sws_sale_id, 'swsales_' . $time_period . '_year', date("Y", $date) );
+						delete_post_meta( $pmpro_sws_sale_id, $key );
+						break;
+					case 'pmpro_sws_hide_for_levels':
+						$value = json_encode( unserialize( $value ) );
+					default:
+						if ( array_key_exists( $key, $metadata_migrations ) ) {
+							update_post_meta( $pmpro_sws_sale_id, $metadata_migrations[ $key ], $value );
+							delete_post_meta( $pmpro_sws_sale_id, $key );
+						}
+				}
+
+			}
+
+			// Deleted deprecated post meta.
+			delete_post_meta( $pmpro_sws_sale_id, 'pmpro_sws_upsell_enabled' );
+			delete_post_meta( $pmpro_sws_sale_id, 'pmpro_sws_upsell_levels' );
+			delete_post_meta( $pmpro_sws_sale_id, 'pmpro_sws_upsell_text' );
+
+			// Add new post metadata
+			update_post_meta( $pmpro_sws_sale_id, 'swsales_sale_type', 'pmpro');
+			update_post_meta( $pmpro_sws_sale_id, 'swsales_automatic_discount', 'none' );
+
+			// Migrate report data.
+			$reports = get_option( 'pmpro_sws_' . $pmpro_sws_sale_id . '_tracking', false );
+			if ( ! empty( $reports ) ) {
+				update_post_meta( $pmpro_sws_sale_id, 'swsales_banner_impressions', $reports['banner_impressions'] );
+				update_post_meta( $pmpro_sws_sale_id, 'swsales_landing_page_visits', $reports['landing_page_visits'] );
+			}
+
+			// Update shortcodes in landing page post content and landing page template.
+			$landing_page_post_id = get_post_meta( $pmpro_sws_sale_id, 'swsales_landing_page_post_id', true );
+			if ( ! empty( $landing_page_post_id ) ) {
+				$wpdb->get_results( "UPDATE $wpdb->posts
+					SET post_content = REPLACE(post_content, '[pmpro_sws', '[sitewide_sales')
+					WHERE ID = $landing_page_post_id
+				" );
+				update_post_meta( $landing_page_post_id, '_wp_page_template', 'swsales-page-template.php' );
+			}
+
+			// Change post type.
+			$wpdb->get_results( "UPDATE $wpdb->posts
+				SET post_type = 'sitewide_sale'
+				WHERE ID = $pmpro_sws_sale_id
+			" );
+
+		}
+		wp_redirect( admin_url( '/edit.php?post_type=sitewide_sale' ) );
 	}
 
 	/**
