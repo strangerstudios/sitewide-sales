@@ -54,7 +54,7 @@ class SWSales_Module_PMPro {
 		// PMPro-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-		add_filter( 'swsales_get_revenue', array( __CLASS__, 'total_revenue' ), 10, 2 );
+		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
 		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 
 	}
@@ -591,26 +591,33 @@ class SWSales_Module_PMPro {
 	 * @param bool                 $format_price whether to run output through pmpro_formatPrice().
 	 * @return string
 	 */
-	public static function total_revenue( $cur_revenue, $sitewide_sale, $format_price = true ) {
+	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = true ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
 		}
 		global $wpdb;
 
-		$total_rev = $wpdb->get_var(
+		$sale_rev = $wpdb->get_var(
 			$wpdb->prepare(
 				"
-				SELECT SUM(mo.total)
-				FROM $wpdb->pmpro_membership_orders mo
-				WHERE mo.status NOT IN('refunded', 'review', 'token', 'error')
-					AND mo.timestamp >= %s
-					AND mo.timestamp < %s
+				SELECT SUM(total) FROM (
+					SELECT mo.total  as total
+					FROM $wpdb->pmpro_membership_orders mo
+						LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
+							ON dcu.order_id = mo.id
+					WHERE dcu.code_id = %d #discount code is used
+						AND mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
+					GROUP BY mo.id
+				) temp
 			",
+				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
 				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
 				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
 			)
 		);
-		return $format_price ? pmpro_formatPrice( $total_rev ) : $total_rev;
+		return $format_price ? pmpro_formatPrice( $sale_rev ) : $sale_rev;
 	}
 
 	/**
@@ -624,29 +631,22 @@ class SWSales_Module_PMPro {
 			return;
 		}
 		global $wpdb;
-		$total_rev         = floatval( self::total_revenue( null, $sitewide_sale, false ) );
-		$new_rev_with_code = floatval(
+		$total_rev = floatval(
 			$wpdb->get_var(
 				$wpdb->prepare(
 					"
-					SELECT SUM(total) FROM (
-						SELECT mo.total  as total
-						FROM $wpdb->pmpro_membership_orders mo
-							LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
-								ON dcu.order_id = mo.id
-						WHERE dcu.code_id = %d #discount code is used
-							AND mo.status NOT IN('refunded', 'review', 'token', 'error')
-							AND mo.timestamp >= %s
-							AND mo.timestamp < %s
-						GROUP BY mo.id
-					) temp
+					SELECT SUM(mo.total)
+					FROM $wpdb->pmpro_membership_orders mo
+					WHERE mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
 				",
-					intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
 					$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
 					$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
 				)
 			)
 		);
+		$new_rev_with_code = floatval( self::sale_revenue( null, $sitewide_sale, false ) );
 		$new_rev_without_code = $wpdb->get_var(
 			$wpdb->prepare(
 				"
