@@ -69,7 +69,7 @@ class SWSales_Landing_Pages {
 		// Template specific filter.
 		$landing_template = $sitewide_sale->get_landing_page_template();
 		if ( ! empty( $landing_template ) ) {
-			$r = apply_filters( 'swsales_landing_page_content_' . $landing_template, $r );
+			$r = apply_filters( 'swsales_landing_page_content_' . $landing_template, $r, $sitewide_sale );
 		}
 
 		// Filter for themes and plugins to modify the [sitewide_sales] shortcode output.	

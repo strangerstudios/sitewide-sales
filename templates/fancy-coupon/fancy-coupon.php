@@ -61,7 +61,7 @@ function swsales_banner_text_fancy_coupon( $content, $location, $active_sitewide
 	// Filter the content if the template is Fancy Coupon.
 	if ( $swsales_banner_template === 'fancy_coupon' ) {
 		$content_after = '<div class="swsales-banner-fancy_coupon-coupon">';
-		$content_after .= '<span class="swsales-coupon">' . swsales_coupon() . '</span>';
+		$content_after .= '<span class="swsales-coupon">' . $active_sitewide_sale->get_coupon() . '</span>';
 		$content_after .= '</div>';		
 		$content = $content . $content_after;
 	}
@@ -73,11 +73,11 @@ add_filter( 'swsales_banner_text', __NAMESPACE__ . '\swsales_banner_text_fancy_c
  * Filter to add the fancy coupon template wrapper for this landing page template.
  *
  */
-function swsales_landing_page_content_fancy_coupon( $content ) {
+function swsales_landing_page_content_fancy_coupon( $content, $sitewide_sale ) {
 	$content_before = '<div id="swsale-landing-page-wrap-fancy_coupon" class="swsales-landing-page-wrap">';
 	$content_before .= '<div class="swsales-landing-page-fancy_coupon-coupon">';
 	$content_before .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
-	$content_before .= swsales_coupon();
+	$content_before .= $sitewide_sale->get_coupon();
 	$content_before .= '</h3></div>';
 
 	$content_after = '</div>';
@@ -86,4 +86,4 @@ function swsales_landing_page_content_fancy_coupon( $content ) {
 
 	return $content;
 }
-add_action( 'swsales_landing_page_content_fancy_coupon', __NAMESPACE__ . '\swsales_landing_page_content_fancy_coupon' );
+add_action( 'swsales_landing_page_content_fancy_coupon', __NAMESPACE__ . '\swsales_landing_page_content_fancy_coupon', 10, 2 );
