@@ -117,7 +117,7 @@ class SWSales_Post_Types {
 				break;
 			case 'sale_type':
 				$sale_type = get_post_meta( $post_id, 'swsales_sale_type', true );
-				if ( 0 !== $sale_type ) {
+				if ( '0' !== $sale_type ) {
 					$sale_types = apply_filters( 'swsales_sale_types', array() );
 					echo esc_html( $sale_types[ $sale_type ] );
 				}
