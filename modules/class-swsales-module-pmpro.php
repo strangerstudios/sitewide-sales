@@ -371,6 +371,7 @@ class SWSales_Module_PMPro {
 			if ( ! empty( $reports ) ) {
 				update_post_meta( $pmpro_sws_sale_id, 'swsales_banner_impressions', $reports['banner_impressions'] );
 				update_post_meta( $pmpro_sws_sale_id, 'swsales_landing_page_visits', $reports['landing_page_visits'] );
+				delete_option( 'pmpro_sws_' . $pmpro_sws_sale_id . '_tracking' );
 			}
 
 			// Update shortcodes in landing page post content and landing page template.
