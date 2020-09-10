@@ -248,6 +248,14 @@ class SWSales_Module_PMPro {
 			return;
 		}
 
+		if ( ! empty( $_REQUEST['swsales_pmpro_migrated_sales'] ) ) {
+			?>
+			<div class="notice notice-success notice-large inline">
+					<p><?php esc_html_e( sprintf( _n( 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', intval($_REQUEST['swsales_pmpro_migrated_sales']), 'sitewide-sales' ), $_REQUEST['swsales_pmpro_migrated_sales'] ) ); ?></p>
+				</div>
+			<?php
+		}
+
 		// Was this notice already dismissed?
 		$sws_migration_notice_dismissed = get_option( 'sws_pmpro_migration_notice_dismissed', 0 );
 		if ( $sws_migration_notice_dismissed ) {
@@ -391,7 +399,12 @@ class SWSales_Module_PMPro {
 			" );
 
 		}
-		wp_redirect( admin_url( '/edit.php?post_type=sitewide_sale' ) );
+		// After all CPTs are converted, clean up and deactivate PMProSWS.
+		delete_option( 'pmpro_sitewide_sales' );
+		deactivate_plugins( '/pmpro-sitewide-sales/pmpro-sitewide-sales.php' );
+		deactivate_plugins( '/pmpro-sitewide-sales-master/pmpro-sitewide-sales.php' );
+		deactivate_plugins( '/pmpro-sitewide-sales-dev/pmpro-sitewide-sales.php' );
+		wp_redirect( admin_url( '/edit.php?post_type=sitewide_sale&swsales_pmpro_migrated_sales=' . count( $pmpro_sws_sale_ids ) ) );
 	}
 
 	/**
