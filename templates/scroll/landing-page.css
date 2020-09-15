@@ -4,18 +4,18 @@
  * Landing Page Styles 
  */
 
-#swsale-landing-page-wrap-scroll {
+#swsales-landing-page-wrap-scroll {
 	background: #E4E3DF;
 	margin-top: 0;
 	padding: 0 0 50px 0;
 }
-#swsale-landing-page-wrap-scroll .swsales-landing-page-background-image {
+#swsales-landing-page-wrap-scroll .swsales-landing-page-background-image {
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-size: contain;
 	padding: 20px 10px 100px 10px;
 }
-#swsale-landing-page-wrap-scroll .swsales-landing-page-content {
+#swsales-landing-page-wrap-scroll .swsales-landing-page-content {
 	overflow: hidden;
 	padding: 0;
 }
@@ -26,12 +26,12 @@
 .swsales-landing-page-scroll .swsales-landing-page-content a:not(.pmpro_checkout a):not(.woocommerce a) {
 	text-align: center;
 }
-#swsale-landing-page-wrap-scroll .swsales-landing-page-content h1:not(.pmpro_checkout h1) {
+#swsales-landing-page-wrap-scroll .swsales-landing-page-content h1:not(.pmpro_checkout h1) {
 	animation: swsalesScrollSlideIn 1s;
 	font-weight: normal;
 	margin: 20px 20px 0 20px;
 }
-#swsale-landing-page-wrap-scroll .swsales-landing-page-content h3:not(.pmpro_checkout h3) {
+#swsales-landing-page-wrap-scroll .swsales-landing-page-content h3:not(.pmpro_checkout h3) {
 	animation: swsalesScrollFadeIn 3s;
 	font-weight: normal;
 	margin: 20px;

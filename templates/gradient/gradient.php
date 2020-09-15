@@ -39,7 +39,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
  *
  */
 function swsales_banner_content_gradient( $content ) {
-	$content_before = '<div id="swsale-banner-wrap-gradient" class="swsales-banner-wrap">';
+	$content_before = '<div id="swsales-banner-wrap-gradient" class="swsales-banner-wrap">';
 	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;
@@ -53,7 +53,7 @@ add_action( 'swsales_banner_content_gradient', __NAMESPACE__ . '\swsales_banner_
  *
  */
 function swsales_landing_page_content_gradient( $content ) {
-	$content_before = '<div id="swsale-landing-page-wrap-gradient" class="swsales-landing-page-wrap">';
+	$content_before = '<div id="swsales-landing-page-wrap-gradient" class="swsales-landing-page-wrap">';
 	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;

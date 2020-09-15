@@ -99,7 +99,7 @@ function swsales_coupon( $sitewide_sale = null ) {
  * 
  * Ref: https://developer.wordpress.org/reference/functions/wp_schedule_event/
  */
-function sws_maybe_schedule_event( $timestamp, $recurrence, $hook, $args = array() ) {
+function swsales_maybe_schedule_event( $timestamp, $recurrence, $hook, $args = array() ) {
     $next = wp_next_scheduled( $hooks, $args );
 
     if ( empty( $next ) ) {

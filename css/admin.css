@@ -28,11 +28,11 @@
 	color: #6991ac;
 	padding: 5px 10px;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag {
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag {
 	font-weight: bold;
 	text-decoration: none;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag:before {
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag:before {
 	display: inline-block;
 	font: 400 20px/1 dashicons;
 	left: 0;
@@ -40,16 +40,16 @@
 	text-decoration: none;
 	vertical-align: bottom;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-valid {
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-valid {
 	color: rgb( 70, 180, 80 );
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-valid:before {
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-valid:before {
 	content: "\f147";
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-invalid {
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-invalid {
 	color: #AAA;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.sws_license_tag.sws_license_tag-invalid:before {
+.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-invalid:before {
 	content: "\f335";
 }
 .sitewide_sales_admin .sitewide_sales_icon {
@@ -203,37 +203,37 @@
 }
 
 /* Sitewide Sales About Page */
-.sws-wrap {
+.swsales-wrap {
 	font-size:15px;
 	margin: 0 40px 0 20px;
 	max-width: 1050px;
 	position: relative;
 }	
-.sws-wrap .sws-text {
+.swsales-wrap .swsales-text {
     color:#555d66;
 }
-.sws-wrap h2 {
+.swsales-wrap h2 {
 	font-size: 2.7em;
 	font-weight: 300;
 	line-height: 1.3;
 	margin: 0;
 	text-align: left;
 }
-.sws-wrap .sws-text h3 {
+.swsales-wrap .swsales-text h3 {
 	border-top: 1px solid rgba(0,0,0,.1);
 	font-size: 1.4em;
 	line-height:1.5;
 	margin: 1.25em 0 .6em;
 	padding-top: 1.25em;
 }
-.sws-wrap .sws-text p {
+.swsales-wrap .swsales-text p {
 	line-height: 1.5;
 	font-size:16px;
 }
-.sitewide_sale_page_sitewide_sales_about .sws-wrap .sitewide_sales_icon {
+.sitewide_sale_page_sitewide_sales_about .swsales-wrap .sitewide_sales_icon {
     margin-top: 20px;
 }
-.sitewide_sale_page_sitewide_sales_about .sws-wrap ul {
+.sitewide_sale_page_sitewide_sales_about .swsales-wrap ul {
 	line-height: 1.5;
 	font-size: 16px;
 }
@@ -243,7 +243,7 @@
 	text-align: left;
 }
 
-.sitewide_sale_page_sitewide_sales_license img.sws_icon{
+.sitewide_sale_page_sitewide_sales_license img.swsales_icon{
 	height:auto;
 	width:250px;
 }
@@ -255,7 +255,7 @@
 	.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta {
 		text-align: center;
 	}
-	.sws-wrap .sws-text {
+	.swsales-wrap .swsales-text {
 		margin-right: 0;
 	}
 }

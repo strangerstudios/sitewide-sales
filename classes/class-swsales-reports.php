@@ -35,10 +35,10 @@ class SWSales_Reports {
 					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
 					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
 					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
-					<?php if ( sws_license_is_valid() ) { ?>
-						<?php printf(__( '<a class="sws_license_tag sws_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
-					<?php } elseif ( ! defined( 'SWS_LICENSE_NAG' ) || SWS_LICENSE_NAG == true ) { ?>
-						<?php printf(__( '<a class="sws_license_tag sws_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					<?php if ( swsales_license_is_valid() ) { ?>
+						<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					<?php } elseif ( ! defined( 'SWSALES_LICENSE_NAG' ) || SWSALES_LICENSE_NAG == true ) { ?>
+						<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
 					<?php } ?>
 				</div>
 			</div>
@@ -120,7 +120,7 @@ class SWSales_Reports {
 	}
 
 	/**
-	 * Ajax call to update SWS statistics
+	 * Ajax call to update SWSales statistics
 	 */
 	public static function ajax_tracking() {
 		if ( ! isset( $_POST['sitewide_sale_id'] ) || ! isset( $_POST['report'] ) ) {

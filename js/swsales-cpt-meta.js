@@ -94,7 +94,7 @@ jQuery( document ).ready(
 			} else {
 				$( '#swsales_css_selectors_description' ).show();
 				$( '.swsales_banner_css_selectors' ).hide();
-				$( '.swsales_banner_css_selectors[data-pmprosws-banner=' + banner + ']' ).show();
+				$( '.swsales_banner_css_selectors[data-swsales-banner=' + banner + ']' ).show();
 				$( '#swsales_banner_options' ).show();
 			}
 		}
