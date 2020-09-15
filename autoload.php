@@ -8,7 +8,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
  *
  * Sitewide_Sales\classes\SWSales_Settings
  * ^          ^   ^
- * ^          ^   class-swsale-settings.php
+ * ^          ^   class-swsales-settings.php
  * ^          in the /classes/ folder
  * Project root
  */

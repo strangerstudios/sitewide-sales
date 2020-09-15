@@ -230,15 +230,15 @@ class SWSales_Module_PMPro {
 	 */
 	static function migration_notice() {
 		global $wpdb, $pagenow;
-		static $sws_migration_notice_shown;
+		static $swsales_migration_notice_shown;
 
 		// Did we already show the migration notice?
-		if ( ! empty( $sws_migration_notice_shown ) ) {
+		if ( ! empty( $swsales_migration_notice_shown ) ) {
 			return;
 		}
-		$sws_migration_notice_shown = true;
+		$swsales_migration_notice_shown = true;
 
-		// Is this a SWS page?
+		// Is this a SWSales page?
 		if ( empty( $_REQUEST['post_type'] ) || $_REQUEST['post_type'] !== 'sitewide_sale' ) {
 			return;
 		}
@@ -257,8 +257,8 @@ class SWSales_Module_PMPro {
 		}
 
 		// Was this notice already dismissed?
-		$sws_migration_notice_dismissed = get_option( 'sws_pmpro_migration_notice_dismissed', 0 );
-		if ( $sws_migration_notice_dismissed ) {
+		$swsales_migration_notice_dismissed = get_option( 'swsales_pmpro_migration_notice_dismissed', 0 );
+		if ( $swsales_migration_notice_dismissed ) {
 			return;
 		} elseif ( ! empty($_REQUEST['swsales_pmpro_migration_notice_dismissed'] ) && current_user_can( 'manage_options' ) ) {
 			update_option('swswsales_pmpro_migration_notice_dismissed_nag_paused', 1, 'no');
@@ -295,7 +295,7 @@ class SWSales_Module_PMPro {
 	public static function migrate_from_pmprosws() {
 		global $wpdb, $pagenow;
 
-		// Is this a SWS page?
+		// Is this a SWSales page?
 		if ( empty( $_REQUEST['post_type'] ) || $_REQUEST['post_type'] !== 'sitewide_sale' ) {
 			return;
 		}
@@ -399,7 +399,7 @@ class SWSales_Module_PMPro {
 			" );
 
 		}
-		// After all CPTs are converted, clean up and deactivate PMProSWS.
+		// After all CPTs are converted, clean up and deactivate PMPro SWS.
 		delete_option( 'pmpro_sitewide_sales' );
 		deactivate_plugins( '/pmpro-sitewide-sales/pmpro-sitewide-sales.php' );
 		deactivate_plugins( '/pmpro-sitewide-sales-master/pmpro-sitewide-sales.php' );

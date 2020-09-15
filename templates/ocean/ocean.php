@@ -39,7 +39,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
  *
  */
 function swsales_banner_content_ocean( $content ) {
-	$content_before = '<div id="swsale-banner-wrap-ocean" class="swsales-banner-wrap">';
+	$content_before = '<div id="swsales-banner-wrap-ocean" class="swsales-banner-wrap">';
 	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;
@@ -53,7 +53,7 @@ add_action( 'swsales_banner_content_ocean', __NAMESPACE__ . '\swsales_banner_con
  *
  */
 function swsales_landing_page_content_ocean( $content ) {
-	$content_before = '<div id="swsale-landing-page-wrap-ocean" class="swsales-landing-page-wrap">';
+	$content_before = '<div id="swsales-landing-page-wrap-ocean" class="swsales-landing-page-wrap">';
 	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;

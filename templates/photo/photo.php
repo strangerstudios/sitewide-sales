@@ -39,7 +39,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
  *
  */
 function swsales_banner_content_photo( $content ) {
-	$content_before = '<div id="swsale-banner-wrap-photo" class="swsales-banner-wrap">';
+	$content_before = '<div id="swsales-banner-wrap-photo" class="swsales-banner-wrap">';
 	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;
@@ -53,7 +53,7 @@ add_action( 'swsales_banner_content_photo', __NAMESPACE__ . '\swsales_banner_con
  *
  */
 function swsales_landing_page_content_photo( $content ) {
-	$content_before = '<div id="swsale-landing-page-wrap-photo" class="swsales-landing-page-wrap">';
+	$content_before = '<div id="swsales-landing-page-wrap-photo" class="swsales-landing-page-wrap">';
 	$content_after = '</div>';
 
 	$background_image = wp_get_attachment_image_src( get_post_thumbnail_id( get_queried_object_id() ), 'full' );

@@ -98,8 +98,8 @@ class SWSales_Setup {
 				<p>
 				<?php
 					global $wpdb;
-					$has_sws_post = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'sitewide_sale' LIMIT 1" );
-				if ( $has_sws_post ) {
+					$has_swsales_post = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'sitewide_sale' LIMIT 1" );
+				if ( $has_swsales_post ) {
 					printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'sitewide-sales' ), get_admin_url( null, 'edit.php?post_type=sitewide_sale' ) );
 				} else {
 					printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'sitewide-sales' ), get_admin_url( null, 'post-new.php?post_type=sitewide_sale' ) );

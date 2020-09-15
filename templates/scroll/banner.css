@@ -4,40 +4,40 @@
  * Banner Styles 
  */
 
-#swsale-banner-wrap-scroll .swsales-banner {
+#swsales-banner-wrap-scroll .swsales-banner {
 	background: #E4E3DF;
 }
-#swsale-banner-wrap-scroll a.swsales-dismiss:before {
+#swsales-banner-wrap-scroll a.swsales-dismiss:before {
 	color: #B5B5A5;
 }
-#swsale-banner-wrap-scroll #swsales-banner-top .swsales-banner-inner,
-#swsale-banner-wrap-scroll #swsales-banner-bottom .swsales-banner-inner {
+#swsales-banner-wrap-scroll #swsales-banner-top .swsales-banner-inner,
+#swsales-banner-wrap-scroll #swsales-banner-bottom .swsales-banner-inner {
 	animation: swsalesScrollSlideIn 1s;
 }
-#swsale-banner-wrap-scroll .swsales-banner-title {
+#swsales-banner-wrap-scroll .swsales-banner-title {
 	animation: swsalesScrollFadeIn 4s;
 }
-#swsale-banner-wrap-scroll .swsales-banner-content {
+#swsales-banner-wrap-scroll .swsales-banner-content {
 	animation: swsalesScrollFadeIn 4s;
 }
-#swsale-banner-wrap-scroll .swsales-banner a.swsales-banner-button,
-#swsale-banner-wrap-scroll .swsales-banner a.swsales-banner-button:focus,
-#swsale-banner-wrap-scroll .swsales-banner a.swsales-banner-button:visited {
+#swsales-banner-wrap-scroll .swsales-banner a.swsales-banner-button,
+#swsales-banner-wrap-scroll .swsales-banner a.swsales-banner-button:focus,
+#swsales-banner-wrap-scroll .swsales-banner a.swsales-banner-button:visited {
 	background: rgba( 255, 255, 255, 0.6 );
 	color: #000;
 }
-#swsale-banner-wrap-scroll .swsales-banner a.swsales-banner-button:hover {
+#swsales-banner-wrap-scroll .swsales-banner a.swsales-banner-button:hover {
 	background: rgba( 255, 255, 255, 1.0 );
 	color: #000;
 }
-#swsale-banner-wrap-scroll #swsales-banner-top .swsales-banner-title {
+#swsales-banner-wrap-scroll #swsales-banner-top .swsales-banner-title {
 	margin-right: 10px;
 }
-#swsale-banner-wrap-scroll #swsales-banner-top .swsales-banner-content {
+#swsales-banner-wrap-scroll #swsales-banner-top .swsales-banner-content {
 	margin-right: 10px;
 }
-#swsale-banner-wrap-scroll #swsales-banner-top .swsales-banner-title ,
-#swsale-banner-wrap-scroll #swsales-banner-bottom .swsales-banner-title {
+#swsales-banner-wrap-scroll #swsales-banner-top .swsales-banner-title ,
+#swsales-banner-wrap-scroll #swsales-banner-bottom .swsales-banner-title {
 	border: 2px dashed #FFF;
 	display: inline-block;
 	padding: 2px 5px;

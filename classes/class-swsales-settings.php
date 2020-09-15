@@ -42,7 +42,7 @@ class SWSales_Settings {
 	}
 
 	/**
-	 * Sets SWS settings to default
+	 * Sets SWSales settings to default
 	 */
 	public static function reset_options() {
 		return array(

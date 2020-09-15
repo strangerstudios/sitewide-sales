@@ -4,34 +4,34 @@
  * Banner Styles 
  */
 
-#swsale-banner-wrap-photo .swsales-banner {
+#swsales-banner-wrap-photo .swsales-banner {
 	background: rgba( 0, 0, 0, 0.5 );
 	color: #FFF;
 	transition: background 1s ease;
 }
-#swsale-banner-wrap-photo .swsales-banner:hover {
+#swsales-banner-wrap-photo .swsales-banner:hover {
 	background: rgba( 0, 0, 0, 0.8 );
 }
-#swsale-banner-wrap-photo #swsales-banner-top {
+#swsales-banner-wrap-photo #swsales-banner-top {
 	border-bottom-left-radius: 20px;
 	border-bottom-right-radius: 20px;
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
 }
-#swsale-banner-wrap-photo #swsales-banner-top .swsales-banner-title {
+#swsales-banner-wrap-photo #swsales-banner-top .swsales-banner-title {
 	margin-right: 10px;
 }
-#swsale-banner-wrap-photo #swsales-banner-top .swsales-banner-content {
+#swsales-banner-wrap-photo #swsales-banner-top .swsales-banner-content {
 	margin-right: 10px;
 }
-#swsale-banner-wrap-photo #swsales-banner-bottom {
+#swsales-banner-wrap-photo #swsales-banner-bottom {
 	border-top-left-radius: 20px;
 	border-top-right-radius: 20px;
 	margin-left: 10px;
 	margin-right: 10px;
 	width: auto;
 }
-#swsale-banner-wrap-photo #swsales-banner-bottom-right {
+#swsales-banner-wrap-photo #swsales-banner-bottom-right {
 	border-top-left-radius: 20px;
 }

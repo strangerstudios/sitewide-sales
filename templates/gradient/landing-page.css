@@ -9,7 +9,7 @@ body.swsales-landing-page-gradient,
 body.swsales-landing-page-gradient article {
 	height: 100%;
 }
-#swsale-landing-page-wrap-gradient {
+#swsales-landing-page-wrap-gradient {
 	background: repeating-linear-gradient(
 		-45deg,
 		#272727, #272727 10px,
@@ -29,7 +29,7 @@ body.swsales-landing-page-gradient article {
 	color: #FFF;
 	text-align: center;
 }
-#swsale-landing-page-wrap-gradient .swsales-landing-page-content:before {
+#swsales-landing-page-wrap-gradient .swsales-landing-page-content:before {
 	-webkit-animation: swsalesGradient 30s ease infinite;
 	animation: swsalesGradient 30s ease infinite;
 	background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
@@ -81,13 +81,13 @@ body.swsales-landing-page-gradient article {
 	position: relative;
 	z-index: 10;
 }
-#swsale-landing-page-wrap-gradient #pmpro_form .pmpro_checkout h3 {
+#swsales-landing-page-wrap-gradient #pmpro_form .pmpro_checkout h3 {
 	background: none;
 	border: none;
 	margin: 0 0 10px 0;
 	padding: 0;
 }
-#swsale-landing-page-wrap-gradient #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
+#swsales-landing-page-wrap-gradient #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
 	margin: 0;
 	padding: 0;
 }

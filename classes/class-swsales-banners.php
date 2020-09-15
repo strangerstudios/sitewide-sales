@@ -16,8 +16,8 @@ class SWSales_Banners {
 		add_action( 'wp_head', array( __CLASS__, 'apply_custom_css' ), 10 );
 
 		// Run some filters we like on banner content
-		add_filter( 'sws_banner_content', 'wpautop', 5, 1 );
-		add_filter( 'sws_banner_content', 'do_shortcode', 10, 1 );
+		add_filter( 'swsales_banner_content', 'wpautop', 5, 1 );
+		add_filter( 'swsales_banner_content', 'do_shortcode', 10, 1 );
 	}
 
 	/**
