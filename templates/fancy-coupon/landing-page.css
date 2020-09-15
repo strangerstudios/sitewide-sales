@@ -20,23 +20,14 @@ body.swsales-landing-page-fancy_coupon article {
 #swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content {
 	color: #000;
 	display: inline-block;
+	text-align: left;
 	width: 60%;
 }
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h1,
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h2 {
+#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h1 {
 	background: rgba( 255, 255, 255, 0.3 );
 	display: inline-block;
-	padding: 0 5px;
-}
-
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h1,
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h2,
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content p {
-	text-align: left;
-}
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h1,
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h2 {
 	margin: 0;
+	padding: 0 5px;
 }
 .swsales-landing-page-fancy_coupon-coupon {
 	position: fixed;
@@ -68,6 +59,9 @@ body.swsales-landing-page-fancy_coupon article {
 	max-width: 800px;
 	padding: 20px;
 }
+.swsales-landing-page-fancy_coupon #pmpro_form hr {
+	margin: 20px 0;
+}
 
 /* WooCommerce Integration Specific Styles */
 .swsales-landing-page-fancy_coupon .woocommerce { 
@@ -76,3 +70,17 @@ body.swsales-landing-page-fancy_coupon article {
 	padding: 40px;
 }
 
+/* Responsive Styles */
+@media only screen and (max-width: 767px) {
+	#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content {
+		display: block;
+		width: 100%;
+	}
+	.swsales-landing-page-fancy_coupon-coupon {
+		left: 0;
+		margin-bottom: 20px;
+		position: relative;
+		top: 0;
+		width: 100%;
+	}
+}

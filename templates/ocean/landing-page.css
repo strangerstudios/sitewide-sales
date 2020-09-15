@@ -18,13 +18,11 @@ body.swsales-landing-page-fancy_coupon article {
 .swsales-landing-page-ocean .swsales-landing-page-content {
 	background-color: #f67656;
 	padding: 50px 0 0 0;
+	text-align: center;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content h1,
-.swsales-landing-page-ocean .swsales-landing-page-content h3:not(.pmpro_checkout h3),
-.swsales-landing-page-ocean .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-ocean .swsales-landing-page-content a:not(.pmpro_checkout a):not(.woocommerce a) {
+.swsales-landing-page-ocean .swsales-landing-page-content h4 {
 	color: #FFF;
-	text-align: center;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content h1 {
 	color: #FFF;
@@ -33,9 +31,6 @@ body.swsales-landing-page-fancy_coupon article {
 	font-weight: 400;
 	margin: 15px 0 30px 0;
 	padding: 0;
-}
-.swsales-landing-page-ocean .swsales-landing-page-content h2 {
-	margin:  0;
 }
 
 /* Paid Memberships Pro Integration Specific Styles */
@@ -46,6 +41,7 @@ body.swsales-landing-page-fancy_coupon article {
 	background-position: top left;
 	background-size: 100px 100px;
 	padding: 100px 0;
+	text-align: initial;
 }
 .swsales-landing-page-ocean #pmpro_form {
 	margin: 0 auto;
@@ -96,6 +92,7 @@ body.swsales-landing-page-fancy_coupon article {
 	background-position: top left;
 	background-size: 100px 100px;
 	padding: 100px 0;
+	text-align: initial;
 }
 .swsales-landing-page-ocean .woocommerce .products { 
 	background: rgba( 255, 255, 255, 0.6 );

@@ -19,18 +19,12 @@
 	margin: 50px;
 	text-align: center;
 }
-.swsales-landing-page-neon .swsales-landing-page-content h1,
-.swsales-landing-page-neon .swsales-landing-page-content h2:not(.pmpro_checkout h2):not(.woocommerce h2),
-.swsales-landing-page-neon .swsales-landing-page-content h3:not(.pmpro_checkout h3),
-.swsales-landing-page-neon .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-neon .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
-	color: #FFF;
+.swsales-landing-page-neon .swsales-landing-page-content {
 	text-align: center;
 }
 .swsales-landing-page-neon .swsales-landing-page-content h1 {
 	font-weight: 700;
 	margin-top: 0;
-	text-align: center;
 }
 .swsales-landing-page-neon .swsales-landing-page-content h1 {
 	-webkit-animation-name: swsalesNeonAnimatedh1;
@@ -53,9 +47,9 @@
 	padding: 0;
 	text-shadow: 0px 0px 15px #BBB;
 }
-.swsales-landing-page-neon .swsales-landing-page-content h3:not(.pmpro_checkout h3) {
-	-webkit-animation-name: swsalesNeonAnimatedh2;
-	animation-name: swsalesNeonAnimatedh2;
+.swsales-landing-page-neon .swsales-landing-page-content h4 {
+	-webkit-animation-name: swsalesNeonAnimatedh4;
+	animation-name: swsalesNeonAnimatedh4;
 	-webkit-animation-delay: 1s;
 	animation-delay: 1s;
 	-webkit-animation-duration: 1s;
@@ -84,7 +78,7 @@
 	84%{opacity: 1;}
 	100%{opacity: 1;}
 }
-@keyframes swsalesNeonAnimatedh2 {
+@keyframes swsalesNeonAnimatedh4 {
 	0%{opacity: 1;}
 	5%{opacity: 0;}
 	10%{opacity: 1;}
@@ -103,6 +97,7 @@
 .swsales-landing-page-neon #pmpro_form {
 	margin: 0 auto;
 	max-width: 800px;
+	text-align: initial;
 }
 .swsales-landing-page-neon #pmpro_form hr {
 	display: none;
@@ -136,4 +131,5 @@
 	margin: 0 auto;
 	max-width: 800px;
 	padding: 20px;
+	text-align: initial;
 }

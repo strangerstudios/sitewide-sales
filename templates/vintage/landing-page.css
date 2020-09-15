@@ -11,14 +11,12 @@
 .swsales-landing-page-vintage .swsales-landing-page-content {
 	margin: 0 auto;
 	max-width: 1170px;
+	text-align: center;
 }
 .swsales-landing-page-vintage .swsales-landing-page-content h1,
-.swsales-landing-page-vintage .swsales-landing-page-content h3:not(.pmpro_checkout h3),
-.swsales-landing-page-vintage .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-vintage .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
+.swsales-landing-page-vintage .swsales-landing-page-content h4 {
 	color: #e5dfbd;
 	letter-spacing: 1px;
-	text-align: center;
 	text-shadow: 2px 2px 0px rgba( 0,0,0,0.3 );
 }
 .swsales-landing-page-vintage .swsales-landing-page-content h1 {
@@ -43,6 +41,7 @@
 	margin-right: auto;
 	margin-top: 40px;
 	max-width: 800px;
+	text-align: initial;
 }
 .swsales-landing-page-vintage #pmpro_form hr {
 	display: none;
@@ -75,4 +74,5 @@
 	max-width: 800px;
 	outline: 10px double rgba( 229, 223, 189, 0.3 );
 	padding: 20px;
+	text-align: initial;
 }
