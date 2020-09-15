@@ -40,8 +40,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\wp_enqueue_scripts' );
  */
 function swsales_banner_content_fancy_coupon( $content ) {
 	$content_before = '<div id="swsales-banner-wrap-fancy_coupon" class="swsales-banner-wrap">';
-
-	$content_after .= '</div>';
+	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;
 

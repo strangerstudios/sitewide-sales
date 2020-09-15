@@ -35,10 +35,14 @@
 /* Bottom Banner */
 #swsales-banner-wrap-fancy_coupon #swsales-banner-bottom.swsales-banner .swsales-banner-content {
 	display: inline-block;
+	margin: 0;
 }
 #swsales-banner-wrap-fancy_coupon #swsales-banner-bottom.swsales-banner .swsales-banner-fancy_coupon-coupon {
 	display: inline-block;
 	margin: 0 10px;
+}
+#swsale-banner-wrap-fancy_coupon #swsales-banner-bottom.swsales-banner .swsales-banner-button-wrap {
+	margin-top: 0;
 }
 
 /* Bottom Right Banner */

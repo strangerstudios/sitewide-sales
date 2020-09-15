@@ -207,7 +207,7 @@ class SWSales_Banners {
 				<p class="swsales-banner-title"><?php echo wp_kses_post( $active_sitewide_sale->get_banner_title() ); ?></p>
 				<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $active_sitewide_sale->get_banner_text(), 'top', $active_sitewide_sale ); ?></p>
 				<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
-				<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo esc_html( $active_sitewide_sale->get_link_text() ); ?></a></span>
+				<span class="swsales-banner-button-wrap"><a class="swsales-banner-button" href="<?php echo esc_url( get_permalink( $active_sitewide_sale->get_landing_page_post_id() ) ); ?>"><?php echo wp_kses_post( $active_sitewide_sale->get_link_text() ); ?></a></span>
 			</div> <!-- end swsales-banner-inner -->
 		</div> <!-- end swsales-banner -->
 		<?php

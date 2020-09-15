@@ -20,14 +20,12 @@ body.swsales-landing-page-gradient article {
 	position: relative;
 	z-index: 10;
 }
-
-.swsales-landing-page-gradient .swsales-landing-page-content h1,
-.swsales-landing-page-gradient .swsales-landing-page-content h2:not(.pmpro_checkout h2):not(.woocommerce h2),
-.swsales-landing-page-gradient .swsales-landing-page-content h3:not(.pmpro_checkout h3),
-.swsales-landing-page-gradient .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-gradient .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
-	color: #FFF;
+.swsales-landing-page-gradient .swsales-landing-page-content {
 	text-align: center;
+}
+.swsales-landing-page-gradient .swsales-landing-page-content h1,
+.swsales-landing-page-gradient .swsales-landing-page-content h4 {
+	color: #FFF;
 }
 #swsales-landing-page-wrap-gradient .swsales-landing-page-content:before {
 	-webkit-animation: swsalesGradient 30s ease infinite;
@@ -79,6 +77,7 @@ body.swsales-landing-page-gradient article {
 	max-width: 800px;
 	padding: 20px;
 	position: relative;
+	text-align: initial;
 	z-index: 10;
 }
 #swsales-landing-page-wrap-gradient #pmpro_form .pmpro_checkout h3 {
@@ -107,5 +106,6 @@ body.swsales-landing-page-gradient article {
 	max-width: 800px;
 	padding: 20px;
 	position: relative;
+	text-align: initial;
 	z-index: 10;
 }

@@ -18,20 +18,14 @@
 #swsales-landing-page-wrap-scroll .swsales-landing-page-content {
 	overflow: hidden;
 	padding: 0;
-}
-.swsales-landing-page-scroll .swsales-landing-page-content h1,
-.swsales-landing-page-scroll .swsales-landing-page-content h2:not(.pmpro_checkout h2):not(.woocommerce h2),
-.swsales-landing-page-scroll .swsales-landing-page-content h3:not(.pmpro_checkout h3),
-.swsales-landing-page-scroll .swsales-landing-page-content p:not(.pmpro_checkout p),
-.swsales-landing-page-scroll .swsales-landing-page-content a:not(.pmpro_checkout a):not(.woocommerce a) {
 	text-align: center;
 }
-#swsales-landing-page-wrap-scroll .swsales-landing-page-content h1:not(.pmpro_checkout h1) {
+#swsales-landing-page-wrap-scroll .swsales-landing-page-content h1 {
 	animation: swsalesScrollSlideIn 1s;
 	font-weight: normal;
 	margin: 20px 20px 0 20px;
 }
-#swsales-landing-page-wrap-scroll .swsales-landing-page-content h3:not(.pmpro_checkout h3) {
+#swsales-landing-page-wrap-scroll .swsales-landing-page-content h4 {
 	animation: swsalesScrollFadeIn 3s;
 	font-weight: normal;
 	margin: 20px;
@@ -60,6 +54,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	max-width: 800px;
+	text-align: initial;
 }
 .swsales-landing-page-scroll #pmpro_form hr {
 	display: none;
@@ -96,4 +91,5 @@
 	margin-right: auto;
 	max-width: 800px;
 	padding: 20px;
+	text-align: initial;
 }
