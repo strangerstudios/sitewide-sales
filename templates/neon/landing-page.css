@@ -4,13 +4,13 @@
  * Landing Page Styles 
  */
 
-#swsale-landing-page-wrap-neon {
+#swsales-landing-page-wrap-neon {
 	-webkit-animation: swsalesNeonAnimatedBackground 80s linear infinite;
 	animation: swsalesNeonAnimatedBackground 80s linear infinite;
 	background: #000 url(images/darkness.png) repeat;
 	padding: 50px 0;
 }
-#swsale-landing-page-wrap-neon {
+#swsales-landing-page-wrap-neon {
 	margin-top: 0;
 }
 .swsales-landing-page-neon .swsales-landing-page-content_pre-sale,

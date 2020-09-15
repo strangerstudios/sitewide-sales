@@ -4,12 +4,12 @@
  * landing Page Styles 
  */
 
-#swsale-landing-page-wrap-photo {
+#swsales-landing-page-wrap-photo {
 	background: #FAFAFA;
 	margin: 0;
 	padding: 0;
 }
-#swsale-landing-page-wrap-photo .swsales-landing-page-background-image {
+#swsales-landing-page-wrap-photo .swsales-landing-page-background-image {
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-size: 100% auto;
@@ -26,12 +26,12 @@
 .swsales-landing-page-photo .swsales-landing-page-content p a:not(.pmpro_checkout a):not(.woocommerce a) {
 	color: rgba( 255, 255, 255, 0.9);
 }
-#swsale-landing-page-wrap-photo .swsales-landing-page-content h1 {
+#swsales-landing-page-wrap-photo .swsales-landing-page-content h1 {
 	font-weight: 900;
 }
 
 /* Paid Memberships Pro Integration Specific Styles */
-#swsale-landing-page-wrap-photo #pmpro_form {
+#swsales-landing-page-wrap-photo #pmpro_form {
 	background: #FAFAFA;
 	margin-left: auto;
 	margin-right: auto;
@@ -43,12 +43,12 @@
 .swsales-landing-page-photo #pmpro_form .pmpro_checkout {
 	margin-bottom: 20px;
 }
-#swsale-landing-page-wrap-photo #pmpro_form .pmpro_checkout h3 {
+#swsales-landing-page-wrap-photo #pmpro_form .pmpro_checkout h3 {
 	border: none;
 	margin-bottom: 10px;
 	padding: 0;
 }
-#swsale-landing-page-wrap-photo #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
+#swsales-landing-page-wrap-photo #pmpro_form .pmpro_checkout .pmpro_checkout-fields {
 	padding: 0;
 }
 .swsales-landing-page-photo #pmpro_form hr {
@@ -56,7 +56,7 @@
 }
 
 /* WooCommerce Integration Specific Styles */
-#swsale-landing-page-wrap-photo .woocommerce { 
+#swsales-landing-page-wrap-photo .woocommerce { 
 	background: #FAFAFA;
 	margin-left: auto;
 	margin-right: auto;

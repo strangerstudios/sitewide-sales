@@ -4,56 +4,56 @@
  * Banner Styles 
  */
 
- #swsale-banner-wrap-ocean .swsales-banner {
+ #swsales-banner-wrap-ocean .swsales-banner {
 	background-color: #f67656;
 	background-image: url(images/waves.png);
 	background-repeat: repeat-x;
 	background-position: bottom left;
 	color: #FFF;
 }
-#swsale-banner-wrap-ocean a.swsales-dismiss:before {
+#swsales-banner-wrap-ocean a.swsales-dismiss:before {
 	color: #FFF;
 }
-#swsale-banner-wrap-ocean .swsales-banner-title {
+#swsales-banner-wrap-ocean .swsales-banner-title {
 	font-family: 'Brush Script MT', cursive;
 	font-size: 30px;
 	font-weight: 400;
 	line-height: 40px;
 }
-#swsale-banner-wrap-ocean .swsales-banner a.swsales-banner-button,
-#swsale-banner-wrap-ocean .swsales-banner a.swsales-banner-button:focus,
-#swsale-banner-wrap-ocean .swsales-banner a.swsales-banner-button:visited {
+#swsales-banner-wrap-ocean .swsales-banner a.swsales-banner-button,
+#swsales-banner-wrap-ocean .swsales-banner a.swsales-banner-button:focus,
+#swsales-banner-wrap-ocean .swsales-banner a.swsales-banner-button:visited {
 	background: #4ab1ad;
 	color: #FFF;
 }
-#swsale-banner-wrap-ocean .swsales-banner a.swsales-banner-button:hover {
+#swsales-banner-wrap-ocean .swsales-banner a.swsales-banner-button:hover {
 	background: #67c1ba;
 	color: #FFF;
 }
-#swsale-banner-wrap-ocean #swsales-banner-top.swsales-banner {
+#swsales-banner-wrap-ocean #swsales-banner-top.swsales-banner {
 	background-size: 25px 25px;
 	padding-bottom: 40px;
 }
-#swsale-banner-wrap-ocean #swsales-banner-top .swsales-banner-title {
+#swsales-banner-wrap-ocean #swsales-banner-top .swsales-banner-title {
 	margin-right: 10px;
 }
-#swsale-banner-wrap-ocean #swsales-banner-top .swsales-banner-content {
+#swsales-banner-wrap-ocean #swsales-banner-top .swsales-banner-content {
 	margin-right: 10px;
 }
-#swsale-banner-wrap-ocean #swsales-banner-bottom.swsales-banner {
+#swsales-banner-wrap-ocean #swsales-banner-bottom.swsales-banner {
 	background-size: 50px 50px;
 	padding-bottom: 40px;
 }
-#swsale-banner-wrap-ocean #swsales-banner-bottom .swsales-banner-title h3 {
+#swsales-banner-wrap-ocean #swsales-banner-bottom .swsales-banner-title h3 {
 	font-size: 50px;
 	line-height: 60px;
 }
-#swsale-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner {
+#swsales-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner {
 	background-size: 40px 40px;
 	padding: 20px 20px 60px 20px;
 }
-#swsale-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner a.swsales-banner-button,
-#swsale-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner a.swsales-banner-button:focus,
-#swsale-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner a.swsales-banner-button:visited {
+#swsales-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner a.swsales-banner-button,
+#swsales-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner a.swsales-banner-button:focus,
+#swsales-banner-wrap-ocean #swsales-banner-bottom-right.swsales-banner a.swsales-banner-button:visited {
 	padding: 10px 20px;
 }

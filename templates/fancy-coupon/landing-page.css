@@ -11,19 +11,19 @@ body.swsales-landing-page-fancy_coupon article {
 	background: #FFCC00;
 	height: 100%;
 }
-#swsale-landing-page-wrap-fancy_coupon {
+#swsales-landing-page-wrap-fancy_coupon {
 	background: #FFCC00;
 	height: 100%;
 	margin-top: 0;
 	padding: 40px;
 }
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content {
+#swsales-landing-page-wrap-fancy_coupon .swsales-landing-page-content {
 	color: #000;
 	display: inline-block;
 	text-align: left;
 	width: 60%;
 }
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content h1 {
+#swsales-landing-page-wrap-fancy_coupon .swsales-landing-page-content h1 {
 	background: rgba( 255, 255, 255, 0.3 );
 	display: inline-block;
 	margin: 0;
@@ -38,7 +38,7 @@ body.swsales-landing-page-fancy_coupon article {
 .admin-bar .swsales-landing-page-fancy_coupon-coupon {
 	top: 80px;
 }
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-fancy_coupon-coupon h3 {
+#swsales-landing-page-wrap-fancy_coupon .swsales-landing-page-fancy_coupon-coupon h3 {
 	border: 8px dashed #000;
 	color: #000;
 	font-size: 40px;
@@ -48,7 +48,7 @@ body.swsales-landing-page-fancy_coupon article {
 	padding: 10px 10px 20px 10px;
 	text-align: center;
 }
-#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-fancy_coupon-coupon h3 small {
+#swsales-landing-page-wrap-fancy_coupon .swsales-landing-page-fancy_coupon-coupon h3 small {
 	font-size: 25px;
 }
 
