@@ -72,7 +72,7 @@ body.swsales-landing-page-fancy_coupon article {
 
 /* Responsive Styles */
 @media only screen and (max-width: 767px) {
-	#swsale-landing-page-wrap-fancy_coupon .swsales-landing-page-content {
+	#swsales-landing-page-wrap-fancy_coupon .swsales-landing-page-content {
 		display: block;
 		width: 100%;
 	}
