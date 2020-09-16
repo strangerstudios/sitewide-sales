@@ -434,7 +434,9 @@ class SWSales_Module_PMPro {
 		deactivate_plugins( '/pmpro-sitewide-sales/pmpro-sitewide-sales.php' );
 		deactivate_plugins( '/pmpro-sitewide-sales-master/pmpro-sitewide-sales.php' );
 		deactivate_plugins( '/pmpro-sitewide-sales-dev/pmpro-sitewide-sales.php' );
+		
 		wp_redirect( admin_url( '/edit.php?post_type=sitewide_sale&swsales_pmpro_migrated_sales=' . count( $pmpro_sws_sale_ids ) ) );
+		exit;
 	}
 
 	/**
