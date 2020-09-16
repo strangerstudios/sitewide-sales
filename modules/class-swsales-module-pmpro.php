@@ -252,7 +252,7 @@ class SWSales_Module_PMPro {
 		if ( ! empty( $_REQUEST['swsales_pmpro_migrated_sales'] ) ) {
 			?>
 			<div class="notice notice-success notice-large inline">
-					<p><?php esc_html_e( sprintf( _n( 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', intval($_REQUEST['swsales_pmpro_migrated_sales']), 'sitewide-sales' ), $_REQUEST['swsales_pmpro_migrated_sales'] ) ); ?></p>
+					<p><?php esc_html_e( sprintf( _n( 'Successfully migrated %d Sitewide Sale from the Sitewide Sales Add On for Paid Memberships Pro.', 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', intval($_REQUEST['swsales_pmpro_migrated_sales']), 'sitewide-sales' ), $_REQUEST['swsales_pmpro_migrated_sales'] ) ); ?></p>
 				</div>
 			<?php
 		}
