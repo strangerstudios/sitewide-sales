@@ -21,10 +21,11 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_after_choose_sale_type', array( __CLASS__, 'add_choose_discount_code' ) );
 		add_action( 'swsales_after_choose_landing_page', array( __CLASS__, 'add_set_landing_page_default_level' ) );
 		add_action( 'swsales_after_banners_settings', array( __CLASS__, 'add_hide_banner_by_level' ) );
-	
+
 		// Migration functionality from PMPro SWS
 		add_action( 'admin_init', array( __CLASS__, 'migrate_from_pmprosws' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'migration_notice' ) );
+		add_action( 'swsales_about_text_bottom', array( __CLASS__, 'swsales_about_text_bottom' ) );
 
 		// Bail on additional functionality if PMPro is not active.
 		if ( ! defined( 'PMPRO_VERSION' ) ) {
@@ -274,7 +275,7 @@ class SWSales_Module_PMPro {
 			return;
 		}
 
-		// Okay, show migration notice.
+		// Okay, show migration notice. (Note: Same text is on the about page below.)
 		?>
 		<div class="notice notice-warning notice-large inline">
 				<h3><?php esc_html_e( 'Migrate Your Previous Sales Data', 'sitewide-sales' ); ?></h3>
@@ -292,6 +293,35 @@ class SWSales_Module_PMPro {
 		<?php
 	} // end migration_notice()
 
+	/**
+	 * Sitewide Sales About Page text about migrating.
+	 */
+	public static function swsales_about_text_bottom() {
+		global $wpdb;
+
+		// Are there PMPro SWS to migrate
+		$sql = "SELECT count(*)
+			FROM $wpdb->posts
+			WHERE post_type = 'pmpro_sitewide_sale'
+		";
+		
+		// Show the migration info. (Note: Same text is in a notice above.)
+		if ( ! empty( $wpdb->get_var( $sql ) ) && current_user_can( 'manage_options' ) ) { ?>
+			<h3><?php esc_html_e( 'Migrate Your Previous Sales Data', 'sitewide-sales' ); ?></h3>
+			<p><?php esc_html_e( 'We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient.', 'sitewide-sales' ); ?>
+			</p>
+			<p>
+				<a href="<?php echo wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ); ?>">
+					<?php esc_html_e( 'Migrate PMPro Sitewide Sales Data &raquo;', 'sitewide-sales' ); ?>
+				</a>
+			</p>
+		<?php }
+	}
+
+	/**
+	 * Migration script to move data from PMPro Sitewide Sales
+	 * to this standalone Sitewide Sales plugin.
+	 */
 	public static function migrate_from_pmprosws() {
 		global $wpdb, $pagenow;
 
