@@ -392,7 +392,8 @@ class SWSales_Module_PMPro {
 							delete_post_meta( $pmpro_sws_sale_id, $key );
 						}
 				}
-
+				
+				clean_post_cache( $pmpro_sws_sale_id );
 			}
 
 			// Deleted deprecated post meta.
