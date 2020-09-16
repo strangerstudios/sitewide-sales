@@ -15,7 +15,7 @@ class SWSales_Setup {
 		register_activation_hook( SWSALES_BASENAME, array( __CLASS__, 'swsales_admin_notice_activation_hook' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'swsales_admin_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'swsales_frontend_scripts' ) );
-		//add_filter( 'plugin_row_meta', array( __CLASS__, 'swsales_plugin_row_meta' ), 10, 2 );
+		add_filter( 'plugin_row_meta', array( __CLASS__, 'swsales_plugin_row_meta' ), 10, 2 );
 		add_filter( 'plugin_action_links_' . SWSALES_BASENAME, array( __CLASS__, 'swsales_plugin_action_links' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'swsales_admin_notice' ) );
 	}
@@ -134,10 +134,10 @@ class SWSales_Setup {
 	 * @param string $file Filename of the plugin meta is being shown for.
 	 */
 	public static function swsales_plugin_row_meta( $links, $file ) {
-		if ( strpos( $file, 'sitewide-sale.php' ) !== false ) {
+		if ( strpos( $file, 'sitewide-sales.php' ) !== false ) {
 			$new_links = array(
-				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/add-ons/sitewide-sales/' ) . '" title="' . esc_attr( __( 'View Documentation', 'pmpro' ) ) . '">' . __( 'Docs', 'pmpro-sitewide-sales' ) . '</a>',
-				'<a href="' . esc_url( 'https://www.paidmembershipspro.com/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'pmpro' ) ) . '">' . __( 'Support', 'pmpro-sitewide-sales' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/' ) . '" title="' . esc_attr( __( 'View Documentation', 'sitewide-sales' ) ) . '">' . __( 'Docs', 'sitewide-sales' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'sitewide-sales' ) ) . '">' . __( 'Support', 'sitewide-sales' ) . '</a>',
 			);
 			$links     = array_merge( $links, $new_links );
 		}
