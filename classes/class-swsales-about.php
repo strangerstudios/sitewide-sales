@@ -90,6 +90,26 @@ class SWSales_About {
 
 					<p><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a> | <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?>"><?php esc_html_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?></a></p>
 
+					<?php
+						global $wpdb;
+
+						// Are there PMPro SWS to migrate
+						$sql = "SELECT count(*)
+							FROM $wpdb->posts
+							WHERE post_type = 'pmpro_sitewide_sale'
+						";
+						if ( ! empty( $wpdb->get_var( $sql ) ) && current_user_can( 'manage_options' ) ) { ?>
+							<h3><?php esc_html_e( 'Migrate Your Previous Sales Data', 'sitewide-sales' ); ?></h3>
+							<p><?php esc_html_e( 'We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient.', 'sitewide-sales' ); ?>
+							</p>
+							<p>
+								<a href="<?php echo wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ); ?>">
+									<?php esc_html_e( 'Migrate PMPro Sitewide Sales Data &raquo;', 'sitewide-sales' ); ?>
+								</a>
+							</p>
+						<?php }
+					?>
+
 				</div> <!-- end about-text -->
 			</div> <!-- end about-wrap -->
 
