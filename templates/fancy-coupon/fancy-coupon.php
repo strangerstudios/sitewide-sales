@@ -9,12 +9,12 @@ namespace Sitewide_Sales\templates\fancy_coupon;
 /**
  * Add template to list.
  */
-function swsale_templates( $templates ) {
+function swsales_templates( $templates ) {
 	$templates['fancy_coupon'] = 'Fancy Coupon';
 
 	return $templates;
 }
-add_filter( 'swsale_templates', __NAMESPACE__ . '\swsale_templates' );
+add_filter( 'swsales_templates', __NAMESPACE__ . '\swsales_templates' );
 
 /**
  * Load our landing page and banner CSS/JS if needed.

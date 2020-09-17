@@ -17,7 +17,7 @@ jQuery( document ).ready(
 		}
 		$( '#swsales_wc_coupon_select' ).change(
 			function(){
-				$( '#swsale_wc_coupon_expiry_error' ).hide();
+				$( '#swsales_wc_coupon_expiry_error' ).hide();
 				swsales_wc_toggle_coupon();
 			}
 		);
