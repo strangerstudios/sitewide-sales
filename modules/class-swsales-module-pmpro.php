@@ -115,10 +115,10 @@ class SWSales_Module_PMPro {
 						<?php
 						if ( false !== $code_found ) {
 							if ( $cur_sale->get_end_date( 'Y-m-d' ) > $code_found->expires ) {
-								echo "<p id='swsale_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							}
 							if ( $cur_sale->get_start_date( 'Y-m-d' ) < $code_found->starts ) {
-								echo "<p id='swsale_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>
@@ -751,7 +751,7 @@ class SWSales_Module_PMPro {
 	 * Set PMPro module checkout conversion title for Sitewide Sale report.
 	 *
 	 * @param string               $cur_title     set by filter.
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function checkout_conversions_title( $cur_title, $sitewide_sale ) {
@@ -777,7 +777,7 @@ class SWSales_Module_PMPro {
 	 * Set PMPro module checkout conversions for Sitewide Sale report.
 	 *
 	 * @param string               $cur_conversions set by filter.
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
@@ -806,7 +806,7 @@ class SWSales_Module_PMPro {
 	 * Set PMPro module total revenue for Sitewide Sale report.
 	 *
 	 * @param string               $cur_revenue set by filter.
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @param bool                 $format_price whether to run output through pmpro_formatPrice().
 	 * @return string
 	 */
@@ -842,7 +842,7 @@ class SWSales_Module_PMPro {
 	/**
 	 * Add additional PMPro module revenue report for Sitewide Sale.
 	 *
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function additional_report( $sitewide_sale ) {

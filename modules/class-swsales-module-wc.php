@@ -110,7 +110,7 @@ class SWSales_Module_WC {
 						if ( false !== $coupon_found ) {
 							$coupon_obj = new \WC_Coupon( $coupon_found->ID );
 							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date("Y-m-d") >= ( $coupon_obj->get_date_expires() )->date( 'Y-m-d' ) ) {
-								echo "<p id='swsale_wc_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_wc_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>
@@ -331,7 +331,7 @@ class SWSales_Module_WC {
 	 * Set WC module checkout conversion title for Sitewide Sale report.
 	 *
 	 * @param string               $cur_title     set by filter.
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function checkout_conversions_title( $cur_title, $sitewide_sale ) {
@@ -356,7 +356,7 @@ class SWSales_Module_WC {
 	 * Set WC module checkout conversions for Sitewide Sale report.
 	 *
 	 * @param string               $cur_conversions set by filter.
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
@@ -389,7 +389,7 @@ class SWSales_Module_WC {
 	 * Set WC module total revenue for Sitewide Sale report.
 	 *
 	 * @param string               $cur_revenue set by filter.
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function sale_revenue( $cur_revenue, $sitewide_sale ) {
@@ -422,7 +422,7 @@ class SWSales_Module_WC {
 	/**
 	 * Add additional PMPro module revenue report for Sitewide Sale.
 	 *
-	 * @param SWSale_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function additional_report( $sitewide_sale ) {
