@@ -331,7 +331,7 @@ class SWSales_Module_WC {
 	 * Set WC module checkout conversion title for Sitewide Sale report.
 	 *
 	 * @param string               $cur_title     set by filter.
-	 * @param swsales_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function checkout_conversions_title( $cur_title, $sitewide_sale ) {
@@ -356,7 +356,7 @@ class SWSales_Module_WC {
 	 * Set WC module checkout conversions for Sitewide Sale report.
 	 *
 	 * @param string               $cur_conversions set by filter.
-	 * @param swsales_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function checkout_conversions( $cur_conversions, $sitewide_sale ) {
@@ -389,7 +389,7 @@ class SWSales_Module_WC {
 	 * Set WC module total revenue for Sitewide Sale report.
 	 *
 	 * @param string               $cur_revenue set by filter.
-	 * @param swsales_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function sale_revenue( $cur_revenue, $sitewide_sale ) {
@@ -422,7 +422,7 @@ class SWSales_Module_WC {
 	/**
 	 * Add additional PMPro module revenue report for Sitewide Sale.
 	 *
-	 * @param swsales_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
 	public static function additional_report( $sitewide_sale ) {
