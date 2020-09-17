@@ -289,9 +289,26 @@ class SWSales_Module_WC {
 		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
 			return $price;
 		}
-
 		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
-		if ( null !== $coupon_id && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) {
+		if ( null === $coupon_id ) {
+			return $price;
+		}
+		// Check if we are on the landing page
+		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
+		$on_landing_page = false;
+		if (
+			( ! empty( $_SERVER['REQUEST_URI'] ) && intval( url_to_postid( $_SERVER['REQUEST_URI'] ) ) === $landing_page_post_id ) ||
+			( ! empty( $_SERVER['HTTP_REFERER'] ) && intval( url_to_postid( $_SERVER['HTTP_REFERER'] ) ) === $landing_page_post_id )
+		) {
+			$on_landing_page = true;
+		}
+		$should_apply_discount_on_landing = ( 'none' !== $active_sitewide_sale->get_automatic_discount() );
+
+		// If discount code is already applied or we are on the landing page and should apply discount...
+		if ( 
+			( ! empty( WC()->cart ) && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) ||
+			( $on_landing_page && $should_apply_discount_on_landing )
+		) {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
 			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
