@@ -24,7 +24,7 @@ If applicable, please attach a screenshot to make your issue clearer.
 A clear and concise description of what you expected to happen.
 
 **Isolating the problem (mark completed items with an [x]):**
-- [ ] I have deactivated other plugins and confirmed this bug occurs when only the Sitewide Sales plugin is active.
+- [ ] I have deactivated other plugins and confirmed this bug occurs when only the Sitewide Sales and relevant module plugins are active.
 - [ ] This bug happens with a default WordPress theme active, or [Memberlite](https://wordpress.org/themes/memberlite/).
 - [ ] I can reproduce this bug consistently using the steps above.
 
