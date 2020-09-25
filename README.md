@@ -3,9 +3,11 @@
 # [Sitewide Sales](https://sitewidesales.com) #
 
 ### Welcome to the Sitewide Sales GitHub Repository
+Sitewide Sales allows you to run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site. The plugin offers modules for [WooCommerce](https://woocommerce.com) and [Paid Memberships Pro](https://www.paidmembershipspro.com).
 
+Let Sitewide Sales handle your sale banners, notification bars, landing pages, and reporting. Running a sale like this used to require three or more separate plugins. Now you can run your sale with a single tool. At the same time, the Sitewide Sales plugin is flexible enough that you can use specific banner and landing page plugins if wanted.
 
-For more information please visit [the Sitewide Sales website](https://sitewidesales.com)
+For more information please visit [the Sitewide Sales website](https://sitewidesales.com) or [browse Sale Landing Page and Banner demos](https://sitewidesales.com/demos/).
 
 ## Installation ##
 For detailed installation steps, visit the [documentation on getting started with the plugin](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/).
@@ -18,7 +20,7 @@ For detailed installation steps, visit the [documentation on getting started wit
 If you find an issue/bug, let us know by [creating a detailed GitHub issue](https://github.com/strangerstudios/sitewide-sales/issues/new/choose).
 
 ## Support ##
-This is a developer's portal for Sitewide Sales. We do not offer support on this channel. **Any support related questions should be directed to [paidmembershipspro.com](https://www.paidmembershipspro.com).**
+This is a developer's portal for Sitewide Sales. We do not offer support on this channel. **Any support related questions should be directed to [strangerstudios.com](https://www.strangerstudios.com).**
 
 ## Contributing to Sitewide Sales ##
 We encourage and welcome any contribution to Sitewide Sales. Please read the [guidelines for contributing](https://github.com/strangerstudios/sitewide-sales/blob/dev/.github/CONTRIBUTING.md) to this repository.
