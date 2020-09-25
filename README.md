@@ -1,4 +1,4 @@
-![](sitewide-sales-banner.jpg)
+![](sitewide-sales-banner.png)
 
 # [Sitewide Sales](https://sitewidesales.com) #
 
