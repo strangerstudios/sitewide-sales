@@ -36,7 +36,7 @@ class SWSales_Module_PMPro {
 		add_action( 'swsales_save_metaboxes', array( __CLASS__, 'save_metaboxes' ), 10, 2 );
 
 		// Enqueue JS for Edit Sitewide Sale page.
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 
 		// SWSale compatibility when editing/saving a discount code.
 		//add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
@@ -55,6 +55,9 @@ class SWSales_Module_PMPro {
 
 		// PMPro automatic discount application.
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
+
+		// Hide discount code fields on SWSales landing page.
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wp_enqueue_scripts' ) );		
 
 		// PMPro-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
@@ -465,7 +468,7 @@ class SWSales_Module_PMPro {
 	/**
 	 * Enqueues /modules/js/swsales-module-pmpro-metaboxes.js
 	 */
-	public static function enqueue_scripts() {
+	public static function admin_enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
 			wp_register_script( 'swsales_module_pmpro_metaboxes', plugins_url( 'modules/js/swsales-module-pmpro-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
@@ -481,7 +484,7 @@ class SWSales_Module_PMPro {
 			);
 
 		}
-	} // end enqueue_scripts()
+	} // end admin_enqueue_scripts()
 
 	/**
 	 * COMMENTED OUT
@@ -745,6 +748,14 @@ class SWSales_Module_PMPro {
  		if ( pmpro_checkDiscountCode( $code, $_REQUEST['level'] ) ) {
  			$_REQUEST['discount_code'] = $code;
  		}
+	}
+
+	/**
+	 * Load our module's CSS.
+	 */
+	public static function wp_enqueue_scripts() {
+		wp_register_style( 'swsales_module_pmpro', plugins_url( 'modules/css/swsales-module-pmpro.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
+		wp_enqueue_style( 'swsales_module_pmpro' ); 
 	}
 
 	/**
