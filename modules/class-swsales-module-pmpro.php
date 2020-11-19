@@ -63,6 +63,8 @@ class SWSales_Module_PMPro {
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
 		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
+		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
+		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
 		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 
 	}
@@ -848,6 +850,60 @@ class SWSales_Module_PMPro {
 			)
 		);
 		return $format_price ? pmpro_formatPrice( $sale_rev ) : $sale_rev;
+	}
+
+	/**
+	 * Generate data for daily revenue chart.
+	 *
+	 * @param array                 $daily_revenue_chart_data to be shown in chart
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @return bool
+	 */
+	public static function swsales_daily_revenue_chart_data( $daily_revenue_chart_data, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $daily_revenue_chart_data;
+		}
+		global $wpdb;
+		$query_data = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT DATE_FORMAT(o.timestamp, '%s') as date, SUM(o.total) as value
+					FROM $wpdb->pmpro_membership_orders o
+				LEFT JOIN $wpdb->pmpro_discount_codes_uses dc
+					ON o.id = dc.order_id
+				WHERE dc.code_id = %s
+					AND o.status NOT IN('refunded', 'review', 'token', 'error')
+					AND o.timestamp >= %s
+					AND o.timestamp < %s
+				GROUP BY date
+				ORDER BY date
+				",
+				'%Y-%m-%d', // To prevent these from being seen as placeholders.
+				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
+				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
+				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+			)
+		);
+		foreach ( $query_data as $daily_revenue_obj ) {
+			if ( array_key_exists( $daily_revenue_obj->date, $daily_revenue_chart_data ) ) {
+				$daily_revenue_chart_data[$daily_revenue_obj->date] = floatval( $daily_revenue_obj->value );
+			}
+		}
+		return $daily_revenue_chart_data;
+	}
+
+	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return;
+		}
+		global $pmpro_currency_symbol, $pmpro_currency, $pmpro_currencies;
+		return array(
+			'currency_symbol' => $pmpro_currency_symbol,
+			'decimals' => isset( $pmpro_currencies[ $pmpro_currency ]['decimals'] ) ? (int) $pmpro_currencies[ $pmpro_currency ]['decimals'] : 2,
+			'decimal_separator' => isset( $pmpro_currencies[ $pmpro_currency ]['decimal_separator'] ) ? $pmpro_currencies[ $pmpro_currency ]['decimal_separator'] : '.',
+			'thousands_separator' => isset( $pmpro_currencies[ $pmpro_currency ]['thousands_separator'] ) ? $pmpro_currencies[ $pmpro_currency ]['thousands_separator'] : ',',
+			'position' => pmpro_getCurrencyPosition() == 'right' ? 'suffix' : 'prefix'
+		);
 	}
 
 	/**
