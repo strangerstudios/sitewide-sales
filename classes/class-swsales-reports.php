@@ -160,7 +160,7 @@ class SWSales_Reports {
 			$period = new \DatePeriod(
 				new \DateTime( $sitewide_sale->get_start_date() ),
 				new \DateInterval('P1D'),
-				new \DateTime( $sitewide_sale->get_end_date . ' + 1 day' )
+				new \DateTime( $sitewide_sale->get_end_date() . ' + 1 day' )
 			);
 			foreach ($period as $key => $value) {
 				$date_array[ $value->format('Y-m-d') ] = 0.0;     
@@ -216,7 +216,7 @@ class SWSales_Reports {
 						$daily_revenue_chart_currency_format = apply_filters( 'swsales_daily_revenue_chart_currency_format', $daily_revenue_chart_currency_format, $sitewide_sale );
 						?>
 						var formatter = new google.visualization.NumberFormat({
-							<?php echo esc_html( $daily_revenue_chart_currency_format['position'] );?>: '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['currency_symbol'] ) ); ?>',
+							'<?php echo esc_html( $daily_revenue_chart_currency_format['position'] );?>': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['currency_symbol'] ) ); ?>',
 							'decimalSymbol': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['decimal_separator'] ) ); ?>',
 							'fractionDigits': <?php echo intval( $daily_revenue_chart_currency_format['decimals'] ); ?>,
 							'groupingSymbol': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['thousands_separator'] ) ); ?>',

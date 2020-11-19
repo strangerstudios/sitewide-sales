@@ -48,6 +48,8 @@ class SWSales_Module_WC {
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
 		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
+		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
+		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
 		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 	}
 
@@ -434,6 +436,66 @@ class SWSales_Module_WC {
 		" );
 
 		return wp_strip_all_tags( wc_price( $sale_revenue ) );
+	}
+
+	/**
+	 * Generate data for daily revenue chart.
+	 *
+	 * @param array                 $daily_revenue_chart_data to be shown in chart
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @return bool
+	 */
+	public static function swsales_daily_revenue_chart_data( $daily_revenue_chart_data, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $daily_revenue_chart_data;
+		}
+		global $wpdb;
+		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
+		$query_data = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT DATE_FORMAT(p.post_date, '%s') as date, SUM(pm.meta_value) as value
+					FROM {$wpdb->prefix}posts as p
+				INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi
+					ON p.ID = wcoi.order_id
+				INNER JOIN {$wpdb->prefix}postmeta as pm
+					ON p.ID = pm.post_id
+				WHERE p.post_type = 'shop_order'
+					AND p.post_status IN ('wc-processing','wc-completed')
+					AND p.post_date >= %s
+					AND p.post_date <= %s
+					AND upper(wcoi.order_item_name) = upper('%s')
+					AND wcoi.order_item_type = 'coupon'
+					AND pm.meta_key = '_order_total'
+				GROUP BY date
+				ORDER BY date
+				",
+				'%Y-%m-%d', // To prevent these from being seen as placeholders.
+				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
+				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59',
+				$coupon_code
+			)
+		);
+		foreach ( $query_data as $daily_revenue_obj ) {
+			if ( array_key_exists( $daily_revenue_obj->date, $daily_revenue_chart_data ) ) {
+				$daily_revenue_chart_data[$daily_revenue_obj->date] = floatval( $daily_revenue_obj->value );
+			}
+		}
+		return $daily_revenue_chart_data;
+	}
+
+	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return;
+		}
+		return array(
+			'currency_symbol' => get_woocommerce_currency_symbol(),
+			'decimals' => wc_get_price_decimals(),
+			'decimal_separator' => wc_get_price_decimal_separator(),
+			'thousands_separator' => wc_get_price_thousand_separator(),
+			'position' => strpos( get_option( 'woocommerce_currency_pos' ), 'right' ) !== false ? 'suffix' : 'prefix'
+		);
 	}
 
 	/**
