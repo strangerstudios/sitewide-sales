@@ -69,5 +69,6 @@ require_once ( 'includes/license.php' );
 function swsales_load_modules() {
 	require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
 	require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';
+	require_once SWSALES_DIR . '/modules/class-swsales-module-custom.php';
 }
 add_action( 'init', 'Sitewide_Sales\\swsales_load_modules', 1 );
