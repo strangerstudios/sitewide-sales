@@ -21,7 +21,7 @@ class SWSales_Module_EDD {
 		add_action( 'swsales_after_choose_sale_type', array( __CLASS__, 'add_choose_coupon' ) );
 
 		// Bail on additional functionality if WC is not active.
-		if ( ! class_exists( 'Easy_Digital_Downloads', false ) ) {
+		if ( ! class_exists( 'Easy_Digital_Downloads', false ) && !defined( 'EDD_VERSION' ) ) {
 			return;
 		}
 
@@ -43,13 +43,25 @@ class SWSales_Module_EDD {
 		// Automatic coupon application.
 		add_filter( 'init', array( __CLASS__, 'automatic_coupon_application' ) );
 
-		// WC-specific reports.
+		// EDD-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
-		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
-		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
 		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
-		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
+
+		if( version_compare( floatval( EDD_VERSION ), 3, '>=' ) ){
+			//EDD V3's Stats			
+			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
+			add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
+			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
+			
+			add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
+		} else {
+			//EDD Legacy Stats
+			// add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'legacy_checkout_conversions' ), 10, 2 );
+			// add_filter( 'swsales_get_revenue', array( __CLASS__, 'legacy_sale_revenue' ), 10, 2 );
+			// add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'legacy_swsales_daily_revenue_chart_data' ), 10, 2 );
+			// add_action( 'swsales_additional_reports', array( __CLASS__, 'legacy_additional_report' ) );
+		}
+		
 	}
 
 	/**
@@ -322,8 +334,22 @@ class SWSales_Module_EDD {
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		$coupon_code = new \EDD_Discount( $coupon_id );
 
-		// $sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
-		// $sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
+		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
+		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
+		
+		$conversion_count = $wpdb->get_var( "
+			SELECT COUNT(*)
+			FROM {$wpdb->prefix}edd_orders as p
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi ON p.id = wcoi.object_id
+			WHERE p.type = 'sale'
+			AND p.status = 'complete'
+			AND p.date_completed >= '{$sale_start_date}'
+			AND p.date_completed <= '{$sale_end_date}'
+			AND upper(wcoi.description) = upper('{$coupon_code->name}')
+			AND wcoi.type = 'discount'
+		" );
+
+
 		// $conversion_count = $wpdb->get_var( "
 		// 	SELECT COUNT(*)
 		// 	FROM {$wpdb->prefix}posts as p
@@ -336,7 +362,7 @@ class SWSales_Module_EDD {
 		// 	AND wcoi.order_item_type = 'coupon'
 		// " );
 
-		// return strval( $conversion_count );
+		return strval( $conversion_count );
 	}
 
 	/**
@@ -356,6 +382,19 @@ class SWSales_Module_EDD {
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		$coupon_code = new \EDD_Discount( $coupon_id );
+
+		$sale_revenue = $wpdb->get_var( "
+			SELECT DISTINCT SUM(p.total)
+			FROM {$wpdb->prefix}edd_orders as p
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi ON p.id = wcoi.object_id			
+			WHERE p.type = 'sale'
+			AND p.status = 'complete' 
+			AND p.date_completed >= '{$sale_start_date}' 
+			AND p.date_completed <= '{$sale_end_date}' 
+			AND wcoi.description = '{$coupon_code->name}' 
+			AND wcoi.type = 'discount'
+		" );
+
 		// $sale_revenue = $wpdb->get_var( "
 		// 	SELECT DISTINCT SUM(pm.meta_value)
 		// 	FROM {$wpdb->prefix}posts as p
@@ -370,7 +409,7 @@ class SWSales_Module_EDD {
 		// 	AND pm.meta_key = '_order_total'
 		// " );
 
-		// return wp_strip_all_tags( wc_price( $sale_revenue ) );
+		return wp_strip_all_tags( edd_currency_filter( edd_format_amount( $sale_revenue ) ) );
 	}
 
 	/**
@@ -387,6 +426,35 @@ class SWSales_Module_EDD {
 		global $wpdb;
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		$coupon_code = new \EDD_Discount( $coupon_id );
+
+		$query_data = $wpdb->get_results(
+			$wpdb->prepare(
+				"
+				SELECT DATE_FORMAT(p.date_completed, '%s') as date, SUM(p.total) as value
+					FROM {$wpdb->prefix}edd_orders as p
+				INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi
+					ON p.id = wcoi.object_id
+				WHERE p.type = 'sale'
+					AND p.status = 'complete' 
+					AND p.date_completed >= %s
+					AND p.date_completed <= %s
+					AND upper(wcoi.description) = upper('%s')
+					AND wcoi.type = 'discount'					
+				GROUP BY date
+				ORDER BY date
+				",
+				'%Y-%m-%d', // To prevent these from being seen as placeholders.
+				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
+				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59',
+				$coupon_code->name
+			)
+		);
+		foreach ( $query_data as $daily_revenue_obj ) {
+			if ( array_key_exists( $daily_revenue_obj->date, $daily_revenue_chart_data ) ) {
+				$daily_revenue_chart_data[$daily_revenue_obj->date] = floatval( $daily_revenue_obj->value );
+			}
+		}
+		
 		// $query_data = $wpdb->get_results(
 		// 	$wpdb->prepare(
 		// 		"
@@ -417,7 +485,8 @@ class SWSales_Module_EDD {
 		// 		$daily_revenue_chart_data[$daily_revenue_obj->date] = floatval( $daily_revenue_obj->value );
 		// 	}
 		// }
-		// return $daily_revenue_chart_data;
+		
+		return $daily_revenue_chart_data;
 	}
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
@@ -426,10 +495,10 @@ class SWSales_Module_EDD {
 		}
 		return array(
 			'currency_symbol' => edd_get_currency(),
-			'decimals' => wc_get_price_decimals(),
-			'decimal_separator' => wc_get_price_decimal_separator(),
-			'thousands_separator' => wc_get_price_thousand_separator(),
-			'position' => strpos( get_option( 'woocommerce_currency_pos' ), 'right' ) !== false ? 'suffix' : 'prefix'
+			'decimals' => apply_filters( 'edd_sanitize_amount_decimals', 2 ), //Third val would normally be $amount
+			'decimal_separator' => edd_get_option('decimal_separator', '.' ),
+			'thousands_separator' => edd_get_option('thousands_separator', ',' ),
+			'position' => strpos( edd_get_option( 'currency_position' ), 'after' ) !== false ? 'suffix' : 'prefix'
 		);
 	}
 
@@ -451,28 +520,50 @@ class SWSales_Module_EDD {
 		$coupon_code = new \EDD_Discount( $coupon_id );
 
 		$total_rev = $wpdb->get_var( "
-			SELECT DISTINCT SUM(pm.meta_value)
-			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-			WHERE p.post_type = 'shop_order'
-			AND p.post_status IN ('wc-processing','wc-completed')
-			AND p.post_date >= '{$sale_start_date}'
-			AND p.post_date <= '{$sale_end_date}'
-			AND pm.meta_key = '_order_total'
+			SELECT DISTINCT SUM(p.total)
+			FROM {$wpdb->prefix}edd_orders as p
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as pm ON p.id = pm.object_id
+			WHERE p.type = 'sale'
+			AND p.status = 'complete' 
+			AND p.date_completed >= '{$sale_start_date}'
+			AND p.date_completed <= '{$sale_end_date}'
 		" );
 		$new_rev_with_code = $wpdb->get_var( "
-			SELECT DISTINCT SUM(pm.meta_value)
-			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
-			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-			WHERE p.post_type = 'shop_order'
-			AND p.post_status IN ('wc-processing','wc-completed')
-			AND p.post_date >= '{$sale_start_date}'
-			AND p.post_date <= '{$sale_end_date}'
-			AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
-			AND wcoi.order_item_type = 'coupon'
-			AND pm.meta_key = '_order_total'
+			SELECT DISTINCT SUM(p.total)
+			FROM {$wpdb->prefix}edd_orders as p
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi ON p.id = wcoi.object_id			
+			WHERE p.type = 'sale'
+			AND p.status = 'complete' 
+			AND p.date_completed >= '{$sale_start_date}'
+			AND p.date_completed <= '{$sale_end_date}'
+			AND wcoi.description = upper('{$coupon_code->name}')
+			AND wcoi.type = 'discount'
 		" );
+
+		// $total_rev = $wpdb->get_var( "
+		// 	SELECT DISTINCT SUM(pm.meta_value)
+		// 	FROM {$wpdb->prefix}posts as p
+		// 	INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
+		// 	WHERE p.post_type = 'shop_order'
+		// 	AND p.post_status IN ('wc-processing','wc-completed')
+		// 	AND p.post_date >= '{$sale_start_date}'
+		// 	AND p.post_date <= '{$sale_end_date}'
+		// 	AND pm.meta_key = '_order_total'
+		// " );
+		// $new_rev_with_code = $wpdb->get_var( "
+		// 	SELECT DISTINCT SUM(pm.meta_value)
+		// 	FROM {$wpdb->prefix}posts as p
+		// 	INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
+		// 	INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
+		// 	WHERE p.post_type = 'shop_order'
+		// 	AND p.post_status IN ('wc-processing','wc-completed')
+		// 	AND p.post_date >= '{$sale_start_date}'
+		// 	AND p.post_date <= '{$sale_end_date}'
+		// 	AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
+		// 	AND wcoi.order_item_type = 'coupon'
+		// 	AND pm.meta_key = '_order_total'
+		// " );
+
 		$new_rev_without_code = $total_rev - $new_rev_with_code;
 
 		?>
@@ -490,7 +581,7 @@ class SWSales_Module_EDD {
 			<hr />
 			<div class="swsales_reports-data swsales_reports-data-3col">
 				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_with_code ) ) ); ?></h1>
+					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_with_code ) ) ) ); ?></h1>
 					<p>
 						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
 						<br />
@@ -498,7 +589,7 @@ class SWSales_Module_EDD {
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_without_code ) ) ); ?></h1>
+					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_without_code ) ) ) ); ?></h1>
 					<p>
 						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
 						<br />
@@ -506,7 +597,7 @@ class SWSales_Module_EDD {
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $total_rev ) ) ); ?></h1>
+					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) ); ?></h1>
 					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
 				</div>
 			</div>
