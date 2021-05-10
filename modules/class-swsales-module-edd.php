@@ -20,7 +20,7 @@ class SWSales_Module_EDD {
 		// Add fields to Edit Sitewide Sale page.
 		add_action( 'swsales_after_choose_sale_type', array( __CLASS__, 'add_choose_coupon' ) );
 
-		// Bail on additional functionality if WC is not active.
+		// Bail on additional functionality if EDD is not active.
 		if ( ! class_exists( 'Easy_Digital_Downloads', false ) && !defined( 'EDD_VERSION' ) ) {
 			return;
 		}
@@ -34,7 +34,7 @@ class SWSales_Module_EDD {
 		// Generate coupons from editing sitewide sale.
 		add_action( 'wp_ajax_swsales_edd_create_coupon', array( __CLASS__, 'create_coupon_ajax' ) );
 
-		// Custom WC banner rules (hide at checkout).
+		// Custom EDD banner rules (hide at checkout).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
 		
 		// For the swsales_coupon helper function
@@ -51,14 +51,14 @@ class SWSales_Module_EDD {
 			//EDD V3's Stats			
 			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
 			add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
-			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
+			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'daily_revenue_chart_data' ), 10, 2 );
 			
 			add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 		} else {
 			//EDD Legacy Stats
 			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'legacy_checkout_conversions' ), 10, 2 );
 			add_filter( 'swsales_get_revenue', array( __CLASS__, 'legacy_sale_revenue' ), 10, 2 );
-			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'legacy_swsales_daily_revenue_chart_data' ), 10, 2 );
+			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'legacy_daily_revenue_chart_data' ), 10, 2 );
 			add_action( 'swsales_additional_reports', array( __CLASS__, 'legacy_additional_report' ) );
 		}
 		
@@ -148,7 +148,7 @@ class SWSales_Module_EDD {
 	} // end add_choose_coupon()
 
 	/**
-	 * Saves WC module fields when saving Sitewide Sale.
+	 * Saves EDD module fields when saving Sitewide Sale.
 	 *
 	 * @param int     $post_id of the sitewide sale being edited.
 	 * @param WP_Post $post object of the sitewide sale being edited.
@@ -160,7 +160,7 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-wc-metaboxes.js
+	 * Enqueues /modules/js/swsales-module-edd-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
@@ -294,7 +294,7 @@ class SWSales_Module_EDD {
 	
 
 	/**
-	 * Set WC module checkout conversion title for Sitewide Sale report.
+	 * Set EDD module checkout conversion title for Sitewide Sale report.
 	 *
 	 * @param string               $cur_title     set by filter.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
@@ -340,27 +340,14 @@ class SWSales_Module_EDD {
 		$conversion_count = $wpdb->get_var( "
 			SELECT COUNT(*)
 			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi ON p.id = wcoi.object_id
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as eddoa ON p.id = eddoa.object_id
 			WHERE p.type = 'sale'
 			AND p.status = 'complete'
 			AND p.date_completed >= '{$sale_start_date}'
 			AND p.date_completed <= '{$sale_end_date}'
-			AND upper(wcoi.description) = upper('{$coupon_code->name}')
-			AND wcoi.type = 'discount'
+			AND upper(eddoa.description) = upper('{$coupon_code->name}')
+			AND eddoa.type = 'discount'
 		" );
-
-
-		// $conversion_count = $wpdb->get_var( "
-		// 	SELECT COUNT(*)
-		// 	FROM {$wpdb->prefix}posts as p
-		// 	INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
-		// 	WHERE p.post_type = 'shop_order'
-		// 	AND p.post_status IN ('wc-processing','wc-completed')
-		// 	AND p.post_date >= '{$sale_start_date}'
-		// 	AND p.post_date <= '{$sale_end_date}'
-		// 	AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
-		// 	AND wcoi.order_item_type = 'coupon'
-		// " );
 
 		return strval( $conversion_count );
 	}
@@ -386,28 +373,14 @@ class SWSales_Module_EDD {
 		$sale_revenue = $wpdb->get_var( "
 			SELECT DISTINCT SUM(p.total)
 			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi ON p.id = wcoi.object_id			
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as eddoa ON p.id = eddoa.object_id			
 			WHERE p.type = 'sale'
 			AND p.status = 'complete' 
 			AND p.date_completed >= '{$sale_start_date}' 
 			AND p.date_completed <= '{$sale_end_date}' 
-			AND wcoi.description = '{$coupon_code->name}' 
-			AND wcoi.type = 'discount'
+			AND eddoa.description = '{$coupon_code->name}' 
+			AND eddoa.type = 'discount'
 		" );
-
-		// $sale_revenue = $wpdb->get_var( "
-		// 	SELECT DISTINCT SUM(pm.meta_value)
-		// 	FROM {$wpdb->prefix}posts as p
-		// 	INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
-		// 	INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-		// 	WHERE p.post_type = 'shop_order'
-		// 	AND p.post_status IN ('wc-processing','wc-completed')
-		// 	AND p.post_date >= '{$sale_start_date}'
-		// 	AND p.post_date <= '{$sale_end_date}'
-		// 	AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
-		// 	AND wcoi.order_item_type = 'coupon'
-		// 	AND pm.meta_key = '_order_total'
-		// " );
 
 		return wp_strip_all_tags( edd_currency_filter( edd_format_amount( $sale_revenue ) ) );
 	}
@@ -419,7 +392,7 @@ class SWSales_Module_EDD {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
 	 * @return bool
 	 */
-	public static function swsales_daily_revenue_chart_data( $daily_revenue_chart_data, $sitewide_sale ) {
+	public static function daily_revenue_chart_data( $daily_revenue_chart_data, $sitewide_sale ) {
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $daily_revenue_chart_data;
 		}
@@ -432,14 +405,14 @@ class SWSales_Module_EDD {
 				"
 				SELECT DATE_FORMAT(p.date_completed, '%s') as date, SUM(p.total) as value
 					FROM {$wpdb->prefix}edd_orders as p
-				INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi
-					ON p.id = wcoi.object_id
+				INNER JOIN {$wpdb->prefix}edd_order_adjustments as eddoa
+					ON p.id = eddoa.object_id
 				WHERE p.type = 'sale'
 					AND p.status = 'complete' 
 					AND p.date_completed >= %s
 					AND p.date_completed <= %s
-					AND upper(wcoi.description) = upper('%s')
-					AND wcoi.type = 'discount'					
+					AND upper(eddoa.description) = upper('%s')
+					AND eddoa.type = 'discount'					
 				GROUP BY date
 				ORDER BY date
 				",
@@ -454,37 +427,6 @@ class SWSales_Module_EDD {
 				$daily_revenue_chart_data[$daily_revenue_obj->date] = floatval( $daily_revenue_obj->value );
 			}
 		}
-		
-		// $query_data = $wpdb->get_results(
-		// 	$wpdb->prepare(
-		// 		"
-		// 		SELECT DATE_FORMAT(p.post_date, '%s') as date, SUM(pm.meta_value) as value
-		// 			FROM {$wpdb->prefix}posts as p
-		// 		INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi
-		// 			ON p.ID = wcoi.order_id
-		// 		INNER JOIN {$wpdb->prefix}postmeta as pm
-		// 			ON p.ID = pm.post_id
-		// 		WHERE p.post_type = 'shop_order'
-		// 			AND p.post_status IN ('wc-processing','wc-completed')
-		// 			AND p.post_date >= %s
-		// 			AND p.post_date <= %s
-		// 			AND upper(wcoi.order_item_name) = upper('%s')
-		// 			AND wcoi.order_item_type = 'coupon'
-		// 			AND pm.meta_key = '_order_total'
-		// 		GROUP BY date
-		// 		ORDER BY date
-		// 		",
-		// 		'%Y-%m-%d', // To prevent these from being seen as placeholders.
-		// 		$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-		// 		$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59',
-		// 		$coupon_code
-		// 	)
-		// );
-		// foreach ( $query_data as $daily_revenue_obj ) {
-		// 	if ( array_key_exists( $daily_revenue_obj->date, $daily_revenue_chart_data ) ) {
-		// 		$daily_revenue_chart_data[$daily_revenue_obj->date] = floatval( $daily_revenue_obj->value );
-		// 	}
-		// }
 		
 		return $daily_revenue_chart_data;
 	}
@@ -503,7 +445,7 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Add additional PMPro module revenue report for Sitewide Sale.
+	 * Add additional EDD module revenue report for Sitewide Sale.
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
@@ -531,38 +473,14 @@ class SWSales_Module_EDD {
 		$new_rev_with_code = $wpdb->get_var( "
 			SELECT DISTINCT SUM(p.total)
 			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as wcoi ON p.id = wcoi.object_id			
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as eddoa ON p.id = eddoa.object_id			
 			WHERE p.type = 'sale'
 			AND p.status = 'complete' 
 			AND p.date_completed >= '{$sale_start_date}'
 			AND p.date_completed <= '{$sale_end_date}'
-			AND wcoi.description = upper('{$coupon_code->name}')
-			AND wcoi.type = 'discount'
+			AND eddoa.description = upper('{$coupon_code->name}')
+			AND eddoa.type = 'discount'
 		" );
-
-		// $total_rev = $wpdb->get_var( "
-		// 	SELECT DISTINCT SUM(pm.meta_value)
-		// 	FROM {$wpdb->prefix}posts as p
-		// 	INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-		// 	WHERE p.post_type = 'shop_order'
-		// 	AND p.post_status IN ('wc-processing','wc-completed')
-		// 	AND p.post_date >= '{$sale_start_date}'
-		// 	AND p.post_date <= '{$sale_end_date}'
-		// 	AND pm.meta_key = '_order_total'
-		// " );
-		// $new_rev_with_code = $wpdb->get_var( "
-		// 	SELECT DISTINCT SUM(pm.meta_value)
-		// 	FROM {$wpdb->prefix}posts as p
-		// 	INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
-		// 	INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-		// 	WHERE p.post_type = 'shop_order'
-		// 	AND p.post_status IN ('wc-processing','wc-completed')
-		// 	AND p.post_date >= '{$sale_start_date}'
-		// 	AND p.post_date <= '{$sale_end_date}'
-		// 	AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
-		// 	AND wcoi.order_item_type = 'coupon'
-		// 	AND pm.meta_key = '_order_total'
-		// " );
 
 		$new_rev_without_code = $total_rev - $new_rev_with_code;
 
@@ -627,12 +545,12 @@ class SWSales_Module_EDD {
 		$conversion_count = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as wcoi ON p.ID = wcoi.post_id
+			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
 			WHERE p.post_type = 'edd_payment'
 			AND p.post_status = 'publish'
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
-			AND wcoi.meta_key = '_edd_payment_meta' 
+			AND eddoa.meta_key = '_edd_payment_meta' 
 		" );
 
 		$conversion = array();
@@ -678,12 +596,12 @@ class SWSales_Module_EDD {
 		$sale_revenue = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as wcoi ON p.ID = wcoi.post_id
+			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
 			WHERE p.post_type = 'edd_payment'
 			AND p.post_status = 'publish'
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
-			AND wcoi.meta_key = '_edd_payment_meta' 
+			AND eddoa.meta_key = '_edd_payment_meta' 
 		" );
 
 		$cart_total = 0;
@@ -712,7 +630,7 @@ class SWSales_Module_EDD {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
 	 * @return bool
 	 */
-	public static function legacy_swsales_daily_revenue_chart_data( $daily_revenue_chart_data, $sitewide_sale ) {
+	public static function legacy_daily_revenue_chart_data( $daily_revenue_chart_data, $sitewide_sale ) {
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $daily_revenue_chart_data;
 		}
@@ -725,15 +643,15 @@ class SWSales_Module_EDD {
 				
 		$query_data = $wpdb->get_results(
 			"
-			SELECT DATE_FORMAT(p.post_date, '%Y-%m-%d') as date, wcoi.meta_value as value
+			SELECT DATE_FORMAT(p.post_date, '%Y-%m-%d') as date, eddoa.meta_value as value
 				FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as wcoi
-				ON p.ID = wcoi.post_id
+			INNER JOIN {$wpdb->prefix}postmeta as eddoa
+				ON p.ID = eddoa.post_id
 			WHERE p.post_type = 'edd_payment'
 				AND p.post_status = 'publish' 
 				AND p.post_date >= '$start_date' 
 				AND p.post_date <= '$end_date' 
-				AND wcoi.meta_key = '_edd_payment_meta' 					
+				AND eddoa.meta_key = '_edd_payment_meta' 					
 			"
 		);
 
@@ -783,12 +701,12 @@ class SWSales_Module_EDD {
 		$sale_revenue = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as wcoi ON p.ID = wcoi.post_id
+			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
 			WHERE p.post_type = 'edd_payment'
 			AND p.post_status = 'publish'
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
-			AND wcoi.meta_key = '_edd_payment_meta' 
+			AND eddoa.meta_key = '_edd_payment_meta' 
 		" );
 
 		$new_rev_with_code = 0;
