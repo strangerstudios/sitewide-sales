@@ -104,13 +104,15 @@ class SWSales_Module_EDD {
 							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
 							<?php
 							$coupon_found = false;
-							foreach ( $coupons as $coupon ) {
-								$selected_modifier = '';
-								if ( $coupon->ID === $current_coupon ) {
-									$selected_modifier = ' selected="selected"';
-									$coupon_found      = $coupon;
+							if( is_array( $coupons ) ){									
+								foreach ( $coupons as $coupon ) {
+									$selected_modifier = '';
+									if ( $coupon->ID === $current_coupon ) {
+										$selected_modifier = ' selected="selected"';
+										$coupon_found      = $coupon;
+									}
+									echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
 								}
-								echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
 							}
 							?>
 						</select>
@@ -131,7 +133,7 @@ class SWSales_Module_EDD {
 							} else {
 								$edit_coupon_url = '#';
 							}
-
+							var_dump($edit_coupon_url);
 							?>
 								<a target="_blank" class="button button-secondary" id="swsales_edd_edit_coupon" href="<?php echo esc_url( $edit_coupon_url ); ?>"><?php esc_html_e( 'edit discount code', 'sitewide-sales' ); ?></a>
 								<?php
@@ -223,6 +225,8 @@ class SWSales_Module_EDD {
 		$code->code = $coupon_code;
 		$code->type = $discount_type;
 		$code->amount = $amount;
+		$code->start = sanitize_text_field( $_REQUEST['swsales_start'] );
+		$code->expiration = sanitize_text_field( $_REQUEST['swsales_end'] );
 
 		$code->save();
 
@@ -271,12 +275,6 @@ class SWSales_Module_EDD {
 			return;
 		}
 
-		//Check if we're on the checkout page - Can't on the init hook though. 
-
-		// if ( !is_page( edd_get_option( 'purchase_page', false ) ) ) {
-		// 	return;
-		// }
-
 		$discount_code_id = intval( $active_sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 
 		if ( 0 === $discount_code_id ) {
@@ -284,10 +282,10 @@ class SWSales_Module_EDD {
 		}	
 
 		$code = new \EDD_Discount( $discount_code_id );
- 		if ( !empty( $code ) ) {
- 			//Set it in the $_REQUEST and EDD Session as the EDD init runs at priority 0
- 			$_REQUEST['discount'] = $code->code;		 			
- 			EDD()->session->set( 'preset_discount', $code->code );
+ 		if ( !empty( $code ) && empty( $_REQUEST['discount'] ) ) {
+ 				//Set it in the $_REQUEST and EDD Session as the EDD init runs at priority 0
+	 			$_REQUEST['discount'] = $code->code;		 			
+	 			EDD()->session->set( 'preset_discount', $code->code );
  		} 		 		
  		
 	}
@@ -436,7 +434,7 @@ class SWSales_Module_EDD {
 			return;
 		}
 		return array(
-			'currency_symbol' => edd_get_currency(),
+			'currency_symbol' => edd_currency_symbol(),
 			'decimals' => apply_filters( 'edd_sanitize_amount_decimals', 2 ), //Third val would normally be $amount
 			'decimal_separator' => edd_get_option('decimal_separator', '.' ),
 			'thousands_separator' => edd_get_option('thousands_separator', ',' ),
@@ -661,14 +659,20 @@ class SWSales_Module_EDD {
 			foreach( $query_data as $data ){
 				$cart_total = 0;
 				$payment_data = maybe_unserialize( $data->value );
-				foreach( $payment_data['cart_details'] as $cart ){
-					$cart_total = $cart_total + $cart['price'];
+				
+				if( !empty( $payment_data['discount'] ) && $payment_data['discount'] == $coupon_code->name ){
+
+					foreach( $payment_data['cart_details'] as $cart ){
+						$cart_total = $cart_total + $cart['price'];
+					}
+					if( isset( $daily_revenue[$data->date] ) ){
+						$daily_revenue[$data->date] += $cart_total;
+					} else {
+						$daily_revenue[$data->date] = $cart_total;
+					}
+				
 				}
-				if( isset( $daily_revenue[$data->date] ) ){
-					$daily_revenue[$data->date] += $cart_total;
-				} else {
-					$daily_revenue[$data->date] = $cart_total;
-				}
+
 			}
 		}
 

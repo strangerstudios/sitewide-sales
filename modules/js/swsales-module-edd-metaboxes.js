@@ -11,7 +11,7 @@ jQuery( document ).ready(
 			if (coupon_id == 0) {
 				$( '#swsales_edd_after_coupon_select' ).hide();
 			} else {
-				$( '#swsales_edd_edit_coupon' ).attr( 'href', swsales_edd_metaboxes.admin_url + 'post.php?action=edit&post=' + coupon_id );
+				$( '#swsales_edd_edit_coupon' ).attr( 'href', swsales_edd_metaboxes.admin_url + 'edit.php?post_type=download&page=edd-discounts&edd-action=edit_discount&discount=' + coupon_id );
 				$( '#swsales_edd_after_coupon_select' ).show();
 			}
 		}
