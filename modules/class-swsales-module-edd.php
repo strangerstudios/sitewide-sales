@@ -133,7 +133,7 @@ class SWSales_Module_EDD {
 							} else {
 								$edit_coupon_url = '#';
 							}
-							var_dump($edit_coupon_url);
+							
 							?>
 								<a target="_blank" class="button button-secondary" id="swsales_edd_edit_coupon" href="<?php echo esc_url( $edit_coupon_url ); ?>"><?php esc_html_e( 'edit discount code', 'sitewide-sales' ); ?></a>
 								<?php
@@ -270,23 +270,28 @@ class SWSales_Module_EDD {
 	}
 
 	public static function automatic_coupon_application() {
+		
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+
 		if ( null === $active_sitewide_sale || 'edd' !== $active_sitewide_sale->get_sale_type() || ! $active_sitewide_sale->should_apply_automatic_discount() ) {
 			return;
 		}
+		
+		if( empty( EDD()->session->get( 'cart_discounts' ) ) ){
 
-		$discount_code_id = intval( $active_sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
+			$discount_code_id = intval( $active_sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 
-		if ( 0 === $discount_code_id ) {
-			return;
-		}	
+			if ( 0 === $discount_code_id ) {
+				return;
+			}	
 
-		$code = new \EDD_Discount( $discount_code_id );
- 		if ( !empty( $code ) && empty( $_REQUEST['discount'] ) ) {
+			$code = new \EDD_Discount( $discount_code_id );
+	 		if ( !empty( $code ) && empty( $_REQUEST['discount'] ) ) {
  				//Set it in the $_REQUEST and EDD Session as the EDD init runs at priority 0
 	 			$_REQUEST['discount'] = $code->code;		 			
 	 			EDD()->session->set( 'preset_discount', $code->code );
- 		} 		 		
+	 		} 
+		}		 		
  		
 	}
 	
