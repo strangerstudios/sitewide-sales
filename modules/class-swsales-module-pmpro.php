@@ -665,11 +665,13 @@ class SWSales_Module_PMPro {
 		if ( empty( $_REQUEST['level'] ) ) {
 			$_REQUEST['level'] = self::get_default_level( $queried_object->ID );
 		}
-		// Set the discount code if none specified.
+		
+		// Set the discount code if none specified.		
 		if ( empty( $_REQUEST['discount_code'] ) ) {
 			$sitewide_sale             = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID );
-			$discount_code_id          = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
-			$_REQUEST['discount_code'] = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+			$discount_code_id          = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );			
+			$discount_code = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+			$_REQUEST = apply_filters( 'swsales_pmpro_landing_page_default_discount_code', $discount_code, $sitewide_sale );
 		}
 
 		if ( ! has_shortcode( $queried_object->post_content, 'sitewide_sales' ) ) {
