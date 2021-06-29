@@ -38,9 +38,7 @@ class SWSales_Module_PMPro {
 		// Enqueue JS for Edit Sitewide Sale page.
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 
-		// SWSale compatibility when editing/saving a discount code.
-		//add_action( 'admin_notices', array( __CLASS__, 'return_from_editing_discount_code_box' ) );
-		//add_action( 'pmpro_save_discount_code', array( __CLASS__, 'discount_code_on_save' ) );
+		// AJAX to create a discount code.
 		add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 
 		// For the swsales_coupon helper function
@@ -489,23 +487,6 @@ class SWSales_Module_PMPro {
 	} // end admin_enqueue_scripts()
 
 	/**
-	 * COMMENTED OUT
-	 * Updates Sitewide Sale's discount code id on save
-	 *
-	 * @param int $saveid discount code being saved.
-	 */
-	public static function discount_code_on_save( $saveid ) {
-		if ( isset( $_REQUEST['swsales_pmpro_callback'] ) ) {
-			update_post_meta( intval( $_REQUEST['swsales_pmpro_callback'] ), 'swsales_pmpro_discount_code_id', $saveid );
-			?>
-			<script type="text/javascript">
-				window.location = "<?php echo esc_url( admin_url( 'post.php?post=' . intval( $_REQUEST['swsales_pmpro_callback'] ) . '&action=edit' ) ); ?>";
-			</script>
-			<?php
-		}
-	} // end discount_code_on_save()
-
-	/**
 	 * Get the coupon for a sitewide sale.
 	 * Callback for the swsales_coupon filter.
 	 */
@@ -519,25 +500,6 @@ class SWSales_Module_PMPro {
 		}
 		return $coupon;
 	}
-
-	/**
-	 * COMMENTED OUT
-	 * Displays a link back to Sitewide Sale when discount code is edited/saved
-	 */
-	public static function return_from_editing_discount_code_box() {
-		if ( isset( $_REQUEST['swsales_pmpro_callback'] ) && 'memberships_page_pmpro-discountcodes' === get_current_screen()->base ) {
-			?>
-			<div class="notice notice-success">
-				<p><?php esc_html_e( 'Click ', 'sitewide-sales' ); ?>
-					<a href="<?php echo esc_url( admin_url( 'post.php?post=' . intval( $_REQUEST['swsales_pmpro_callback'] ) . '&action=edit' ) ); ?>">
-						<?php esc_html_e( 'here', 'sitewide-sales' ); ?>
-					</a>
-					<?php esc_html_e( ' to go back to editing Sitewide Sale', 'sitewide-sales' ); ?>
-				</p>
-			</div>
-			<?php
-		}
-	} // end return_from_editing_discount_code_box()
 
 	/**
 	 * AJAX callback to create a new discount code for your sale
