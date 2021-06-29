@@ -98,39 +98,41 @@ class SWSales_Banners {
 		}
 
 		// Unless we are previewing, don't show the banner on certain pages.
+		$show_banner = true;
 		if ( ! $preview ) {
 
 			// Sale doesn't have landing page, or user is on landing page.
 			$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();
 			if ( empty( $landing_page_post_id ) || $landing_page_post_id < 0 || is_page( $landing_page_post_id ) ) {
-				return;
+				$show_banner = false;
 			}
 
 			// Use banner set to no.
 			if ( 'no' === $active_sitewide_sale->get_use_banner() ) {
-				return;
+				$show_banner = false;
 			}
 
 			// Don't show on login page.
 			if ( SWSales_Setup::is_login_page() ) {
-				return;
+				$show_banner = false;
 			}
 
 			// Don't show on checkout page if option is set and user is on checkout page.
 			if ( $active_sitewide_sale->get_hide_on_checkout() && apply_filters( 'swsales_is_checkout_page', false, $active_sitewide_sale ) ) {
-				return;
+				$show_banner = false;
 			}
 
 			// Hide before/after the start/end dates.
 			if ( ! $active_sitewide_sale->is_running() ) {
-				return;
-			}
-
-			// Show banner filter.
-			if ( ! apply_filters( 'swsales_show_banner', true, $active_sitewide_sale ) ) {
-				return;
+				$show_banner = false;
 			}
 		}
+		
+		// Show banner filter.
+		if ( ! apply_filters( 'swsales_show_banner', $show_banner, $active_sitewide_sale ) ) {
+			return;
+		}
+		
 		// Display the appropriate banner
 		// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
 		$registered_banners = self::get_registered_banners();

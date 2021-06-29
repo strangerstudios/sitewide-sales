@@ -178,6 +178,15 @@
 	line-height: 40px;
 	margin: 0;
 }
+.swsales_reports-daily-revenue-chart {
+	clear: both;
+	height: 300px; 
+	text-align: center;
+	margin-left: 0;
+	margin-right: 0;
+	max-width: 500px;
+	width: 100%;
+}
 @media screen and (max-width: 768px) {
 	.swsales_reports-box {
 		margin: 0 1rem;
