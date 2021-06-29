@@ -71,7 +71,7 @@ class SWSales_Module_Custom {
 			?>
 			<th><label for="swsales_custom_confirmation_url"><?php esc_html_e( 'Confirmation Page URL', 'sitewide-sales' ); ?></label></th>
 			<td>
-				<input type="text" class="swsales_option" id="swsales_custom_confirmation_url" name="swsales_custom_confirmation_url" value='<?php esc_html_e( $confirmation_url ); ?>'>
+				<input type="text" class="swsales_option" id="swsales_custom_confirmation_url" name="swsales_custom_confirmation_url" value='<?php echo esc_url( $confirmation_url ); ?>'>
 				<p class="description"><?php esc_html_e( "If you would like to track checkout conversions, enter the URL that your users are sent to after completing checkout.", 'sitewide-sales' ) ?></p>
 			</td>
 		</tr>
@@ -96,13 +96,13 @@ class SWSales_Module_Custom {
 	 */
 	public static function swsales_save_metaboxes( $post_id, $post ) {
 		if ( isset( $_POST['swsales_custom_coupon'] ) ) {
-			update_post_meta( $post_id, 'swsales_custom_coupon', $_POST['swsales_custom_coupon'] );
+			update_post_meta( $post_id, 'swsales_custom_coupon', sanitize_text_field( $_POST['swsales_custom_coupon'] ) );
 		}
 		if ( isset( $_POST['swsales_custom_confirmation_url'] ) ) {
-			update_post_meta( $post_id, 'swsales_custom_confirmation_url', $_POST['swsales_custom_confirmation_url'] );
+			update_post_meta( $post_id, 'swsales_custom_confirmation_url', sanitize_text_field( $_POST['swsales_custom_confirmation_url'] ) );
 		}
 		if ( isset( $_POST['swsales_custom_average_order_value'] ) ) {
-			update_post_meta( $post_id, 'swsales_custom_average_order_value', $_POST['swsales_custom_average_order_value'] );
+			update_post_meta( $post_id, 'swsales_custom_average_order_value', floatval( $_POST['swsales_custom_average_order_value'] ) );
 		}
 	} // end swsales_save_metaboxes()
 
