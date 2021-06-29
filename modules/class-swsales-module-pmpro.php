@@ -672,9 +672,21 @@ class SWSales_Module_PMPro {
 			$sitewide_sale             = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID );
 			$discount_code_id          = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );			
 			$discount_code = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
+
+			/**
+			 * Filters the discount code that is automatically applied on a Sitewide Sale's landing page.
+			 *
+			 * Warning: If the discount code applied after this filter is not the same as the discount code for
+			 * the current Sitewide Sale associated with this landing page, the revenue from this checkout will
+			 * not be counted in the sale's revenue report.
+			 *
+			 * @param string $discount_code being applied.
+			 * @param SWSales_Sitewide_Sale for the current landing page.
+			 */
 			$_REQUEST['discount_code'] = apply_filters( 'swsales_pmpro_landing_page_default_discount_code', $discount_code, $sitewide_sale );
 		}
 
+		// Make sure that [pmpro_checkout] and [pmpro_levels] are available in [sitewide_sales].
 		if ( ! has_shortcode( $queried_object->post_content, 'sitewide_sales' ) ) {
 			return;
 		}
