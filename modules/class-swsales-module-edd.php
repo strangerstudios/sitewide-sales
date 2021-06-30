@@ -707,16 +707,21 @@ class SWSales_Module_EDD {
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		$coupon_code = new \EDD_Discount( $coupon_id );
 
+		if( apply_filters( 'sws_edd_include_renewals_report', true ) ){
+			$sale_status = " AND ( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )";
+		} else {
+			$sale_status = " AND p.post_status = 'publish'";
+		}
+		
 		$sale_revenue = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
 			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
-			WHERE p.post_type = 'edd_payment'
-			AND ( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )
+			WHERE p.post_type = 'edd_payment'			
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
 			AND eddoa.meta_key = '_edd_payment_meta' 
-		" );
+		".$sale_status );
 
 		$new_rev_with_code = 0;
 		$total_rev = 0;
