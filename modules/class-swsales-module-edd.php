@@ -728,7 +728,10 @@ class SWSales_Module_EDD {
 						$new_rev_with_code += $cart['price'];
 					}
 				}
-				$total_rev += $cart['price'];
+				foreach( $payment_data['cart_details'] as $cart ){
+					$total_rev += $cart['price'];
+				}
+				
 			}
 		}
 
