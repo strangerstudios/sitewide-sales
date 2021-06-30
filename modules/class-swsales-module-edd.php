@@ -712,7 +712,7 @@ class SWSales_Module_EDD {
 			FROM {$wpdb->prefix}posts as p
 			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
 			WHERE p.post_type = 'edd_payment'
-			AND p.post_status = 'publish'
+			AND ( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
 			AND eddoa.meta_key = '_edd_payment_meta' 
