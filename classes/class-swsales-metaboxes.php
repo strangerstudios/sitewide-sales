@@ -239,37 +239,43 @@ class SWSales_MetaBoxes {
 								?>
 								<option value="<?php echo esc_attr( $i ); ?>" 
 														<?php
-														if ( $i == $cur_sale->get_start_month() ) {
+														if ( $i == $cur_sale->get_start_date( 'm' ) ) {
 															?>
 									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_start_year(), current_time( 'timestamp' ) ) ); ?></option>
 								<?php
 							}
 							?>
 						</select>
-						<input id="swsales_start_day" name="swsales_start_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_day() ); ?>" />
-						<input id="swsales_start_year" name="swsales_start_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_start_year() ); ?>" />
+						<input id="swsales_start_day" name="swsales_start_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_date( 'd' ) ); ?>" />
+						<input id="swsales_start_year" name="swsales_start_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_start_date( 'Y' ) ); ?>" />
+						<?php esc_html_e( 'at', 'sitewide-sales' ); ?>
+						<input id="swsales_start_hour" name="swsales_start_hour" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_date( 'H' ) ); ?>"/> :
+						<input id="swsales_start_minute" name="swsales_start_minute" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_date( 'i' ) ); ?>"/>
 						<p class="description"><?php esc_html_e( 'Set this date to the first day of your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label for="swsales_end_date"><?php esc_html_e( 'Sale End Date', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<select id="swsales_end_month" name="swsales_end_month">
-							<?php
-							for ( $i = 1; $i < 13; $i++ ) {
-								?>
-								<option value="<?php echo esc_attr( $i ); ?>" 
-														<?php
-														if ( $i == $cur_sale->get_end_month() ) {
-															?>
-									selected="selected"<?php } ?>><?php echo esc_html( date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_end_year(), current_time( 'timestamp' ) ) ) ); ?></option>
-								<?php
-							}
+					<select id="swsales_end_month" name="swsales_end_month">
+						<?php
+						for ( $i = 1; $i < 13; $i++ ) {
 							?>
-						</select>
-						<input id="swsales_end_day" name="swsales_end_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_day() ); ?>" />
-						<input id="swsales_end_year" name="swsales_end_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_end_year() ); ?>" />
-						<p class="description"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></p>
+							<option value="<?php echo esc_attr( $i ); ?>" 
+													<?php
+													if ( $i == $cur_sale->get_end_date( 'm' ) ) {
+														?>
+								selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_end_year(), current_time( 'timestamp' ) ) ); ?></option>
+							<?php
+						}
+						?>
+					</select>
+					<input id="swsales_end_day" name="swsales_end_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_date( 'd' ) ); ?>" />
+					<input id="swsales_end_year" name="swsales_end_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_end_date( 'Y' ) ); ?>" />
+					<?php esc_html_e( 'at', 'sitewide-sales' ); ?>
+					<input id="swsales_end_hour" name="swsales_end_hour" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_date( 'H' ) ); ?>"/> :
+					<input id="swsales_end_minute" name="swsales_end_minute" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_date( 'i' ) ); ?>"/>
+					<p class="description"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?></label></th>
@@ -755,16 +761,18 @@ class SWSales_MetaBoxes {
 		if ( isset( $_POST['swsales_start_day'] ) && is_numeric( $_POST['swsales_start_day'] ) &&
 				isset( $_POST['swsales_start_month'] ) && is_numeric( $_POST['swsales_start_month'] ) &&
 				isset( $_POST['swsales_start_year'] ) && is_numeric( $_POST['swsales_start_year'] ) &&
+				isset( $_POST['swsales_start_hour'] ) && is_numeric( $_POST['swsales_start_hour'] ) &&
+				isset( $_POST['swsales_start_minute'] ) && is_numeric( $_POST['swsales_start_minute'] ) &&
 				isset( $_POST['swsales_end_day'] ) && is_numeric( $_POST['swsales_end_day'] ) &&
 				isset( $_POST['swsales_end_month'] ) && is_numeric( $_POST['swsales_end_month'] ) &&
-				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] )
+				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] ) &&
+				isset( $_POST['swsales_end_hour'] ) && is_numeric( $_POST['swsales_end_hour'] ) &&
+				isset( $_POST['swsales_end_minute'] ) && is_numeric( $_POST['swsales_end_minute'] )
 		) {
-			update_post_meta( $post_id, 'swsales_start_day', $_POST['swsales_start_day'] );
-			update_post_meta( $post_id, 'swsales_start_month', $_POST['swsales_start_month'] );
-			update_post_meta( $post_id, 'swsales_start_year', $_POST['swsales_start_year'] );
-			update_post_meta( $post_id, 'swsales_end_day', $_POST['swsales_end_day'] );
-			update_post_meta( $post_id, 'swsales_end_month', $_POST['swsales_end_month'] );
-			update_post_meta( $post_id, 'swsales_end_year', $_POST['swsales_end_year'] );
+			$start_date = $_POST['swsales_start_year'] . '-' . $_POST['swsales_start_month'] . '-' . $_POST['swsales_start_day'] . ' ' . $_POST['swsales_start_hour'] . ':' . $_POST['swsales_start_minute'] . ':00' ;
+			update_post_meta( $post_id, 'swsales_start_date', $start_date );
+			$start_date = $_POST['swsales_end_year'] . '-' . $_POST['swsales_end_month'] . '-' . $_POST['swsales_end_day'] . ' ' . $_POST['swsales_end_hour'] . ':' . $_POST['swsales_end_minute'] . ':00' ;
+			update_post_meta( $post_id, 'swsales_end_date', $start_date );
 		}
 
 		if ( isset( $_POST['swsales_pre_sale_content'] ) ) {
