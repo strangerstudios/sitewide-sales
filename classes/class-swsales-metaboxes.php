@@ -16,9 +16,7 @@ class SWSales_MetaBoxes {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 		add_action( 'load-post.php', array( __CLASS__, 'init_metabox' ) );
 		add_action( 'load-post-new.php', array( __CLASS__, 'init_metabox' ) );
-		add_action( 'save_post', array( __CLASS__, 'landing_page_on_save' ), 10, 3 );
 		add_action( 'enter_title_here', array( __CLASS__, 'update_title_placeholder_text' ), 10, 2 );
-		add_filter( 'redirect_post_location', array( __CLASS__, 'redirect_after_page_save' ), 10, 2 );
 		add_action( 'wp_ajax_swsales_create_landing_page', array( __CLASS__, 'create_landing_page_ajax' ) );
 	}
 
@@ -444,7 +442,7 @@ class SWSales_MetaBoxes {
 								?>
  style="display: none;"<?php } ?>>
 							<?php
-								$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit&swsales_callback=' . $post->ID );
+								$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit' );
 								$view_page_url = get_permalink( $current_page );
 							?>
 							<a target="_blank" class="button button-secondary" id="swsales_edit_landing_page" href="<?php echo esc_url( $edit_page_url ); ?>"><?php esc_html_e( 'edit page', 'sitewide-sales' ); ?></a>
@@ -844,37 +842,6 @@ class SWSales_MetaBoxes {
 			wp_redirect( esc_url_raw( admin_url( 'admin.php?page=pmpro-reports&report=swsales_reports' ) ) );
 			exit();
 		}
-	}
-
-	/**
-	 * Updates Sitewide Sale's landing page id on save
-	 *
-	 * @param int $saveid landing page being saved.
-	 */
-	public static function landing_page_on_save( $saveid ) {
-		if ( isset( $_REQUEST['swsales_callback'] ) ) {
-			update_post_meta( intval( $_REQUEST['swsales_callback'] ), 'swsales_landing_page_post_id', $saveid );
-		}
-	}
-
-	/**
-	 * Redirects to Sitewide Sale after landing page is saved
-	 *
-	 * @param  string $location Previous redirect location.
-	 * @param  int    $post_id  id of page that was edited.
-	 * @return string           New redirect location
-	 */
-	public static function redirect_after_page_save( $location, $post_id ) {
-		$post_type = get_post_type( $post_id );
-		// Grab referrer url to see if it was sent there from editing a sitewide sale.
-		$url = $_REQUEST['_wp_http_referer'];
-		if ( 'page' === $post_type && ! empty( strpos( $url, 'swsales_callback=' ) ) ) {
-			// Get id of sitewide sale to redirect to.
-			$sitewide_sale_id = explode( 'swsales_callback=', $url )[1];
-			$sitewide_sale_id = explode( '$', $sitewide_sale_id )[0];
-			$location         = esc_url_raw( admin_url( 'post.php?post=' . $sitewide_sale_id . '&action=edit' ) );
-		}
-		return $location;
 	}
 
 	/**
