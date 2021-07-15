@@ -46,12 +46,8 @@ class SWSales_Sitewide_Sale {
 	public function __construct() {
 		// Set default post meta.
 		$default_post_meta = array(
-			'swsales_start_day'             => $this->get_start_day(),
-			'swsales_start_month'           => $this->get_start_month(),
-			'swsales_start_year'            => $this->get_start_year(),
-			'swsales_end_day'               => $this->get_end_day(),
-			'swsales_end_month'             => $this->get_end_month(),
-			'swsales_end_year'              => $this->get_end_year(),
+			'swsales_start_date'            => $this->get_start_date( 'Y-m-d H:i:s' ),
+			'swsales_end_date'              => $this->get_end_date( 'Y-m-d H:i:s' ),
 			'swsales_sale_type'             => $this->get_sale_type(),
 			'swsales_automatic_discount'    => $this->get_automatic_discount(),
 			'swsales_landing_page_post_id'  => $this->get_landing_page_post_id(),
@@ -187,45 +183,6 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns the 'day' element of the start date
-	 *
-	 * @return string
-	 */
-	public function get_start_day() {
-		if ( isset( $this->post_meta['swsales_start_day'] ) ) {
-			return $this->post_meta['swsales_start_day'];
-		} else {
-			return date( 'd', current_time( 'timestamp' ) );
-		}
-	}
-
-	/**
-	 * Returns the 'month' element of the start date
-	 *
-	 * @return string
-	 */
-	public function get_start_month() {
-		if ( isset( $this->post_meta['swsales_start_month'] ) ) {
-			return $this->post_meta['swsales_start_month'];
-		} else {
-			return date( 'm', current_time( 'timestamp' ) );
-		}
-	}
-
-	/**
-	 * Returns the 'month' element of the start date
-	 *
-	 * @return string
-	 */
-	public function get_start_year() {
-		if ( isset( $this->post_meta['swsales_start_year'] ) ) {
-			return $this->post_meta['swsales_start_year'];
-		} else {
-			return date( 'Y', current_time( 'timestamp' ) );
-		}
-	}
-
-	/**
 	 * Returns the entire start date in yyyy-mm-dd format
 	 *
 	 * @param string $dateformatstring date_i18n format.
@@ -235,47 +192,29 @@ class SWSales_Sitewide_Sale {
 		if ( null === $dateformatstring ) {
 			$dateformatstring = get_option( 'date_format' );
 		}
-		$start_date = $this->get_start_day() . '-' . $this->get_start_month() . '-' . $this->get_start_year();
+
+		if ( 
+			isset( $this->post_meta['swsales_start_day'] ) &&
+			isset( $this->post_meta['swsales_start_month'] ) &&
+			isset( $this->post_meta['swsales_start_year'] )
+		) {
+			// Using deprecated date format. Convert, save new meta, and delete deprecated meta.
+			$start_date = $this->post_meta['swsales_start_year'] . '-' . $this->post_meta['swsales_start_month'] . '-' . $this->post_meta['swsales_start_day'] . ' 00:00:00' ;
+			update_post_meta( $this->id, 'swsales_start_date', $start_date );
+			$this->post_meta['swsales_start_date'] = $start_date;
+			delete_post_meta( $this->id, 'swsales_start_day' );
+			delete_post_meta( $this->id, 'swsales_start_month' );
+			delete_post_meta( $this->id, 'swsales_start_year' );
+		}
+		elseif ( isset( $this->post_meta['swsales_start_date'] ) ) {
+			// We already have a date.
+			$start_date = $this->post_meta['swsales_start_date'];
+		} else {
+			// Get a new date.
+			$start_date = date( 'Y-m-d', strtotime( '+1 week', current_time( 'timestamp' ) ) ) . ' 23:59:59';
+		}
+
 		return date_i18n( $dateformatstring, strtotime( $start_date ) );
-	}
-
-	/**
-	 * Returns the 'day' element of the end date
-	 *
-	 * @return string
-	 */
-	public function get_end_day() {
-		if ( isset( $this->post_meta['swsales_end_day'] ) ) {
-			return $this->post_meta['swsales_end_day'];
-		} else {
-			return date( 'd', strtotime( '+1 week', current_time( 'timestamp' ) ) );
-		}
-	}
-
-	/**
-	 * Returns the 'month' element of the end date
-	 *
-	 * @return string
-	 */
-	public function get_end_month() {
-		if ( isset( $this->post_meta['swsales_end_month'] ) ) {
-			return $this->post_meta['swsales_end_month'];
-		} else {
-			return date( 'm', strtotime( '+1 week', current_time( 'timestamp' ) ) );
-		}
-	}
-
-	/**
-	 * Returns the 'month' element of the end date
-	 *
-	 * @return string
-	 */
-	public function get_end_year() {
-		if ( isset( $this->post_meta['swsales_end_year'] ) ) {
-			return $this->post_meta['swsales_end_year'];
-		} else {
-			return date( 'Y', strtotime( '+1 week', current_time( 'timestamp' ) ) );
-		}
 	}
 
 	/**
@@ -288,7 +227,28 @@ class SWSales_Sitewide_Sale {
 		if ( null === $dateformatstring ) {
 			$dateformatstring = get_option( 'date_format' );
 		}
-		$end_date = $this->get_end_day() . '-' . $this->get_end_month() . '-' . $this->get_end_year();
+
+		if ( 
+			isset( $this->post_meta['swsales_end_day'] ) &&
+			isset( $this->post_meta['swsales_end_month'] ) &&
+			isset( $this->post_meta['swsales_end_year'] )
+		) {
+			// Using deprecated date format. Convert, save new meta, and delete deprecated meta.
+			$end_date = $this->post_meta['swsales_end_year'] . '-' . $this->post_meta['swsales_end_month'] . '-' . $this->post_meta['swsales_end_day'] . ' 00:00:00' ;
+			update_post_meta( $this->id, 'swsales_end_date', $end_date );
+			$this->post_meta['swsales_end_date'] = $end_date;
+			delete_post_meta( $this->id, 'swsales_end_day' );
+			delete_post_meta( $this->id, 'swsales_end_month' );
+			delete_post_meta( $this->id, 'swsales_end_year' );
+		}
+		elseif ( isset( $this->post_meta['swsales_end_date'] ) ) {
+			// We already have a date.
+			$end_date = $this->post_meta['swsales_end_date'];
+		} else {
+			// Get a new date.
+			$end_date = date( 'Y-m-d', strtotime( '+1 week', current_time( 'timestamp' ) ) ) . ' 23:59:59';
+		}
+
 		return date_i18n( $dateformatstring, strtotime( $end_date ) );
 	}
 
@@ -300,13 +260,13 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_time_period() {
-		$current_date = date( 'Y-m-d', current_time( 'timestamp' ) );
+		$current_date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
 
-		if ( $this->get_start_date( 'Y-m-d' ) > $this->get_end_date( 'Y-m-d' ) ) {
+		if ( $this->get_start_date( 'Y-m-d H:i:s' ) > $this->get_end_date( 'Y-m-d H:i:s' ) ) {
 			return 'error';
-		} elseif ( $current_date < $this->get_start_date( 'Y-m-d' ) ) {
+		} elseif ( $current_date < $this->get_start_date( 'Y-m-d H:i:s' ) ) {
 			return 'pre-sale';
-		} elseif ( $current_date > $this->get_end_date( 'Y-m-d' ) ) {
+		} elseif ( $current_date > $this->get_end_date( 'Y-m-d H:i:s' ) ) {
 			return 'post-sale';
 		}
 		return 'sale';
@@ -654,4 +614,71 @@ class SWSales_Sitewide_Sale {
 		return apply_filters( 'swsales_get_revenue', 'N/A', $this );
 	}
 
+	/**
+	 * -----------------------------
+	 * DEPRECATED
+	 * -----------------------------
+	 */
+	/**
+	 * Returns the 'day' element of the start date
+	 *
+	 * @deprecated since 1.2
+	 * @return string
+	 */
+	public function get_start_day() {
+		return $this->get_start_date('d');
+
+	}
+
+	/**
+	 * Returns the 'month' element of the start date
+	 *
+	 * @deprecated since 1.2
+	 * @return string
+	 */
+	public function get_start_month() {
+		return $this->get_start_date('m');
+
+	}
+
+	/**
+	 * Returns the 'month' element of the start date
+	 *
+	 * @deprecated since 1.2
+	 * @return string
+	 */
+	public function get_start_year() {
+		return $this->get_start_date('Y');
+	}
+
+	/**
+	 * Returns the 'day' element of the end date
+	 *
+	 * @deprecated since 1.2
+	 * @return string
+	 */
+	public function get_end_day() {
+		return $this->get_end_date('d');
+	}
+
+	/**
+	 * Returns the 'month' element of the end date
+	 *
+	 * @deprecated since 1.2
+	 * @return string
+	 */
+	public function get_end_month() {
+		return $this->get_end_date('m');
+
+	}
+
+	/**
+	 * Returns the 'month' element of the end date
+	 *
+	 * @deprecated since 1.2
+	 * @return string
+	 */
+	public function get_end_year() {
+		return $this->get_end_date('Y');
+	}
 }
