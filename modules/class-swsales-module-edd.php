@@ -348,7 +348,7 @@ class SWSales_Module_EDD {
 			AND p.status = 'complete'
 			AND p.date_completed >= '{$sale_start_date}'
 			AND p.date_completed <= '{$sale_end_date}'
-			AND upper(eddoa.description) = upper('{$coupon_code->name}')
+			AND upper(eddoa.description) = upper('{$coupon_code->code}')
 			AND eddoa.type = 'discount'
 		" );
 
@@ -381,7 +381,7 @@ class SWSales_Module_EDD {
 			AND p.status = 'complete' 
 			AND p.date_completed >= '{$sale_start_date}' 
 			AND p.date_completed <= '{$sale_end_date}' 
-			AND eddoa.description = '{$coupon_code->name}' 
+			AND eddoa.description = '{$coupon_code->code}' 
 			AND eddoa.type = 'discount'
 		" );
 
@@ -422,7 +422,7 @@ class SWSales_Module_EDD {
 				'%Y-%m-%d', // To prevent these from being seen as placeholders.
 				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
 				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59',
-				$coupon_code->name
+				$coupon_code->code
 			)
 		);
 		foreach ( $query_data as $daily_revenue_obj ) {
@@ -481,7 +481,7 @@ class SWSales_Module_EDD {
 			AND p.status = 'complete' 
 			AND p.date_completed >= '{$sale_start_date}'
 			AND p.date_completed <= '{$sale_end_date}'
-			AND eddoa.description = upper('{$coupon_code->name}')
+			AND eddoa.description = upper('{$coupon_code->code}')
 			AND eddoa.type = 'discount'
 		" );
 
@@ -544,7 +544,7 @@ class SWSales_Module_EDD {
 
 		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
-		
+
 		$conversion_count = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
@@ -555,15 +555,15 @@ class SWSales_Module_EDD {
 			AND p.post_date <= '{$sale_end_date}'
 			AND eddoa.meta_key = '_edd_payment_meta' 
 		" );
-
+		
 		$conversion = array();
 
 		if( $conversion_count ){
 			foreach( $conversion_count as $con ){
 
 				$payment_data = maybe_unserialize( $con->meta_value );
-
-				if( $payment_data['user_info']['discount'] === $coupon_code->name ){
+				
+				if( $payment_data['user_info']['discount'] === $coupon_code->code ){
 					$cart_total = 0;
 					foreach( $payment_data['cart_details'] as $cart ){
 						$cart_total = $cart_total + $cart['price'];
@@ -614,7 +614,7 @@ class SWSales_Module_EDD {
 
 				$payment_data = maybe_unserialize( $con->meta_value );
 
-				if( $payment_data['user_info']['discount'] === $coupon_code->name ){
+				if( $payment_data['user_info']['discount'] === $coupon_code->code ){
 					
 					foreach( $payment_data['cart_details'] as $cart ){
 						$cart_total = $cart_total + $cart['price'];
@@ -665,7 +665,7 @@ class SWSales_Module_EDD {
 				$cart_total = 0;
 				$payment_data = maybe_unserialize( $data->value );
 				
-				if( !empty( $payment_data['discount'] ) && $payment_data['discount'] == $coupon_code->name ){
+				if( !empty( $payment_data['discount'] ) && $payment_data['discount'] == $coupon_code->code ){
 
 					foreach( $payment_data['cart_details'] as $cart ){
 						$cart_total = $cart_total + $cart['price'];
@@ -707,28 +707,36 @@ class SWSales_Module_EDD {
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		$coupon_code = new \EDD_Discount( $coupon_id );
 
+		if( apply_filters( 'sws_edd_include_renewals_report', true ) ){
+			$sale_status = " AND ( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )";
+		} else {
+			$sale_status = " AND p.post_status = 'publish'";
+		}
+		
 		$sale_revenue = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
 			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
-			WHERE p.post_type = 'edd_payment'
-			AND p.post_status = 'publish'
+			WHERE p.post_type = 'edd_payment'			
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
 			AND eddoa.meta_key = '_edd_payment_meta' 
-		" );
+		".$sale_status );
 
 		$new_rev_with_code = 0;
 		$total_rev = 0;
 		if( $sale_revenue ){
 			foreach( $sale_revenue as $con ){
 				$payment_data = maybe_unserialize( $con->meta_value );
-				if( $payment_data['user_info']['discount'] === $coupon_code->name ){
+				if( $payment_data['user_info']['discount'] === $coupon_code->code ){
 					foreach( $payment_data['cart_details'] as $cart ){
 						$new_rev_with_code += $cart['price'];
 					}
 				}
-				$total_rev += $cart['price'];
+				foreach( $payment_data['cart_details'] as $cart ){
+					$total_rev += $cart['price'];
+				}
+				
 			}
 		}
 
