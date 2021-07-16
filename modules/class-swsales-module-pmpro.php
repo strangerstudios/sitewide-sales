@@ -635,6 +635,12 @@ class SWSales_Module_PMPro {
 			$discount_code_id          = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );			
 			$discount_code = $wpdb->get_var( $wpdb->prepare( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id=%d LIMIT 1", $discount_code_id ) );
 
+			// Make sure the code is still valid.
+			$check = pmpro_checkDiscountCode( $discount_code );
+			if ( ! $check ) {
+				$discount_code = '';
+			}
+
 			/**
 			 * Filters the discount code that is automatically applied on a Sitewide Sale's landing page.
 			 *
