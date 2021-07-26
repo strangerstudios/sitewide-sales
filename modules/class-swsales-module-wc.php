@@ -272,6 +272,13 @@ class SWSales_Module_WC {
 		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() || ! $active_sitewide_sale->should_apply_automatic_discount() ) {
 			return;
 		}
+
+		// Check that we are on the cart page or at checkout.
+		if ( ! is_cart() && ! is_checkout() ) {
+			return;
+		}
+
+		// Apply the discount if valid.
 		$cart = WC()->cart;
 		$coupon = new \WC_Coupon( $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
 		if ( ! $cart->has_discount( $coupon->get_code() ) && $coupon->is_valid() ) {
@@ -312,7 +319,7 @@ class SWSales_Module_WC {
 			( $on_landing_page && $should_apply_discount_on_landing )
 		) {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
-			if ( $coupon->is_valid() && $coupon->is_valid_for_product( $product ) ) {
+			if ( $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
 				if ( is_a( $product, 'WC_Product_Simple' ) ) {
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
