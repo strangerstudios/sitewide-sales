@@ -321,7 +321,7 @@ class SWSales_Module_WC {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
 			if ( $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
-				if ( is_a( $product, 'WC_Product_Simple' ) ) {
+				if ( is_a( $product, 'WC_Product_Simple' ) && ! is_a( $product, 'WC_Product_Subscription' ) ) {
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
 					$discount_amount  = $coupon->get_discount_amount( $regular_price );
 					$discount_amount  = min( $regular_price, $discount_amount );
