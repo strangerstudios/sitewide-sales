@@ -707,22 +707,30 @@ class SWSales_Module_EDD {
 		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		$coupon_code = new \EDD_Discount( $coupon_id );
 
-		if( apply_filters( 'sws_edd_include_renewals_report', true ) ){
-			$sale_status = " AND ( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )";
-		} else {
-			$sale_status = " AND p.post_status = 'publish'";
-		}
-		
 		$sale_revenue = $wpdb->get_results( "
 			SELECT *
 			FROM {$wpdb->prefix}posts as p
 			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
-			WHERE p.post_type = 'edd_payment'			
+			WHERE p.post_type = 'edd_payment'		
+			AND p.post_status = 'publish' 	
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
 			AND eddoa.meta_key = '_edd_payment_meta' 
-		".$sale_status );
+		" );
 
+		$sql = "SELECT *
+			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
+			WHERE p.post_type = 'edd_payment' 
+			AND p.post_status = 'edd_subscription' 
+			AND p.post_date >= '{$sale_start_date}' 
+			AND p.post_date <= '{$sale_end_date}' 
+			AND eddoa.meta_key = '_edd_payment_meta' 
+		";
+		
+		$renewals = $wpdb->get_results( $sql  );
+
+		$total_renewals = 0;
 		$new_rev_with_code = 0;
 		$total_rev = 0;
 		if( $sale_revenue ){
@@ -739,8 +747,18 @@ class SWSales_Module_EDD {
 				
 			}
 		}
+		
+		if( $renewals ){
+			foreach( $renewals as $ren ){
+				$payment_data = maybe_unserialize( $ren->meta_value );
+				foreach( $payment_data['cart_details'] as $cart ){
+					$total_renewals += $cart['price'];
+				}
+				
+			}
+		}
 
-		$new_rev_without_code = $total_rev - $new_rev_with_code;
+		$new_rev_without_code = $total_rev - $new_rev_with_code - $total_renewals;
 
 		?>
 		<div class="swsales_reports-box">
@@ -755,7 +773,7 @@ class SWSales_Module_EDD {
 				?>
 			</p>
 			<hr />
-			<div class="swsales_reports-data swsales_reports-data-3col">
+			<div class="swsales_reports-data swsales_reports-data-<?php echo empty( $total_renewals ) ? 3 : 4 ?>col">
 				<div class="swsales_reports-data-section">
 					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_with_code ) ) ) ); ?></h1>
 					<p>
@@ -772,6 +790,16 @@ class SWSales_Module_EDD {
 						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
 					</p>
 				</div>
+				<?php if ( ! empty( $total_renewals ) ) { ?>
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_renewals ) ) ) ); ?></h1>
+					<p>
+						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
+						<br />
+						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $total_renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
+					</p>
+				</div>
+				<?php } ?>
 				<div class="swsales_reports-data-section">
 					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) ); ?></h1>
 					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
