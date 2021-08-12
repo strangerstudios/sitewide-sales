@@ -791,8 +791,8 @@ class SWSales_Module_PMPro {
 					AND timestamp < %s
 			",
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 			) . ''
 		);
 	}
@@ -827,8 +827,8 @@ class SWSales_Module_PMPro {
 				) temp
 			",
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 			)
 		);
 		return $format_price ? pmpro_formatPrice( $sale_rev ) : $sale_rev;
@@ -862,8 +862,8 @@ class SWSales_Module_PMPro {
 				",
 				'%Y-%m-%d', // To prevent these from being seen as placeholders.
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 			)
 		);
 		foreach ( $query_data as $daily_revenue_obj ) {
@@ -909,8 +909,8 @@ class SWSales_Module_PMPro {
 						AND mo.timestamp >= %s
 						AND mo.timestamp < %s
 				",
-					$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-					$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+					get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+					get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 				)
 			)
 		);
@@ -937,8 +937,8 @@ class SWSales_Module_PMPro {
 				) temp
 			",
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 			)
 		);
 		$renewals = $wpdb->get_var(
@@ -963,8 +963,8 @@ class SWSales_Module_PMPro {
 					) temp
 			",
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				$sitewide_sale->get_start_date( 'Y-m-d' ) . ' 00:00:00',
-				$sitewide_sale->get_end_date( 'Y-m-d' ) . ' 23:59:59'
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 			)
 		);
 
