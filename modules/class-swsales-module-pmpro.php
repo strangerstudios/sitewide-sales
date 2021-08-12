@@ -763,7 +763,7 @@ class SWSales_Module_PMPro {
 
 		return sprintf(
 			__( 'Checkouts using <a href="%s">%s</a>', 'sitewide-sales' ),
-			admin_url( 'admin.php?page=pmpro-discountcodes&edit=' . $discount_code_id ),
+			admin_url( 'admin.php?page=pmpro-orders&filter=with-discount-code&discount-code=' . $discount_code_id ),
 			$discount_code
 		);
 	}
