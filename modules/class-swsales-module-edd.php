@@ -720,36 +720,31 @@ class SWSales_Module_EDD {
 
 		$total_renewals = 0;
 		$new_rev_with_code = 0;
-		$total_rev = 0;
+		$new_rev_without_code = 0;
 
 		if( $sale_revenue ){
 			foreach( $sale_revenue as $con ){
-
+				$payment_data = maybe_unserialize( $con->meta_value );
 				if( $con->post_status == 'edd_subscription' ){
-					//Renewal
-					$payment_data = maybe_unserialize( $con->meta_value );
-					foreach( $payment_data['cart_details'] as $cart ){
+					//Renewal.
+					foreach( $payment_data['cart_details'] as $cart ) {
 						$total_renewals += $cart['price'];
 					}
-				} 
-				
-				//New order
-				$payment_data = maybe_unserialize( $con->meta_value );
-				if( $payment_data['user_info']['discount'] === $coupon_code->code ){
-					foreach( $payment_data['cart_details'] as $cart ){
+				} elseif ( $payment_data['user_info']['discount'] === $coupon_code->code ) {
+					// Purchase with code.
+					foreach( $payment_data['cart_details'] as $cart ) {
 						$new_rev_with_code += $cart['price'];
 					}
-				}
-				foreach( $payment_data['cart_details'] as $cart ){
-					$total_rev += $cart['price'];
-				}
-
-				
-				
+				} else {
+					// Purchase without code.
+					foreach( $payment_data['cart_details'] as $cart ) {
+						$new_rev_without_code += $cart['price'];
+					}
+				}				
 			}
 		}
 		
-		$new_rev_without_code = $total_rev - $new_rev_with_code;
+		$total_rev = $new_rev_without_code + $new_rev_with_code + $total_renewals;
 
 		?>
 		<div class="swsales_reports-box">
