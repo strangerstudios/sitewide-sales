@@ -712,53 +712,44 @@ class SWSales_Module_EDD {
 			FROM {$wpdb->prefix}posts as p
 			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
 			WHERE p.post_type = 'edd_payment'		
-			AND p.post_status = 'publish' 	
+			AND( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )
 			AND p.post_date >= '{$sale_start_date}'
 			AND p.post_date <= '{$sale_end_date}'
 			AND eddoa.meta_key = '_edd_payment_meta' 
 		" );
 
-		$sql = "SELECT *
-			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
-			WHERE p.post_type = 'edd_payment' 
-			AND p.post_status = 'edd_subscription' 
-			AND p.post_date >= '{$sale_start_date}' 
-			AND p.post_date <= '{$sale_end_date}' 
-			AND eddoa.meta_key = '_edd_payment_meta' 
-		";
-		
-		$renewals = $wpdb->get_results( $sql  );
-
 		$total_renewals = 0;
 		$new_rev_with_code = 0;
 		$total_rev = 0;
+
 		if( $sale_revenue ){
 			foreach( $sale_revenue as $con ){
-				$payment_data = maybe_unserialize( $con->meta_value );
-				if( $payment_data['user_info']['discount'] === $coupon_code->code ){
+
+				if( $con->post_status == 'edd_subscription' ){
+					//Renewal
+					$payment_data = maybe_unserialize( $con->meta_value );
 					foreach( $payment_data['cart_details'] as $cart ){
-						$new_rev_with_code += $cart['price'];
+						$total_renewals += $cart['price'];
 					}
+				} else {
+					//New order
+					$payment_data = maybe_unserialize( $con->meta_value );
+					if( $payment_data['user_info']['discount'] === $coupon_code->code ){
+						foreach( $payment_data['cart_details'] as $cart ){
+							$new_rev_with_code += $cart['price'];
+						}
+					}
+					foreach( $payment_data['cart_details'] as $cart ){
+						$total_rev += $cart['price'];
+					}
+
 				}
-				foreach( $payment_data['cart_details'] as $cart ){
-					$total_rev += $cart['price'];
-				}
+				
 				
 			}
 		}
 		
-		if( $renewals ){
-			foreach( $renewals as $ren ){
-				$payment_data = maybe_unserialize( $ren->meta_value );
-				foreach( $payment_data['cart_details'] as $cart ){
-					$total_renewals += $cart['price'];
-				}
-				
-			}
-		}
-
-		$new_rev_without_code = $total_rev - $new_rev_with_code - $total_renewals;
+		$new_rev_without_code = $total_rev - $new_rev_with_code;
 
 		?>
 		<div class="swsales_reports-box">
