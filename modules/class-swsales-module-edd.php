@@ -731,19 +731,19 @@ class SWSales_Module_EDD {
 					foreach( $payment_data['cart_details'] as $cart ){
 						$total_renewals += $cart['price'];
 					}
-				} else {
-					//New order
-					$payment_data = maybe_unserialize( $con->meta_value );
-					if( $payment_data['user_info']['discount'] === $coupon_code->code ){
-						foreach( $payment_data['cart_details'] as $cart ){
-							$new_rev_with_code += $cart['price'];
-						}
-					}
+				} 
+				
+				//New order
+				$payment_data = maybe_unserialize( $con->meta_value );
+				if( $payment_data['user_info']['discount'] === $coupon_code->code ){
 					foreach( $payment_data['cart_details'] as $cart ){
-						$total_rev += $cart['price'];
+						$new_rev_with_code += $cart['price'];
 					}
-
 				}
+				foreach( $payment_data['cart_details'] as $cart ){
+					$total_rev += $cart['price'];
+				}
+
 				
 				
 			}
