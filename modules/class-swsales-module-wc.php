@@ -545,7 +545,35 @@ class SWSales_Module_WC {
 			AND wcoi.order_item_type = 'coupon'
 			AND pm.meta_key = '_order_total'
 		" );
-		$new_rev_without_code = $total_rev - $new_rev_with_code;
+		$renewals = 0;
+		if ( class_exists( 'WC_Subscriptions' ) ) {
+			// WC Subscrtions enabled, see if there are any renewals in the period.
+			$renewals = $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT SUM(order_total_meta.meta_value)
+						FROM {$wpdb->postmeta} as order_total_meta
+						RIGHT JOIN
+						(
+							SELECT DISTINCT wcorder.ID
+							FROM {$wpdb->posts} AS wcorder
+							INNER JOIN {$wpdb->postmeta} AS meta__subscription_renewal
+								ON (
+									wcorder.id = meta__subscription_renewal.post_id
+									AND
+									meta__subscription_renewal.meta_key = '_subscription_renewal'
+								)
+							WHERE wcorder.post_type IN ( 'shop_order' )
+								AND wcorder.post_status IN ( 'wc-completed', 'wc-processing', 'wc-on-hold', 'wc-refunded' )
+								AND wcorder.post_date >= '%s'
+								AND wcorder.post_date < '%s'
+						) AS orders ON orders.ID = order_total_meta.post_id
+						WHERE order_total_meta.meta_key = '_order_total'",
+					$sale_start_date,
+					$sale_end_date
+				)
+			);
+		}
+		$new_rev_without_code = $total_rev - $new_rev_with_code - $renewals;
 
 		?>
 		<div class="swsales_reports-box">
@@ -560,7 +588,7 @@ class SWSales_Module_WC {
 				?>
 			</p>
 			<hr />
-			<div class="swsales_reports-data swsales_reports-data-3col">
+			<div class="swsales_reports-data swsales_reports-data-<?php echo empty( $renewals ) ? 3 : 4 ?>col">
 				<div class="swsales_reports-data-section">
 					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_with_code ) ) ); ?></h1>
 					<p>
@@ -577,6 +605,16 @@ class SWSales_Module_WC {
 						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
 					</p>
 				</div>
+				<?php if ( ! empty( $renewals ) ) { ?>
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $renewals ) ) ); ?></h1>
+					<p>
+						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
+						<br />
+						(<?php echo( esc_html( 0 == $renewals ? 'NA' : round( ( $renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
+					</p>
+				</div>
+				<?php } ?>
 				<div class="swsales_reports-data-section">
 					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $total_rev ) ) ); ?></h1>
 					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
