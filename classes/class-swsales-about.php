@@ -56,7 +56,7 @@ class SWSales_About {
 					?>
 
 					<?php
-						echo '<p>' . sprintf( wp_kses( __( 'Sitewide Sales helps you run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site. We currently offer integration for <a href="%s" title="Paid Memberships Pro" target="_blank">Paid Memberships Pro</a> and <a href="%s" title="WooCommerce" target="_blank">WooCommerce</a>.', 'sitewide-sales' ), $allowed_html ), 'https://www.paidmembershipspro.com/?utm_source=sitewide-sales&utm_medium=about&utm_campaign=homepage', 'https://woocommerce.com' ) . '</p>';
+						echo '<p>' . sprintf( wp_kses( __( 'Sitewide Sales helps you run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site. We currently offer integration for <a href="%s" title="Paid Memberships Pro" target="_blank">Paid Memberships Pro</a>, <a href="%s" title="WooCommerce" target="_blank">WooCommerce</a>, and <a href="%s" title="Easy Digital Downloads" target="_blank">Easy Digital Downloads</a>.', 'sitewide-sales' ), $allowed_html ), 'https://www.paidmembershipspro.com/?utm_source=sitewide-sales&utm_medium=about&utm_campaign=homepage', 'https://woocommerce.com', 'https://easydigitaldownloads.com' ) . '</p>';
 					?>
 
 					<?php
