@@ -98,7 +98,7 @@ class SWSales_Module_EDD {
 
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 				?>
-					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Coupon', 'sitewide-sales' );?></label></th>
+					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
 					<td>
 						<select class="coupon_select swsales_option" id="swsales_edd_coupon_select" name="swsales_edd_coupon_id">
 							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
@@ -118,10 +118,11 @@ class SWSales_Module_EDD {
 						</select>
 						<?php
 						if ( false !== $coupon_found ) {
-							
 							$discount_object = new \EDD_Discount( $coupon_found->ID );
-							if ( '' !== $discount_object->expiration && $cur_sale->get_end_date("Y-m-d") >= date('Y-m-d', intval( $discount_object->expiration ) ) ) {
-								echo "<p id='swsales_edd_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+							if ( ! empty( $discount_object->expiration ) && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) > date('Y-m-d H:i:s', strtotime( $discount_object->expiration ) ) ) {
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+							} elseif ( ! empty( $discount_object->start ) && $cur_sale->get_start_date( 'Y-m-d H:i:s' ) < date('Y-m-d H:i:s', strtotime( $discount_object->start ) ) ) {
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>
