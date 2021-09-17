@@ -98,7 +98,7 @@ class SWSales_Module_EDD {
 
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 				?>
-					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Coupon', 'sitewide-sales' );?></label></th>
+					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
 					<td>
 						<select class="coupon_select swsales_option" id="swsales_edd_coupon_select" name="swsales_edd_coupon_id">
 							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
