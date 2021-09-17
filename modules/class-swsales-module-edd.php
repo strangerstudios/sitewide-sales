@@ -42,6 +42,7 @@ class SWSales_Module_EDD {
 
 		// Automatic coupon application.
 		add_filter( 'init', array( __CLASS__, 'automatic_coupon_application' ) );
+		add_filter( 'edd_purchase_link_args', array( __CLASS__, 'strike_prices' ) );
 
 		// EDD-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
@@ -296,7 +297,60 @@ class SWSales_Module_EDD {
 		}		 		
  		
 	}
-	
+
+	/**
+	 * Strike out prices when a coupon code is applied.
+	 *
+	 * @param  array $args Arguments that EDD will display in purchase link
+	 * @return array
+	 */
+	public static function strike_prices( $args ) {
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( null === $active_sitewide_sale || 'edd' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
+			return $args;
+		}
+		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
+		if ( null === $coupon_id ) {
+			return $args;
+		}
+		// Check if we are on the landing page
+		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
+		$on_landing_page = is_page( $landing_page_post_id );
+		$should_apply_discount_on_landing = ( 'none' !== $active_sitewide_sale->get_automatic_discount() );
+
+		// If discount code is already applied or we are on the landing page and should apply discount...
+		if ( ( $on_landing_page && $should_apply_discount_on_landing ) || $active_sitewide_sale->should_apply_automatic_discount() ) {			
+			$discount = new \EDD_Discount( $coupon_id );
+
+			// Check that the discount is a percentage discount and applicable to the download being viewed.
+			if (
+				$discount->get_type() === 'percent' &&
+				! in_array( $args['download_id'], array_map( 'absint', $discount->get_excluded_products() ) ) &&
+				(
+					empty( array_filter( $discount->get_product_reqs() ) ) ||
+					(
+						'all' !== $discount->get_product_condition() &&
+						in_array( $args['download_id'], array_map( 'absint', $discount->get_product_reqs() ) )
+					)
+				)
+			) {
+				// Get download price.
+				$download = new \EDD_Download( $args['download_id'] );
+				$download_price = floatval( $download->get_price() );
+				if ( ! empty( $download_price ) ) {
+					// Get discounted price.
+					$discounted_price = $discount->get_discounted_amount( $download_price );
+
+					// Overwrite link text.
+					$download_price_formatted = edd_currency_filter( edd_format_amount( $download_price ) );
+					$discounted_price_formatted = edd_currency_filter( edd_format_amount( $discounted_price ) );
+					$button_text = '&nbsp;&ndash;&nbsp;' . end( explode( '&nbsp;', $args['text'] ) );
+					$args['text'] = '<del>' . $download_price_formatted . '</del> ' . $discounted_price_formatted . $button_text;
+				}
+			}
+		}
+		return $args;
+	}
 
 	/**
 	 * Set EDD module checkout conversion title for Sitewide Sale report.
