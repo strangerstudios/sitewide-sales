@@ -248,11 +248,12 @@ class SWSales_Module_EDD {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
 	 * @return boolean
 	 */
-	public static function is_checkout_page( $is_checkout_page, $sitewide_sale ) {		
+	public static function is_checkout_page( $is_checkout_page, $sitewide_sale ) {
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $is_checkout_page;
-		}		
-		return is_page( edd_get_option( 'purchase_page', false ) ) ? true : $is_checkout_page;
+		}
+		$edd_checkout_pages = array( edd_get_option( 'purchase_page' ), edd_get_option( 'success_page' ), edd_get_option( 'failure_page' ) );
+		return is_page( $edd_checkout_pages ) ? true : $is_checkout_page;
 	}
 
 	/**
