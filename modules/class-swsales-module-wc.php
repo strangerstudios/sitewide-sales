@@ -316,7 +316,8 @@ class SWSales_Module_WC {
 		// If discount code is already applied or we are on the landing page and should apply discount...
 		if ( 
 			( ! empty( WC()->cart ) && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) ||
-			( $on_landing_page && $should_apply_discount_on_landing )
+			( $on_landing_page && $should_apply_discount_on_landing )||
+			$active_sitewide_sale->should_apply_automatic_discount()
 		) {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
 			if ( $coupon->is_valid_for_product( $product ) ) {
