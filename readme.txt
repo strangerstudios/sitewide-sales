@@ -1,9 +1,9 @@
 === Sitewide Sales ===
 Contributors: strangerstudios, dlparker1005
 Tags: sales, sale, woocommerce, paid memberships pro, pmpro, black friday, cyber monday, discount
-Requires at least:
-Tested up to: 5.5.1
-Stable tag: 1.1
+Requires at least: 5.2
+Tested up to: 5.8.1
+Stable tag: 1.2
 
 Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
 
@@ -13,7 +13,7 @@ The Sitewide Sales plugin allows you to create flash or sitewide sales. Use the 
 
 The plugin also adds the option to display sitewide page banners to advertise your sale and gives you statistics about the outcome of your sale.
 
-This plugin requires WooCommerce or Paid Memberships Pro to function. New integrations will be built as requested.
+This plugin offers modules for [WooCommerce](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/woocommerce/), [Paid Memberships Pro](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/paid-memberships-pro/), and [Easy Digital Downloads](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/easy-digital-downloads/). You can also use the [Custom sale module](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/custom/) to track any banner > landing page > conversion workflow. New integrations will be built as requested.
 
 == Installation ==
 
@@ -22,6 +22,20 @@ This plugin requires WooCommerce or Paid Memberships Pro to function. New integr
 1. Create a new `Sitewide Sale` under `Sitewide Sales` > `Add New`.
 
 == Changelog ==
+
+= 1.2 - 2021-09-17 =
+* FEATURE: Added EDD module
+* FEATURE: Added "Custom" module
+* ENHANCEMENT: Start and end times can now be set for Sitewide Sales
+* ENHANCEMENT: Added daily revenue chart to reports
+* ENHANCEMENT: Clicking the discount code link in PMPro reports now shows the orders that have used that code
+* ENHANCEMENT: Added filter `swsales_pmpro_landing_page_default_discount_code`
+* BUG FIX/ENHANCEMENT: Now hiding discount code option for PMPro checkout on SWS landing page
+* BUG FIX: Now checking that PMPro discount code is valid before applying on landing page
+* BUG FIX: WooCommerce coupons are no longer being applied on every page
+* BUG FIX: Removed strike price from WC subscriptions as it wasn't showing consistently
+* BUG FIX: Resolved issue where `swsales_show_banner filter` would not always fire
+
 = 1.1 - 2020-09-21 =
 * NOTE: Sending launch emails today.
 * FEATURE: Added a one click migration from PMPro Sitewide Sales.
