@@ -137,7 +137,7 @@ class SWSales_Setup {
 		if ( strpos( $file, 'sitewide-sales.php' ) !== false ) {
 			$new_links = array(
 				'<a href="' . esc_url( 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/' ) . '" title="' . esc_attr( __( 'View Documentation', 'sitewide-sales' ) ) . '">' . __( 'Docs', 'sitewide-sales' ) . '</a>',
-				'<a href="' . esc_url( 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'sitewide-sales' ) ) . '">' . __( 'Support', 'sitewide-sales' ) . '</a>',
+				'<a href="' . esc_url( 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/support/' ) . '" title="' . esc_attr( __( 'Visit Customer Support Forum', 'sitewide-sales' ) ) . '">' . __( 'Support', 'sitewide-sales' ) . '</a>',
 			);
 			$links     = array_merge( $links, $new_links );
 		}

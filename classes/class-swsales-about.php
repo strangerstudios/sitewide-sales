@@ -31,7 +31,7 @@ class SWSales_About {
 				<div class="sitewide_sales_meta">
 					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
 					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
+					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 					<?php if ( swsales_license_is_valid() ) { ?>
 						<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
 					<?php } elseif ( ! defined( 'SWSALES_LICENSE_NAG' ) || SWSALES_LICENSE_NAG == true ) { ?>
@@ -88,7 +88,7 @@ class SWSales_About {
 						echo '<p>' . wp_kses( __( 'Check out the Sitewide Sales documentation site for additional setup instructions, sample landing page and banner content, as well as developer documentation to further extend the templates, reporting, and integration options.', 'sitewide-sales' ), $allowed_html ) . '</p>';
 					?>
 
-					<p><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a> | <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/support/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?>"><?php esc_html_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?></a></p>
+					<p><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a> | <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/support/?utm_source=plugin&utm_medium=swsales-about&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?>"><?php esc_html_e( 'View Support Options &raquo;', 'sitewide-sales' ); ?></a></p>
 					
 					<?php do_action( 'swsales_about_text_bottom' ); ?>
 
