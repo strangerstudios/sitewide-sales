@@ -687,7 +687,7 @@ class SWSales_Module_PMPro {
 			return $is_checkout_page;
 		}
 		global $pmpro_pages;
-		return is_page( $pmpro_pages['checkout'] ) ? true : $is_checkout_page;
+		return ( ! empty( $pmpro_pages['checkout'] ) && is_page( $pmpro_pages['checkout'] ) ) ? true : $is_checkout_page;
 	}
 
 	/**

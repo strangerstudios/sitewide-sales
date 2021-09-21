@@ -255,8 +255,9 @@ class SWSales_Reports {
 
 		wp_register_script( 'swsales_tracking', plugins_url( 'js/swsales-tracking.js', SWSALES_BASENAME ), array( 'jquery', 'utils' ) );
 
+		$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();
 		$swsales_data = array(
-			'landing_page'      => is_page( $active_sitewide_sale->get_landing_page_post_id() ),
+			'landing_page'      => ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id ),
 			'sitewide_sale_id'  => $active_sitewide_sale->get_id(),
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 		);
