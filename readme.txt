@@ -23,7 +23,7 @@ This plugin offers modules for [WooCommerce](https://www.strangerstudios.com/wor
 
 == Changelog ==
 
-= 1.2 - 2021-09-17 =
+= 1.2 - 2021-09-22 =
 * FEATURE: Added EDD module
 * FEATURE: Added "Custom" module
 * ENHANCEMENT: Start and end times can now be set for Sitewide Sales
@@ -35,6 +35,7 @@ This plugin offers modules for [WooCommerce](https://www.strangerstudios.com/wor
 * BUG FIX: WooCommerce coupons are no longer being applied on every page
 * BUG FIX: Removed strike price from WC subscriptions as it wasn't showing consistently
 * BUG FIX: Resolved issue where `swsales_show_banner filter` would not always fire
+* BUG FIX: Fixed issues where checks for landing/checkout pages failed if no landing or checkout page was set.
 
 = 1.1 - 2020-09-21 =
 * NOTE: Sending launch emails today.
