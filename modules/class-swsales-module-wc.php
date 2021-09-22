@@ -249,7 +249,7 @@ class SWSales_Module_WC {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return $is_checkout_page;
 		}
-		return is_page( wc_get_page_id( 'cart' ) ) ? true : $is_checkout_page;
+		return ( ! empty( wc_get_page_id( 'cart' ) ) && is_page( wc_get_page_id( 'cart' ) ) ) ? true : $is_checkout_page;
 	}
 
 	/**

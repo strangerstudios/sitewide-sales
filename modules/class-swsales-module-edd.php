@@ -255,7 +255,7 @@ class SWSales_Module_EDD {
 			return $is_checkout_page;
 		}
 		$edd_checkout_pages = array( edd_get_option( 'purchase_page' ), edd_get_option( 'success_page' ), edd_get_option( 'failure_page' ) );
-		return is_page( $edd_checkout_pages ) ? true : $is_checkout_page;
+		return ( ! empty( $edd_checkout_pages ) && is_page( $edd_checkout_pages ) ) ? true : $is_checkout_page;
 	}
 
 	/**
@@ -318,7 +318,7 @@ class SWSales_Module_EDD {
 
 		// Check if we are on the landing page
 		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
-		$on_landing_page                  = is_page( $landing_page_post_id );
+		$on_landing_page                  = ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id );
 		$should_apply_discount_on_landing = ( 'none' !== $active_sitewide_sale->get_automatic_discount() );
 
 		// If discount code will be applied or we are on the landing page, strike prices.
