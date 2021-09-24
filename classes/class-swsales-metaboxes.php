@@ -595,7 +595,7 @@ class SWSales_MetaBoxes {
 				<tr>
 					<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<input type="textbox" name="swsales_banner_title" value="<?php echo esc_attr( $cur_sale->get_banner_title() ); ?>">
+						<input type="text" name="swsales_banner_title" value="<?php echo esc_attr( $cur_sale->get_banner_title() ); ?>">
 						<p class="description"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
