@@ -27,17 +27,9 @@
 	margin-top: 0;
 }
 .swsales-landing-page-neon .swsales-landing-page-content h1 {
-	-webkit-animation-name: swsalesNeonAnimatedh1;
-	animation-name: swsalesNeonAnimatedh1;
-	-webkit-animation-duration: 4s;
-	animation-duration: 4s;
-	animation-direction: alternate-reverse;
-	-webkit-animation-iteration-count: infinite;
-	animation-iteration-count: infinite;
-	-webkit-animation-timing-function: linear;
-	animation-timing-function: linear;
+	animation: swsalesNeonAnimated 5s linear infinite;
 	border: none;
-	color: #55f47e;
+	color: #55F47E;
 	font-size: 60px;
 	font-style: italic;
 	font-weight: 900;
@@ -45,22 +37,11 @@
 	letter-spacing: -2px;
 	margin: 0;
 	padding: 0;
-	text-shadow: 0px 0px 15px #BBB;
 }
 .swsales-landing-page-neon .swsales-landing-page-content h4 {
-	-webkit-animation-name: swsalesNeonAnimatedh4;
-	animation-name: swsalesNeonAnimatedh4;
-	-webkit-animation-delay: 1s;
-	animation-delay: 1s;
-	-webkit-animation-duration: 1s;
-	animation-duration: 1s;
-	animation-direction: alternate-reverse;
-	-webkit-animation-iteration-count: infinite;
-	animation-iteration-count: infinite;
-	-webkit-animation-timing-function: linear;
-	animation-timing-function: linear;
+	animation: swsalesNeonAnimated 3s linear infinite;
 	border: none;
-	color: #f084e7;
+	color: #E154D1;
 	font-size: 40px;
 	font-style: italic;
 	font-weight: 900;
@@ -69,24 +50,14 @@
 	padding: 0;
 	text-shadow: 0px 0px 15px #BBB;
 }
-@keyframes swsalesNeonAnimatedh1 {
-	0%{opacity: 1;}
-	2%{opacity: 0;}
-	4%{opacity: 1;}
-	80%{opacity: 1;}
-	82%{opacity: 0;}
-	84%{opacity: 1;}
-	100%{opacity: 1;}
-}
-@keyframes swsalesNeonAnimatedh4 {
-	0%{opacity: 1;}
-	5%{opacity: 0;}
-	10%{opacity: 1;}
-	15%{opacity: 0;}
-	20%{opacity: 1;}
-	90%{opacity: 1;}
-	95%{opacity: 0;}
-	100%{opacity: 1;}
+@keyframes swsalesNeonAnimated {
+	0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+		text-shadow: none;
+		opacity: .99;
+	}
+	20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+		opacity: 0.8;
+	}
 }
 @keyframes swsalesNeonAnimatedBackground {
 	from { background-position: 0 50%; }
@@ -103,11 +74,11 @@
 	display: none;
 }
 .swsales-landing-page-neon form#pmpro_form .pmpro_checkout {
-	background: #FFF;
+	background-color: #FFF;
 	margin: 20px 0;
 }
 .swsales-landing-page-neon form#pmpro_form .pmpro_checkout h3 {
-	background: #0EBFE9;
+	background-color: #0EBFE9;
 	border: none;
 	color: #FFF;
 	padding: 15px;
@@ -127,9 +98,18 @@
 
 /* WooCommerce Integration Specific Styles */
 .swsales-landing-page-neon .woocommerce { 
-	background: #FFF;
+	background-color: #FFF;
 	margin: 0 auto;
 	max-width: 800px;
 	padding: 20px;
+	text-align: initial;
+}
+
+/* Easy Digital Downloads Integration Specific Styles */
+.swsales-landing-page-neon .edd_downloads_list {
+	background-color: #FFF;
+	margin: 0 auto;
+	max-width: 800px;
+	padding: 40px;
 	text-align: initial;
 }
