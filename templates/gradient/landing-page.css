@@ -26,6 +26,8 @@ body.swsales-landing-page-gradient article {
 .swsales-landing-page-gradient .swsales-landing-page-content h1,
 .swsales-landing-page-gradient .swsales-landing-page-content h4 {
 	color: #FFF;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 #swsales-landing-page-wrap-gradient .swsales-landing-page-content:before {
 	-webkit-animation: swsalesGradient 30s ease infinite;
