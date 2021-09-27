@@ -54,13 +54,13 @@ add_action( 'swsales_banner_content_scroll', __NAMESPACE__ . '\swsales_banner_co
  */
 function swsales_landing_page_content_scroll( $content ) {
 	$content_before = '<div id="swsales-landing-page-wrap-scroll" class="swsales-landing-page-wrap">';
-	$content_after = '</div>';
+	$content_after = '';
 
 	$background_image = wp_get_attachment_image_src( get_post_thumbnail_id( get_queried_object_id() ), 'full' );
 	if ( ! empty( $background_image[0] ) ) {
-		$content_before .= '<div class="swsales-landing-page-background-image" style="background-image: url(' . $background_image[0] . ')">';
-		$content_after .= '</div>';
+		$content_after .= '<div class="swsales-landing-page-background-image" style="background-image: linear-gradient(rgba(228, 227, 223, 0.45), rgba(228, 227, 223, 1) ), url(' . $background_image[0] . ')"></div>';
 	}
+	$content_after .= '</div>';
 
 	$content = $content_before . $content . $content_after;
 
