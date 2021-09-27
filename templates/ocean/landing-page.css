@@ -4,48 +4,70 @@
  * Landing Page Styles 
  */
 
-html,
-body.swsales-landing-page-fancy_coupon,
-body.swsales-landing-page-fancy_coupon article {
-	background: #4ab1ad;
-	height: 100%;
-}
-#swsales-landing-page-wrap-ocean {
-	background: #4ab1ad;
-	margin-top: 0;
-	padding: 0 0 50px 0;
+.swsales-landing-page-ocean #swsales-landing-page-wrap-ocean {
+	background: #4AB1AD;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content {
-	background-color: #f67656;
-	padding: 50px 0 0 0;
+	padding: 50px 0;
+	position: relative;
 	text-align: center;
+	z-index: 10;
 }
 .swsales-landing-page-ocean .swsales-landing-page-content h1,
 .swsales-landing-page-ocean .swsales-landing-page-content h4 {
 	color: #FFF;
-}
-.swsales-landing-page-ocean .swsales-landing-page-content h1 {
-	color: #FFF;
-	font-family: 'Brush Script MT', cursive;
-	font-size: 120px;
-	font-weight: 400;
-	margin: 15px 0 30px 0;
+	margin: 30px 0;
 	padding: 0;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-animation {
+	background-color: #F67656;
+	left: 0;
+	padding-top: 220px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-waves {
+	position: relative;
+	width: 100%;
+	margin-bottom: -7px; /* Fix for safari gap */
+	min-height: 100px;
+	max-height: 100px;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-waves-parallax > use {
+	animation: swsales-ocean-move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-waves-parallax > use:nth-child(1) {
+	animation-delay: -2s;
+	animation-duration: 7s;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-waves-parallax > use:nth-child(2) {
+	animation-delay: -3s;
+	animation-duration: 10s;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-waves-parallax > use:nth-child(3) {
+	animation-delay: -4s;
+	animation-duration: 13s;
+}
+#swsales-landing-page-wrap-ocean .swsales-landing-page-wrap-ocean-waves-parallax > use:nth-child(4) {
+	animation-delay: -5s;
+	animation-duration: 20s;
+}
+@keyframes swsales-ocean-move-forever {
+	0% {
+		transform: translate3d(-90px,0,0);
+	}
+	100% {
+		transform: translate3d(85px,0,0);
+	}
 }
 
 /* Paid Memberships Pro Integration Specific Styles */
-.swsales-landing-page-ocean div[id^='pmpro_level-'] {
-	background: #4ab1ad;
-	background-image: url(images/waves-alt.png);
-	background-repeat: repeat-x;
-	background-position: top left;
-	background-size: 100px 100px;
-	padding: 100px 0;
-	text-align: initial;
-}
 .swsales-landing-page-ocean #pmpro_form {
 	margin: 0 auto;
 	max-width: 800px;
+	text-align: initial;
 }
 .swsales-landing-page-ocean form#pmpro_form .pmpro_checkout,
 .swsales-landing-page-ocean form#pmpro_form .pmpro_message {
@@ -85,18 +107,22 @@ body.swsales-landing-page-fancy_coupon article {
 }
 
 /* WooCommerce Integration Specific Styles */
-.swsales-landing-page-ocean .woocommerce { 
-	background: #4ab1ad;
-	background-image: url(images/waves-alt.png);
-	background-repeat: repeat-x;
-	background-position: top left;
-	background-size: 100px 100px;
-	padding: 100px 0;
-	text-align: initial;
+.swsales-landing-page-ocean .woocommerce {
+	margin-top: 50px;
 }
 .swsales-landing-page-ocean .woocommerce .products { 
 	background: rgba( 255, 255, 255, 0.6 );
 	margin: 0 auto;
 	max-width: 800px;
 	padding: 20px;
+}
+
+/* Easy Digital Downloads Integration Specific Styles */
+.swsales-landing-page-ocean .edd_downloads_list {
+	background: rgba( 255, 255, 255, 0.6 );
+	margin: 0 auto;
+	margin-right: 0 auto;
+	max-width: 800px;
+	padding: 20px;
+	text-align: initial;
 }

@@ -56,7 +56,8 @@ add_action( 'swsales_banner_content_ocean', __NAMESPACE__ . '\swsales_banner_con
  */
 function swsales_landing_page_content_ocean( $content ) {
 	$content_before = '<div id="swsales-landing-page-wrap-ocean" class="swsales-landing-page-wrap">';
-	$content_after = '</div>';
+	$content_after = '<div class="swsales-landing-page-wrap-ocean-animation"><svg class="swsales-landing-page-wrap-ocean-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="swsales-gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" fill="rgba(74,177,173,0.8)" /></defs><g class="swsales-landing-page-wrap-ocean-waves-parallax"><use xlink:href="#swsales-gentle-wave" x="48" y="0" fill="rgba(74,177,173,0.8" /><use xlink:href="#swsales-gentle-wave" x="48" y="3" fill="rgba(74,177,173,0.4)" /><use xlink:href="#swsales-gentle-wave" x="48" y="5" fill="rgba(74,177,173,0.1)" /><use xlink:href="#swsales-gentle-wave" x="48" y="7" fill="rgba(74,177,173,1.0)" /></g></svg></div>';
+	$content_after .= '</div>';
 
 	$content = $content_before . $content . $content_after;
 
