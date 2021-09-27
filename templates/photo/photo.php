@@ -54,13 +54,13 @@ add_action( 'swsales_banner_content_photo', __NAMESPACE__ . '\swsales_banner_con
  */
 function swsales_landing_page_content_photo( $content ) {
 	$content_before = '<div id="swsales-landing-page-wrap-photo" class="swsales-landing-page-wrap">';
-	$content_after = '</div>';
+	$content_after = '';
 
 	$background_image = wp_get_attachment_image_src( get_post_thumbnail_id( get_queried_object_id() ), 'full' );
 	if ( ! empty( $background_image[0] ) ) {
-		$content_before .= '<div class="swsales-landing-page-background-image" style="background-image: url(' . $background_image[0] . ')">';
-		$content_after .= '</div>';
+		$content_after .= '<div class="swsales-landing-page-background-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45) ), url(' . $background_image[0] . ')"></div>';
 	}
+	$content_after .= '</div>';
 
 	$content = $content_before . $content . $content_after;
 
