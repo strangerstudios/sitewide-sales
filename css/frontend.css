@@ -57,9 +57,13 @@
 	width: 100%;
 }
 #swsales-banner-top p {
-	display: inline-block;
 	margin: 0;
 	padding: 0;
+}
+@media only screen and (min-width: 768px) {
+	#swsales-banner-top p {
+		display: inline-block;
+	}
 }
 
 /* Bottom Banner Styles */
