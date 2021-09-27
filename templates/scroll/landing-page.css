@@ -12,23 +12,36 @@
 #swsales-landing-page-wrap-scroll .swsales-landing-page-background-image {
 	background-position: top center;
 	background-repeat: no-repeat;
-	background-size: contain;
-	padding: 20px 10px 100px 10px;
+	background-size: cover;
+	min-height: 450px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+	left: 0;
 }
-#swsales-landing-page-wrap-scroll .swsales-landing-page-content {
+.swsales-landing-page-scroll .swsales-landing-page-content {
+	margin: 0;
 	overflow: hidden;
-	padding: 0;
+	padding: 30px 0;
+	position: relative;
 	text-align: center;
+	z-index: 10;
 }
 #swsales-landing-page-wrap-scroll .swsales-landing-page-content h1 {
 	animation: swsalesScrollSlideIn 1s;
-	font-weight: normal;
-	margin: 20px 20px 0 20px;
+	color: #000;
+	margin: 30px 0;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 #swsales-landing-page-wrap-scroll .swsales-landing-page-content h4 {
 	animation: swsalesScrollFadeIn 3s;
+	color: #000;
 	font-weight: normal;
-	margin: 20px;
+	margin: 30px 0;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 @keyframes swsalesScrollSlideIn {
 	from {
@@ -85,6 +98,17 @@
 
 /* WooCommerce Integration Specific Styles */
 .swsales-landing-page-scroll .woocommerce { 
+	background: #FFF;
+	border: 1px solid #CCC;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 800px;
+	padding: 20px;
+	text-align: initial;
+}
+
+/* Easy Digital Downloads Integration Specific Styles */
+.swsales-landing-page-scroll .edd_downloads_list {
 	background: #FFF;
 	border: 1px solid #CCC;
 	margin-left: auto;
