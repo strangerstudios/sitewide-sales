@@ -13,27 +13,16 @@
 	color: #666;
 }
 #swsales-banner-wrap-neon .swsales-banner-title {
-	-webkit-animation-name: swsalesNeonAnimatedh2;
-	animation-name: swsalesNeonAnimatedh2;
-	-webkit-animation-delay: 1s;
-	animation-delay: 1s;
-	-webkit-animation-duration: 1s;
-	animation-duration: 1s;
-	animation-direction: alternate-reverse;
-	-webkit-animation-iteration-count: infinite;
-	animation-iteration-count: infinite;
-	-webkit-animation-timing-function: linear;
-	animation-timing-function: linear;
-	color: #f084e7;
+	animation: swsalesNeonAnimated 5s linear infinite;
+	color: #E154D1;
 	font-size: 30px;
 	font-style: italic;
 	font-weight: 900;
 	letter-spacing: -2px;
-	margin-right: 15px;
 	text-shadow: 0px 0px 15px #BBB;
 }
 #swsales-banner-wrap-neon .swsales-banner-content {
-	margin-right: 15px;
+	margin-bottom: 15px;
 }
 #swsales-banner-wrap-neon .swsales-banner a.swsales-banner-button,
 #swsales-banner-wrap-neon .swsales-banner a.swsales-banner-button:focus,
@@ -45,18 +34,27 @@
 	background: #a2f2b7;
 	color: #000;
 }
-
-@keyframes swsalesNeonAnimatedh2 {
-	0%{opacity: 1;}
-	5%{opacity: 0;}
-	10%{opacity: 1;}
-	15%{opacity: 0;}
-	20%{opacity: 1;}
-	90%{opacity: 1;}
-	95%{opacity: 0;}
-	100%{opacity: 1;}
+@keyframes swsalesNeonAnimated {
+	0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+		text-shadow: none;
+		opacity: .99;
+	}
+	20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+		opacity: 0.8;
+	}
 }
 @keyframes swsalesNeonAnimatedBackground {
 	from { background-position: 0 50%; }
 	to { background-position: 100% 0; }
+}
+
+/* Responsive Styles */
+@media only screen and (min-width: 768px) {
+	#swsales-banner-wrap-neon .swsales-banner-title {
+		margin-right: 15px;
+	}
+	#swsales-banner-wrap-neon .swsales-banner-content {
+		margin-bottom: 0;
+		margin-right: 15px;
+	}
 }
