@@ -19,11 +19,10 @@
 	font-style: italic;
 	font-weight: 900;
 	letter-spacing: -2px;
-	margin-right: 15px;
 	text-shadow: 0px 0px 15px #BBB;
 }
 #swsales-banner-wrap-neon .swsales-banner-content {
-	margin-right: 15px;
+	margin-bottom: 15px;
 }
 #swsales-banner-wrap-neon .swsales-banner a.swsales-banner-button,
 #swsales-banner-wrap-neon .swsales-banner a.swsales-banner-button:focus,
@@ -47,4 +46,15 @@
 @keyframes swsalesNeonAnimatedBackground {
 	from { background-position: 0 50%; }
 	to { background-position: 100% 0; }
+}
+
+/* Responsive Styles */
+@media only screen and (min-width: 768px) {
+	#swsales-banner-wrap-neon .swsales-banner-title {
+		margin-right: 15px;
+	}
+	#swsales-banner-wrap-neon .swsales-banner-content {
+		margin-bottom: 0;
+		margin-right: 15px;
+	}
 }
