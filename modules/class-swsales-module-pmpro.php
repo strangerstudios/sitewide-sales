@@ -848,7 +848,7 @@ class SWSales_Module_PMPro {
 		$query_data = $wpdb->get_results(
 			$wpdb->prepare(
 				"
-				SELECT DATE_FORMAT(o.timestamp, '%s') as date, SUM(o.total) as value
+				SELECT DATE_FORMAT( DATE_ADD( o.timestamp, INTERVAL %d HOUR ), '%s') as date, SUM(o.total) as value
 					FROM $wpdb->pmpro_membership_orders o
 				LEFT JOIN $wpdb->pmpro_discount_codes_uses dc
 					ON o.id = dc.order_id
@@ -859,6 +859,7 @@ class SWSales_Module_PMPro {
 				GROUP BY date
 				ORDER BY date
 				",
+				get_option( 'gmt_offset' ), // Convert to local time.
 				'%Y-%m-%d', // To prevent these from being seen as placeholders.
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
 				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
