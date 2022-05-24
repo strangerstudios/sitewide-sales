@@ -107,12 +107,12 @@ class SWSales_Module_Custom {
 	} // end swsales_save_metaboxes()
 
 	/**
-	 * Enqueues /modules/js/swsales-module-custom-metaboxes.js
+	 * Enqueues /modules/ecommerce/custom/swsales-module-custom-metaboxes.js
 	 */
 	public static function admin_enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_custom_metaboxes', plugins_url( 'modules/js/swsales-module-custom-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_custom_metaboxes', plugins_url( 'modules/ecommerce/custom/swsales-module-custom-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_custom_metaboxes' );
 		}
 	} // end admin_enqueue_scripts()

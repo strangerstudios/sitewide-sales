@@ -67,9 +67,9 @@ require_once ( 'includes/license.php' );
 
 // Load Ecommerce Modules
 function swsales_load_modules() {
-	require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-custom.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-edd.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/pmpro/class-swsales-module-pmpro.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/wc/class-swsales-module-wc.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/custom/class-swsales-module-custom.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/edd/class-swsales-module-edd.php';
 }
 add_action( 'init', 'Sitewide_Sales\\swsales_load_modules', 1 );
