@@ -465,12 +465,12 @@ class SWSales_Module_PMPro {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-pmpro-metaboxes.js
+	 * Enqueues /modules/ecommerce/pmpro/swsales-module-pmpro-metaboxes.js
 	 */
 	public static function admin_enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_pmpro_metaboxes', plugins_url( 'modules/js/swsales-module-pmpro-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_pmpro_metaboxes', plugins_url( 'modules/ecommerce/pmpro/swsales-module-pmpro-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_pmpro_metaboxes' );
 
 			wp_localize_script(
@@ -737,7 +737,7 @@ class SWSales_Module_PMPro {
 	 * Load our module's CSS.
 	 */
 	public static function wp_enqueue_scripts() {
-		wp_register_style( 'swsales_module_pmpro', plugins_url( 'modules/css/swsales-module-pmpro.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
+		wp_register_style( 'swsales_module_pmpro', plugins_url( 'modules/ecommerce/pmpro/swsales-module-pmpro.css', SWSALES_BASENAME ), null, SWSALES_VERSION );
 		wp_enqueue_style( 'swsales_module_pmpro' ); 
 	}
 
