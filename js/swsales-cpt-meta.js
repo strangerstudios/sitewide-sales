@@ -11,7 +11,6 @@ jQuery( document ).ready(
 
 		// multiselects
 		$( "#swsales_landing_page_select" ).selectWoo();
-		$( "#swsales_use_banner_select" ).selectWoo();
 
 		// removing some buttons from the edit post page for our CPT
 		jQuery( '.wp-editor-tabs' ).remove();
@@ -79,26 +78,26 @@ jQuery( document ).ready(
 			}
 		);
 
-		// toggling the banner settings and banner CSS hint
+		// Toggling the banner settings.
 		function swsales_toggle_banner_settings() {
-			var banner = $( '#swsales_use_banner_select' ).val();
+			var module = $( '#swsales_banner_module' ).val();
 
-			if (typeof banner == 'undefined' ) {
+			if (typeof module == 'undefined' ) {
 				return;
 			}
 
-			if (banner.length < 1 || banner == 'no') {
+			if (module == '') {
 				$( '#swsales_banner_options' ).hide();
-				$( '#swsales_css_selectors_description' ).hide();
-				$( '.swsales_banner_css_selectors' ).hide();
 			} else {
-				$( '#swsales_css_selectors_description' ).show();
-				$( '.swsales_banner_css_selectors' ).hide();
-				$( '.swsales_banner_css_selectors[data-swsales-banner=' + banner + ']' ).show();
 				$( '#swsales_banner_options' ).show();
 			}
+
+			$( '.swsales_banner_module_settings' ).hide();
+			if ( $( '#swsales_banner_settings_' + module ).length ) {
+				$( '#swsales_banner_settings_' + module ).show();
+			}
 		}
-		$( '#swsales_use_banner_select' ).change(
+		$( '#swsales_banner_module' ).change(
 			function(){
 				swsales_toggle_banner_settings();
 			}
