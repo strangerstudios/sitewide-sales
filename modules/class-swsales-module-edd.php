@@ -316,8 +316,8 @@ class SWSales_Module_EDD {
 			return $price;
 		}
 
-		//If it's a variable price, don't strike through - we need to hook into edd_get_variable_prices
-		if( edd_has_variable_prices( $download_id ) ){
+		// If it's a variable price, don't strike through.
+		if ( edd_has_variable_prices( $download_id ) ) {
 			return $price;
 		}
 
