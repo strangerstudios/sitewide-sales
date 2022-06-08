@@ -165,12 +165,12 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-edd-metaboxes.js
+	 * Enqueues /modules/ecommerce/edd/swsales-module-edd-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_edd_metaboxes', plugins_url( 'modules/js/swsales-module-edd-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_edd_metaboxes', plugins_url( 'modules/ecommerce/edd/swsales-module-edd-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_edd_metaboxes' );
 
 			wp_localize_script(
