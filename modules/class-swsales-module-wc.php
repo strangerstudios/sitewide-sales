@@ -111,7 +111,7 @@ class SWSales_Module_WC {
 						<?php
 						if ( false !== $coupon_found ) {
 							$coupon_obj = new \WC_Coupon( $coupon_found->ID );
-							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date("Y-m-d") >= ( $coupon_obj->get_date_expires() )->date( 'Y-m-d' ) ) {
+							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) < ( $coupon_obj->get_date_expires() )->date( 'Y-m-d H:i:s' ) ) {
 								echo "<p id='swsales_wc_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
