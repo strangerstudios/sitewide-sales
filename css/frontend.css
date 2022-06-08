@@ -182,6 +182,25 @@
 }
 
 /* Theme Compatibility Specific Styles */
+.swsales-sr-only {
+	border: 0;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
+.swsales-sr-only-focusable:active,
+.swsales-sr-only-focusable:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+}
 
 /* Twenty Nineteen */
 .theme-twentynineteen .swsales-landing-page-wrap h1:not(.site-title):before,
