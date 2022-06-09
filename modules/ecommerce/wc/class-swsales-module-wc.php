@@ -254,26 +254,6 @@ class SWSales_Module_WC {
 	}
 
 	/**
-	 * Returns whether the banner should be shown for the current Sitewide Sale.
-	 *
-	 * @param boolean               $show_banner current value from filter.
-	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
-	 * @return boolean
-	 */
-	public static function show_banner( $show_banner, $sitewide_sale ) {
-		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
-			return $show_banner;
-		}
-
-		// If the landing page for sale is the "Shop" page, hide the banner.
-		$landing_page_post_id = $sitewide_sale->get_landing_page_post_id();
-		if ( ! empty( $landing_page_post_id ) && get_option( 'woocommerce_shop_page_id' ) === $landing_page_post_id && is_shop() ) {
-			return false;
-		}
-		return $show_banner;
-	}
-
-	/**
 	 * Get the coupon for a sitewide sale.
 	 * Callback for the swsales_coupon filter.
 	 */
