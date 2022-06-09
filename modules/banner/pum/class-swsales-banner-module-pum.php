@@ -21,7 +21,7 @@ class SWSales_Banner_Module_PUM extends SWSales_Banner_Module {
 	}
 
 	/**
-	 * Filters whether a popup  is loadable so that we can hide popups that
+	 * Filters whether a popup is loadable so that we can hide popups that
 	 * are linked to inactive sales.
 	 *
 	 * @param bool   $loadable Whether the popup is loadable.
@@ -122,6 +122,7 @@ class SWSales_Banner_Module_PUM extends SWSales_Banner_Module {
 					}
 					?>
 				</select>
+				<p class="description"><?php esc_html_e( 'Select a Popup Maker popup to use for this sale.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<?php
