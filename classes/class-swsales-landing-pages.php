@@ -32,8 +32,15 @@ class SWSales_Landing_Pages {
 	public static function shortcode( $atts ) {
 		$sitewide_sale = new SWSales_Sitewide_Sale();
 
-		if ( is_array( $atts ) && array_key_exists( 'sitewide_sale_id', $atts ) ) {
-			$sale_found = $sitewide_sale->load_sitewide_sale( $atts['sitewide_sale_id'] );
+		// $atts    ::= array of attributes
+		extract( shortcode_atts( array(
+			'sitewide_sale_id' => '',
+			'time_period' => ''
+		), $atts ) );
+
+		// Get the Sitewide Sale to show for this shortcode output from atts or load the active sale.
+		if ( ! empty( $sitewide_sale_id ) ) {
+			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
 			if ( ! $sale_found ) {
 				return '';
 			}
@@ -52,24 +59,35 @@ class SWSales_Landing_Pages {
 			}
 			$sitewide_sale->load_sitewide_sale( $sitewide_sales[0]->ID );
 		}
-		$time_period = $sitewide_sale->get_time_period();
 
+		// Get the time period for the sale based on sale settings and current date.
+		$sale_period = $sitewide_sale->get_time_period();
+
+		// Allow admins to preview the sale period using a URL attribute.
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_time_period'] ) ) {
-			$time_period = $_REQUEST['swsales_preview_time_period'];
-		} elseif ( is_array( $atts ) && array_key_exists( 'time_period', $atts ) ) {
-			$time_period = $atts['time_period'];
+			$sale_period = $_REQUEST['swsales_preview_time_period'];
 		}
 
 		// Our return string.
 		$r = '';
-		$r .= '<div class="swsales-landing-page-content swsales-landing-page-content-' . $time_period . '">';
-		$r .= apply_filters( 'the_content', $sitewide_sale->get_sale_content_for_time_period( $time_period ) );
-		$r .= '</div> <!-- .swsales_landing_content -->';
 
-		// Template specific filter.
-		$landing_template = $sitewide_sale->get_landing_page_template();
-		if ( ! empty( $landing_template ) ) {
-			$r = apply_filters( 'swsales_landing_page_content_' . $landing_template, $r, $sitewide_sale );
+		/**
+		 * If there is no period in shortcode atts, output the contents.
+		 * If the shortcode atts period matches the sale period, output the contents.
+		 * Otherwise, output nothing.
+		 */
+		if ( empty( $time_period ) || ! empty( $time_period ) && $sale_period === $time_period ) {
+			$r .= '<div class="swsales-landing-page-content swsales-landing-page-content-' . $sale_period . '">';
+			$r .= apply_filters( 'the_content', $sitewide_sale->get_sale_content_for_time_period( $sale_period ) );
+			$r .= '</div> <!-- .swsales_landing_content -->';
+		}
+
+		// Template specific filter only if we have a return string to adjust.
+		if ( ! empty( $r ) ) {
+			$landing_template = $sitewide_sale->get_landing_page_template();
+			if ( ! empty( $landing_template ) ) {
+				$r = apply_filters( 'swsales_landing_page_content_' . $landing_template, $r, $sitewide_sale );
+			}
 		}
 
 		// Filter for themes and plugins to modify the [sitewide_sales] shortcode output.	
