@@ -72,7 +72,11 @@ class SWSales_Landing_Pages {
 		 * Otherwise, output nothing.
 		 */
 		if ( empty( $time_period ) || ! empty( $time_period ) && $sale_period === $time_period ) {
-			$r .= wpautop( $sitewide_sale->get_sale_content_for_time_period( $sale_period ) );
+			if ( ! empty( $content ) ) {
+				$r .= $content;	
+			} else {
+				$r .= wpautop( $sitewide_sale->get_sale_content_for_time_period( $sale_period ) );
+			}
 		}
 
 		return $r;
