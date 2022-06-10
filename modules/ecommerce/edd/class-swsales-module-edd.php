@@ -316,6 +316,11 @@ class SWSales_Module_EDD {
 			return $price;
 		}
 
+		// If it's a variable price, don't strike through.
+		if ( edd_has_variable_prices( $download_id ) ) {
+			return $price;
+		}
+
 		// Check if we are on the landing page
 		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
 		$on_landing_page                  = ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id );

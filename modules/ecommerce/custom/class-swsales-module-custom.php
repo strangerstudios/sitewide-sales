@@ -72,7 +72,7 @@ class SWSales_Module_Custom {
 			<th><label for="swsales_custom_confirmation_url"><?php esc_html_e( 'Confirmation Page URL', 'sitewide-sales' ); ?></label></th>
 			<td>
 				<input type="text" class="swsales_option" id="swsales_custom_confirmation_url" name="swsales_custom_confirmation_url" value='<?php echo esc_url( $confirmation_url ); ?>'>
-				<p class="description"><?php esc_html_e( "If you would like to track checkout conversions, enter the URL that your users are sent to after completing checkout.", 'sitewide-sales' ) ?></p>
+				<p class="description"><?php esc_html_e( "If you would like to track checkout conversions, enter the full URL that your users are sent to after completing checkout.", 'sitewide-sales' ) ?></p>
 			</td>
 		</tr>
 		<tr class='swsales-module-row swsales-module-row-custom'>
@@ -158,11 +158,11 @@ class SWSales_Module_Custom {
 	}
 
 	/**
-	 * Set PMPro module total revenue for Sitewide Sale report.
+	 * Set custom module total revenue for Sitewide Sale report.
 	 *
 	 * @param string               $cur_revenue set by filter.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @param bool                 $format_price whether to run output through pmpro_formatPrice().
+	 * @param bool                 $format_price whether to run output through format_price().
 	 * @return string
 	 */
 	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = true ) {
@@ -171,7 +171,217 @@ class SWSales_Module_Custom {
 		}
 		$checkout_conversions = intval( $sitewide_sale->get_meta_value( 'swsales_custom_conversions', 0 ) );
 		$average_order_value = floatval( $sitewide_sale->get_meta_value( 'swsales_custom_average_order_value', 0 ) );
-		return $checkout_conversions * $average_order_value ? number_format( $checkout_conversions * $average_order_value, 2 ) : 'N/A';
+		$sale_rev = $checkout_conversions * $average_order_value;
+		if ( ! empty( $sale_rev ) ) {
+			return $format_price ? self::format_price( $sale_rev ) : $sale_rev;	
+		} else {
+			return __( 'N/A', 'sitewide-sales' );
+		}
+	}
+
+	/**
+	 * Get full list of currencies and price formats.
+	 *
+	 * @return array
+	 */
+	public static function get_currencies() {
+		$swsales_currencies = apply_filters(
+			'swsales_custom_currencies',
+			array(
+				'USD' => __('US Dollars (&#36;)', 'sitewide-sales' ),
+				'EUR' => array(
+					'name' => __('Euros (&euro;)', 'sitewide-sales' ),
+					'symbol' => '&euro;',
+					'position' => apply_filters( 'swsales_custom_euro_position', self::get_euro_position_from_locale() )
+					),
+				'GBP' => array(
+					'name' => __('Pounds Sterling (&pound;)', 'sitewide-sales' ),
+					'symbol' => '&pound;',
+					'position' => 'left'
+					),
+				'ARS' => __('Argentine Peso (&#36;)', 'sitewide-sales' ),
+				'AUD' => __('Australian Dollars (&#36;)', 'sitewide-sales' ),
+				'BRL' => array(
+					'name' => __('Brazilian Real (R&#36;)', 'sitewide-sales' ),
+					'symbol' => 'R&#36;',
+					'position' => 'left'
+					),
+				'CAD' => __('Canadian Dollars (&#36;)', 'sitewide-sales' ),
+				'CNY' => __('Chinese Yuan', 'sitewide-sales' ),
+				'CZK' => array(
+					'name' => __('Czech Koruna', 'sitewide-sales' ),
+					'decimals' => '2',
+					'thousands_separator' => '&nbsp;',
+					'decimal_separator' => ',',
+					'symbol' => '&nbsp;Kč',
+					'position' => 'right',
+					),
+				'DKK' => array(
+					'name' =>__('Danish Krone', 'sitewide-sales' ),
+					'decimals' => '2',
+					'thousands_separator' => '&nbsp;',
+					'decimal_separator' => ',',
+					'symbol' => 'DKK&nbsp;',
+					'position' => 'left',
+					),
+				'GHS' => array(
+					'name' => __('Ghanaian Cedi (&#8373;)', 'sitewide-sales' ),
+					'symbol' => '&#8373;',
+					'position' => 'left',
+					),
+				'HKD' => __('Hong Kong Dollar (&#36;)', 'sitewide-sales' ),
+				'HUF' => __('Hungarian Forint', 'sitewide-sales' ),
+				'INR' => __('Indian Rupee', 'sitewide-sales' ),
+				'IDR' => __('Indonesia Rupiah', 'sitewide-sales' ),
+				'ILS' => __('Israeli Shekel', 'sitewide-sales' ),
+				'JPY' => array(
+					'name' => __('Japanese Yen (&yen;)', 'sitewide-sales' ),
+					'symbol' => '&yen;',
+					'position' => 'left',
+					'decimals' => 0,
+					),
+				'KES' => __('Kenyan Shilling', 'sitewide-sales' ),
+				'MYR' => __('Malaysian Ringgits', 'sitewide-sales' ),
+				'MXN' => __('Mexican Peso (&#36;)', 'sitewide-sales' ),
+				'NGN' => __('Nigerian Naira (&#8358;)', 'sitewide-sales' ),
+				'NZD' => __('New Zealand Dollar (&#36;)', 'sitewide-sales' ),
+				'NOK' => __('Norwegian Krone', 'sitewide-sales' ),
+				'PHP' => __('Philippine Pesos', 'sitewide-sales' ),
+				'PLN' => __('Polish Zloty', 'sitewide-sales' ),
+				'RON' => array(
+						'name' => __( 'Romanian Leu', 'sitewide-sales' ),
+						'decimals' => '2',
+						'thousands_separator' => '.',
+						'decimal_separator' => ',',
+						'symbol' => '&nbsp;Lei',
+						'position' => 'right'
+				),
+				'RUB' => array(
+					'name' => __('Russian Ruble (&#8381;)', 'sitewide-sales'),
+					'decimals' => '2',
+					'thousands_separator' => '&nbsp;',
+					'decimal_separator' => ',',
+					'symbol' => '&#8381;',
+					'position' => 'right'
+				),
+				'SGD' => array(
+					'name' => __('Singapore Dollar (&#36;)', 'sitewide-sales' ),
+					'symbol' => '&#36;',
+					'position' => 'right'
+					),
+				'ZAR' => array(
+					'name' => __('South African Rand (R)', 'sitewide-sales' ),
+					'symbol' => 'R ',
+					'position' => 'left'
+				),
+				'KRW' => array(
+					'name' => __('South Korean Won', 'sitewide-sales' ),
+					'decimals' => 0,
+					),
+				'SEK' => __('Swedish Krona', 'sitewide-sales' ),
+				'CHF' => __('Swiss Franc', 'sitewide-sales' ),
+				'TWD' => __('Taiwan New Dollars', 'sitewide-sales' ),
+				'THB' => __('Thai Baht', 'sitewide-sales' ),
+				'TRY' => __('Turkish Lira', 'sitewide-sales' ),
+				'UAH' => array(
+					'name' => __('Ukrainian Hryvnia (&#8372;)', 'sitewide-sales' ),
+					'decimals' => 0,
+					'thousands_separator' => '',
+					'decimal_separator' => ',',
+					'symbol' => '&#8372;',
+					'position' => 'right'
+					),
+				'VND' => array(
+					'name' => __('Vietnamese Dong', 'sitewide-sales' ),
+					'decimals' => 0,
+					),
+				)
+			);
+		return $swsales_currencies;
+	}
+
+	/**
+	 * Get custom module currency for Sitewide Sale reports.
+	 *
+	 * @return array
+	 */
+	public static function get_currency( $currency = null ) {
+		// Get the default currency for this site.
+		$currency = apply_filters( 'swsales_custom_currency', 'USD' );
+
+		// Get all currencies.
+		$currencies = self::get_currencies();
+
+		// Defaults.
+		$currency_array = array(
+			'name' =>__('US Dollars (&#36;)', 'paid-memberships-pro' ),
+			'decimals' => '2',
+			'thousands_separator' => ',',
+			'decimal_separator' => '.',
+			'symbol' => '&#36;',
+			'position' => 'left',
+		);
+
+		if ( ! empty( $currency ) ) {
+			if ( is_array( $currencies[$currency] ) ) {
+				$currency_array = array_merge( $currency_array, $currencies[$currency] );
+			} else {
+				$currency_array['name'] = $currencies[$currency];
+			}
+		}
+
+		return $currency_array;
+	}
+
+	/**
+	 * Get the Euro position based on locale.
+	 * English uses left, others use right.
+	 */
+	public static function get_euro_position_from_locale( $position = 'right' ) {
+		$locale = get_locale();
+		if ( strpos( $locale, 'en_' ) === 0 ) {
+			$position = 'left';
+		}
+		return $position;
+	}
+
+	/**
+	 * Format a price per the currency settings.
+	 *
+	 * @return string
+	 */
+	public static function format_price( $price ) {
+		$currency_array = self::get_currency();
+
+		$currency_symbol = isset( $currency_array['symbol'] ) ? $currency_array['symbol'] : '&#36;';
+		$decimals = isset( $currency_array['decimals'] ) ? (int) $currency_array['decimals'] : '2';
+		$decimal_separator = isset( $currency_array['decimal_separator'] ) ? $currency_array['decimal_separator'] : '.';
+		$thousands_separator = isset( $currency_array['thousands_separator'] ) ? $currency_array['thousands_separator'] : ',';
+		$symbol_position = isset( $currency_array['position'] ) ? $currency_array['position'] : 'left';
+
+		// Settings stored in array?
+		if ( ! empty( $currency_array ) && is_array( $currency_array ) ) {
+			// Format number, do decimals, with decimal_separator and thousands_separator
+			$formatted = number_format(
+				$price,
+				$decimals,
+				$decimal_separator,
+				$thousands_separator
+			);
+
+			// Which side is the symbol on?
+			if ( ! empty( $symbol_position ) && $symbol_position == 'left' ) {
+				$formatted = $currency_symbol . $formatted;
+			} else {
+				$formatted = $formatted . $currency_symbol;
+			}
+		} else {
+			// Default to symbol on the left, 2 decimals using . and ,
+			$formatted = $currency_symbol . number_format( $formatted, $decimals );
+		}
+
+		// Return the formatted price.
+		return $formatted;
 	}
 }
 SWSales_Module_Custom::init();
