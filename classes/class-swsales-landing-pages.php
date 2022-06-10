@@ -47,19 +47,12 @@ class SWSales_Landing_Pages {
 				return '';
 			}
 		} else {
-			$post_id       = get_the_ID();
-			$sitewide_sales = get_posts(
-				array(
-					'post_type'      => 'sitewide_sale',
-					'meta_key'       => 'swsales_landing_page_post_id',
-					'meta_value'     => '' . $post_id,
-					'posts_per_page' => 1,
-				)
-			);
-			if ( 0 === count( $sitewide_sales ) ) {
+			// Get the Sitewide Sale associated with this post.
+			$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'swsales_sitewide_sale_id', true );
+			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+			if ( ! $sale_found ) {
 				return '';
 			}
-			$sitewide_sale->load_sitewide_sale( $sitewide_sales[0]->ID );
 		}
 
 		// Get the time period for the sale based on sale settings and current date.
@@ -139,7 +132,7 @@ class SWSales_Landing_Pages {
 
 			// Load the sale.
 			$sitewide_sale = new SWSales_Sitewide_Sale();
-			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+			$sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
 
 			// Get the time period for the sale based on sale settings and current date.
 			$sale_period = $sitewide_sale->get_time_period();
