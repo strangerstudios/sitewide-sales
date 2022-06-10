@@ -111,7 +111,7 @@ class SWSales_Module_WC {
 						<?php
 						if ( false !== $coupon_found ) {
 							$coupon_obj = new \WC_Coupon( $coupon_found->ID );
-							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date("Y-m-d") >= ( $coupon_obj->get_date_expires() )->date( 'Y-m-d' ) ) {
+							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) < ( $coupon_obj->get_date_expires() )->date( 'Y-m-d H:i:s' ) ) {
 								echo "<p id='swsales_wc_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
@@ -152,12 +152,12 @@ class SWSales_Module_WC {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-wc-metaboxes.js
+	 * Enqueues modules/ecommerce/wc/swsales-module-wc-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_wc_metaboxes', plugins_url( 'modules/js/swsales-module-wc-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_wc_metaboxes', plugins_url( 'modules/ecommerce/wc/swsales-module-wc-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_wc_metaboxes' );
 
 			wp_localize_script(

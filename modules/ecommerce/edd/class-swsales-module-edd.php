@@ -165,12 +165,12 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-edd-metaboxes.js
+	 * Enqueues /modules/ecommerce/edd/swsales-module-edd-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_edd_metaboxes', plugins_url( 'modules/js/swsales-module-edd-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_edd_metaboxes', plugins_url( 'modules/ecommerce/edd/swsales-module-edd-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_edd_metaboxes' );
 
 			wp_localize_script(
@@ -313,6 +313,11 @@ class SWSales_Module_EDD {
 		}
 		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
 		if ( null === $coupon_id ) {
+			return $price;
+		}
+
+		// If it's a variable price, don't strike through.
+		if ( edd_has_variable_prices( $download_id ) ) {
 			return $price;
 		}
 

@@ -231,49 +231,17 @@ class SWSales_MetaBoxes {
 				<tr>
 					<th scope="row" valign="top"><label for="swsales_start_date"><?php esc_html_e( 'Sale Start Date', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<select id="swsales_start_month" name="swsales_start_month">
-							<?php
-							for ( $i = 1; $i < 13; $i++ ) {
-								?>
-								<option value="<?php echo esc_attr( $i ); ?>" 
-														<?php
-														if ( $i == $cur_sale->get_start_date( 'm' ) ) {
-															?>
-									selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_start_year(), current_time( 'timestamp' ) ) ); ?></option>
-								<?php
-							}
-							?>
-						</select>
-						<input id="swsales_start_day" name="swsales_start_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_date( 'd' ) ); ?>" />
-						<input id="swsales_start_year" name="swsales_start_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_start_date( 'Y' ) ); ?>" />
-						<?php esc_html_e( 'at', 'sitewide-sales' ); ?>
-						<input id="swsales_start_hour" name="swsales_start_hour" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_date( 'H' ) ); ?>"/> :
-						<input id="swsales_start_minute" name="swsales_start_minute" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_start_date( 'i' ) ); ?>"/>
-						<p class="description"><?php esc_html_e( 'Set this date to the first day of your sale.', 'sitewide-sales' ); ?></p>
+						<input id="swsales_start_day" name="swsales_start_day" type="date" lang="<?php echo esc_attr( get_locale() ); ?>" value="<?php echo esc_attr( $cur_sale->get_start_date( 'Y-m-d' ) ); ?>" />
+						<input id="swsales_start_time" name="swsales_start_time" type="time" lang="<?php echo esc_attr( get_locale() ); ?>" value="<?php echo esc_attr( $cur_sale->get_start_date( 'H:i' ) ); ?>" />
+						<p class="description"><?php esc_html_e( 'Set this date and time to when your sale should begin.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row" valign="top"><label for="swsales_end_date"><?php esc_html_e( 'Sale End Date', 'sitewide-sales' ); ?></label></th>
 					<td>
-					<select id="swsales_end_month" name="swsales_end_month">
-						<?php
-						for ( $i = 1; $i < 13; $i++ ) {
-							?>
-							<option value="<?php echo esc_attr( $i ); ?>" 
-													<?php
-													if ( $i == $cur_sale->get_end_date( 'm' ) ) {
-														?>
-								selected="selected"<?php } ?>><?php echo date_i18n( 'M', strtotime( $i . '/15/' . $cur_sale->get_end_year(), current_time( 'timestamp' ) ) ); ?></option>
-							<?php
-						}
-						?>
-					</select>
-					<input id="swsales_end_day" name="swsales_end_day" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_date( 'd' ) ); ?>" />
-					<input id="swsales_end_year" name="swsales_end_year" type="text" size="4" value="<?php echo esc_attr( $cur_sale->get_end_date( 'Y' ) ); ?>" />
-					<?php esc_html_e( 'at', 'sitewide-sales' ); ?>
-					<input id="swsales_end_hour" name="swsales_end_hour" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_date( 'H' ) ); ?>"/> :
-					<input id="swsales_end_minute" name="swsales_end_minute" type="text" size="2" value="<?php echo esc_attr( $cur_sale->get_end_date( 'i' ) ); ?>"/>
-					<p class="description"><?php esc_html_e( 'Set this date to the last full day of your sale.', 'sitewide-sales' ); ?></p>
+						<input id="swsales_end_day" name="swsales_end_day" type="date" lang="<?php echo esc_attr( get_locale() ); ?>" value="<?php echo esc_attr( $cur_sale->get_end_date( 'Y-m-d' ) ); ?>" />
+						<input id="swsales_end_time" name="swsales_end_time" type="time" lang="<?php echo esc_attr( get_locale() ); ?>" value="<?php echo esc_attr( $cur_sale->get_end_date( 'H:i' ) ); ?>" />
+						<p class="description"><?php esc_html_e( 'Set this date and time to when your sale should end.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?></label></th>
@@ -548,104 +516,41 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 
-		$use_banner = $cur_sale->get_use_banner();
-		$banner_template = $cur_sale->get_banner_template()
+		$banner_modules        = apply_filters( 'swsales_banner_modules', array() );
+		$current_banner_module = $cur_sale->swsales_banner_module;
 
 		?>
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<select class="use_banner_select swsales_option" id="swsales_use_banner_select" name="swsales_use_banner">
-							<option value="no" <?php selected( $use_banner, 'no' ); ?>><?php esc_html_e( 'No', 'sitewide-sales' ); ?></option>
+						<select class="swsales_option" id="swsales_banner_module" name="swsales_banner_module">
+							<option value=""><?php esc_html_e( 'Do not use a banner.', 'sitewide-sales' ); ?></option>
 							<?php
-								$registered_banners = SWSales_Banners::get_registered_banners();
-							foreach ( $registered_banners as $banner => $data ) {
-								if ( is_string( $banner ) && is_array( $data ) && ! empty( $data['option_title'] ) && is_string( $data['option_title'] ) ) {
-									echo '<option value="' . esc_attr( $banner ) . '"' . selected( $use_banner, $banner ) . '>' . esc_html( $data['option_title'] ) . '</option>';
-								}
+							foreach ( $banner_modules as $label => $module ) {
+								echo '<option value="' . esc_attr( $module ) . '"' . selected( $current_banner_module, $module ) . '>' . esc_html( $label ) . '</option>';
 							}
 							?>
 						</select>
-						<input type="submit" class="button button-secondary" id="swsales_preview" name="swsales_preview" value="<?php esc_attr_e( 'Save and Preview', 'sitewide-sales' ); ?>">
 						<p class="description"><?php esc_html_e( 'Optionally display a banner, which you can customize using additional settings below, to advertise your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<table class="form-table" id="swsales_banner_options"<?php if ( $use_banner === 'no' ) { ?> style="display: none;"<?php } ?>>
+		<?php
+		foreach ( $banner_modules as $label => $module ) {
+			?>
+			<table class="form-table swsales_banner_module_settings" id="swsales_banner_settings_<?php echo esc_attr( $module ) ?>">
+			<?php
+			$module::echo_banner_settings_html( $cur_sale );
+			?>
+			</table>
+			<?php
+		}
+		?>
+		<table class="form-table" id="swsales_banner_options">
 			<tbody>
-				<tr>
-					<th><label for="swsales_banner_template"><?php esc_html_e( 'Banner Template', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<select class="banner_select_template swsales_option" id="swsales_banner_template" name="swsales_banner_template">
-							<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
-							<?php
-							$templates = SWSales_Templates::get_templates();
-							$templates = apply_filters( 'swsales_banner_templates', $templates );
-							foreach ( $templates as $key => $value ) {
-								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $banner_template, $key ) . '>' . esc_html( $value ) . '</option>';
-							}
-							?>
-						</select>
-						<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<input type="text" name="swsales_banner_title" value="<?php echo esc_attr( $cur_sale->get_banner_title() ); ?>">
-						<p class="description"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="swsales_banner_text"><?php esc_html_e( 'Banner Text', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo esc_textarea( $cur_sale->get_banner_text(), 'sitewide-sales' ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<input class="swsales_option" type="text" name="swsales_link_text" value="<?php echo esc_attr( $cur_sale->get_link_text() ); ?>">
-						<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<textarea class="swsales_option" name="swsales_css_option"><?php echo esc_textarea( $cur_sale->get_css_option() ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'sitewide-sales' ); ?></p>
-
-						<p id="swsales_css_selectors_description" class="description" 
-						<?php
-						if ( empty( $use_banner ) || $use_banner == 'no' ) {
-							?>
- style="display:none;"<?php } ?>><?php esc_html_e( 'Use these selectors to alter the appearance of your banners.', 'sitewide-sales' ); ?></p>
-						<?php foreach ( $registered_banners as $key => $registered_banner ) { ?>
-							<div data-swsales-banner="<?php echo esc_attr( $key ); ?>" class="swsales_banner_css_selectors" 
-																  <?php
-																	if ( $key != $use_banner ) {
-																		?>
- style="display: none;"<?php } ?>>
-							<?php
-								$css_selectors = $registered_banner['css_selectors'];
-							if ( is_string( $css_selectors ) ) {
-								echo $css_selectors;
-							} elseif ( is_array( $css_selectors ) ) {
-								foreach ( $css_selectors as $css_selector ) {
-									if ( is_string( $css_selector ) ) {
-										echo $css_selector . ' { }<br/>';
-									}
-								}
-							}
-							?>
-							</div>
-						<?php } ?>
-					</td>
-				</tr>
 				<tr>
 					<?php
 						$checked_modifier = $cur_sale->get_hide_on_checkout() ? ' checked' : '';
@@ -756,21 +661,15 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_landing_page_template', sanitize_text_field( $_POST['swsales_landing_page_template'] ) );
 		}
 
-		if ( isset( $_POST['swsales_start_day'] ) && is_numeric( $_POST['swsales_start_day'] ) &&
-				isset( $_POST['swsales_start_month'] ) && is_numeric( $_POST['swsales_start_month'] ) &&
-				isset( $_POST['swsales_start_year'] ) && is_numeric( $_POST['swsales_start_year'] ) &&
-				isset( $_POST['swsales_start_hour'] ) && is_numeric( $_POST['swsales_start_hour'] ) &&
-				isset( $_POST['swsales_start_minute'] ) && is_numeric( $_POST['swsales_start_minute'] ) &&
-				isset( $_POST['swsales_end_day'] ) && is_numeric( $_POST['swsales_end_day'] ) &&
-				isset( $_POST['swsales_end_month'] ) && is_numeric( $_POST['swsales_end_month'] ) &&
-				isset( $_POST['swsales_end_year'] ) && is_numeric( $_POST['swsales_end_year'] ) &&
-				isset( $_POST['swsales_end_hour'] ) && is_numeric( $_POST['swsales_end_hour'] ) &&
-				isset( $_POST['swsales_end_minute'] ) && is_numeric( $_POST['swsales_end_minute'] )
+		if ( isset( $_POST['swsales_start_day'] ) &&
+				isset( $_POST['swsales_start_time'] ) &&
+				isset( $_POST['swsales_end_day'] ) &&
+				isset( $_POST['swsales_end_time'] )
 		) {
-			$start_date = $_POST['swsales_start_year'] . '-' . $_POST['swsales_start_month'] . '-' . $_POST['swsales_start_day'] . ' ' . $_POST['swsales_start_hour'] . ':' . $_POST['swsales_start_minute'] . ':00' ;
+			$start_date = $_POST['swsales_start_day'] . ' ' . $_POST['swsales_start_time'] . ':00' ;
 			update_post_meta( $post_id, 'swsales_start_date', $start_date );
-			$start_date = $_POST['swsales_end_year'] . '-' . $_POST['swsales_end_month'] . '-' . $_POST['swsales_end_day'] . ' ' . $_POST['swsales_end_hour'] . ':' . $_POST['swsales_end_minute'] . ':00' ;
-			update_post_meta( $post_id, 'swsales_end_date', $start_date );
+			$end_date = $_POST['swsales_end_day'] . ' ' . $_POST['swsales_end_time'] . ':00' ;
+			update_post_meta( $post_id, 'swsales_end_date', $end_date );
 		}
 
 		if ( isset( $_POST['swsales_pre_sale_content'] ) ) {
@@ -785,36 +684,8 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_post_sale_content', wp_kses_post( $_POST['swsales_post_sale_content'] ) );
 		}
 
-		$possible_options = array_merge( array( 'no' => 'no' ), SWSales_Banners::get_registered_banners() );
-		if ( isset( $_POST['swsales_use_banner'] ) && array_key_exists( $_POST['swsales_use_banner'], $possible_options ) ) {
-			update_post_meta( $post_id, 'swsales_use_banner', sanitize_text_field( $_POST['swsales_use_banner'] ) );
-		}
-
-		if ( isset( $_POST['swsales_banner_template'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_template', sanitize_text_field( $_POST['swsales_banner_template'] ) );
-		}
-
-		if ( ! empty( $_POST['swsales_banner_title'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_title', wp_kses_post( $_POST['swsales_banner_title'] ) );
-		} elseif ( isset( $_POST['swsales_banner_title'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_title', $post->post_title );
-		}
-
-		if ( isset( $_POST['swsales_banner_text'] ) ) {
-			$post->post_content = trim( wp_kses_post( stripslashes( $_POST['swsales_banner_text'] ) ) );
-			remove_action( 'save_post', array( __CLASS__, 'save_swsales_metaboxes' ) );
-			wp_update_post( $post, true );
-			add_action( 'save_post', array( __CLASS__, 'save_swsales_metaboxes' ), 10, 2 );
-		}
-
-		if ( ! empty( $_POST['swsales_link_text'] ) ) {
-			update_post_meta( $post_id, 'swsales_link_text', wp_kses_post( stripslashes( $_POST['swsales_link_text'] ) ) );
-		} elseif ( isset( $_POST['swsales_link_text'] ) ) {
-			update_post_meta( $post_id, 'swsales_link_text', 'Buy Now' );
-		}
-
-		if ( isset( $_POST['swsales_css_option'] ) ) {
-			update_post_meta( $post_id, 'swsales_css_option', wp_kses_post( stripslashes( $_POST['swsales_css_option'] ) ) );
+		if ( isset( $_POST['swsales_banner_module'] ) ) {
+			update_post_meta( $post_id, 'swsales_banner_module', sanitize_text_field( $_POST['swsales_banner_module'] ) );
 		}
 
 		if ( ! empty( $_POST['swsales_hide_on_checkout'] ) ) {
@@ -830,6 +701,11 @@ class SWSales_MetaBoxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		SWSales_Settings::save_options( $options );
+	
+		$banner_modules = apply_filters( 'swsales_banner_modules', array() );
+		foreach ( $banner_modules as $label => $module ) {
+			$module::save_banner_settings_if_module_active( $post_id, $post );
+		}
 
 		do_action( 'swsales_save_metaboxes', $post_id, $post );
 
