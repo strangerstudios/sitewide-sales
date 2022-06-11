@@ -212,13 +212,21 @@ class SWSales_Module_PMPro {
 						<input type="hidden" name="swsales_pmpro_hide_for_levels_exists" value="1" />
 						<select multiple class="swsales_option" id="swsales_pmpro_hide_levels_select" name="swsales_pmpro_hide_for_levels[]" style="width:12em">
 						<?php
+							// Get all levels in PMPro settings.
 							$all_levels = pmpro_getAllLevels( true, true );
 							$all_levels = pmpro_sort_levels_by_order( $all_levels );
-							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', array() ) );
-						foreach ( $all_levels as $level ) {
-							$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
-							echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
-						}
+
+							// Get the meta value for levels this banner should be hidden for.
+							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
+
+							// If the hidden levels is an empty string, convert to an array.
+							$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
+
+							// Loop through and display all level options.
+							foreach ( $all_levels as $level ) {
+								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
+								echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
+							}
 						?>
 						</select>
 						<p class="description"><?php esc_html_e( 'This setting will hide the banner for members of the selected levels.', 'sitewide-sales' ); ?></p>
@@ -703,9 +711,16 @@ class SWSales_Module_PMPro {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $show_banner;
 		}
-		// Hide for users with membership in $hide_for_levels.
-		$hide_for_levels  = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', array() ) );
+		// Get the meta value for levels this banner should be hidden for.
+		$hide_for_levels = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
+
+		// If the hidden levels is an empty string, convert to an array.
+		$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
+
+		// Get the current user's membership level.
 		$membership_level = pmpro_getMembershipLevelForUser();
+
+		// If this banner is hidden by level, check if the current user should see it.
 		if ( ! empty( $hide_for_levels ) && ! empty( $membership_level )
 			&& in_array( $membership_level->ID, $hide_for_levels ) ) {
 			return false;
