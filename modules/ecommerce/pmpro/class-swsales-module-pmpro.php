@@ -172,6 +172,7 @@ class SWSales_Module_PMPro {
 					<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
 					<?php
 						$all_levels = pmpro_getAllLevels( true, true );
+						$all_levels = pmpro_sort_levels_by_order( $all_levels );
 						$default_level = $cur_sale->get_meta_value( 'swsales_pmpro_landing_page_default_level', null );
 					foreach ( $all_levels as $level ) {
 						?>
@@ -213,6 +214,7 @@ class SWSales_Module_PMPro {
 						<?php
 							// Get all levels in PMPro settings.
 							$all_levels = pmpro_getAllLevels( true, true );
+							$all_levels = pmpro_sort_levels_by_order( $all_levels );
 
 							// Get the meta value for levels this banner should be hidden for.
 							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
