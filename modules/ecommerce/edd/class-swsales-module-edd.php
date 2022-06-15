@@ -350,7 +350,7 @@ class SWSales_Module_EDD {
 					$discounted_price = $discount->get_discounted_amount( $download_price );
 					// Overwrite link text.
 					$discounted_price_formatted = edd_currency_filter( edd_format_amount( $discounted_price ) );
-					$price = '<del>' . $price . '</del> ' . $discounted_price_formatted;
+					$price = '<span class="screen-reader-text">' . __( 'Original price', 'sitewide-sales' ) . '</span> <s>' . $price . '</s> <span class="screen-reader-text">' . __( 'sale price', 'sitewide-sales' ) . '</span> ' . $discounted_price_formatted;
 				}
 			}
 		}
