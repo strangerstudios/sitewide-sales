@@ -526,14 +526,13 @@ class SWSales_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_banner_module" name="swsales_banner_module">
-							<option value=""><?php esc_html_e( 'Do not use a banner.', 'sitewide-sales' ); ?></option>
+							<option value=""><?php esc_html_e( 'Do not use a banner', 'sitewide-sales' ); ?></option>
 							<?php
 							foreach ( $banner_modules as $label => $module ) {
 								echo '<option value="' . esc_attr( $module ) . '"' . selected( $current_banner_module, $module ) . '>' . esc_html( $label ) . '</option>';
 							}
 							?>
 						</select>
-						<p class="description"><?php esc_html_e( 'Optionally display a banner, which you can customize using additional settings below, to advertise your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 			</tbody>

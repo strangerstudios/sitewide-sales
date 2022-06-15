@@ -34,9 +34,10 @@ class SWSales_Module_WC {
 		// Generate coupons from editing sitewide sale.
 		add_action( 'wp_ajax_swsales_wc_create_coupon', array( __CLASS__, 'create_coupon_ajax' ) );
 
-		// Custom WC banner rules (hide at checkout).
+		// Custom WC banner rules (hide at checkout or if landing page is 'Shop' page).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
-		
+		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );		
+
 		// For the swsales_coupon helper function
 		add_filter( 'swsales_coupon', array( __CLASS__, 'swsales_coupon' ), 10, 2 );
 
@@ -250,6 +251,26 @@ class SWSales_Module_WC {
 			return $is_checkout_page;
 		}
 		return ( ! empty( wc_get_page_id( 'cart' ) ) && is_page( wc_get_page_id( 'cart' ) ) ) ? true : $is_checkout_page;
+	}
+
+	/**
+	 * Returns whether the banner should be shown for the current Sitewide Sale.
+	 *
+	 * @param boolean               $show_banner current value from filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
+	 * @return boolean
+	 */
+	public static function show_banner( $show_banner, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $show_banner;
+		}
+
+		// If the landing page for sale is the "Shop" page, hide the banner.
+		$landing_page_post_id = $sitewide_sale->get_landing_page_post_id();
+		if ( ! empty( $landing_page_post_id ) && get_option( 'woocommerce_shop_page_id' ) === $landing_page_post_id && is_shop() ) {
+			return false;
+		}
+		return $show_banner;
 	}
 
 	/**
