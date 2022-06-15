@@ -22,9 +22,6 @@ define( 'SWSALES_BASENAME', plugin_basename( __FILE__ ) );
 
 require 'autoload.php';
 
-// Handles registering banners and displaying banners on frontend.
-classes\SWSales_Banners::init();
-
 // Sets up shortcode [sitewide_sales] and landing page-related code.
 classes\SWSales_Landing_Pages::init();
 
@@ -67,9 +64,13 @@ require_once ( 'includes/license.php' );
 
 // Load Ecommerce Modules
 function swsales_load_modules() {
-	require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-custom.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-edd.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/pmpro/class-swsales-module-pmpro.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/wc/class-swsales-module-wc.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/custom/class-swsales-module-custom.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/edd/class-swsales-module-edd.php';
+
+	require_once SWSALES_DIR . '/classes/class-swsales-banner-module.php';
+	require_once SWSALES_DIR . '/modules/banner/swsales/class-swsales-banner-module-swsales.php';
+	require_once SWSALES_DIR . '/modules/banner/pum/class-swsales-banner-module-pum.php';
 }
 add_action( 'init', 'Sitewide_Sales\\swsales_load_modules', 1 );

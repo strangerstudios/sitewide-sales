@@ -102,6 +102,9 @@
 	display: block;
 	height: 100px;
 }
+.post-type-sitewide_sale input[type=text] {
+	width: 88%;
+}
 .post-type-sitewide_sale textarea {
 	line-height: 1.4;
 	resize: vertical;

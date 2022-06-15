@@ -55,11 +55,6 @@ class SWSales_Sitewide_Sale {
 			'swsales_pre_sale_content'      => $this->get_pre_sale_content(),
 			'swsales_sale_content'          => $this->get_sale_content(),
 			'swsales_post_sale_content'     => $this->get_post_sale_content(),
-			'swsales_use_banner'            => $this->get_use_banner(),
-			'swsales_banner_template'       => $this->get_banner_template(),
-			'swsales_banner_title'          => $this->get_banner_title(),
-			'swsales_link_text'             => $this->get_link_text(),
-			'swsales_css_option'            => $this->get_css_option(),
 			'swsales_hide_on_checkout'      => $this->get_hide_on_checkout(),
 			'swsales_banner_impressions'    => $this->get_banner_impressions(),
 			'swsales_landing_page_visits'   => $this->get_landing_page_visits(),
@@ -417,78 +412,12 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns the style of banner to use, or
-	 * 'no' if no banner should be used
-	 *
-	 * @return string
-	 */
-	public function get_use_banner() {
-		if ( isset( $this->post_meta['swsales_use_banner'] ) ) {
-			return $this->post_meta['swsales_use_banner'];
-		} else {
-			return 'no';
-		}
-	}
-
-	/**
-	 * Returns banner template
-	 *
-	 * @return string
-	 */
-	public function get_banner_template() {
-		if ( isset( $this->post_meta['swsales_banner_template'] ) ) {
-			return $this->post_meta['swsales_banner_template'];
-		} else {
-			return '';
-		}
-	}
-
-	/**
-	 * Returns landing page template
-	 *
-	 * @return string
-	 */
-	public function get_banner_title() {
-		if ( isset( $this->post_meta['swsales_banner_title'] ) ) {
-			return $this->post_meta['swsales_banner_title'];
-		} else {
-			return 'Limited Time Offer';
-		}
-	}
-
-	/**
 	 * Returns landing page template
 	 *
 	 * @return string
 	 */
 	public function get_banner_text() {
 		return $this->banner_text;
-	}
-
-	/**
-	 * Returns link text
-	 *
-	 * @return string
-	 */
-	public function get_link_text() {
-		if ( isset( $this->post_meta['swsales_link_text'] ) ) {
-			return $this->post_meta['swsales_link_text'];
-		} else {
-			return 'Buy Now';
-		}
-	}
-
-	/**
-	 * Returns css option
-	 *
-	 * @return string
-	 */
-	public function get_css_option() {
-		if ( isset( $this->post_meta['swsales_css_option'] ) ) {
-			return $this->post_meta['swsales_css_option'];
-		} else {
-			return '';
-		}
 	}
 
 	/**
