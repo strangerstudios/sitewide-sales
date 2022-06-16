@@ -58,9 +58,13 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				$show_banner = false;
 			}
 		}
+
+		// Return nothing if we shouldn't show the banner.
+		if ( empty( $show_banner ) ) {
+			return;
+		}
 		
 		// Display the appropriate banner
-		// get_post_meta( $active_sitewide_sale, 'use_banner', true ) will be something like top, bottom, etc.
 		$registered_banners = self::get_registered_banners();
 
 		if ( array_key_exists( $banner_info['location'], $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_info['location'] ] ) ) {
