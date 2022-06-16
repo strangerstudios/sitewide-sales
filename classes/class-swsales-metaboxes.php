@@ -371,7 +371,7 @@ class SWSales_MetaBoxes {
 					<th><label for="swsales_landing_page_post_id"><?php esc_html_e( 'Landing Page', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="landing_page_select swsales_option" id="swsales_landing_page_select" name="swsales_landing_page_post_id">
-							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
+							<option value="0"><?php esc_html_e( '- No Landing Page -', 'sitewide-sales' ); ?></option>
 							<?php
 							$page_found = false;
 							foreach ( $pages as $page ) {
@@ -517,6 +517,7 @@ class SWSales_MetaBoxes {
 		}
 
 		$banner_modules        = apply_filters( 'swsales_banner_modules', array() );
+		ksort( $banner_modules );
 		$current_banner_module = $cur_sale->swsales_banner_module;
 
 		?>
@@ -526,7 +527,7 @@ class SWSales_MetaBoxes {
 					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_banner_module" name="swsales_banner_module">
-							<option value=""><?php esc_html_e( 'Do not use a banner', 'sitewide-sales' ); ?></option>
+							<option value=""><?php esc_html_e( '- No Banner -', 'sitewide-sales' ); ?></option>
 							<?php
 							foreach ( $banner_modules as $label => $module ) {
 								echo '<option value="' . esc_attr( $module ) . '"' . selected( $current_banner_module, $module ) . '>' . esc_html( $label ) . '</option>';

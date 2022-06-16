@@ -70,6 +70,7 @@ function swsales_load_modules() {
 	require_once SWSALES_DIR . '/modules/ecommerce/edd/class-swsales-module-edd.php';
 
 	require_once SWSALES_DIR . '/classes/class-swsales-banner-module.php';
+    require_once SWSALES_DIR . '/modules/banner/blocks/class-swsales-banner-module-blocks.php';
 	require_once SWSALES_DIR . '/modules/banner/swsales/class-swsales-banner-module-swsales.php';
 	require_once SWSALES_DIR . '/modules/banner/pum/class-swsales-banner-module-pum.php';
 }
