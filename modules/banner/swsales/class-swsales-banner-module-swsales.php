@@ -149,7 +149,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								break;
 							case 'show_bottom_banner':
 								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"></a>
+								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
 								<div class="swsales-banner-inner-left">
 									<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 									<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom', $active_sitewide_sale ); ?></p>
@@ -162,7 +162,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								break;
 							case 'show_bottom_right_banner':
 								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"></a>
+								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 								<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom_right', $active_sitewide_sale ); ?></p>
 								<?php
@@ -199,7 +199,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	 * @return string
 	 */
 	protected static function get_module_label() {
-		return __( 'Built-In Banners', 'sitewide-sales' );
+		return __( 'Custom Banner', 'sitewide-sales' );
 	}
 
 	/**
@@ -274,7 +274,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'sitewide-sales' ); ?></label></th>
 			<td>
 				<input class="swsales_option" type="text" name="swsales_banner_button_text" value="<?php echo esc_attr( $banner_info['button_text'] ); ?>">
-				<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'sitewide-sales' ); ?></p>
+				<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page. If you do not set a landing page, no button will be shown.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<tr>
@@ -397,7 +397,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 
 		$registered_banners = array(
 			'top'          => array(
-				'option_title'  => __( 'Yes, Top of Site', 'sitewide_Sales' ),
+				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
 					'#swsales-banner-top',
@@ -408,7 +408,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				),
 			),
 			'bottom'       => array(
-				'option_title'  => __( 'Yes, Bottom of Site', 'sitewide-sales' ),
+				'option_title'  => __( 'Bottom of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_banner' ),
 				'css_selectors' => array(
 					'#swsales-banner-bottom',
@@ -423,7 +423,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				),
 			),
 			'bottom_right' => array(
-				'option_title'  => __( 'Yes, Bottom Right of Site', 'sitewide-sales' ),
+				'option_title'  => __( 'Bottom Right of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
 				'css_selectors' => array(
 					'#swsales-banner-bottom-right',
