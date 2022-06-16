@@ -128,6 +128,19 @@ abstract class SWSales_Banner_Module {
 			return false;
 		}
 
+		// Check if we should hide the banner for this user's role.
+		$hide_for_roles = json_decode( $sitewide_sale->get_meta_value( 'swsales_hide_banner_by_role', '[]' ) );
+		if ( ! is_user_logged_in() ) {
+			$user_roles = array( 'logged_out' );
+		} else {
+			$user = wp_get_current_user();
+			$user_roles = ( array ) $user->roles;
+		}
+
+		if ( ! empty( array_intersect( $hide_for_roles, $user_roles ) ) ) {
+			return false;
+		}
+
 		// Give E-Commerce modules a chance to hide the banner.
 		return apply_filters( 'swsales_show_banner', true, $sitewide_sale );
 	}

@@ -11,6 +11,7 @@ jQuery( document ).ready(
 
 		// multiselects
 		$( "#swsales_landing_page_select" ).selectWoo();
+		$( "#swsales_hide_banner_by_role_select" ).selectWoo();
 
 		// removing some buttons from the edit post page for our CPT
 		jQuery( '.wp-editor-tabs' ).remove();
