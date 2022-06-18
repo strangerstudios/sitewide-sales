@@ -17,6 +17,7 @@ namespace Sitewide_Sales;
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 define( 'SWSALES_VERSION', '1.2' );
+define( 'SWSALES_BASE_FILE', __FILE__ );
 define( 'SWSALES_DIR', dirname( __FILE__ ) );
 define( 'SWSALES_BASENAME', plugin_basename( __FILE__ ) );
 
@@ -61,6 +62,7 @@ classes\SWSales_License::init();
 // Helper functions
 require_once ( 'includes/functions.php' );
 require_once ( 'includes/license.php' );
+require_once ( 'blocks/blocks.php' );
 
 // Load Ecommerce Modules
 function swsales_load_modules() {
