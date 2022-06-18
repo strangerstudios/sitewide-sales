@@ -59,8 +59,9 @@ classes\SWSales_About::init();
 classes\SWSales_License::init();
 
 // Helper functions
-require_once ( 'includes/functions.php' );
-require_once ( 'includes/license.php' );
+require_once ( SWSALES_DIR . '/includes/admin.php' );
+require_once ( SWSALES_DIR . '/includes/functions.php' );
+require_once ( SWSALES_DIR . '/includes/license.php' );
 
 // Load Ecommerce Modules
 function swsales_load_modules() {
