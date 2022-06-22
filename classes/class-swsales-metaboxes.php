@@ -543,7 +543,7 @@ class SWSales_MetaBoxes {
 			?>
 			<table class="form-table swsales_banner_module_settings" id="swsales_banner_settings_<?php echo esc_attr( $module ) ?>">
 			<?php
-			$module::echo_banner_settings_html( $cur_sale );
+			$module::echo_banner_settings_html_inner( $cur_sale );
 			?>
 			</table>
 			<?php
