@@ -164,7 +164,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale The sale being edited.
 	 */
-	protected static function echo_banner_settings_html_inner( $sitewide_sale ) {
+	public static function echo_banner_settings_html_inner( $sitewide_sale ) {
 		// Gather information information needed to display settings.
 		$banner_info          = self::get_banner_info( $sitewide_sale );
 		$registered_locations = self::get_registered_banners();

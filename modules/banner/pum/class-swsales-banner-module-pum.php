@@ -107,7 +107,12 @@ class SWSales_Banner_Module_PUM extends SWSales_Banner_Module {
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale The sale being edited.
 	 */
-	protected static function echo_banner_settings_html_inner( $sitewide_sale ) {
+	public static function echo_banner_settings_html_inner( $sitewide_sale ) {
+		// Make sure that Popup Maker is active.
+		if ( ! self::is_module_active() ) {
+			return;
+		}
+		
 		$all_popups = pum()->popups->get_items();
 		$selected_popup = $sitewide_sale->swsales_banner_pum_popup_id;
 		?>
