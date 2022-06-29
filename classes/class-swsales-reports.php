@@ -235,6 +235,35 @@ class SWSales_Reports {
 		do_action( 'swsales_additional_reports', $sitewide_sale );
 	}
 
+	/**
+	 * Show summarized report content for a Sitewide Sale.
+	 *
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to show report for.
+	 */
+	public static function show_quick_report( $sitewide_sale ) {
+		if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
+			return;
+		}
+		?>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_banner_impressions() ); ?></span>
+		</div>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Landing Page Visits', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_landing_page_visits() ); ?></span>
+		</div>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Conversions', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_checkout_conversions() ); ?></span>
+		</div>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_revenue() ); ?></span>
+		</div>
+		<?php
+	}
+
 	public static function admin_enqueue_scripts() {
 		global $typenow;
 		$screen = get_current_screen();

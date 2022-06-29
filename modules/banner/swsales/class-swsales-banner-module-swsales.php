@@ -300,7 +300,15 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page. If you do not set a landing page, no button will be shown.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="swsales-row-trigger">
+			<th></th>
+			<td>
+				<button class="swsales-row-trigger-button" type="button">
+					<?php esc_html_e( '+ Add custom banner CSS', 'sitewide-sales' ); ?>
+				</button>
+			</td>
+		</tr>
+		<tr style="display: none;">
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'sitewide-sales' ); ?></label></th>
 			<td>
 				<textarea class="swsales_option" name="swsales_banner_css"><?php echo esc_textarea( $banner_info['css'] ); ?></textarea>
@@ -325,6 +333,26 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				<?php } ?>
 			</td>
 		</tr>
+		<script>
+			jQuery(document).ready(function() {
+				swsales_prep_click_events();
+			});
+
+			// Function to prep click events for admin settings.
+			function swsales_prep_click_events() {
+				jQuery( 'button.swsales-row-trigger-button' ).on( 'click', function(event){
+					// Toggle content within the settings sections boxes.
+					event.preventDefault();
+
+					let thebutton = jQuery(event.target).parents('.swsales-row-trigger').find('button.swsales-row-trigger-button');
+					let sectionshow = jQuery( thebutton ).parents('.swsales-row-trigger').next('tr');
+					let sectionhide = jQuery(event.target).parents('.swsales-row-trigger');
+
+					jQuery( sectionshow ).show();
+					jQuery( sectionhide ).hide();
+				});
+			}
+		</script>
 		<?php
 	}
 
