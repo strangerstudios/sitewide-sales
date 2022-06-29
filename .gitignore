@@ -15,5 +15,13 @@ $RECYCLE.BIN/
 *.sublime-project
 *.sublime-workspace
 
+# npm
+node_modules
+package-lock.json
+
 # Temporary files
 *~
+
+# Log files
+js/blocks.build.asset.php
+js/blocks.build.js.map
