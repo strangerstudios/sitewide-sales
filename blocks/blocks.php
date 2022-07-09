@@ -56,12 +56,6 @@ function swsales_block_editor_scripts() {
 		SWSALES_VERSION
 	);
 
-	wp_enqueue_script(
-		'swsales-blocks-sale-period-setting',
-		plugins_url( 'blocks/sale-period-setting/block.js', SWSALES_BASE_FILE ),
-		['wp-edit-post']
-	);
-
 	// Enqueue optional editor only styles.
 	wp_enqueue_style(
 		'swsales-blocks-editor-css',
