@@ -22,6 +22,8 @@ const {
 	SelectControl
 } = wp.components;
 
+const allowed_on_blocks = ['core/columns','core/cover','core/group'];
+
 /**
  * Add sale period select controls on Advanced Block Panel.
  *
@@ -45,7 +47,7 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 		return (
 			<Fragment>
 				<BlockEdit {...props} />
-				{ isSelected &&
+				{ isSelected && allowed_on_blocks.includes(props.name) &&
 					<InspectorAdvancedControls>
 						<SelectControl
 							value={ sale_period_visibility }
@@ -54,9 +56,9 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 								{ label: __( 'Always', 'sitewide-sales' ), value: '' },
 								{ label: __( 'Before Sale', 'sitewide-sales' ), value: 'pre-sale' },
 								{ label: __( 'During Sale', 'sitewide-sales' ), value: 'sale' },
-								{ label: __( 'After Sale', 'sitewide-sales' ), value: 'post-sale' },
+								{ label: __( 'After Sale', 'sitewide-sales' ), value: 'post-sale' }
 							] }
-							label={ __( 'Sale Period Visibity' ) }
+							label={ __( 'Sale Period Visibity', 'sitewide-sales' ) }
 							onChange={ sale_period_visibility => setAttributes( { sale_period_visibility } ) }
 						/>
 					</InspectorAdvancedControls>
@@ -79,13 +81,17 @@ addFilter(
  *
  * @return {Object} settings Modified settings.
  */
-function addAttributes( settings ) {
-	settings.attributes = Object.assign( settings.attributes, {
-		sale_period_visibility: { 
-			type: 'string',
-			default: '',
+function addAttributes( settings, name ) {
+	if (typeof settings.attributes !== 'undefined') {
+		if (allowed_on_blocks.includes(name)) {
+			settings.attributes = Object.assign( settings.attributes, {
+				sale_period_visibility: { 
+					type: 'string',
+					default: '',
+				}
+			} );
 		}
-	} );
+	}
 
 	return settings;
 }
