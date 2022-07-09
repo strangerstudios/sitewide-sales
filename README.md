@@ -10,7 +10,7 @@ Let Sitewide Sales handle your sale banners, notification bars, landing pages, a
 For more information please visit [the Sitewide Sales website](https://sitewidesales.com) or [browse Sale Landing Page and Banner demos](https://sitewidesales.com/demos/).
 
 ## Installation ##
-For detailed installation steps, visit the [documentation on getting started with the plugin](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/).
+For detailed installation steps, visit the [documentation on getting started with the plugin](https://sitewidesales.com/documentation/).
 
 1. Download the current development ZIP file directly: `https://github.com/strangerstudios/sitewide-sales/archive/dev.zip`
 
