@@ -65,5 +65,5 @@ function swsales_is_admin_page( $passed_page = '', $passed_view = '' ) {
 			break;
 	}
 
-	return (bool) apply_filters( 'swsales_is_admin_page', $found, $page, $view, $passed_page, $passed_view );
+	return (bool) apply_filters( 'swsales_is_admin_page', $found, $page,$passed_page, $passed_view );
 }

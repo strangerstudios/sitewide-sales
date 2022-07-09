@@ -73,6 +73,14 @@ class SWSales_MetaBoxes {
 			'high'
 		);
 		add_meta_box(
+			'swsales_cpt_reports',
+			__( 'Quick Reports', 'sitewide-sales' ),
+			array( __CLASS__, 'display_cpt_reports' ),
+			array( 'sitewide_sale' ),
+			'side',
+			'high'
+		);
+		add_meta_box(
 			'swsales_documentation',
 			__( 'Documentation', 'sitewide-sales' ),
 			array( __CLASS__, 'documentation' ),
@@ -112,14 +120,6 @@ class SWSales_MetaBoxes {
 			'normal',
 			'high'
 		);
-		add_meta_box(
-			'swsales_cpt_step_5',
-			__( 'Step 5: Reports', 'sitewide-sales' ),
-			array( __CLASS__, 'display_step_5' ),
-			array( 'sitewide_sale' ),
-			'normal',
-			'high'
-		);
 
 		// remove some default metaboxes
 		remove_meta_box( 'slugdiv', 'sitewide_sale', 'normal' );
@@ -147,15 +147,42 @@ class SWSales_MetaBoxes {
 			}
 		}
 		?>
+		<?php
+			$sale_status_running = $cur_sale->is_running();
+
+			if ( $sale_status_running === true ) {
+				echo '<div class="sitewide_sales_message sitewide_sales_success">';
+				echo '<strong>' . esc_html( 'Running.', 'sitewide-sales' ) . '</strong>';
+				echo ' ' .  esc_html( 'This is the active sitewide sale.', 'sitewide-sales' );
+			} else {
+				echo '<div class="sitewide_sales_message sitewide_sales_alert">';
+				echo '<strong>' . esc_html( 'Not Running.', 'sitewide-sales' ) . '</strong>';
+
+				if ( ! $cur_sale->is_active_sitewide_sale() ) {
+					$error_message = esc_html( 'This is not the active sitewide sale.', 'sitewide-sales' );
+				} else {
+					switch ( $cur_sale->get_time_period() ) {
+						case 'error':
+							$error_message = esc_html( 'Invalid timeframe.', 'sitewide-sales' );
+							break;
+						case 'pre-sale':
+							$error_message = esc_html( 'Sale has not yet started.', 'sitewide-sales' );
+							break;
+						case 'post-sale':
+							$error_message = esc_html( 'Sale has ended.', 'sitewide-sales' );
+							break;
+					}
+				}
+				echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' );
+			}
+			echo '</div>';
+		?>
 		<div id="misc-publishing-actions">
 			<div class="misc-pub-section">
 				<p>
 					<label for="swsales_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale', 'sitewide-sales' ); ?></strong></label>
 					<input name="swsales_set_as_sitewide_sale" id="swsales_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true ); ?> />
 				</p>
-			</div>
-			<div class="misc-pub-section">
-				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'sitewide-sales' ); ?></a></p>
 			</div>
 		</div>
 		<div id="major-publishing-actions">
@@ -243,40 +270,6 @@ class SWSales_MetaBoxes {
 						<input id="swsales_end_time" name="swsales_end_time" type="time" lang="<?php echo esc_attr( get_locale() ); ?>" value="<?php echo esc_attr( $cur_sale->get_end_date( 'H:i' ) ); ?>" />
 						<p class="description"><?php esc_html_e( 'Set this date and time to when your sale should end.', 'sitewide-sales' ); ?></p>
 					</td>
-				</tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<?php
-							$sale_status_running = $cur_sale->is_running();
-
-							if ( $sale_status_running === true ) {
-								echo '<p class="sitewide_sales_message sitewide_sales_success">';
-								echo '<strong>' . esc_html( 'Running.', 'sitewide-sales' ) . '</strong>';
-							} else {
-								echo '<div class="sitewide_sales_message sitewide_sales_alert">';
-								echo '<strong>' . esc_html( 'Not Running.', 'sitewide-sales' ) . '</strong>';
-
-								if ( ! $cur_sale->is_active_sitewide_sale() ) {
-									$error_message = 'This is not the active sitewide sale.';
-								} else {
-									switch ( $cur_sale->get_time_period() ) {
-										case 'error':
-											$error_message = esc_html( 'Invalid timeframe.', 'sitewide-sales' );
-											break;
-										case 'pre-sale':
-											$error_message = esc_html( 'Sale has not yet started.', 'sitewide-sales' );
-											break;
-										case 'post-sale':
-											$error_message = esc_html( 'Sale has ended.', 'sitewide-sales' );
-											break;
-									}
-								}
-								echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' );
-							}
-							echo '</p>';
-						?>
-					</td>
-				<tr>
 				</tr>
 			</tbody>
 		</table>
@@ -398,11 +391,6 @@ class SWSales_MetaBoxes {
 							$show_shortcode_warning = true;
 						}
 						?>
-						<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
-							<?php if ( ! $show_shortcode_warning ) { ?>style="display: none;"<?php } ?>>
-							<?php echo wp_kses_post( '<strong>Warning:</strong> The [sitewide_sales] shortcode was not found in this post.', 'sitewide-sales' ); ?>
-						</p>
-
 						<p>
 							<span id="swsales_after_landing_page_select" 
 							<?php
@@ -543,7 +531,7 @@ class SWSales_MetaBoxes {
 			?>
 			<table class="form-table swsales_banner_module_settings" id="swsales_banner_settings_<?php echo esc_attr( $module ) ?>">
 			<?php
-			$module::echo_banner_settings_html( $cur_sale );
+			$module::echo_banner_settings_html_inner( $cur_sale );
 			?>
 			</table>
 			<?php
@@ -592,15 +580,17 @@ class SWSales_MetaBoxes {
 		<?php
 	}
 
-	public static function display_step_5( $post ) {
+	public static function display_cpt_reports( $post ) {
 		global $wpdb, $cur_sale;
 		if ( ! isset( $cur_sale ) ) {
 			$cur_sale = new SWSales_Sitewide_Sale();
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
-		SWSales_Reports::show_report( $cur_sale );
+		SWSales_Reports::show_quick_report( $cur_sale );
 		?>
-		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
+		<div class="swsales_reports-quick-data-action">
+			<a class="button button-secondary" target="_blank" href="<?php echo esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Detailed Sale Report', 'sitewide-sales' ); ?></a>
+		</div>
 		<?php
 	}
 
