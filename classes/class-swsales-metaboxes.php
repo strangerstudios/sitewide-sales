@@ -197,35 +197,35 @@ class SWSales_MetaBoxes {
 	public static function documentation( $post ) { ?>
 		<p><?php esc_html_e( 'Explore how to set up a sale using the Sitewide Sales plugin.' ); ?></p>
 		<ul>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=about-plugin" target="_blank" title="<?php esc_attr_e( 'About the Plugin', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=about-plugin" target="_blank" title="<?php esc_attr_e( 'About the Plugin', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'About the Plugin', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/getting-started/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-start-and-end-date/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/sale-start-and-end-date/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/sale-type/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/landing-page/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/landing-page/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-banners/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/sale-banners/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/reports/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/reports/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/action-and-filter-hooks/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/action-and-filter-hooks/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
