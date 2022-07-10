@@ -60,7 +60,7 @@ classes\SWSales_About::init();
 classes\SWSales_License::init();
 
 // Helper functions
-require_once ( SWSALES_DIR . 'blocks/blocks.php' );
+require_once ( SWSALES_DIR . '/blocks/blocks.php' );
 require_once ( SWSALES_DIR . '/includes/admin.php' );
 require_once ( SWSALES_DIR . '/includes/functions.php' );
 require_once ( SWSALES_DIR . '/includes/license.php' );
