@@ -269,6 +269,9 @@ style="display: none;"<?php } ?>>
 		$banner_info = array();
 		$banner_info['block_id'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_id' );
 		$banner_info['location'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_location' );
+
+		// If the blocks module is used, there is no template.
+		$banner_info['template'] = '';
 		// Update location in case we are previewing.
 		if ( ! is_admin() && current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner_type'] ) ) {
 			$banner_info['location'] = $_REQUEST['swsales_preview_sale_banner_type'];
