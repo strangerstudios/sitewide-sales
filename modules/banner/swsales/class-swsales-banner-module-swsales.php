@@ -69,6 +69,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 
 		if ( array_key_exists( $banner_info['location'], $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_info['location'] ] ) ) {
 			$callback_func = $registered_banners[ $banner_info['location'] ]['callback'];
+
 			if ( is_array( $callback_func ) ) {
 				if ( 2 >= count( $callback_func ) ) {
 					call_user_func( $callback_func[0] . '::' . $callback_func[1] );
@@ -276,7 +277,6 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 					}
 					?>
 				</select>
-				<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<tr>
@@ -367,8 +367,9 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Page Scroll Behavior', 'sitewide-sales' ); ?></label></th>
 			<td>
 				<select class="swsales_option" id="swsales_banner_scroll_behavior" name="swsales_banner_scroll_behavior">
-					<option value="none" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Maintain Banner Postion', 'sitewide-sales' ); ?></option>
-					<option value="hide" <?php selected( $banner_info['scroll_behavior'], 'hide' ); ?>><?php esc_html_e( 'Magic Hide/Show on Scroll', 'sitewide-sales' ); ?></option>
+					<option value="none" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Default Banner Behavior', 'sitewide-sales' ); ?></option>
+					<option value="sticky" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Sticky or Fixed Banner', 'sitewide-sales' ); ?></option>
+					<option value="hide" <?php selected( $banner_info['scroll_behavior'], 'hide' ); ?>><?php esc_html_e( 'Magic Hide and Show on Scroll', 'sitewide-sales' ); ?></option>
 				</select>
 				<p class="description"><?php esc_html_e( 'Select how the banner appears when the user scrolls on page.', 'sitewide-sales' ); ?></p>
 			</td>
@@ -430,6 +431,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	 */
 	private static function get_banner_info( $sitewide_sale ) {
 		$banner_info = array();
+		$banner_info['module'] = $sitewide_sale->get_meta_value( 'swsales_banner_module' );
 		$banner_info['location'] = $sitewide_sale->get_meta_value( 'swsales_banner_location' );
 		if ( null === $banner_info['location'] ) {
 			// If we don't have a banner location, try to get it from legacy setup.
