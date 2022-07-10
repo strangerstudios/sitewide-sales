@@ -412,12 +412,25 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns landing page template
+	 * Returns the banner text
 	 *
 	 * @return string
 	 */
 	public function get_banner_text() {
 		return $this->banner_text;
+	}
+
+	/**
+	 * Returns how the banner should be handled after closing
+	 *
+	 * @return bool
+	 */
+	public function get_banner_close_behavior() {
+		if ( isset( $this->post_meta['swsales_banner_close_behavior'] ) ) {
+			return $this->post_meta['swsales_banner_close_behavior'];
+		} else {
+			return 'refresh';
+		}
 	}
 
 	/**

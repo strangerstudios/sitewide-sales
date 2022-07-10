@@ -130,7 +130,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 
 				ob_start();
 				?>
-				<div id="swsales-banner-block-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-block">
+				<div id="swsales-banner-block-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-block" style="display: none;">
 					<?php
 						switch ( $name ) {
 							case 'show_top_banner':
@@ -300,13 +300,17 @@ style="display: none;"<?php } ?>>
 		$banner_info['module'] = $sitewide_sale->get_meta_value( 'swsales_banner_module' );
 		$banner_info['block_id'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_id' );
 		$banner_info['location'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_location' );
-
-		// If the blocks module is used, there is no template.
-		$banner_info['template'] = '';
 		// Update location in case we are previewing.
 		if ( ! is_admin() && current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner_type'] ) ) {
 			$banner_info['location'] = $_REQUEST['swsales_preview_sale_banner_type'];
 		}
+
+		// If the blocks module is used, there is no template.
+		$banner_info['template'] = '';
+
+		$banner_info['close_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_close_behavior' );
+		$banner_info['scroll_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_scroll_behavior' );
+
 		return $banner_info;
 	}
 

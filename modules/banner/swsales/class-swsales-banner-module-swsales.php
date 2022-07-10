@@ -147,7 +147,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 
 				ob_start();
 				?>
-				<div id="swsales-banner-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner">
+				<div id="swsales-banner-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner" style="display: none;">
 					<div class="swsales-banner-inner">
 						<?php
 						switch ( $name ) {
@@ -358,27 +358,6 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				});
 			}
 		</script>
-		<tr>
-			<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
-			<td>
-				<select class="swsales_option" id="swsales_banner_close_behavior" name="swsales_banner_close_behavior">
-					<option value="none" <?php selected( $banner_info['close_behavior'], 'none' ); ?>><?php esc_html_e( 'Close Until Refresh', 'sitewide-sales' ); ?></option>
-					<option value="refresh" <?php selected( $banner_info['close_behavior'], 'refresh' ); ?>><?php esc_html_e( 'Close Until New Session', 'sitewide-sales' ); ?></option>
-				</select>
-				<p class="description"><?php esc_html_e( 'Select when the banner will reappear if the user closes or dismisses the banner.', 'sitewide-sales' ); ?></p>
-			</td>
-		</tr>
-		<tr>
-			<th scope="row" valign="top"><label><?php esc_html_e( 'Page Scroll Behavior', 'sitewide-sales' ); ?></label></th>
-			<td>
-				<select class="swsales_option" id="swsales_banner_scroll_behavior" name="swsales_banner_scroll_behavior">
-					<option value="none" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Default Banner Behavior', 'sitewide-sales' ); ?></option>
-					<option value="sticky" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Sticky or Fixed Banner', 'sitewide-sales' ); ?></option>
-					<option value="hide" <?php selected( $banner_info['scroll_behavior'], 'hide' ); ?>><?php esc_html_e( 'Magic Hide and Show on Scroll', 'sitewide-sales' ); ?></option>
-				</select>
-				<p class="description"><?php esc_html_e( 'Select how the banner appears when the user scrolls on page.', 'sitewide-sales' ); ?></p>
-			</td>
-		</tr>
 		<?php
 	}
 
@@ -419,12 +398,6 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		if ( isset( $_POST['swsales_banner_css'] ) ) {
 			update_post_meta( $post_id, 'swsales_banner_css', wp_kses_post( stripslashes( $_POST['swsales_banner_css'] ) ) );
 			delete_post_meta( $post_id, 'swsales_css_option' );
-		}
-		if ( isset( $_POST['swsales_banner_close_behavior'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_close_behavior', sanitize_text_field( $_POST['swsales_banner_close_behavior'] ) );
-		}
-		if ( isset( $_POST['swsales_banner_scroll_behavior'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_scroll_behavior', sanitize_text_field( $_POST['swsales_banner_scroll_behavior'] ) );
 		}
 	}
 
