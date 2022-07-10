@@ -269,13 +269,14 @@ class SWSales_Reports {
 			return;
 		}
 
-		wp_register_script( 'swsales_tracking', plugins_url( 'js/swsales-tracking.js', SWSALES_BASENAME ), array( 'jquery', 'utils' ) );
+		wp_register_script( 'swsales_tracking', plugins_url( 'js/swsales.js', SWSALES_BASENAME ), array( 'jquery', 'utils' ) );
 
 		$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();
 		$swsales_data = array(
 			'landing_page'      => ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id ),
 			'sitewide_sale_id'  => $active_sitewide_sale->get_id(),
 			'banner_close_behavior'  => $active_sitewide_sale->get_banner_close_behavior(),
+			'banner_scroll_behavior'  => $active_sitewide_sale->get_banner_scroll_behavior(),
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 		);
 

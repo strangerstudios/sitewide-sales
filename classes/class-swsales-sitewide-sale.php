@@ -434,6 +434,19 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Returns how the banner should be handled on scroll
+	 *
+	 * @return bool
+	 */
+	public function get_banner_scroll_behavior() {
+		if ( isset( $this->post_meta['swsales_banner_scroll_behavior'] ) ) {
+			return $this->post_meta['swsales_banner_scroll_behavior'];
+		} else {
+			return 'none';
+		}
+	}
+
+	/**
 	 * Returns if banner should be hidden on checkout
 	 *
 	 * @return bool

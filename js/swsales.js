@@ -1,3 +1,8 @@
+/**
+ * General frontend JavaScript for banner display and sale performance tracking.
+ */
+
+// Get the banner and landing page tracking cookie data.
 function swsales_get_tracking_cookie() {
 	var cookie_string = wpCookies.get( 'swsales_' + swsales.sitewide_sale_id + '_tracking', '/' );
 	var cookie_array;
@@ -12,11 +17,13 @@ function swsales_get_tracking_cookie() {
 	return cookie_array;
 }
 
+// Set the banner and landing page tracking cookie data.
 function swsales_set_tracking_cookie(cookie_array) {
 	var cookie_string = cookie_array.banner + ';' + cookie_array.landing_page;
 	wpCookies.set( 'swsales_' + swsales.sitewide_sale_id + '_tracking', cookie_string, 86400 * 30, '/' );
 }
 
+// Update the sitewide sale report data.
 function swsales_send_ajax(report) {
 	jQuery.post(
 	    swsales.ajax_url,
@@ -31,6 +38,7 @@ function swsales_send_ajax(report) {
 	);
 }
 
+// Get the banner view cookie data.
 function swsales_get_banner_cookie() {
 	var cookie_string = wpCookies.get( 'swsales_' + swsales.sitewide_sale_id + '_banner', '/' );
 	var cookie_array;
@@ -43,11 +51,13 @@ function swsales_get_banner_cookie() {
 	return cookie_val;
 }
 
+// Set the banner view cookie data.
 function swsales_set_banner_cookie(cookie_val) {
 	var cookie_string = cookie_val;
 	wpCookies.set( 'swsales_' + swsales.sitewide_sale_id + '_banner', cookie_string, 0, '/' );
 }
 
+// Track banner and landing page views.
 function swsales_track() {
 	var trackingcookie = swsales_get_tracking_cookie();
 	if ( jQuery( '.swsales-banner' ).length ) {
@@ -65,7 +75,10 @@ function swsales_track() {
 			swsales_set_tracking_cookie( trackingcookie );
 		}
 	}
+}
 
+// Run logic to hide and show banner based on settings and user cookie.
+function swsales_banner_close_behavior() {
 	// Set cookie and hide or show banner based on sale settings.
 	if ( swsales.banner_close_behavior == 'session' ) {
 		var bannercookie = swsales_get_banner_cookie();
@@ -81,6 +94,10 @@ function swsales_track() {
 	} else {
 		jQuery('.swsales-banner').show();
 	}
+}
+
+// Run logic to magic hide/show on scroll based on settings.
+function swsales_banner_scroll_behavior() {
 
 }
 
@@ -88,5 +105,9 @@ jQuery( document ).ready(
 	function() {
 		console.log(swsales);
 		swsales_track();
+		swsales_banner_close_behavior();
+		if ( swsales.banner_scroll_behavior == 'hide' ) {
+			swsales_banner_scroll_behavior();
+		}
 	}
 );
