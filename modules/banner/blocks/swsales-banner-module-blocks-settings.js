@@ -20,6 +20,7 @@ jQuery( document ).ready(
 							// success
 							$( '#swsales_banner_block_id' ).append( '<option value="' + response.post.ID + '">' + response.post.post_title + '</option>' );
 							$( '#swsales_banner_block_id' ).val( response.post.ID );
+							swsales_toggle_reusable_block_banner();
 						}
 					}
 				);
