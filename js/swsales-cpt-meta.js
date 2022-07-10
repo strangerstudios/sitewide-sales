@@ -14,8 +14,8 @@ jQuery( document ).ready(
 		$( "#swsales_hide_banner_by_role_select" ).selectWoo();
 
 		// removing some buttons from the edit post page for our CPT
-		jQuery( '.wp-editor-tabs' ).remove();
-		jQuery( '#insert-media-button' ).remove();
+		$( '.wp-editor-tabs' ).remove();
+		$( '#insert-media-button' ).remove();
 
 		// make sure save all settings buttons don't prompt the leave site alert
 		$( 'input[type=submit]' ).click(
