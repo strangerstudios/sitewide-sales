@@ -7,8 +7,32 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 	public static function init() {
 		parent::init();
 
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
+		add_action( 'wp_ajax_swsales_create_reusable_block_banner', array( __CLASS__, 'create_reusable_block_banner_ajax' ) );
+
 		// Set up showing banner on frontend.
 		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
+	}
+
+	/**
+	 * Enqueues /modules/banners/blocks/swsales-banner-module-blocks-settings.js
+	 */
+	public static function admin_enqueue_scripts() {
+		global $wpdb, $typenow;
+		if ( 'sitewide_sale' === $typenow ) {
+			wp_register_script( 'swsales_banner_module_blocks_settings', plugins_url( 'modules/banner/blocks/swsales-banner-module-blocks-settings.js', SWSALES_BASENAME ), array( 'jquery' ), SWSALES_VERSION );
+			wp_enqueue_script( 'swsales_banner_module_blocks_settings' );
+
+			wp_localize_script(
+				'swsales_banner_module_blocks_settings',
+				'swsales_blocks',
+				array(
+					'create_reusable_block_banner_nonce'  => wp_create_nonce( 'swsales_create_reusable_block_banner' ),
+					'home_url'                   => home_url(),
+					'admin_url'                  => admin_url(),
+				)
+			);
+		}
 	}
 
 	/**
@@ -46,6 +70,11 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 			if ( Sitewide_Sales\classes\SWSales_Setup::is_login_page() ) {
 				$show_banner = false;
 			}
+		}
+
+		// If the banner module isn't blocks, don't show the banner.
+		if ( isset( $banner_info['module'] ) && $banner_info['module'] != 'SWSales_Banner_Module_Blocks' ) {
+			$show_banner = false;
 		}
 
 		// Return nothing if we shouldn't show the banner.
@@ -219,11 +248,12 @@ style="display: none;"<?php } ?>>
 						$edit_block_url = admin_url( 'post.php?post=' . $banner_info['block_id'] . '&action=edit' );
 					?>
 					<a target="_blank" class="button button-secondary" id="swsales_edit_banner_block" href="<?php echo esc_url( $edit_block_url ); ?>"><?php esc_html_e( 'edit block', 'sitewide-sales' ); ?></a>
+					<input type="submit" class="button button-secondary" id="swsales_preview" name="swsales_preview" value="<?php esc_attr_e( 'save and preview', 'sitewide-sales' ); ?>">
 					<?php
 						esc_html_e( ' or ', 'sitewide-sales' );
 					?>
 					</span>
-					<button type="button" id="swsales_create_banner_block" class="button button-secondary"><?php esc_html_e( 'create a new reusable block', 'sitewide-sales' ); ?></button>
+					<button type="button" id="swsales_create_reusable_block_banner" class="button button-secondary"><?php esc_html_e( 'create a new reusable block', 'sitewide-sales' ); ?></button>
 				</p>
 			</td>
 		</tr>
@@ -267,6 +297,7 @@ style="display: none;"<?php } ?>>
 	 */
 	private static function get_banner_info( $sitewide_sale ) {
 		$banner_info = array();
+		$banner_info['module'] = $sitewide_sale->get_meta_value( 'swsales_banner_module' );
 		$banner_info['block_id'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_id' );
 		$banner_info['location'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_location' );
 
@@ -301,6 +332,56 @@ style="display: none;"<?php } ?>>
 			),
 		);
 		return $registered_banners;
+	}
+
+	/**
+	 * AJAX callback to create a new reusable block banner for your sale
+	 */
+	public static function create_reusable_block_banner_ajax() {
+		check_ajax_referer( 'swsales_create_reusable_block_banner', 'nonce' );
+
+		$sitewide_sale_id = intval( $_REQUEST['swsales_id'] );
+		if ( empty( $sitewide_sale_id ) ) {
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'No sitewide sale ID given. Try doing it manually.',
+						'sitewide-sales'
+					),
+				)
+			);
+			exit;
+		}
+
+		$reusable_block_banner_title = sanitize_text_field( $_REQUEST['swsales_reusable_block_banner_title'] );
+		if ( empty( $reusable_block_banner_title ) ) {
+			$reusable_block_banner_title = esc_html__( 'Sitewide Sale Reusable Block Banner', 'sitewide-sales' );
+		}
+
+		$reusable_block_banner_post_id = wp_insert_post(
+			array(
+				'post_title'    => $reusable_block_banner_title,
+				'post_content'  => 'here',
+				'post_type'     => 'wp_block',
+				'post_status'   => 'publish',
+			)
+		);
+
+		if ( empty( $reusable_block_banner_post_id ) ) {
+			$r = array(
+				'status' => 'error',
+				'error'  => esc_html__( 'Error inserting post. Try doing it manually.', 'sitewide-sales' ),
+			);
+		} else {
+			$r = array(
+				'status' => 'success',
+				'post'   => get_post( $reusable_block_banner_post_id ),
+			);
+		}
+
+		echo json_encode( $r );
+		exit;
 	}
 }
 SWSales_Banner_Module_Blocks::init();
