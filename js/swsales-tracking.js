@@ -19,35 +19,69 @@ function swsales_set_tracking_cookie(cookie_array) {
 
 function swsales_send_ajax(report) {
 	jQuery.post(
-    swsales.ajax_url, 
-    {
-        'action': 'swsales_ajax_tracking',
-        'report': report,
-				'sitewide_sale_id': swsales.sitewide_sale_id
-    }, 
-    function(response) {
-        //console.log('The server responded: ', response);
-    }
-);
+	    swsales.ajax_url,
+	    {
+	        'action': 'swsales_ajax_tracking',
+	        'report': report,
+					'sitewide_sale_id': swsales.sitewide_sale_id
+	    },
+	    function(response) {
+	        //console.log('The server responded: ', response);
+	    }
+	);
+}
+
+function swsales_get_banner_cookie() {
+	var cookie_string = wpCookies.get( 'swsales_' + swsales.sitewide_sale_id + '_banner', '/' );
+	var cookie_array;
+	if ( null == cookie_string ) {
+		cookie_val = 0;
+	} else {
+		cookie_val = cookie_string;
+	}
+
+	return cookie_val;
+}
+
+function swsales_set_banner_cookie(cookie_val) {
+	var cookie_string = cookie_val;
+	wpCookies.set( 'swsales_' + swsales.sitewide_sale_id + '_banner', cookie_string, 0, '/' );
 }
 
 function swsales_track() {
-	var cookie = swsales_get_tracking_cookie();
+	var trackingcookie = swsales_get_tracking_cookie();
 	if ( jQuery( '.swsales-banner' ).length ) {
-		if ( cookie['banner'] == 0 ) {
-			cookie['banner'] = 1;
+		if ( trackingcookie['banner'] == 0 ) {
+			trackingcookie['banner'] = 1;
 			swsales_send_ajax( 'swsales_banner_impressions' );
-			swsales_set_tracking_cookie( cookie );
+			swsales_set_tracking_cookie( trackingcookie );
 		}
 	}
 
 	if ( swsales.landing_page == 1 ) {
-		if ( cookie['landing_page'] == 0 ) {
-			cookie['landing_page'] = 1;
+		if ( trackingcookie['landing_page'] == 0 ) {
+			trackingcookie['landing_page'] = 1;
 			swsales_send_ajax( 'swsales_landing_page_visits' );
-			swsales_set_tracking_cookie( cookie );
+			swsales_set_tracking_cookie( trackingcookie );
 		}
 	}
+
+	// Set cookie and hide or show banner based on sale settings.
+	if ( swsales.banner_close_behavior == 'session' ) {
+		var bannercookie = swsales_get_banner_cookie();
+		jQuery('.swsales-dismiss').on( 'click', function() {
+			bannercookie = 1;
+			swsales_set_banner_cookie( bannercookie );
+		});
+		if ( bannercookie == 1 ) {
+			jQuery('.swsales-banner').hide();
+		} else {
+			jQuery('.swsales-banner').show();
+		}
+	} else {
+		jQuery('.swsales-banner').show();
+	}
+
 }
 
 jQuery( document ).ready(
