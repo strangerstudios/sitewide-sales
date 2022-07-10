@@ -24,7 +24,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	public static function admin_enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_banner_module_swsales_settings', plugins_url( 'modules/banner/swsales/swsales-banner-module-swsales-settings.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_banner_module_swsales_settings', plugins_url( 'modules/banner/swsales/swsales-banner-module-swsales-settings.js', SWSALES_BASENAME ), array( 'jquery' ), SWSALES_VERSION );
 			wp_enqueue_script( 'swsales_banner_module_swsales_settings' );
 		}
 	}
@@ -57,6 +57,11 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 			if ( Sitewide_Sales\classes\SWSales_Setup::is_login_page() ) {
 				$show_banner = false;
 			}
+		}
+
+		// If the banner module isn't custom, don't show the banner.
+		if ( isset( $banner_info['module'] ) && $banner_info['module'] != 'SWSales_Banner_Module_SWSales' ) {
+			$show_banner = false;
 		}
 
 		// Return nothing if we shouldn't show the banner.
