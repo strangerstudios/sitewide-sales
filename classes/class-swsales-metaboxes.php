@@ -26,7 +26,7 @@ class SWSales_MetaBoxes {
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_cpt_meta', plugins_url( 'js/swsales-cpt-meta.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_cpt_meta', plugins_url( 'js/swsales-cpt-meta.js', SWSALES_BASENAME ), array( 'jquery' ), SWSALES_VERSION );
 			wp_enqueue_script( 'swsales_cpt_meta' );
 
 			$pages_with_swsales_shortcode = $wpdb->get_col(
