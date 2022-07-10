@@ -103,7 +103,7 @@ function swsales_banner_scroll_behavior() {
 
 jQuery( document ).ready(
 	function() {
-		console.log(swsales);
+		///console.log(swsales);
 		swsales_track();
 		swsales_banner_close_behavior();
 		if ( swsales.banner_scroll_behavior == 'hide' ) {
