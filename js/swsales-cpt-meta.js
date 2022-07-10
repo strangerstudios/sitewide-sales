@@ -79,6 +79,28 @@ jQuery( document ).ready(
 			}
 		);
 
+		// Toggling the landing page settings.
+		function swsales_toggle_landing_page_settings() {
+			var page = $( '#swsales_landing_page_select' ).val();
+
+			if (typeof page == 'undefined' ) {
+				return;
+			}
+
+			if (page == '0') {
+				$( '#swsales_landing_page_options' ).hide();
+			} else {
+				$( '#swsales_landing_page_options' ).show();
+			}
+
+		}
+		$( '#swsales_landing_page_select' ).change(
+			function(){
+				swsales_toggle_landing_page_settings();
+			}
+		);
+		swsales_toggle_landing_page_settings();
+
 		// Toggling the banner settings.
 		function swsales_toggle_banner_settings() {
 			var module = $( '#swsales_banner_module' ).val();

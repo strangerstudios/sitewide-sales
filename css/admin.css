@@ -81,8 +81,8 @@
 }
 .sitewide_sales_message.sitewide_sales_success,
 .form-table td p.sitewide_sales_message.sitewide_sales_success {
-	border-left-color: #4ab866;
-	background-color: #eff9f1;
+	border-color: #c3e6cb;
+	background-color: #d4edda;
 }
 .sitewide_sales_message.sitewide_sales_error,
 .form-table td p.sitewide_sales_message.sitewide_sales_error {
@@ -92,7 +92,7 @@
 .sitewide_sales_message.sitewide_sales_alert,
 .form-table td p.sitewide_sales_message.sitewide_sales_alert {
     border-color: #ffeeba;
-    background-color: #FFF8E0;
+    background-color: #fff8e0;
 }
 .sitewide_sales_message.sitewide_sales_success a {
     color: #0F441C;
@@ -242,9 +242,7 @@
 	}
 }
 
-<<<<<<< HEAD
 /* Sitewide Sales About and License Page */
-=======
 #swsales_cpt_reports .inside {
 	margin-top: 0;
 	padding: 0;

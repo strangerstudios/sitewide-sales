@@ -561,7 +561,7 @@ class SWSales_Module_WC {
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $currency_format;
 		}
 		return array(
 			'currency_symbol' => get_woocommerce_currency_symbol(),
