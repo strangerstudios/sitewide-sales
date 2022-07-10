@@ -512,7 +512,7 @@ class SWSales_Module_EDD {
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $currency_format;
 		}
 		return array(
 			'currency_symbol' => edd_currency_symbol(),

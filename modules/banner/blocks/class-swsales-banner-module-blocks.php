@@ -164,7 +164,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale The sale being edited.
 	 */
-	protected static function echo_banner_settings_html_inner( $sitewide_sale ) {
+	public static function echo_banner_settings_html_inner( $sitewide_sale ) {
 		// Gather information information needed to display settings.
 		$banner_info          = self::get_banner_info( $sitewide_sale );
 		$registered_locations = self::get_registered_banners();
@@ -269,6 +269,9 @@ style="display: none;"<?php } ?>>
 		$banner_info = array();
 		$banner_info['block_id'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_id' );
 		$banner_info['location'] = $sitewide_sale->get_meta_value( 'swsales_banner_block_location' );
+
+		// If the blocks module is used, there is no template.
+		$banner_info['template'] = '';
 		// Update location in case we are previewing.
 		if ( ! is_admin() && current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner_type'] ) ) {
 			$banner_info['location'] = $_REQUEST['swsales_preview_sale_banner_type'];

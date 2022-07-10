@@ -45,6 +45,9 @@ class SWSales_Module_WC {
 		add_filter( 'wp', array( __CLASS__, 'automatic_coupon_application' ) );
 		add_filter( 'woocommerce_get_price_html', array( __CLASS__, 'strike_prices' ), 10, 2 );
 
+		// Show products with a coupon applied as "on sale".
+		add_filter( 'woocommerce_product_is_on_sale', array( __CLASS__, 'woocommerce_product_is_on_sale'), 10, 2 );
+
 		// WC-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
@@ -376,6 +379,48 @@ class SWSales_Module_WC {
 	}
 
 	/**
+	 * Show the product as a "sale" product in WooCommerce if the coupon code is applied.
+	 *
+	 * @param  bool $on_sale Whether the product is on sale via discount code.
+	 * @param  WC_Product $product The product to that is being generated for.
+	 * @return bool Whether the product is on sale via discount code.
+	 */
+	public static function woocommerce_product_is_on_sale( $on_sale, $product ) {
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
+			return $on_sale;
+		}
+		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		if ( null === $coupon_id ) {
+			return $on_sale;
+		}
+
+		// Check if we are on the landing page
+		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
+		$on_landing_page = false;
+		if (
+			( ! empty( $_SERVER['REQUEST_URI'] ) && intval( url_to_postid( $_SERVER['REQUEST_URI'] ) ) === $landing_page_post_id ) ||
+			( ! empty( $_SERVER['HTTP_REFERER'] ) && intval( url_to_postid( $_SERVER['HTTP_REFERER'] ) ) === $landing_page_post_id )
+		) {
+			$on_landing_page = true;
+		}
+		$should_apply_discount_on_landing = ( 'none' !== $active_sitewide_sale->get_automatic_discount() );
+
+		// If discount code is already applied or we are on the landing page and should apply discount, show the product on sale.
+		if ( 
+			( ! empty( WC()->cart ) && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) ||
+			( $on_landing_page && $should_apply_discount_on_landing )||
+			$active_sitewide_sale->should_apply_automatic_discount()
+		) {
+			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
+			if ( $coupon->is_valid_for_product( $product ) ) {
+				$on_sale = true;
+			}
+		}
+		return $on_sale;
+	}
+
+	/**
 	 * Set WC module checkout conversion title for Sitewide Sale report.
 	 *
 	 * @param string               $cur_title     set by filter.
@@ -516,7 +561,7 @@ class SWSales_Module_WC {
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $currency_format;
 		}
 		return array(
 			'currency_symbol' => get_woocommerce_currency_symbol(),

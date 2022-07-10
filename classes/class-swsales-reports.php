@@ -30,19 +30,6 @@ class SWSales_Reports {
 
 	public static function show_reports_page() { ?>
 		<div class="wrap sitewide_sales_admin">
-			<div class="sitewide_sales_banner">
-				<a class="sitewide_sales_logo" title="<?php esc_attr_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ) ); ?>" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
-				<div class="sitewide_sales_meta">
-					<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
-					<a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
-					<?php if ( swsales_license_is_valid() ) { ?>
-						<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
-					<?php } elseif ( ! defined( 'SWSALES_LICENSE_NAG' ) || SWSALES_LICENSE_NAG == true ) { ?>
-						<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
-					<?php } ?>
-				</div>
-			</div>
 			<h1><?php esc_html_e( 'Reports', 'sitewide-sales' ); ?></h1>
 			<?php
 				// Get all sitewide_sale ids.
@@ -233,6 +220,35 @@ class SWSales_Reports {
 		</div>
 		<?php
 		do_action( 'swsales_additional_reports', $sitewide_sale );
+	}
+
+	/**
+	 * Show summarized report content for a Sitewide Sale.
+	 *
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to show report for.
+	 */
+	public static function show_quick_report( $sitewide_sale ) {
+		if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
+			return;
+		}
+		?>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_banner_impressions() ); ?></span>
+		</div>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Landing Page Visits', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_landing_page_visits() ); ?></span>
+		</div>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Conversions', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_checkout_conversions() ); ?></span>
+		</div>
+		<div class="swsales_reports-quick-data-section">
+			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_revenue() ); ?></span>
+		</div>
+		<?php
 	}
 
 	public static function admin_enqueue_scripts() {

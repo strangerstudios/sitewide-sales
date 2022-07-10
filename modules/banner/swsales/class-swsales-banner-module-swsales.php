@@ -69,6 +69,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 
 		if ( array_key_exists( $banner_info['location'], $registered_banners ) && array_key_exists( 'callback', $registered_banners[ $banner_info['location'] ] ) ) {
 			$callback_func = $registered_banners[ $banner_info['location'] ]['callback'];
+
 			if ( is_array( $callback_func ) ) {
 				if ( 2 >= count( $callback_func ) ) {
 					call_user_func( $callback_func[0] . '::' . $callback_func[1] );
@@ -241,7 +242,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale The sale being edited.
 	 */
-	protected static function echo_banner_settings_html_inner( $sitewide_sale ) {
+	public static function echo_banner_settings_html_inner( $sitewide_sale ) {
 		// Gather information information needed to display settings.
 		$banner_info          = self::get_banner_info( $sitewide_sale );
 		$registered_locations = self::get_registered_banners();
@@ -276,7 +277,6 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 					}
 					?>
 				</select>
-				<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<tr>
@@ -300,7 +300,15 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page. If you do not set a landing page, no button will be shown.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
-		<tr>
+		<tr class="swsales-row-trigger">
+			<th></th>
+			<td>
+				<button class="swsales-row-trigger-button" type="button">
+					<?php esc_html_e( '+ Add custom banner CSS', 'sitewide-sales' ); ?>
+				</button>
+			</td>
+		</tr>
+		<tr style="display: none;">
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'sitewide-sales' ); ?></label></th>
 			<td>
 				<textarea class="swsales_option" name="swsales_banner_css"><?php echo esc_textarea( $banner_info['css'] ); ?></textarea>
@@ -323,6 +331,47 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 						?>
 					</div>
 				<?php } ?>
+			</td>
+		</tr>
+		<script>
+			jQuery(document).ready(function() {
+				swsales_prep_click_events();
+			});
+
+			// Function to prep click events for admin settings.
+			function swsales_prep_click_events() {
+				jQuery( 'button.swsales-row-trigger-button' ).on( 'click', function(event){
+					// Toggle content within the settings sections boxes.
+					event.preventDefault();
+
+					let thebutton = jQuery(event.target).parents('.swsales-row-trigger').find('button.swsales-row-trigger-button');
+					let sectionshow = jQuery( thebutton ).parents('.swsales-row-trigger').next('tr');
+					let sectionhide = jQuery(event.target).parents('.swsales-row-trigger');
+
+					jQuery( sectionshow ).show();
+					jQuery( sectionhide ).hide();
+				});
+			}
+		</script>
+		<tr>
+			<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
+			<td>
+				<select class="swsales_option" id="swsales_banner_close_behavior" name="swsales_banner_close_behavior">
+					<option value="none" <?php selected( $banner_info['close_behavior'], 'none' ); ?>><?php esc_html_e( 'Close Until Refresh', 'sitewide-sales' ); ?></option>
+					<option value="refresh" <?php selected( $banner_info['close_behavior'], 'refresh' ); ?>><?php esc_html_e( 'Close Until New Session', 'sitewide-sales' ); ?></option>
+				</select>
+				<p class="description"><?php esc_html_e( 'Select when the banner will reappear if the user closes or dismisses the banner.', 'sitewide-sales' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row" valign="top"><label><?php esc_html_e( 'Page Scroll Behavior', 'sitewide-sales' ); ?></label></th>
+			<td>
+				<select class="swsales_option" id="swsales_banner_scroll_behavior" name="swsales_banner_scroll_behavior">
+					<option value="none" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Default Banner Behavior', 'sitewide-sales' ); ?></option>
+					<option value="sticky" <?php selected( $banner_info['scroll_behavior'], 'none' ); ?>><?php esc_html_e( 'Sticky or Fixed Banner', 'sitewide-sales' ); ?></option>
+					<option value="hide" <?php selected( $banner_info['scroll_behavior'], 'hide' ); ?>><?php esc_html_e( 'Magic Hide and Show on Scroll', 'sitewide-sales' ); ?></option>
+				</select>
+				<p class="description"><?php esc_html_e( 'Select how the banner appears when the user scrolls on page.', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<?php
@@ -366,6 +415,12 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 			update_post_meta( $post_id, 'swsales_banner_css', wp_kses_post( stripslashes( $_POST['swsales_banner_css'] ) ) );
 			delete_post_meta( $post_id, 'swsales_css_option' );
 		}
+		if ( isset( $_POST['swsales_banner_close_behavior'] ) ) {
+			update_post_meta( $post_id, 'swsales_banner_close_behavior', sanitize_text_field( $_POST['swsales_banner_close_behavior'] ) );
+		}
+		if ( isset( $_POST['swsales_banner_scroll_behavior'] ) ) {
+			update_post_meta( $post_id, 'swsales_banner_scroll_behavior', sanitize_text_field( $_POST['swsales_banner_scroll_behavior'] ) );
+		}
 	}
 
 	/**
@@ -376,6 +431,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	 */
 	private static function get_banner_info( $sitewide_sale ) {
 		$banner_info = array();
+		$banner_info['module'] = $sitewide_sale->get_meta_value( 'swsales_banner_module' );
 		$banner_info['location'] = $sitewide_sale->get_meta_value( 'swsales_banner_location' );
 		if ( null === $banner_info['location'] ) {
 			// If we don't have a banner location, try to get it from legacy setup.
@@ -406,6 +462,9 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 			// If we don't have banner CSS, try to get it from legacy setup.
 			$banner_info['css'] = $sitewide_sale->get_meta_value( 'swsales_css_option', '' );
 		}
+
+		$banner_info['close_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_close_behavior' );
+		$banner_info['scroll_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_scroll_behavior' );
 
 		return $banner_info;
 	}

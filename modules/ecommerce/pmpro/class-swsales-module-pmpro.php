@@ -893,7 +893,7 @@ class SWSales_Module_PMPro {
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $currency_format;
 		}
 		global $pmpro_currency_symbol, $pmpro_currency, $pmpro_currencies;
 		return array(

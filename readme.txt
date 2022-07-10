@@ -13,7 +13,7 @@ The Sitewide Sales plugin allows you to create flash or sitewide sales. Use the 
 
 The plugin also adds the option to display sitewide page banners to advertise your sale and gives you statistics about the outcome of your sale.
 
-This plugin offers modules for [WooCommerce](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/woocommerce/), [Paid Memberships Pro](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/paid-memberships-pro/), and [Easy Digital Downloads](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/easy-digital-downloads/). You can also use the [Custom sale module](https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/custom/) to track any banner > landing page > conversion workflow. New integrations will be built as requested.
+This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/woocommerce/), [Paid Memberships Pro](https://sitewidesales.com/modules/paid-memberships-pro/), and [Easy Digital Downloads](https://sitewidesales.com/modules/easy-digital-downloads/). You can also use the [Custom sale module](https://sitewidesales.com/modules/custom-module/) to track any banner > landing page > conversion workflow. New integrations will be built as requested.
 
 == Installation ==
 
