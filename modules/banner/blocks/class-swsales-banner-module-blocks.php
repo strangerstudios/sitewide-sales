@@ -130,7 +130,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 
 				ob_start();
 				?>
-				<div id="swsales-banner-block-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-block swsales-banner-scroll-<?php echo esc_attr( $banner_info['scroll_behavior'] ); ?>" style="display: none;">
+				<div id="swsales-banner-block-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-block" style="display: none;">
 					<?php
 						switch ( $name ) {
 							case 'show_top_banner':
@@ -309,7 +309,6 @@ style="display: none;"<?php } ?>>
 		$banner_info['template'] = '';
 
 		$banner_info['close_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_close_behavior' );
-		$banner_info['scroll_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_scroll_behavior' );
 
 		return $banner_info;
 	}

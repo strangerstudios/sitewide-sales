@@ -96,18 +96,10 @@ function swsales_banner_close_behavior() {
 	}
 }
 
-// Run logic to magic hide/show on scroll based on settings.
-function swsales_banner_scroll_behavior() {
-
-}
-
 jQuery( document ).ready(
 	function() {
 		///console.log(swsales);
 		swsales_track();
 		swsales_banner_close_behavior();
-		if ( swsales.banner_scroll_behavior == 'hide' ) {
-			swsales_banner_scroll_behavior();
-		}
 	}
 );

@@ -555,17 +555,6 @@ class SWSales_MetaBoxes {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Page Scroll Behavior', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<select class="swsales_option" id="swsales_banner_scroll_behavior" name="swsales_banner_scroll_behavior">
-							<option value="none" <?php selected( $cur_sale->get_meta_value('swsales_banner_scroll_behavior'), 'none' ); ?>><?php esc_html_e( 'Default Banner Behavior', 'sitewide-sales' ); ?></option>
-							<option value="sticky" <?php selected( $cur_sale->get_meta_value('swsales_banner_scroll_behavior'), 'sticky' ); ?>><?php esc_html_e( 'Sticky or Fixed Banner', 'sitewide-sales' ); ?></option>
-							<option value="hide" <?php selected( $cur_sale->get_meta_value('swsales_banner_scroll_behavior'), 'hide' ); ?>><?php esc_html_e( 'Magic Hide and Show on Scroll', 'sitewide-sales' ); ?></option>
-						</select>
-						<p class="description"><?php esc_html_e( 'Select how the banner appears when the user scrolls on page.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
 					<?php
 						$checked_modifier = $cur_sale->get_hide_on_checkout() ? ' checked' : '';
 					?>
@@ -726,10 +715,6 @@ class SWSales_MetaBoxes {
 
 		if ( isset( $_POST['swsales_banner_close_behavior'] ) ) {
 			update_post_meta( $post_id, 'swsales_banner_close_behavior', sanitize_text_field( $_POST['swsales_banner_close_behavior'] ) );
-		}
-
-		if ( isset( $_POST['swsales_banner_scroll_behavior'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_scroll_behavior', sanitize_text_field( $_POST['swsales_banner_scroll_behavior'] ) );
 		}
 
 		if ( ! empty( $_POST['swsales_hide_on_checkout'] ) ) {
