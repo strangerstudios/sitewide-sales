@@ -276,7 +276,6 @@ class SWSales_Reports {
 			'landing_page'      => ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id ),
 			'sitewide_sale_id'  => $active_sitewide_sale->get_id(),
 			'banner_close_behavior'  => $active_sitewide_sale->get_banner_close_behavior(),
-			'banner_scroll_behavior'  => $active_sitewide_sale->get_banner_scroll_behavior(),
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 		);
 

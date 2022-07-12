@@ -147,7 +147,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 
 				ob_start();
 				?>
-				<div id="swsales-banner-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-scroll-<?php echo esc_attr( $banner_info['scroll_behavior'] ); ?>" style="display: none;">
+				<div id="swsales-banner-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner" style="display: none;">
 					<div class="swsales-banner-inner">
 						<?php
 						switch ( $name ) {
@@ -442,7 +442,6 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		}
 
 		$banner_info['close_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_close_behavior' );
-		$banner_info['scroll_behavior'] = $sitewide_sale->get_meta_value( 'swsales_banner_scroll_behavior' );
 
 		return $banner_info;
 	}
