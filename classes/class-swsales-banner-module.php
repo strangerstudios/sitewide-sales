@@ -119,7 +119,7 @@ abstract class SWSales_Banner_Module {
 	
 		// Check if there is a landing page set for this sale and that we are not on the landing page.
 		$landing_page_post_id = $sitewide_sale->get_landing_page_post_id();
-		if ( $landing_page_post_id < 0 || is_page( $landing_page_post_id ) ) {
+		if ( ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id ) ) {
 			return false;
 		}
 
