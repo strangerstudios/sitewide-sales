@@ -365,7 +365,7 @@ style="display: none;"<?php } ?>>
 		$reusable_block_banner_post_id = wp_insert_post(
 			array(
 				'post_title'    => $reusable_block_banner_title,
-				'post_content'  => 'here',
+				'post_content'  => '<!-- wp:group {\"backgroundColor\":\"black\",\"textColor\":\"white\",\"className\":\"swsales-padding\"} --><div class=\"wp-block-group swsales-padding has-white-color has-black-background-color has-text-color has-background\"><!-- wp:columns --><div class=\"wp-block-columns\"><!-- wp:column --><div class=\"wp-block-column\"><!-- wp:heading {\"textColor\":\"white\"} --><h2 class=\"has-white-color has-text-color\">Limited Time Offer</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Save 50% on your first year of membership!</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button {\"width\":100} --><div class=\"wp-block-button has-custom-width wp-block-button__width-100\"><a class=\"wp-block-button__link\">Buy Now</a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:column --></div><!-- /wp:columns --></div><!-- /wp:group -->',
 				'post_type'     => 'wp_block',
 				'post_status'   => 'publish',
 			)
