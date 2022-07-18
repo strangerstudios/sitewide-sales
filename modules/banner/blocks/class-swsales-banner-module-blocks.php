@@ -105,13 +105,13 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 	public static function __callStatic( $name, $arguments ) {
 		switch ( $name ) {
 			case 'hook_top_banner':
-				add_action( 'wp_head', array( __CLASS__, 'show_top_banner' ) );
+				add_action( 'wp_body_open', array( __CLASS__, 'show_top_banner' ) );
 				break;
 			case 'hook_bottom_banner':
-				add_action( 'wp_footer', array( __CLASS__, 'show_bottom_banner' ) );
+				add_action( 'wp_body_open', array( __CLASS__, 'show_bottom_banner' ) );
 				break;
 			case 'hook_bottom_right_banner':
-				add_action( 'wp_footer', array( __CLASS__, 'show_bottom_right_banner' ) );
+				add_action( 'wp_body_open', array( __CLASS__, 'show_bottom_right_banner' ) );
 				break;
 			case 'show_top_banner':
 			case 'show_bottom_banner':
@@ -321,17 +321,17 @@ style="display: none;"<?php } ?>>
 	 */
 	private static function get_registered_banners() {
 		$registered_banners = array(
-			'top'          => array(
-				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
-				'callback'      => array( __CLASS__, 'hook_top_banner' ),
+			'bottom_right' => array(
+				'option_title'  => __( 'Bottom Right of Site', 'sitewide-sales' ),
+				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
 			),
 			'bottom'       => array(
 				'option_title'  => __( 'Bottom of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_bottom_banner' ),
 			),
-			'bottom_right' => array(
-				'option_title'  => __( 'Bottom Right of Site', 'sitewide-sales' ),
-				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
+			'top'          => array(
+				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
+				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 			),
 		);
 		return $registered_banners;
@@ -365,7 +365,7 @@ style="display: none;"<?php } ?>>
 		$reusable_block_banner_post_id = wp_insert_post(
 			array(
 				'post_title'    => $reusable_block_banner_title,
-				'post_content'  => '<!-- wp:group {\"backgroundColor\":\"black\",\"textColor\":\"white\",\"className\":\"swsales-padding\"} --><div class=\"wp-block-group swsales-padding has-white-color has-black-background-color has-text-color has-background\"><!-- wp:columns --><div class=\"wp-block-columns\"><!-- wp:column --><div class=\"wp-block-column\"><!-- wp:heading {\"textColor\":\"white\"} --><h2 class=\"has-white-color has-text-color\">Limited Time Offer</h2><!-- /wp:heading --><!-- wp:paragraph --><p>Save 50% on your first year of membership!</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button {\"width\":100} --><div class=\"wp-block-button has-custom-width wp-block-button__width-100\"><a class=\"wp-block-button__link\">Buy Now</a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:column --></div><!-- /wp:columns --></div><!-- /wp:group -->',
+				'post_content'  => '<!-- wp:group {\"backgroundColor\":\"black\",\"textColor\":\"white\",\"className\":\"swsales-padding\"} --><div class=\"wp-block-group swsales-padding has-white-color has-black-background-color has-text-color has-background\"><!-- wp:heading {\"level\":3,\"textColor\":\"white\"} --><h3 class=\"has-white-color has-text-color\">Limited Time Offer</h3><!-- /wp:heading --><!-- wp:paragraph --><p>Save 50% on your first year of membership!</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button {\"width\":100} --><div class=\"wp-block-button has-custom-width wp-block-button__width-100\"><a class=\"wp-block-button__link\">Buy Now</a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:group -->',
 				'post_type'     => 'wp_block',
 				'post_status'   => 'publish',
 			)
