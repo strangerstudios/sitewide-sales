@@ -58,7 +58,7 @@ const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 								{ label: __( 'During Sale', 'sitewide-sales' ), value: 'sale' },
 								{ label: __( 'After Sale', 'sitewide-sales' ), value: 'post-sale' }
 							] }
-							label={ __( 'Sale Period Visibity', 'sitewide-sales' ) }
+							label={ __( 'Sale Period Visibility', 'sitewide-sales' ) }
 							onChange={ sale_period_visibility => setAttributes( { sale_period_visibility } ) }
 						/>
 					</InspectorAdvancedControls>
