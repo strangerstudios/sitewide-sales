@@ -77,11 +77,14 @@ add_filter( 'swsales_banner_text', __NAMESPACE__ . '\swsales_banner_text_fancy_c
  */
 function swsales_landing_page_content_fancy_coupon( $content, $sitewide_sale ) {
 	$content_before = '<div id="swsales-landing-page-wrap-fancy_coupon" class="swsales-landing-page-wrap">';
-	$content_before .= '<div class="swsales-landing-page-fancy_coupon-coupon">';
-	$content_before .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
-	$content_before .= $sitewide_sale->get_coupon();
-	$content_before .= '</h3></div>';
-
+	// Add the coupon to template if it is set for this sale.
+	$coupon = $sitewide_sale->get_coupon();
+	if ( ! empty( $coupon ) ) {
+		$content_before .= '<div class="swsales-landing-page-fancy_coupon-coupon">';
+		$content_before .= '<h3><small>' . esc_html( 'USE CODE', 'sitewide-sales' ) . '</small><br />';
+		$content_before .= $coupon;
+		$content_before .= '</h3></div>';
+	}
 	$content_after = '</div>';
 
 	$content = $content_before . $content . $content_after;
