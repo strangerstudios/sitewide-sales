@@ -36,6 +36,12 @@ function register_dynamic_block() {
 function render_dynamic_block( $attributes, $content ) {
 	// Is this post a sale landing page? If so, load the sale.
 	$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'swsales_sitewide_sale_id', true );
+
+	// Set 'Always' period to empty string.
+	if ( empty( $attributes['period'] ) ) {
+		$attributes['period'] = '';
+	}
+
 	if ( ! empty( $sitewide_sale_id ) ) {
 		$sitewide_sale = new \Sitewide_Sales\classes\SWSales_Sitewide_Sale();
 		$sale_found = $sitewide_sale->get_sitewide_sale( $sitewide_sale_id );
@@ -66,7 +72,7 @@ function render_dynamic_block( $attributes, $content ) {
 	 * If the block attributes period matches the sale period, output the contents.
 	 * Otherwise, output nothing.
 	 */
-	if ( $sale_period === $attributes['period'] ) {
+	if ( empty( $attributes['period'] ) || $sale_period === $attributes['period'] ) {
 		return do_blocks( $content );
 	}
 }
