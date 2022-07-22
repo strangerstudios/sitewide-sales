@@ -134,7 +134,10 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 					<?php
 						switch ( $name ) {
 							case 'show_top_banner':
-								echo $banner_content;
+								?>
+								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-block-top').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
+								<?php echo $banner_content; ?>
+								<?php
 								break;
 							case 'show_bottom_banner':
 								?>

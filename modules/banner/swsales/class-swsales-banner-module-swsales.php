@@ -153,6 +153,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 						switch ( $name ) {
 							case 'show_top_banner':
 								?>
+								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-top').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 								<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'top', $active_sitewide_sale ); ?></p>
 								<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
