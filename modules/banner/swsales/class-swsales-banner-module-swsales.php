@@ -121,13 +121,13 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	public static function __callStatic( $name, $arguments ) {
 		switch ( $name ) {
 			case 'hook_top_banner':
-				add_action( 'wp_head', array( __CLASS__, 'show_top_banner' ) );
+				add_action( 'wp_body_open', array( __CLASS__, 'show_top_banner' ) );
 				break;
 			case 'hook_bottom_banner':
-				add_action( 'wp_footer', array( __CLASS__, 'show_bottom_banner' ) );
+				add_action( 'wp_body_open', array( __CLASS__, 'show_bottom_banner' ) );
 				break;
 			case 'hook_bottom_right_banner':
-				add_action( 'wp_footer', array( __CLASS__, 'show_bottom_right_banner' ) );
+				add_action( 'wp_body_open', array( __CLASS__, 'show_bottom_right_banner' ) );
 				break;
 			case 'show_top_banner':
 			case 'show_bottom_banner':
@@ -455,15 +455,16 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	private static function get_registered_banners() {
 
 		$registered_banners = array(
-			'top'          => array(
-				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
-				'callback'      => array( __CLASS__, 'hook_top_banner' ),
+			'bottom_right' => array(
+				'option_title'  => __( 'Bottom Right of Site', 'sitewide-sales' ),
+				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
 				'css_selectors' => array(
-					'#swsales-banner-top',
-					'#swsales-banner-top .swsales-banner-title',
-					'#swsales-banner-top .swsales-banner-content',
-					'#swsales-banner-top .swsales-banner-button-wrap',
-					'#swsales-banner-top .swsales-banner-button',
+					'#swsales-banner-bottom-right',
+					'#swsales-banner-bottom-right .swsales-dismiss',
+					'#swsales-banner-bottom-right .swsales-banner-title',
+					'#swsales-banner-bottom-right .swsales-banner-content',
+					'#swsales-banner-bottom-right .swsales-banner-button-wrap',
+					'#swsales-banner-bottom-right .swsales-banner-button',
 				),
 			),
 			'bottom'       => array(
@@ -481,16 +482,15 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 					'#swsales-banner-bottom .swsales-banner-inner-right',
 				),
 			),
-			'bottom_right' => array(
-				'option_title'  => __( 'Bottom Right of Site', 'sitewide-sales' ),
-				'callback'      => array( __CLASS__, 'hook_bottom_right_banner' ),
+			'top'          => array(
+				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
+				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
-					'#swsales-banner-bottom-right',
-					'#swsales-banner-bottom-right .swsales-dismiss',
-					'#swsales-banner-bottom-right .swsales-banner-title',
-					'#swsales-banner-bottom-right .swsales-banner-content',
-					'#swsales-banner-bottom-right .swsales-banner-button-wrap',
-					'#swsales-banner-bottom-right .swsales-banner-button',
+					'#swsales-banner-top',
+					'#swsales-banner-top .swsales-banner-title',
+					'#swsales-banner-top .swsales-banner-content',
+					'#swsales-banner-top .swsales-banner-button-wrap',
+					'#swsales-banner-top .swsales-banner-button',
 				),
 			),
 		);
