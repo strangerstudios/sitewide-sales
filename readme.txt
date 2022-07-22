@@ -22,6 +22,28 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 1. Create a new `Sitewide Sale` under `Sitewide Sales` > `Add New`.
 
 == Changelog ==
+= 1.3 - 2022-07-?? =
+* FEATURE: Added "Reusable Blocks" as a banner type.
+* FEATURE: Added a "Sale Content" block that works similar to the sitewide_sale shortcode. The content from the sale settings will show up depending on the period.
+* FEATURE: Added a "Sale Period" nested block. You can nest other blocks inside of it and set the period (before/during/after) to show that content.
+* FEATURE: Also added a "Sale Period Visibility" advanced option to Group blocks and Column blocks. You can set these nested blocks to only show before/during/after a sale.
+* FEATURE: Added support for the Popup Maker plugin. You can choose a popup to use as your banner.
+* ENHANCEMENT: Added close (x) to banners and setting to "close until new session" so closed banners don't show up again.
+* ENHANCEMENT: Updated WooSelect to latest version.
+* ENHANCEMENT: Using the woocommerce_product_is_on_sale filter to show products in the shop as "on sale" if the code is applied to the view.
+* ENHANCEMENT: Moved the mini report on the edit sale page to the sidebar, with links to the detailed report.
+* ENHANCEMENT: Added setting for hiding banners per role.
+* ENHANCEMENT: Sorting level dropdown/multiselects by sorted order in PMPro
+* ENHANCEMENT: Formatting strike prices for accessibility; improvement to WC pricing to use new is_type function.
+* ENHANCEMENT: Now using the input type date and time to set start and end dates/times on sales; input field width formatting.
+* ENHANCEMENT: Updated plugin links and admin header display.
+* ENHANCEMENT: Improved the "Vintage" template.
+* ENHANCEMENT: Adjusting "Photo" template for EDD and other improvements.
+* BUG FIX/ENHANCEMENT: Fixed warning for PMPro module and hiding banner by membership level.
+* BUG FIX/ENHANCEMENT: Hiding the banner if the "shop" page is chosen as the landing page.
+* BUG FIX/ENHANCEMENT: Removed strikethrough pricing on variable downloads.
+* BUG FIX/ENHANCEMENT: PMPro daily revenue chart now shows in local time.
+* BUG FIX: Fixed WC coupon expiration warning message showing when shouldnt.
 
 = 1.2 - 2021-09-22 =
 * FEATURE: Added EDD module
