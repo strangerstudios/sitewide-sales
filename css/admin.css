@@ -1,107 +1,113 @@
+/**
+ * Colors
+ * - red: #c93e2c
+ * - dark blue: #0c3d54
+ * - medium blue: #44738d
+ * - light blue: #6991ac
+ * - grey: #E7E9EF;
+ */
+
 /* Admin Header */
-.sitewide_sales_admin .sitewide_sales_banner {
-    display: grid;
-    grid-template-areas: "logo meta";
-    grid-template-columns: 360px auto;
+.sitewide_sales_banner {
+	background-color: #FFF;
+	border-bottom: 1px solid #CCC;
+	margin-left: -20px;
 }
-.sitewide_sales_admin .sitewide_sales_banner a {
-	cursor: pointer;
+.sitewide_sales_banner_wrapper {
+	display: flex;	
+	padding: 20px;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_logo img {
-    height: auto;
-    max-height: 100px;
+.sitewide_sales_banner .sitewide_sales_logo {
+	align-self: bottom;
+	display: block;
+	margin-right: 15px;
+	padding-top: 5px;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta {
-    align-self: center;
-    grid-area: meta;
-    font-size: 16px;
-    line-height: 1.5;
+.sitewide_sales_banner .sitewide_sales_meta {
+	align-self: center;
+	font-size: 16px;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta .sitewide_sales_version {
-    color: #6991ac;
-    display: inline-block;
-    font-weight: bold;
-    padding: 5px 10px 0px 2px;
+.sitewide_sales_banner .sitewide_sales_meta .sitewide_sales_version {
+	background: #DCDCDE;
+	color: #555;
+	border-radius: 999px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 6px 12px;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a {
-	border-left: 1px solid #CCC;
-	color: #6991ac;
-	padding: 5px 10px;
+.sitewide_sales_banner .sitewide_sales_meta a {
+	display: inline-block;
+	margin: 0 0 0 10px;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag {
+.sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag {
 	font-weight: bold;
 	text-decoration: none;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag:before {
+.sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag:before {
 	display: inline-block;
 	font: 400 20px/1 dashicons;
 	left: 0;
 	position: relative;
 	text-decoration: none;
-	vertical-align: bottom;
+	vertical-align: middle;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-valid {
+.sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag-valid {
 	color: rgb( 70, 180, 80 );
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-valid:before {
+.sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag-valid:before {
 	content: "\f147";
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-invalid {
+.sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag-invalid {
 	color: #AAA;
 }
-.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag.swsales_license_tag-invalid:before {
+.sitewide_sales_banner .sitewide_sales_meta a.swsales_license_tag-invalid:before {
 	content: "\f335";
 }
 .sitewide_sales_admin .sitewide_sales_icon {
-    max-width: 200px;
-    height: auto;
+	max-width: 200px;
+	height: auto;
 }
 
 /* Admin Messages */
 .sitewide_sales_message,
 .form-table td p.sitewide_sales_message {
 	background-color: #f7fcfe;
-    border-left: 4px solid #00a0d2;
-    margin-bottom: 1em;
-    margin-right: 1.5em;
-    padding: 15px;
+	border-color: #00a0d2;
+	border-style: solid;
+	border-width: 0 0 0 4px;
+	color: #3c434a;
+	margin-bottom: 1em;
+	padding: 15px;
 }
 .sitewide_sales_message.sitewide_sales_success,
 .form-table td p.sitewide_sales_message.sitewide_sales_success {
-    border-left-color: #4ab866;
-    background-color: #eff9f1;
+	border-color: #c3e6cb;
+	background-color: #d4edda;
 }
 .sitewide_sales_message.sitewide_sales_error,
 .form-table td p.sitewide_sales_message.sitewide_sales_error {
-    border-left-color: #d94f4f;
-    background-color: #f9e2e2;
+    border-color: #f5c6cb;
+    background-color: #f8d7da;
 }
 .sitewide_sales_message.sitewide_sales_alert,
 .form-table td p.sitewide_sales_message.sitewide_sales_alert {
-    border-left-color: #f0b849;
-    background-color: #fef8ee;
+    border-color: #ffeeba;
+    background-color: #fff8e0;
 }
 .sitewide_sales_message.sitewide_sales_success a {
-    color: #208A1B;
+    color: #0F441C;
 }
 .sitewide_sales_message.sitewide_sales_error a {
-    color: #CC0000;
+    color: #721c24;
 }
 .sitewide_sales_message.sitewide_sales_alert a {
-    color: #CF8516;
+    color: #6C5101;
+}
+.form-table td .sitewide_sales_message p {
+	margin: 0;
 }
 
 /* Sitewide Sales Custom Post Type */
-.edit-php.post-type-sitewide_sale .wrap:before,
-.post-php.post-type-sitewide_sale .wrap:before,
-.post-new-php.post-type-sitewide_sale .wrap:before {
-	background-image: url( '../images/Sitewide-Sales.png' );
-	background-size: contain;
-	background-repeat: no-repeat;
-	content: '';
-	display: block;
-	height: 100px;
-}
 .post-type-sitewide_sale input[type=text] {
 	width: 88%;
 }
@@ -114,13 +120,6 @@
 }
 .post-type-sitewide_sale .form-table tr th small a {
 	font-weight: normal;
-} 
-.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .inside {
-	margin: 0;
-	padding: 0;
-}
-.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .misc-pub-section {
-	padding: 0 12px;
 }
 .post-type-sitewide_sale .swsales_banner_css_selectors {
 	background: aliceblue;
@@ -128,13 +127,42 @@
 	width: 77%;
 }
 
+.post-type-sitewide_sale button.swsales-row-trigger-button {
+	align-items: center;
+	-webkit-appearance: none;
+	background: none;
+	border: none;
+	box-shadow: none;
+	box-sizing: border-box;
+	color: #2271b1;
+	cursor: pointer;
+	height: auto;
+	margin: 0;
+	outline: none;
+	padding: 0;
+	position: relative;
+	text-align: left;
+	text-decoration: underline;
+	width: 100%;
+}
+.post-type-sitewide_sale button.swsales-row-trigger-button:hover {
+	color: #135e96;
+}
+
+/* Admin Meta Box */
+.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .inside {
+	margin: 0;
+	padding: 0;
+}
+.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .misc-pub-section {
+	padding: 0 1em;
+}
+.post-type-sitewide_sale #swsales_cpt_publish_sitewide_sale .sitewide_sales_message {
+	border-width: 0 0 4px 0;
+	margin-bottom: 0;
+}
+
 /* Documentation Meta Box */
-#swsales_documentation.postbox {
-	background: #F5F5F5;
-}
-#swsales_documentation.postbox h2 {
-	border-bottom: 1px solid #DDD;
-}
 #swsales_documentation.postbox ul li {
 	margin-bottom: 15px;
 }
@@ -214,36 +242,46 @@
 	}
 }
 
+/* Sitewide Sales About and License Page */
+#swsales_cpt_reports .inside {
+	margin-top: 0;
+	padding: 0;
+}
+.swsales_reports-quick-data-section:nth-child(odd) {
+	background: #f6f7f7;
+}
+.swsales_reports-quick-data-section {
+	border-bottom: 1px solid #dcdcde;
+	display: grid;
+	grid-template-columns: 2fr auto;
+	padding: 1em;
+}
+.swsales_reports-quick-data-label {
+	font-weight: bold;
+}
+.swsales_reports-quick-data-value {
+	text-align: right;
+}
+.swsales_reports-quick-data-action {
+	padding: 1em;
+	text-align: center;
+}
+
 /* Sitewide Sales About Page */
 .swsales-wrap {
-	font-size:15px;
-	margin: 0 40px 0 20px;
-	max-width: 1050px;
+	margin: 10px 40px 10px 10px;
+	max-width: 850px;
 	position: relative;
 }	
-.swsales-wrap .swsales-text {
-    color:#555d66;
-}
 .swsales-wrap h2 {
-	font-size: 2.7em;
-	font-weight: 300;
-	line-height: 1.3;
-	margin: 0;
-	text-align: left;
+	margin-top: 2em;
 }
-.swsales-wrap .swsales-text h3 {
-	border-top: 1px solid rgba(0,0,0,.1);
-	font-size: 1.4em;
-	line-height:1.5;
-	margin: 1.25em 0 .6em;
-	padding-top: 1.25em;
-}
-.swsales-wrap .swsales-text p {
+.swsales-wrap p {
 	line-height: 1.5;
 	font-size:16px;
 }
 .sitewide_sale_page_sitewide_sales_about .swsales-wrap .sitewide_sales_icon {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 .sitewide_sale_page_sitewide_sales_about .swsales-wrap ul {
 	line-height: 1.5;
@@ -261,11 +299,14 @@
 }
 
 @media screen and (max-width: 782px) {
-	.sitewide_sales_admin .sitewide_sales_banner {
+	.sitewide_sales_banner {
 		display: block;
 	}
-	.sitewide_sales_admin .sitewide_sales_banner .sitewide_sales_meta {
-		text-align: center;
+	.sitewide_sales_banner .sitewide_sales_logo {
+		margin-bottom: 15px;
+	}
+	.sitewide_sales_banner .sitewide_sales_meta {
+		text-align: left;
 	}
 	.swsales-wrap .swsales-text {
 		margin-right: 0;

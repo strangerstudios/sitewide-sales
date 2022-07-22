@@ -17,13 +17,11 @@ namespace Sitewide_Sales;
 defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 
 define( 'SWSALES_VERSION', '1.2' );
+define( 'SWSALES_BASE_FILE', __FILE__ );
 define( 'SWSALES_DIR', dirname( __FILE__ ) );
 define( 'SWSALES_BASENAME', plugin_basename( __FILE__ ) );
 
 require 'autoload.php';
-
-// Handles registering banners and displaying banners on frontend.
-classes\SWSales_Banners::init();
 
 // Sets up shortcode [sitewide_sales] and landing page-related code.
 classes\SWSales_Landing_Pages::init();
@@ -62,14 +60,21 @@ classes\SWSales_About::init();
 classes\SWSales_License::init();
 
 // Helper functions
-require_once ( 'includes/functions.php' );
-require_once ( 'includes/license.php' );
+require_once ( SWSALES_DIR . '/blocks/blocks.php' );
+require_once ( SWSALES_DIR . '/includes/admin.php' );
+require_once ( SWSALES_DIR . '/includes/functions.php' );
+require_once ( SWSALES_DIR . '/includes/license.php' );
 
 // Load Ecommerce Modules
 function swsales_load_modules() {
-	require_once SWSALES_DIR . '/modules/class-swsales-module-pmpro.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-wc.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-custom.php';
-	require_once SWSALES_DIR . '/modules/class-swsales-module-edd.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/pmpro/class-swsales-module-pmpro.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/wc/class-swsales-module-wc.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/custom/class-swsales-module-custom.php';
+	require_once SWSALES_DIR . '/modules/ecommerce/edd/class-swsales-module-edd.php';
+
+	require_once SWSALES_DIR . '/classes/class-swsales-banner-module.php';
+    require_once SWSALES_DIR . '/modules/banner/blocks/class-swsales-banner-module-blocks.php';
+	require_once SWSALES_DIR . '/modules/banner/swsales/class-swsales-banner-module-swsales.php';
+	require_once SWSALES_DIR . '/modules/banner/pum/class-swsales-banner-module-pum.php';
 }
 add_action( 'init', 'Sitewide_Sales\\swsales_load_modules', 1 );

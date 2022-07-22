@@ -26,7 +26,7 @@ class SWSales_MetaBoxes {
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_cpt_meta', plugins_url( 'js/swsales-cpt-meta.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_cpt_meta', plugins_url( 'js/swsales-cpt-meta.js', SWSALES_BASENAME ), array( 'jquery' ), SWSALES_VERSION );
 			wp_enqueue_script( 'swsales_cpt_meta' );
 
 			$pages_with_swsales_shortcode = $wpdb->get_col(
@@ -73,6 +73,14 @@ class SWSales_MetaBoxes {
 			'high'
 		);
 		add_meta_box(
+			'swsales_cpt_reports',
+			__( 'Quick Reports', 'sitewide-sales' ),
+			array( __CLASS__, 'display_cpt_reports' ),
+			array( 'sitewide_sale' ),
+			'side',
+			'high'
+		);
+		add_meta_box(
 			'swsales_documentation',
 			__( 'Documentation', 'sitewide-sales' ),
 			array( __CLASS__, 'documentation' ),
@@ -82,7 +90,7 @@ class SWSales_MetaBoxes {
 		);
 		add_meta_box(
 			'swsales_cpt_step_1',
-			__( 'Step 1: Start and End Dates', 'sitewide-sales' ),
+			__( 'Start and End Dates', 'sitewide-sales' ),
 			array( __CLASS__, 'display_step_1' ),
 			array( 'sitewide_sale' ),
 			'normal',
@@ -90,7 +98,7 @@ class SWSales_MetaBoxes {
 		);
 		add_meta_box(
 			'swsales_cpt_step_2',
-			__( 'Step 2: Sale Type', 'sitewide-sales' ),
+			__( 'Sale Type', 'sitewide-sales' ),
 			array( __CLASS__, 'display_step_2' ),
 			array( 'sitewide_sale' ),
 			'normal',
@@ -98,7 +106,7 @@ class SWSales_MetaBoxes {
 		);
 		add_meta_box(
 			'swsales_cpt_step_3',
-			__( 'Step 3: Landing Page', 'sitewide-sales' ),
+			__( 'Landing Page', 'sitewide-sales' ),
 			array( __CLASS__, 'display_step_3' ),
 			array( 'sitewide_sale' ),
 			'normal',
@@ -106,16 +114,8 @@ class SWSales_MetaBoxes {
 		);
 		add_meta_box(
 			'swsales_cpt_step_4',
-			__( 'Step 4: Banners', 'sitewide-sales' ),
+			__( 'Sale Banner', 'sitewide-sales' ),
 			array( __CLASS__, 'display_step_4' ),
-			array( 'sitewide_sale' ),
-			'normal',
-			'high'
-		);
-		add_meta_box(
-			'swsales_cpt_step_5',
-			__( 'Step 5: Reports', 'sitewide-sales' ),
-			array( __CLASS__, 'display_step_5' ),
 			array( 'sitewide_sale' ),
 			'normal',
 			'high'
@@ -147,15 +147,42 @@ class SWSales_MetaBoxes {
 			}
 		}
 		?>
+		<?php
+			$sale_status_running = $cur_sale->is_running();
+
+			if ( $sale_status_running === true ) {
+				echo '<div class="sitewide_sales_message sitewide_sales_success">';
+				echo '<strong>' . esc_html( 'Running.', 'sitewide-sales' ) . '</strong>';
+				echo ' ' .  esc_html( 'This is the active sitewide sale.', 'sitewide-sales' );
+			} else {
+				echo '<div class="sitewide_sales_message sitewide_sales_alert">';
+				echo '<strong>' . esc_html( 'Not Running.', 'sitewide-sales' ) . '</strong>';
+
+				if ( ! $cur_sale->is_active_sitewide_sale() ) {
+					$error_message = esc_html( 'This is not the active sitewide sale.', 'sitewide-sales' );
+				} else {
+					switch ( $cur_sale->get_time_period() ) {
+						case 'error':
+							$error_message = esc_html( 'Invalid timeframe.', 'sitewide-sales' );
+							break;
+						case 'pre-sale':
+							$error_message = esc_html( 'Sale has not yet started.', 'sitewide-sales' );
+							break;
+						case 'post-sale':
+							$error_message = esc_html( 'Sale has ended.', 'sitewide-sales' );
+							break;
+					}
+				}
+				echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' );
+			}
+			echo '</div>';
+		?>
 		<div id="misc-publishing-actions">
 			<div class="misc-pub-section">
 				<p>
 					<label for="swsales_set_as_sitewide_sale"><strong><?php esc_html_e( 'Set as Current Sitewide Sale', 'sitewide-sales' ); ?></strong></label>
 					<input name="swsales_set_as_sitewide_sale" id="swsales_set_as_sitewide_sale" type="checkbox" <?php checked( $init_checked, true ); ?> />
 				</p>
-			</div>
-			<div class="misc-pub-section">
-				<p><a target="_blank" href="<?php echo esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Sitewide Sale Reports', 'sitewide-sales' ); ?></a></p>
 			</div>
 		</div>
 		<div id="major-publishing-actions">
@@ -170,35 +197,35 @@ class SWSales_MetaBoxes {
 	public static function documentation( $post ) { ?>
 		<p><?php esc_html_e( 'Explore how to set up a sale using the Sitewide Sales plugin.' ); ?></p>
 		<ul>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=about-plugin" target="_blank" title="<?php esc_attr_e( 'About the Plugin', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=about-plugin" target="_blank" title="<?php esc_attr_e( 'About the Plugin', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'About the Plugin', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/getting-started/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Getting Started With Sitewide Sales', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-start-and-end-date/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/sale-start-and-end-date/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Setting the Sale Start and End Date', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-type/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/sale-type/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Choosing a Sale Type and Discount Code or Coupon', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/landing-page/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/landing-page/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Designing Your Sale Landing Page', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/sale-banners/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/create-sale/sale-banners/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Setting Up the Active Sales Banner', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/reports/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/reports/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Viewing Sitewide Sale Reports', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
-			<li><a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/action-and-filter-hooks/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>">
+			<li><a href="https://sitewidesales.com/documentation/action-and-filter-hooks/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'Extend Sitewide Sales via Action and Filter Hooks', 'sitewide-sales' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'sitewide-sales' ); ?></span>
 			</a></li>
@@ -243,40 +270,6 @@ class SWSales_MetaBoxes {
 						<input id="swsales_end_time" name="swsales_end_time" type="time" lang="<?php echo esc_attr( get_locale() ); ?>" value="<?php echo esc_attr( $cur_sale->get_end_date( 'H:i' ) ); ?>" />
 						<p class="description"><?php esc_html_e( 'Set this date and time to when your sale should end.', 'sitewide-sales' ); ?></p>
 					</td>
-				</tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Sale Status', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<?php
-							$sale_status_running = $cur_sale->is_running();
-
-							if ( $sale_status_running === true ) {
-								echo '<p class="sitewide_sales_message sitewide_sales_success">';
-								echo '<strong>' . esc_html( 'Running.', 'sitewide-sales' ) . '</strong>';
-							} else {
-								echo '<div class="sitewide_sales_message sitewide_sales_alert">';
-								echo '<strong>' . esc_html( 'Not Running.', 'sitewide-sales' ) . '</strong>';
-
-								if ( ! $cur_sale->is_active_sitewide_sale() ) {
-									$error_message = 'This is not the active sitewide sale.';
-								} else {
-									switch ( $cur_sale->get_time_period() ) {
-										case 'error':
-											$error_message = esc_html( 'Invalid timeframe.', 'sitewide-sales' );
-											break;
-										case 'pre-sale':
-											$error_message = esc_html( 'Sale has not yet started.', 'sitewide-sales' );
-											break;
-										case 'post-sale':
-											$error_message = esc_html( 'Sale has ended.', 'sitewide-sales' );
-											break;
-									}
-								}
-								echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' );
-							}
-							echo '</p>';
-						?>
-					</td>
-				<tr>
 				</tr>
 			</tbody>
 		</table>
@@ -371,7 +364,7 @@ class SWSales_MetaBoxes {
 					<th><label for="swsales_landing_page_post_id"><?php esc_html_e( 'Landing Page', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="landing_page_select swsales_option" id="swsales_landing_page_select" name="swsales_landing_page_post_id">
-							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
+							<option value="0"><?php esc_html_e( '- No Landing Page -', 'sitewide-sales' ); ?></option>
 							<?php
 							$page_found = false;
 							foreach ( $pages as $page ) {
@@ -398,11 +391,6 @@ class SWSales_MetaBoxes {
 							$show_shortcode_warning = true;
 						}
 						?>
-						<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
-							<?php if ( ! $show_shortcode_warning ) { ?>style="display: none;"<?php } ?>>
-							<?php echo wp_kses_post( '<strong>Warning:</strong> The [sitewide_sales] shortcode was not found in this post.', 'sitewide-sales' ); ?>
-						</p>
-
 						<p>
 							<span id="swsales_after_landing_page_select" 
 							<?php
@@ -424,87 +412,92 @@ class SWSales_MetaBoxes {
 						</p>
 					</td>
 				</tr>
-				<tr>
-					<th><label for="swsales_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<select class="landing_page_select_template swsales_option" id="swsales_landing_page_template" name="swsales_landing_page_template">
-							<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
-							<?php
-							$templates = SWSales_Templates::get_templates();
-							$templates = apply_filters( 'swsales_landing_page_templates', $templates );
-							foreach ( $templates as $key => $value ) {
-								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
-							}
-							?>
-						</select>
-						<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-
-				<?php 
-					// Add filter for modules here.
-					do_action( 'swsales_after_choose_landing_page', $cur_sale );
-				?>
-
 			</tbody>
 		</table>
-		<hr />
-		<p>
-			<?php
-				$allowed_html = array (
-					'a' => array (
-						'href' => array(),
-						'target' => array(),
-						'title' => array(),
-					),
-				);
-			 	printf( wp_kses( __( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content. <a href="%s" target="_blank">Explore suggested sample content for these fields here</a>.', 'sitewide-sales' ), $allowed_html ), 'https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/documentation/landing-page/?utm_source=plugin&utm_medium=step-3-landing-page&utm_campaign=documentation' );
-		 	?>
-		</p>
-		<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
-			<?php if ( ! $show_shortcode_warning ) { ?> style="display: none;"<?php } ?>>
-			<?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?>
-		</p>
-		<table class="form-table">
-			<tbody>
-				<tr>
-					<th scope="row" valign="top">
-						<label><?php esc_html_e( 'Pre-Sale Content', 'sitewide-sales' ); ?></label>
-						<?php if ( ! empty( $view_page_url ) ) { ?>
-							<br />
-							<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
-						<?php } ?>
-					</th>
-					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $cur_sale->get_pre_sale_content() ) ); ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row" valign="top">
-						<label><?php esc_html_e( 'Sale Content', 'sitewide-sales' ); ?></label>
-						<?php if ( ! empty( $view_page_url ) ) { ?>
-							<br />
-							<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
-						<?php } ?>
-					</th>
-					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $cur_sale->get_sale_content() ) ); ?></textarea>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row" valign="top">
-						<label><?php esc_html_e( 'Post-Sale Content', 'sitewide-sales' ); ?></label>
-						<?php if ( ! empty( $view_page_url ) ) { ?>
-							<br />
-							<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
-						<?php } ?>
-					</th>
-					<td>
-						<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $cur_sale->get_post_sale_content() ) ); ?></textarea>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div id="swsales_landing_page_options">
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th><label for="swsales_landing_page_template"><?php esc_html_e( 'Landing Page Template', 'sitewide-sales' ); ?></label></th>
+						<td>
+							<select class="landing_page_select_template swsales_option" id="swsales_landing_page_template" name="swsales_landing_page_template">
+								<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
+								<?php
+								$templates = SWSales_Templates::get_templates();
+								$templates = apply_filters( 'swsales_landing_page_templates', $templates );
+								foreach ( $templates as $key => $value ) {
+									echo '<option value="' . esc_attr( $key ) . '" ' . selected( $landing_template, esc_html( $key ) ) . '>' . esc_html( $value ) . '</option>';
+								}
+								?>
+							</select>
+						</td>
+					</tr>
+
+					<?php
+						// Add filter for modules here.
+						do_action( 'swsales_after_choose_landing_page', $cur_sale );
+					?>
+
+				</tbody>
+			</table>
+			<hr />
+			<p>
+				<?php
+					$allowed_html = array (
+						'a' => array (
+							'href' => array(),
+							'target' => array(),
+							'title' => array(),
+						),
+					);
+				 	printf( wp_kses( __( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content. <a href="%s" target="_blank">Explore suggested sample content for these fields here</a>.', 'sitewide-sales' ), $allowed_html ), 'https://sitewidesales.com/documentation/create-sale/landing-page/?utm_source=plugin&utm_medium=step-3-landing-page&utm_campaign=documentation' );
+			 	?>
+			</p>
+			<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
+				<?php if ( ! $show_shortcode_warning ) { ?> style="display: none;"<?php } ?>>
+				<?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?>
+			</p>
+			<table class="form-table">
+				<tbody>
+					<tr>
+						<th scope="row" valign="top">
+							<label><?php esc_html_e( 'Pre-Sale Content', 'sitewide-sales' ); ?></label>
+							<?php if ( ! empty( $view_page_url ) ) { ?>
+								<br />
+								<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
+							<?php } ?>
+						</th>
+						<td>
+							<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $cur_sale->get_pre_sale_content() ) ); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" valign="top">
+							<label><?php esc_html_e( 'Sale Content', 'sitewide-sales' ); ?></label>
+							<?php if ( ! empty( $view_page_url ) ) { ?>
+								<br />
+								<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
+							<?php } ?>
+						</th>
+						<td>
+							<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $cur_sale->get_sale_content() ) ); ?></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" valign="top">
+							<label><?php esc_html_e( 'Post-Sale Content', 'sitewide-sales' ); ?></label>
+							<?php if ( ! empty( $view_page_url ) ) { ?>
+								<br />
+								<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
+							<?php } ?>
+						</th>
+						<td>
+							<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $cur_sale->get_post_sale_content() ) ); ?></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div> <!-- end #swsales_landing_page_options -->
 		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
 		<?php
 	}
@@ -516,102 +509,49 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 
-		$use_banner = $cur_sale->get_use_banner();
-		$banner_template = $cur_sale->get_banner_template()
+		$banner_modules        = apply_filters( 'swsales_banner_modules', array() );
+		ksort( $banner_modules );
+		$current_banner_module = $cur_sale->swsales_banner_module;
 
 		?>
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Use the built-in banner?', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<select class="use_banner_select swsales_option" id="swsales_use_banner_select" name="swsales_use_banner">
-							<option value="no" <?php selected( $use_banner, 'no' ); ?>><?php esc_html_e( 'No', 'sitewide-sales' ); ?></option>
+						<select class="swsales_option" id="swsales_banner_module" name="swsales_banner_module">
+							<option value=""><?php esc_html_e( '- No Banner -', 'sitewide-sales' ); ?></option>
 							<?php
-								$registered_banners = SWSales_Banners::get_registered_banners();
-							foreach ( $registered_banners as $banner => $data ) {
-								if ( is_string( $banner ) && is_array( $data ) && ! empty( $data['option_title'] ) && is_string( $data['option_title'] ) ) {
-									echo '<option value="' . esc_attr( $banner ) . '"' . selected( $use_banner, $banner ) . '>' . esc_html( $data['option_title'] ) . '</option>';
-								}
+							foreach ( $banner_modules as $label => $module ) {
+								echo '<option value="' . esc_attr( $module ) . '"' . selected( $current_banner_module, $module ) . '>' . esc_html( $label ) . '</option>';
 							}
 							?>
 						</select>
-						<input type="submit" class="button button-secondary" id="swsales_preview" name="swsales_preview" value="<?php esc_attr_e( 'Save and Preview', 'sitewide-sales' ); ?>">
-						<p class="description"><?php esc_html_e( 'Optionally display a banner, which you can customize using additional settings below, to advertise your sale.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 			</tbody>
 		</table>
-		<table class="form-table" id="swsales_banner_options"<?php if ( $use_banner === 'no' ) { ?> style="display: none;"<?php } ?>>
+		<?php
+		foreach ( $banner_modules as $label => $module ) {
+			?>
+			<table class="form-table swsales_banner_module_settings" id="swsales_banner_settings_<?php echo esc_attr( $module ) ?>">
+			<?php
+			$module::echo_banner_settings_html_inner( $cur_sale );
+			?>
+			</table>
+			<?php
+		}
+		?>
+		<table class="form-table" id="swsales_banner_options">
 			<tbody>
 				<tr>
-					<th><label for="swsales_banner_template"><?php esc_html_e( 'Banner Template', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
 					<td>
-						<select class="banner_select_template swsales_option" id="swsales_banner_template" name="swsales_banner_template">
-							<option value="0"><?php esc_html_e( 'None', 'sitewide-sales' ); ?></option>
-							<?php
-							$templates = SWSales_Templates::get_templates();
-							$templates = apply_filters( 'swsales_banner_templates', $templates );
-							foreach ( $templates as $key => $value ) {
-								echo '<option value="' . esc_attr( $key ) . '" ' . selected( $banner_template, $key ) . '>' . esc_html( $value ) . '</option>';
-							}
-							?>
+						<select class="swsales_option" id="swsales_banner_close_behavior" name="swsales_banner_close_behavior">
+							<option value="refresh" <?php selected( $cur_sale->get_meta_value('swsales_banner_close_behavior'), 'refresh' ); ?>><?php esc_html_e( 'Close Until Refresh', 'sitewide-sales' ); ?></option>
+							<option value="session" <?php selected( $cur_sale->get_meta_value('swsales_banner_close_behavior'), 'session' ); ?>><?php esc_html_e( 'Close Until New Session', 'sitewide-sales' ); ?></option>
 						</select>
-						<p class="description"><?php esc_html_e( 'Stylish templates available for your theme.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<input type="text" name="swsales_banner_title" value="<?php echo esc_attr( $cur_sale->get_banner_title() ); ?>">
-						<p class="description"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th><label for="swsales_banner_text"><?php esc_html_e( 'Banner Text', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo esc_textarea( $cur_sale->get_banner_text(), 'sitewide-sales' ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Button Text', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<input class="swsales_option" type="text" name="swsales_link_text" value="<?php echo esc_attr( $cur_sale->get_link_text() ); ?>">
-						<p class="description"><?php esc_html_e( 'The text displayed on the button of your banner that links to the Landing Page.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Custom Banner CSS', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<textarea class="swsales_option" name="swsales_css_option"><?php echo esc_textarea( $cur_sale->get_css_option() ); ?></textarea>
-						<p class="description"><?php esc_html_e( 'Optional. Use this area to add custom styles to modify the banner appearance.', 'sitewide-sales' ); ?></p>
-
-						<p id="swsales_css_selectors_description" class="description" 
-						<?php
-						if ( empty( $use_banner ) || $use_banner == 'no' ) {
-							?>
- style="display:none;"<?php } ?>><?php esc_html_e( 'Use these selectors to alter the appearance of your banners.', 'sitewide-sales' ); ?></p>
-						<?php foreach ( $registered_banners as $key => $registered_banner ) { ?>
-							<div data-swsales-banner="<?php echo esc_attr( $key ); ?>" class="swsales_banner_css_selectors" 
-																  <?php
-																	if ( $key != $use_banner ) {
-																		?>
- style="display: none;"<?php } ?>>
-							<?php
-								$css_selectors = $registered_banner['css_selectors'];
-							if ( is_string( $css_selectors ) ) {
-								echo $css_selectors;
-							} elseif ( is_array( $css_selectors ) ) {
-								foreach ( $css_selectors as $css_selector ) {
-									if ( is_string( $css_selector ) ) {
-										echo $css_selector . ' { }<br/>';
-									}
-								}
-							}
-							?>
-							</div>
-						<?php } ?>
+						<p class="description"><?php esc_html_e( 'Select when the banner will reappear if the user closes or dismisses the banner.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
 				<tr>
@@ -625,6 +565,26 @@ class SWSales_MetaBoxes {
 						<p class="description"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
+				<tr>
+					<th><label for="swsales_hide_banner_by_role"><?php esc_html_e( 'Hide Banner by Role', 'sitewide-sales' ); ?></label></th>
+					<td>
+						<input type="hidden" name="swsales_hide_banner_by_role_exists" value="1" />
+						<select multiple class="swsales_option" id="swsales_hide_banner_by_role_select" name="swsales_hide_banner_by_role[]">
+						<?php
+							$all_roles = get_editable_roles();
+							$all_roles['logged_out'] = array(
+								'name' => __( 'Logged Out', 'sitewide-sales' ),
+							);
+							$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_banner_by_role', '[]' ) );
+							foreach ( $all_roles as $slug => $role_data ) {
+								$selected_modifier = in_array( $slug, $hide_for_roles ) ? ' selected="selected"' : '';
+								echo '<option value="' . esc_attr( $slug ) . '"' . $selected_modifier . '>' . esc_html( $role_data['name'] ) . '</option>';
+							}
+						?>
+						</select>
+						<p class="description"><?php esc_html_e( 'This setting will hide the banner for users with the selected roles.', 'sitewide-sales' ); ?></p>
+					</td>
+				</tr>
 				<?php
 				//  Add filter for modlues (ex. hide banner for level)
 				do_action( 'swsales_after_banners_settings', $cur_sale );
@@ -635,15 +595,17 @@ class SWSales_MetaBoxes {
 		<?php
 	}
 
-	public static function display_step_5( $post ) {
+	public static function display_cpt_reports( $post ) {
 		global $wpdb, $cur_sale;
 		if ( ! isset( $cur_sale ) ) {
 			$cur_sale = new SWSales_Sitewide_Sale();
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
-		SWSales_Reports::show_report( $cur_sale );
+		SWSales_Reports::show_quick_report( $cur_sale );
 		?>
-		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
+		<div class="swsales_reports-quick-data-action">
+			<a class="button button-secondary" target="_blank" href="<?php echo esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post->ID ) ); ?>"><?php esc_html_e( 'View Detailed Sale Report', 'sitewide-sales' ); ?></a>
+		</div>
 		<?php
 	}
 
@@ -747,42 +709,25 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_post_sale_content', wp_kses_post( $_POST['swsales_post_sale_content'] ) );
 		}
 
-		$possible_options = array_merge( array( 'no' => 'no' ), SWSales_Banners::get_registered_banners() );
-		if ( isset( $_POST['swsales_use_banner'] ) && array_key_exists( $_POST['swsales_use_banner'], $possible_options ) ) {
-			update_post_meta( $post_id, 'swsales_use_banner', sanitize_text_field( $_POST['swsales_use_banner'] ) );
+		if ( isset( $_POST['swsales_banner_module'] ) ) {
+			update_post_meta( $post_id, 'swsales_banner_module', sanitize_text_field( $_POST['swsales_banner_module'] ) );
 		}
 
-		if ( isset( $_POST['swsales_banner_template'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_template', sanitize_text_field( $_POST['swsales_banner_template'] ) );
-		}
-
-		if ( ! empty( $_POST['swsales_banner_title'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_title', wp_kses_post( $_POST['swsales_banner_title'] ) );
-		} elseif ( isset( $_POST['swsales_banner_title'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_title', $post->post_title );
-		}
-
-		if ( isset( $_POST['swsales_banner_text'] ) ) {
-			$post->post_content = trim( wp_kses_post( stripslashes( $_POST['swsales_banner_text'] ) ) );
-			remove_action( 'save_post', array( __CLASS__, 'save_swsales_metaboxes' ) );
-			wp_update_post( $post, true );
-			add_action( 'save_post', array( __CLASS__, 'save_swsales_metaboxes' ), 10, 2 );
-		}
-
-		if ( ! empty( $_POST['swsales_link_text'] ) ) {
-			update_post_meta( $post_id, 'swsales_link_text', wp_kses_post( stripslashes( $_POST['swsales_link_text'] ) ) );
-		} elseif ( isset( $_POST['swsales_link_text'] ) ) {
-			update_post_meta( $post_id, 'swsales_link_text', 'Buy Now' );
-		}
-
-		if ( isset( $_POST['swsales_css_option'] ) ) {
-			update_post_meta( $post_id, 'swsales_css_option', wp_kses_post( stripslashes( $_POST['swsales_css_option'] ) ) );
+		if ( isset( $_POST['swsales_banner_close_behavior'] ) ) {
+			update_post_meta( $post_id, 'swsales_banner_close_behavior', sanitize_text_field( $_POST['swsales_banner_close_behavior'] ) );
 		}
 
 		if ( ! empty( $_POST['swsales_hide_on_checkout'] ) ) {
 			update_post_meta( $post_id, 'swsales_hide_on_checkout', true );
 		} elseif ( isset( $_POST['swsales_hide_on_checkout_exists'] ) ) {
 			update_post_meta( $post_id, 'swsales_hide_on_checkout', false );
+		}
+
+		if ( ! empty( $_POST['swsales_hide_banner_by_role'] ) && is_array( $_POST['swsales_hide_banner_by_role'] )) {
+			$swsales_hide_banner_by_role = array_map( 'sanitize_text_field', $_POST['swsales_hide_banner_by_role'] );
+			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( $swsales_hide_banner_by_role ) );
+		} elseif ( ! empty( $_POST['swsales_hide_banner_by_role_exists'] ) ) {
+			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( array() ) );
 		}
 
 		$options = SWSales_Settings::get_options();
@@ -792,6 +737,11 @@ class SWSales_MetaBoxes {
 			$options['active_sitewide_sale_id'] = false;
 		}
 		SWSales_Settings::save_options( $options );
+	
+		$banner_modules = apply_filters( 'swsales_banner_modules', array() );
+		foreach ( $banner_modules as $label => $module ) {
+			$module::save_banner_settings_if_module_active( $post_id, $post );
+		}
 
 		do_action( 'swsales_save_metaboxes', $post_id, $post );
 

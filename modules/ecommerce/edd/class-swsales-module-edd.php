@@ -165,12 +165,12 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-edd-metaboxes.js
+	 * Enqueues /modules/ecommerce/edd/swsales-module-edd-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_edd_metaboxes', plugins_url( 'modules/js/swsales-module-edd-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_edd_metaboxes', plugins_url( 'modules/ecommerce/edd/swsales-module-edd-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_edd_metaboxes' );
 
 			wp_localize_script(
@@ -350,7 +350,7 @@ class SWSales_Module_EDD {
 					$discounted_price = $discount->get_discounted_amount( $download_price );
 					// Overwrite link text.
 					$discounted_price_formatted = edd_currency_filter( edd_format_amount( $discounted_price ) );
-					$price = '<del>' . $price . '</del> ' . $discounted_price_formatted;
+					$price = '<span class="screen-reader-text">' . __( 'Original price', 'sitewide-sales' ) . '</span> <s>' . $price . '</s> <span class="screen-reader-text">' . __( 'sale price', 'sitewide-sales' ) . '</span> ' . $discounted_price_formatted;
 				}
 			}
 		}
@@ -512,7 +512,7 @@ class SWSales_Module_EDD {
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $currency_format;
 		}
 		return array(
 			'currency_symbol' => edd_currency_symbol(),

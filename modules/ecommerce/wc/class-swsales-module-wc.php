@@ -34,15 +34,19 @@ class SWSales_Module_WC {
 		// Generate coupons from editing sitewide sale.
 		add_action( 'wp_ajax_swsales_wc_create_coupon', array( __CLASS__, 'create_coupon_ajax' ) );
 
-		// Custom WC banner rules (hide at checkout).
+		// Custom WC banner rules (hide at checkout or if landing page is 'Shop' page).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
-		
+		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );		
+
 		// For the swsales_coupon helper function
 		add_filter( 'swsales_coupon', array( __CLASS__, 'swsales_coupon' ), 10, 2 );
 
 		// Automatic coupon application.
 		add_filter( 'wp', array( __CLASS__, 'automatic_coupon_application' ) );
 		add_filter( 'woocommerce_get_price_html', array( __CLASS__, 'strike_prices' ), 10, 2 );
+
+		// Show products with a coupon applied as "on sale".
+		add_filter( 'woocommerce_product_is_on_sale', array( __CLASS__, 'woocommerce_product_is_on_sale'), 10, 2 );
 
 		// WC-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
@@ -152,12 +156,12 @@ class SWSales_Module_WC {
 	}
 
 	/**
-	 * Enqueues /modules/js/swsales-module-wc-metaboxes.js
+	 * Enqueues modules/ecommerce/wc/swsales-module-wc-metaboxes.js
 	 */
 	public static function enqueue_scripts() {
 		global $wpdb, $typenow;
 		if ( 'sitewide_sale' === $typenow ) {
-			wp_register_script( 'swsales_module_wc_metaboxes', plugins_url( 'modules/js/swsales-module-wc-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+			wp_register_script( 'swsales_module_wc_metaboxes', plugins_url( 'modules/ecommerce/wc/swsales-module-wc-metaboxes.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
 			wp_enqueue_script( 'swsales_module_wc_metaboxes' );
 
 			wp_localize_script(
@@ -253,6 +257,26 @@ class SWSales_Module_WC {
 	}
 
 	/**
+	 * Returns whether the banner should be shown for the current Sitewide Sale.
+	 *
+	 * @param boolean               $show_banner current value from filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
+	 * @return boolean
+	 */
+	public static function show_banner( $show_banner, $sitewide_sale ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $show_banner;
+		}
+
+		// If the landing page for sale is the "Shop" page, hide the banner.
+		$landing_page_post_id = $sitewide_sale->get_landing_page_post_id();
+		if ( ! empty( $landing_page_post_id ) && get_option( 'woocommerce_shop_page_id' ) === $landing_page_post_id && is_shop() ) {
+			return false;
+		}
+		return $show_banner;
+	}
+
+	/**
 	 * Get the coupon for a sitewide sale.
 	 * Callback for the swsales_coupon filter.
 	 */
@@ -322,17 +346,17 @@ class SWSales_Module_WC {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
 			if ( $coupon->is_valid_for_product( $product ) ) {
 				// Get pricing for simple products.
-				if ( is_a( $product, 'WC_Product_Simple' ) && ! is_a( $product, 'WC_Product_Subscription' ) ) {
+				if ( $product->is_type( 'simple' ) ) {
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
 					$discount_amount  = $coupon->get_discount_amount( $regular_price );
 					$discount_amount  = min( $regular_price, $discount_amount );
 					$discounted_price = max( $regular_price - $discount_amount, 0 );
 					// Update price variable so we can return it later.
-					$price = '<del>' . wc_price( $regular_price ) . '</del> ' . wc_price( $discounted_price );
+					$price = '<del aria-hidden="true">' . wc_price( $regular_price ) . '</del> <ins>' . wc_price( $discounted_price ) . '</ins>';
 				}
 
 				// Get pricing for variable products.
-				if ( is_a( $product, 'WC_Product_Variable' ) ) {
+				if ( $product->is_type( 'variable' ) ) {
 					$prices           = $product->get_variation_prices( true );
 					$min_price        = current( $prices['price'] );
 					$max_price        = end( $prices['price'] );
@@ -347,11 +371,53 @@ class SWSales_Module_WC {
 
 					$regular_range    = wc_format_price_range( $min_price, $max_price );
 					$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
-					$price            = '<del>' . $regular_range . '</del> ' . $discounted_range;
+					$price            = '<del aria-hidden="true">' . $regular_range . '</del> <ins>' . $discounted_range . '</ins>';
 				}
 			}
 		}
 		return $price;
+	}
+
+	/**
+	 * Show the product as a "sale" product in WooCommerce if the coupon code is applied.
+	 *
+	 * @param  bool $on_sale Whether the product is on sale via discount code.
+	 * @param  WC_Product $product The product to that is being generated for.
+	 * @return bool Whether the product is on sale via discount code.
+	 */
+	public static function woocommerce_product_is_on_sale( $on_sale, $product ) {
+		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
+			return $on_sale;
+		}
+		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
+		if ( null === $coupon_id ) {
+			return $on_sale;
+		}
+
+		// Check if we are on the landing page
+		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
+		$on_landing_page = false;
+		if (
+			( ! empty( $_SERVER['REQUEST_URI'] ) && intval( url_to_postid( $_SERVER['REQUEST_URI'] ) ) === $landing_page_post_id ) ||
+			( ! empty( $_SERVER['HTTP_REFERER'] ) && intval( url_to_postid( $_SERVER['HTTP_REFERER'] ) ) === $landing_page_post_id )
+		) {
+			$on_landing_page = true;
+		}
+		$should_apply_discount_on_landing = ( 'none' !== $active_sitewide_sale->get_automatic_discount() );
+
+		// If discount code is already applied or we are on the landing page and should apply discount, show the product on sale.
+		if ( 
+			( ! empty( WC()->cart ) && WC()->cart->has_discount( wc_get_coupon_code_by_id( $coupon_id ) ) ) ||
+			( $on_landing_page && $should_apply_discount_on_landing )||
+			$active_sitewide_sale->should_apply_automatic_discount()
+		) {
+			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
+			if ( $coupon->is_valid_for_product( $product ) ) {
+				$on_sale = true;
+			}
+		}
+		return $on_sale;
 	}
 
 	/**
@@ -495,7 +561,7 @@ class SWSales_Module_WC {
 
 	public static function swsales_daily_revenue_chart_currency_format( $currency_format, $sitewide_sale ) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $currency_format;
 		}
 		return array(
 			'currency_symbol' => get_woocommerce_currency_symbol(),

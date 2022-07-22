@@ -50,6 +50,21 @@
     color: #FFF;
 }
 
+/* Reusable Block Banner Styles */
+.swsales-banner-block .swsales-padding > div {
+	padding: 15px;
+}
+.swsales-banner-block a.swsales-dismiss:before {
+	background-color: rgba( 255, 255, 255, 0.7 );
+	border-radius: 50%;
+	color: #666;
+	display: table-cell;
+	font-size: 14px;
+	height: 20px;
+	text-align: center;
+	vertical-align: middle;
+	width: 20px;
+}
 /* Top Banner Styles */
 #swsales-banner-top {
 	padding: 15px;
@@ -67,7 +82,8 @@
 }
 
 /* Bottom Banner Styles */
-#swsales-banner-bottom {
+#swsales-banner-bottom,
+#swsales-banner-block-bottom {
 	bottom: 0;
 	box-shadow: 0 0 15px 0 rgba( 0, 0, 0, 0.6 );
 	left: 0;
@@ -76,7 +92,8 @@
 	width: 100%;
 	z-index: 400;
 }
-#swsales-banner-bottom a.swsales-dismiss {
+#swsales-banner-bottom a.swsales-dismiss,
+#swsales-banner-block-bottom a.swsales-dismiss {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -87,7 +104,8 @@
 	max-width: 1170px;
 	padding: 20px 25px 20px 15px;
 }
-#swsales-banner-bottom .swsales-banner-inner:after {
+#swsales-banner-bottom .swsales-banner-inner:after,
+#swsales-banner-block-bottom:after {
 	content: '';
 	clear: both;
 	display: block;
@@ -134,7 +152,16 @@
 	max-width: 300px;
 	z-index: 400;
 }
-#swsales-banner-bottom-right a.swsales-dismiss {
+#swsales-banner-block-bottom-right {
+	bottom: 0;
+	box-shadow: 0 0 15px 0 rgba( 0, 0, 0, 0.6 );
+	position: fixed;
+	right: 0;
+	max-width: 330px;
+	z-index: 400;
+}
+#swsales-banner-bottom-right a.swsales-dismiss,
+#swsales-banner-block-bottom-right a.swsales-dismiss {
 	position: absolute;
 	top: 10px;
 	right: 10px;
