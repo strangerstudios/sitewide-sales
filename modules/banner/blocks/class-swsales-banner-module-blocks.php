@@ -453,6 +453,51 @@ style="display: none;"<?php } ?>>
 				'categories' => array( 'swsalesbanners' )
 			)
 		);
+
+		// Clean Banner
+		register_block_pattern(
+			'swsales/clean-banner',
+			array(
+				'title' => __( 'Clean Banner', 'sitewide-sales' ),
+				'description' => _x( 'Simple sale banner with light background and black text, and a call-to-action link.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"align\":\"full\",\"style\":{\"color\":{\"background\":\"#d1e3f7\"}},\"layout\":{\"type\":\"flex\",\"flexWrap\":\"nowrap\"}} --><div class=\"wp-block-group alignfull has-background\" style=\"background-color:#d1e3f7\"><!-- wp:paragraph --><p><strong>Save 15% on all Hair Care.</strong></p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Use code <strong>HAIR15.</strong></p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Ends 8/31.</p><!-- /wp:paragraph --><!-- wp:paragraph {\"textColor\":\"black\"} --><p class=\"has-black-color has-text-color\"><a href=\"#\"><strong>SEE DETAILS ▸</strong></a></p><!-- /wp:paragraph --></div><!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
+		// Clean Popup
+		register_block_pattern(
+			'swsales/clean-popup',
+			array(
+				'title' => __( 'Clean Popup', 'sitewide-sales' ),
+				'description' => _x( 'Simple sale popup with light background and black text, and a call-to-action link.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"align\":\"full\",\"style\":{\"color\":{\"background\":\"#d1e3f7\"}},\"textColor\":\"black\",\"layout\":{\"type\":\"flex\",\"orientation\":\"vertical\"}} --><div class=\"wp-block-group alignfull has-black-color has-text-color has-background\" style=\"background-color:#d1e3f7\"><!-- wp:paragraph {\"className\":\"is-style-default\",\"fontSize\":\"large\"} --><p class=\"is-style-default has-large-font-size\">Save 15% on Hair Care.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Use code <strong>HAIR15.</strong> Ends 8/31.</p><!-- /wp:paragraph --><!-- wp:buttons {\"layout\":{\"type\":\"flex\",\"orientation\":\"horizontal\",\"flexWrap\":\"wrap\",\"justifyContent\":\"left\"}} --><div class=\"wp-block-buttons\"><!-- wp:button {\"textColor\":\"black\",\"width\":100,\"style\":{\"border\":{\"radius\":\"5px\"},\"spacing\":{\"padding\":{\"top\":\"10px\",\"right\":\"20px\",\"bottom\":\"10px\",\"left\":\"20px\"}}},\"className\":\"is-style-outline\"} --><div class=\"wp-block-button has-custom-width wp-block-button__width-100 is-style-outline\"><a class=\"wp-block-button__link has-black-color has-text-color\" href=\"#\" style=\"border-radius:5px;padding-top:10px;padding-right:20px;padding-bottom:10px;padding-left:20px\">SEE DETAILS ▸</a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
+		// Dark Mode Banner
+		register_block_pattern(
+			'swsales/dark-mode-banner',
+			array(
+				'title' => __( 'Dark Mode Banner', 'sitewide-sales' ),
+				'description' => _x( 'Inverted banner with a calendar emoji, dark background, light text, and a red CTA button.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"backgroundColor\":\"black\",\"textColor\":\"white\",\"layout\":{\"type\":\"flex\",\"flexWrap\":\"nowrap\",\"justifyContent\":\"center\"}} --><div class=\"wp-block-group has-white-color has-black-background-color has-text-color has-background\"><!-- wp:paragraph {\"className\":\"is-style-default\"} --><p class=\"is-style-default\">📅</p><!-- /wp:paragraph --><!-- wp:paragraph {\"className\":\"is-style-default\"} --><p class=\"is-style-default\"><strong>BLACK FRIDAY EVENT</strong></p><!-- /wp:paragraph --><!-- wp:paragraph --><p>•</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>50% off your first 3 months</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button {\"backgroundColor\":\"vivid-red\",\"style\":{\"border\":{\"radius\":\"0px\"},\"typography\":{\"fontSize\":\"16px\"}}} --><div class=\"wp-block-button has-custom-font-size\" style=\"font-size:16px\"><a class=\"wp-block-button__link has-vivid-red-background-color has-background\" style=\"border-radius:0px\"><strong>View Plans &amp; Pricing ▸ </strong></a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
+		// Dark Mode Popup
+		register_block_pattern(
+			'swsales/dark-mode-popup',
+			array(
+				'title' => __( 'Dark Mode Popup', 'sitewide-sales' ),
+				'description' => _x( 'Inverted popup with a calendar emoji, dark background, light text, and a red CTA button.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"backgroundColor\":\"black\",\"textColor\":\"white\",\"layout\":{\"type\":\"default\"}} --><div class=\"wp-block-group has-white-color has-black-background-color has-text-color has-background\"><!-- wp:paragraph {\"style\":{\"typography\":{\"fontSize\":\"26px\"}},\"className\":\"is-style-default\"} --><p class=\"is-style-default\" style=\"font-size:26px\">📅 <strong>BLACK FRIDAY SALE</strong></p><!-- /wp:paragraph --><!-- wp:paragraph --><p><strong>New member offer:</strong> save 50% on your first 3 months of membership.</p><!-- /wp:paragraph --><!-- wp:buttons --><div class=\"wp-block-buttons\"><!-- wp:button {\"backgroundColor\":\"vivid-red\",\"width\":100,\"style\":{\"border\":{\"radius\":\"0px\"},\"typography\":{\"fontSize\":\"16px\"}}} --><div class=\"wp-block-button has-custom-width wp-block-button__width-100 has-custom-font-size\" style=\"font-size:16px\"><a class=\"wp-block-button__link has-vivid-red-background-color has-background\" style=\"border-radius:0px\"><strong>View Plans &amp; Pricing ▸ </strong></a></div><!-- /wp:button --></div><!-- /wp:buttons --></div><!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
 	}
 
 }
