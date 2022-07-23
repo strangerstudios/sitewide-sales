@@ -191,6 +191,34 @@
 	}
 }
 
+/* Countdown Timer Styles */
+.swsales_countdown_timer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	text-align: center;
+}
+.swsales_countdown_timer_element {
+	flex: 25%;
+}
+.swsales_countdown_timer_inner {
+	background: rgba( 255, 255, 255, 0.1 );
+	border-radius: 3px;
+	color: #FFF;
+	margin: 10px 10px 10px 0;
+	padding: 10px;
+}
+.swsales_countdown_timer_element:first-child .swsales_countdown_timer_inner {
+	margin-left: 10px;
+}
+.swsales_countdown_timer_inner span {
+	font-weight: 700;
+	font-size: 40px;
+}
+.swsales-banner .swsales_countdown_timer_inner span {
+	font-size: inherit;
+}
+
 /* Paid Memberships Pro Integration Specific Styles */
 .swsales-landing-page-wrap #pmpro_form {
 	margin: 0 auto;
