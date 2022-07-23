@@ -221,6 +221,22 @@
 	max-width: 500px;
 	width: 100%;
 }
+.swsales_chart_area {
+	background-color: #FFF;
+	clear: both;
+	margin: 0 0 40px 0;
+	padding: 0px 10px 10px 10px;
+}
+.swsales_chart_area rect[stroke-opacity] {
+	stroke-width: 0 !important;
+}
+.swsales_chart_area #chart_div {
+	clear: both;
+	height: 500px;
+	margin: 0 auto;
+	max-width: 1600px;
+}
+
 @media screen and (max-width: 768px) {
 	.swsales_reports-box {
 		margin: 0 1rem;
