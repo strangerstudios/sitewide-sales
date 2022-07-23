@@ -52,7 +52,21 @@
 
 /* Reusable Block Banner Styles */
 .swsales-banner-block .swsales-padding > div {
-	padding: 15px;
+	padding: 20px 15px;
+}
+.swsales-banner-block .swsales-padding > *,
+.swsales-banner-block .wp-block-group > *,
+.swsales-banner-block .wp-block-column > * {
+	margin-top: 0;
+}
+.swsales-banner-block .swsales-padding *:last-child,
+.swsales-banner-block .wp-block-group *:last-child,
+.swsales-banner-block .wp-block-column *:last-child {
+	margin-bottom: 0;
+}
+.swsales-banner-block .wp-block-group,
+.swsales-banner-block .wp-block-group.has-background {
+	padding: 20px 15px;
 }
 .swsales-banner-block a.swsales-dismiss:before {
 	background-color: rgba( 255, 255, 255, 0.7 );
@@ -70,6 +84,17 @@
 	padding: 15px;
 	text-align: center;
 	width: 100%;
+}
+#swsales-banner-top a.swsales-dismiss,
+#swsales-banner-block-top a.swsales-dismiss {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	z-index: 100;
+}
+.admin-bar #swsales-banner-top a.swsales-dismiss,
+.admin-bar #swsales-banner-block-top a.swsales-dismiss {
+	top: 47px;
 }
 #swsales-banner-top p {
 	margin: 0;
@@ -149,7 +174,7 @@
 	padding: 20px 15px;
 	position: fixed;
 	right: 0;
-	max-width: 300px;
+	max-width: 370px;
 	z-index: 400;
 }
 #swsales-banner-block-bottom-right {
@@ -157,7 +182,7 @@
 	box-shadow: 0 0 15px 0 rgba( 0, 0, 0, 0.6 );
 	position: fixed;
 	right: 0;
-	max-width: 330px;
+	max-width: 370px;
 	z-index: 400;
 }
 #swsales-banner-bottom-right a.swsales-dismiss,

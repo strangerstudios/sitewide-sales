@@ -138,6 +138,23 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 					$active_sitewide_sale = Sitewide_Sales\classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
 				}
 				$banner_info = self::get_banner_info( $active_sitewide_sale );
+				$banner_location_nicename = str_replace( '_', '-', $banner_info['location'] );
+
+				// The HTML to show the banner dismiss link.
+				$banner_dismiss_link_html = '<a href="javascript:void(0);" onclick="document.getElementById( "swsales-banner-block-' . esc_attr( $banner_location_nicename ) . '" ).style.display = "none";" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( "Dismiss", "sitewide-sales" ); ?></a>';
+
+				/**
+				 * Filter to disable or modify the banner dismiss link HTML.
+				 * Set to empty string to hide the link.
+				 *
+				 * @since 1.3.0
+				 *
+				 * @param string $banner_dismiss_link_html The full HTML of the banner dismiss link.
+				 * @param array $banner_info The full banner info for this banner.
+				 *
+				 * @return string $banner_dismiss_link_html The HTML to render.
+				 */
+				$banner_dismiss_link_html = apply_filters( 'swsales_banner_dismiss_link_html', $banner_dismiss_link_html, $banner_info );
 
 				// Get the landing page URL.
 				$landing_page_id = $active_sitewide_sale->get_landing_page_post_id();
@@ -147,11 +164,12 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 
 				ob_start();
 				?>
-				<div id="swsales-banner-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner" style="display: none;">
+				<div id="swsales-banner-<?php echo esc_attr( $banner_location_nicename ); ?>" class="swsales-banner" style="display: none;">
 					<div class="swsales-banner-inner">
 						<?php
 						switch ( $name ) {
 							case 'show_top_banner':
+								echo $banner_dismiss_link_html;
 								?>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 								<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'top', $active_sitewide_sale ); ?></p>
@@ -165,8 +183,8 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								<?php
 								break;
 							case 'show_bottom_banner':
+								echo $banner_dismiss_link_html;
 								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
 								<div class="swsales-banner-inner-left">
 									<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 									<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom', $active_sitewide_sale ); ?></p>
@@ -183,8 +201,8 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								<?php
 								break;
 							case 'show_bottom_right_banner':
+								echo $banner_dismiss_link_html;
 								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 								<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom_right', $active_sitewide_sale ); ?></p>
 								<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>

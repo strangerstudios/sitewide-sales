@@ -60,6 +60,7 @@ export default registerBlockType(
 							value={ period }
 							help={__( 'Select the sale period this content is visible for.', 'sitewide-sales' ) }
 							options={ [
+								{ label: __( 'Always', 'sitewide-sales' ), value: '' },
 								{ label: __( 'Before Sale', 'sitewide-sales' ), value: 'pre-sale' },
 								{ label: __( 'During Sale', 'sitewide-sales' ), value: 'sale' },
 								{ label: __( 'After Sale', 'sitewide-sales' ), value: 'post-sale' },
