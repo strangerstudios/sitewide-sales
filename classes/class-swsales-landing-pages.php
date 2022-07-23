@@ -75,7 +75,7 @@ class SWSales_Landing_Pages {
 			if ( ! empty( $content ) ) {
 				$r .= $content;	
 			} else {
-				$r .= wpautop( $sitewide_sale->get_sale_content_for_time_period( $sale_period ) );
+				$r .= wpautop( do_shortcode( $sitewide_sale->get_sale_content_for_time_period( $sale_period ) ) );
 			}
 		}
 
