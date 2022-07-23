@@ -139,10 +139,10 @@ class SWSales_Landing_Pages {
 		// Our return string.
 		$r = '';
 		$r .= '<div id="swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '" class="swsales_countdown_timer">';
-		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesDays"></span><div class="swsales_countdown_timer_period">' . __( 'Days', 'sitewide-sales' ) . '</div></div></div>';
-		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesHours"></span><div class="swsales_countdown_timer_period">' . __( 'Hours', 'sitewide-sales' ) . '</div></div></div>';
-		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesMinutes"></span><div class="swsales_countdown_timer_period">' . __( 'Minutes', 'sitewide-sales' ) . '</div></div></div>';
-		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesSeconds"></span><div class="swsales_countdown_timer_period">' . __( 'Seconds', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesDays"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Days', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesHours"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Hours', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesMinutes"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Minutes', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesSeconds"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Seconds', 'sitewide-sales' ) . '</div></div></div>';
 		$r .= '</div>';
 		//$r .= '<script>const deadline = new Date( "' . $countdown_to . '");initializeClock("swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '", deadline);</script';
 		$r .= '<script>const deadline = "' . $countdown_to . '";initializeClock("swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '", deadline);</script>';
