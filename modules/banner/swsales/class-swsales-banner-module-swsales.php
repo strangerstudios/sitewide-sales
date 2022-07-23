@@ -141,7 +141,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				$banner_location_nicename = str_replace( '_', '-', $banner_info['location'] );
 
 				// The HTML to show the banner dismiss link.
-				$banner_dismiss_link_html = '<a href="javascript:void(0);" onclick="document.getElementById( "swsales-banner-block-' . esc_attr( $banner_location_nicename ) . '" ).style.display = "none";" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( "Dismiss", "sitewide-sales" ); ?></a>';
+				$banner_dismiss_link_html = '<a href="javascript:void(0);" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( "Dismiss", "sitewide-sales" ); ?></a>';
 
 				/**
 				 * Filter to disable or modify the banner dismiss link HTML.

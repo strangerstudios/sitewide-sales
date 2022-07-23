@@ -85,6 +85,7 @@ function swsales_banner_close_behavior() {
 		jQuery('.swsales-dismiss').on( 'click', function() {
 			bannercookie = 1;
 			swsales_set_banner_cookie( bannercookie );
+			jQuery(this).closest('.swsales-banner').hide();			
 		});
 		if ( bannercookie == 1 ) {
 			jQuery('.swsales-banner').hide();
@@ -92,6 +93,9 @@ function swsales_banner_close_behavior() {
 			jQuery('.swsales-banner').show();
 		}
 	} else {
+		jQuery('.swsales-dismiss').on( 'click', function() {			
+			jQuery(this).closest('.swsales-banner').hide();			
+		});
 		jQuery('.swsales-banner').show();
 	}
 }
