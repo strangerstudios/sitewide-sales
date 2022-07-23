@@ -432,6 +432,22 @@ class SWSales_MetaBoxes {
 							</select>
 						</td>
 					</tr>
+					<?php if ( ! empty( $view_page_url ) ) { ?>
+						<tr>
+							<th><label><?php esc_html_e( 'Preview Landing Page', 'sitewide-sales' ); ?></label></th>
+							<td>
+								<p>
+									<?php esc_html_e( 'Select a period to preview the landing page for this sale:', 'sitewide-sales' ); ?>
+									<br />
+									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'Before (pre-sale)', 'sitewide-sales' ); ?></a>
+									&nbsp;|&nbsp;
+									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'During (sale)', 'sitewide-sales' ); ?></a>
+									&nbsp;|&nbsp;
+									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'After (post-sale)', 'sitewide-sales' ); ?></a>
+								</p>
+							</td>
+						</tr>
+					<?php } ?>
 
 					<?php
 						// Add filter for modules here.
@@ -441,7 +457,7 @@ class SWSales_MetaBoxes {
 				</tbody>
 			</table>
 			<hr />
-			<p>
+			<div class="swsales-table-trigger">
 				<?php
 					$allowed_html = array (
 						'a' => array (
@@ -449,23 +465,30 @@ class SWSales_MetaBoxes {
 							'target' => array(),
 							'title' => array(),
 						),
-					);
-				 	printf( wp_kses( __( 'Use the [sitewide_sales] shortcode in your landing page to automatically display the following sections before, during, and after the sale. Alternatively, you can remove the shortcode and manually update the landing page content. <a href="%s" target="_blank">Explore suggested sample content for these fields here</a>.', 'sitewide-sales' ), $allowed_html ), 'https://sitewidesales.com/documentation/create-sale/landing-page/?utm_source=plugin&utm_medium=step-3-landing-page&utm_campaign=documentation' );
-			 	?>
-			</p>
-			<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
-				<?php if ( ! $show_shortcode_warning ) { ?> style="display: none;"<?php } ?>>
-				<?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?>
-			</p>
-			<table class="form-table">
+						'strong' => array(),
+						'em' => array(),		);
+				?>
+				<p><?php echo wp_kses( __( 'Edit your landing page to insert content shown before, during, or after the sale. Use the <strong>Sale Content Block</strong> to insert content in grouped sections or the <strong>Sale Period Visibility</strong> setting to toggle visibility on individual block groups.', 'sitewide-sales' ), $allowed_html ); ?></p>
+				<p>
+					<?php echo wp_kses( __( 'Or, use the [sitewide_sales] shortcode on your page and the legacy fields here to', 'sitewide-sales' ), $allowed_html ); ?>
+					<button class="swsales-table-trigger-button" type="button">
+							<?php esc_html_e( 'create a basic landing page', 'sitewide-sales' ); ?>
+					</button>
+				</p>
+			</div>
+			<table id="basic-landing-page-content" class="form-table" style="display: none;">
 				<tbody>
+					<tr>
+						<td colspan="2">
+							<p class="sitewide_sales_message sitewide_sales_alert swsales_shortcode_warning"
+								<?php if ( ! $show_shortcode_warning ) { ?> style="display: none;"<?php } ?>>
+								<?php echo wp_kses_post( '<strong>Warning:</strong> The chosen Landing Page does not include the [sitewide_sales] shortcode, so the following sections will not be displayed.', 'sitewide-sales' ); ?>
+							</p>
+						</td>
+					</tr>
 					<tr>
 						<th scope="row" valign="top">
 							<label><?php esc_html_e( 'Pre-Sale Content', 'sitewide-sales' ); ?></label>
-							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<br />
-								<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
-							<?php } ?>
 						</th>
 						<td>
 							<textarea class="swsales_option" rows="4" name="swsales_pre_sale_content"><?php echo( esc_textarea( $cur_sale->get_pre_sale_content() ) ); ?></textarea>
@@ -474,10 +497,6 @@ class SWSales_MetaBoxes {
 					<tr>
 						<th scope="row" valign="top">
 							<label><?php esc_html_e( 'Sale Content', 'sitewide-sales' ); ?></label>
-							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<br />
-								<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
-							<?php } ?>
 						</th>
 						<td>
 							<textarea class="swsales_option" rows="4" name="swsales_sale_content"><?php echo( esc_html( $cur_sale->get_sale_content() ) ); ?></textarea>
@@ -486,10 +505,6 @@ class SWSales_MetaBoxes {
 					<tr>
 						<th scope="row" valign="top">
 							<label><?php esc_html_e( 'Post-Sale Content', 'sitewide-sales' ); ?></label>
-							<?php if ( ! empty( $view_page_url ) ) { ?>
-								<br />
-								<small><a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'preview', 'sitewide-sales' ); ?></a></small>
-							<?php } ?>
 						</th>
 						<td>
 							<textarea class="swsales_option" rows="4" name="swsales_post_sale_content"><?php echo( esc_html( $cur_sale->get_post_sale_content() ) ); ?></textarea>
@@ -497,7 +512,28 @@ class SWSales_MetaBoxes {
 					</tr>
 				</tbody>
 			</table>
+			<script>
+				jQuery(document).ready(function() {
+					swsales_prep_general_click_events();
+				});
+
+				// Function to prep click events for admin settings.
+				function swsales_prep_general_click_events() {
+					jQuery( 'button.swsales-table-trigger-button' ).on( 'click', function(event){
+						// Toggle content within the settings sections boxes.
+						event.preventDefault();
+
+						let thebutton = jQuery(event.target).parents('.swsales-table-trigger').find('button.swsales-table-trigger-button');
+						let sectionshow = jQuery( thebutton ).parents('.swsales-table-trigger').next('table');
+						let sectionhide = jQuery(event.target).parents('.swsales-table-trigger');
+
+						jQuery( sectionshow ).show();
+						jQuery( sectionhide ).hide();
+					});
+				}
+			</script>
 		</div> <!-- end #swsales_landing_page_options -->
+
 		<input type="submit" class="button button-primary" value="<?php esc_attr_e( 'Save All Settings', 'sitewide-sales' ); ?>">
 		<?php
 	}
@@ -784,7 +820,7 @@ class SWSales_MetaBoxes {
 		$landing_page_post_id = wp_insert_post(
 			array(
 				'post_title'    => $landing_page_title,
-				'post_content'  => '[sitewide_sales]',
+				'post_content'  => '<!-- wp:swsales/sale-content {\"period\":\"pre-sale\"} --><div class=\"wp-block-swsales-sale-content\"><!-- wp:paragraph --><p>Edit this section to show content before your sale starts.</p><!-- /wp:paragraph --></div><!-- /wp:swsales/sale-content --><!-- wp:swsales/sale-content {\"period\":\"sale\"} --><div class=\"wp-block-swsales-sale-content\"><!-- wp:paragraph --><p>Edit this section to show content while your sale is running.</p><!-- /wp:paragraph --></div><!-- /wp:swsales/sale-content --><!-- wp:swsales/sale-content {\"period\":\"post-sale\"} --><div class=\"wp-block-swsales-sale-content\"><!-- wp:paragraph --><p>Edit this section to show content after your sale ends.</p><!-- /wp:paragraph --></div><!-- /wp:swsales/sale-content -->',
 				'post_type'     => 'page',
 				'post_status'   => 'draft',
 				'page_template' => 'swsales-page-template.php',
