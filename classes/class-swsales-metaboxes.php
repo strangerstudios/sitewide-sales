@@ -470,10 +470,11 @@ class SWSales_MetaBoxes {
 				?>
 				<p><?php echo wp_kses( __( 'Edit your landing page to insert content shown before, during, or after the sale. Use the <strong>Sale Content Block</strong> to insert content in grouped sections or the <strong>Sale Period Visibility</strong> setting to toggle visibility on individual block groups.', 'sitewide-sales' ), $allowed_html ); ?></p>
 				<p>
-					<?php echo wp_kses( __( 'Or, use the [sitewide_sales] shortcode on your page and the legacy fields here to', 'sitewide-sales' ), $allowed_html ); ?>
-					<button class="swsales-table-trigger-button" type="button">
-							<?php esc_html_e( 'create a basic landing page', 'sitewide-sales' ); ?>
-					</button>
+					<?php
+						/* translators: Strings here are button open and close tags. */
+						$button_text = __( 'Or, use the [sitewide_sales] shortcode on your page and %sthe legacy fields here to create a basic landing page%s.', 'sitewide-sales' );
+						printf( wp_kses( $button_text, $allowed_html), '<button class="swsales-table-trigger-button" type="button">', '</button>' );
+					?>
 				</p>
 			</div>
 			<table id="basic-landing-page-content" class="form-table" style="display: none;">
