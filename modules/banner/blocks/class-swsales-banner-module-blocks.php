@@ -127,29 +127,34 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 				// Get the banner content.
 				$banner_block = get_post( $banner_info['block_id'] );
 				$banner_content = do_blocks( $banner_block->post_content );
+				$banner_location_nicename = str_replace( '_', '-', $banner_info['location'] );
+
+				// The HTML to show the banner dismiss link.
+				$banner_dismiss_link_html = '<a href="javascript:void(0);" onclick="document.getElementById( "swsales-banner-block-' . esc_attr( $banner_location_nicename ) . '" ).style.display = "none";" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( "Dismiss", "sitewide-sales" ); ?></a>';
+
+				/**
+				 * Filter to disable or modify the banner dismiss link HTML.
+				 * Set to empty string to hide the link.
+				 *
+				 * @since 1.3.0
+				 *
+				 * @param string $banner_dismiss_link_html The full HTML of the banner dismiss link.
+				 * @param array $banner_info The full banner info for this banner.
+				 *
+				 * @return string $banner_dismiss_link_html The HTML to render.
+				 */
+				$banner_dismiss_link_html = apply_filters( 'swsales_banner_dismiss_link_html', $banner_dismiss_link_html, $banner_info );
 
 				ob_start();
 				?>
-				<div id="swsales-banner-block-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-block" style="display: none;">
+				<div id="swsales-banner-block-<?php echo esc_attr( $banner_location_nicename ); ?>" class="swsales-banner swsales-banner-block" style="display: none;">
 					<?php
 						switch ( $name ) {
 							case 'show_top_banner':
-								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-block-top').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
-								<?php echo $banner_content; ?>
-								<?php
-								break;
 							case 'show_bottom_banner':
-								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-block-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
-								<?php echo $banner_content; ?>
-								<?php
-								break;
 							case 'show_bottom_right_banner':
-								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-block-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
-								<?php echo $banner_content; ?>								
-								<?php
+								echo $banner_dismiss_link_html;
+								echo $banner_content;
 								break;
 						}
 					?>
