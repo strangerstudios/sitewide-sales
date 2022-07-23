@@ -12,6 +12,9 @@
 	margin-right: 15px;
 	padding-right: 15px;
 }
+#swsales-banner-wrap-gradient #swsales-banner-top .swsales-banner-button-wrap {
+	margin-left: 15px;
+}
 #swsales-banner-wrap-gradient .swsales-banner {
 	background: linear-gradient(270deg, #4bcf93, #4b79cf, #a24bcf);
 	background-size: 600% 600%;

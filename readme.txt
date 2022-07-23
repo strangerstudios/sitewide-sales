@@ -28,7 +28,9 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 * FEATURE: Added a "Sale Period" nested block. You can nest other blocks inside of it and set the period (before/during/after) to show that content.
 * FEATURE: Also added a "Sale Period Visibility" advanced option to Group blocks and Column blocks. You can set these nested blocks to only show before/during/after a sale.
 * FEATURE: Added support for the Popup Maker plugin. You can choose a popup to use as your banner.
+* FEATURE: Built-in Block Patterns and Styles for Sale Banners.
 * ENHANCEMENT: Added close (x) to banners and setting to "close until new session" so closed banners don't show up again.
+* ENHANCEMENT: Added filter swsales_banner_dismiss_link_html so custom code can hide or change the dismiss link on banners.
 * ENHANCEMENT: Updated WooSelect to latest version.
 * ENHANCEMENT: Using the woocommerce_product_is_on_sale filter to show products in the shop as "on sale" if the code is applied to the view.
 * ENHANCEMENT: Moved the mini report on the edit sale page to the sidebar, with links to the detailed report.
@@ -39,6 +41,8 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 * ENHANCEMENT: Updated plugin links and admin header display.
 * ENHANCEMENT: Improved the "Vintage" template.
 * ENHANCEMENT: Adjusting "Photo" template for EDD and other improvements.
+* ENHANCEMENT: Now showing 'Best Day' and 'Today' on the sale report chart.
+* ENHANCEMENT: Added filter swsales_daily_revenue_chart_days to limit days shown on chart. Default is 31 days.
 * BUG FIX/ENHANCEMENT: Fixed warning for PMPro module and hiding banner by membership level.
 * BUG FIX/ENHANCEMENT: Hiding the banner if the "shop" page is chosen as the landing page.
 * BUG FIX/ENHANCEMENT: Removed strikethrough pricing on variable downloads.

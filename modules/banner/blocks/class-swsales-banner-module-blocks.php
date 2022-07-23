@@ -10,6 +10,9 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'admin_enqueue_scripts' ) );
 		add_action( 'wp_ajax_swsales_create_reusable_block_banner', array( __CLASS__, 'create_reusable_block_banner_ajax' ) );
 
+		// Set up block patterns.
+		add_action( 'init', array( __CLASS__, 'register_block_patterns' ) );
+
 		// Set up showing banner on frontend.
 		add_action( 'wp', array( __CLASS__, 'choose_banner' ) );
 	}
@@ -127,26 +130,34 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 				// Get the banner content.
 				$banner_block = get_post( $banner_info['block_id'] );
 				$banner_content = do_blocks( $banner_block->post_content );
+				$banner_location_nicename = str_replace( '_', '-', $banner_info['location'] );
+
+				// The HTML to show the banner dismiss link.
+				$banner_dismiss_link_html = '<a href="javascript:void(0);" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( "Dismiss", "sitewide-sales" ); ?></a>';
+
+				/**
+				 * Filter to disable or modify the banner dismiss link HTML.
+				 * Set to empty string to hide the link.
+				 *
+				 * @since 1.3.0
+				 *
+				 * @param string $banner_dismiss_link_html The full HTML of the banner dismiss link.
+				 * @param array $banner_info The full banner info for this banner.
+				 *
+				 * @return string $banner_dismiss_link_html The HTML to render.
+				 */
+				$banner_dismiss_link_html = apply_filters( 'swsales_banner_dismiss_link_html', $banner_dismiss_link_html, $banner_info );
 
 				ob_start();
 				?>
-				<div id="swsales-banner-block-<?php esc_html_e( str_replace( '_', '-', $banner_info['location'] ) ); ?>" class="swsales-banner swsales-banner-block" style="display: none;">
+				<div id="swsales-banner-block-<?php echo esc_attr( $banner_location_nicename ); ?>" class="swsales-banner swsales-banner-block" style="display: none;">
 					<?php
 						switch ( $name ) {
 							case 'show_top_banner':
-								echo $banner_content;
-								break;
 							case 'show_bottom_banner':
-								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-block-bottom').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
-								<?php echo $banner_content; ?>
-								<?php
-								break;
 							case 'show_bottom_right_banner':
-								?>
-								<a href="javascript:void(0);" onclick="document.getElementById('swsales-banner-block-bottom-right').style.display = 'none';" class="swsales-dismiss" title="Dismiss"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss', 'sitewide-sales' ); ?></a>
-								<?php echo $banner_content; ?>								
-								<?php
+								echo $banner_dismiss_link_html;
+								echo $banner_content;
 								break;
 						}
 					?>
@@ -386,5 +397,63 @@ style="display: none;"<?php } ?>>
 		echo json_encode( $r );
 		exit;
 	}
+
+	/**
+	 * Handles registering all the built-in block patterns for reusable block banners.
+	 */
+	public static function register_block_patterns() {
+		// Create the block pattern category for sale banners.
+		register_block_pattern_category(
+			'swsalesbanners',
+			array(
+				'label' => __( 'Sale Banners', 'sitewide-sales' )
+			)
+		);
+
+		// Fancy Coupon Banner
+		register_block_pattern(
+			'swsales/fancy-coupon-banner',
+			array(
+				'title' => __( 'Fancy Coupon Banner', 'sitewide-sales' ),
+				'description' => _x( 'Sale callout with bright background, coupon code highlight, and a button to start shopping.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"style\":{\"color\":{\"background\":\"#ffd001\"}}} -->\n<div class=\"wp-block-group has-background\" style=\"background-color:#ffd001\"><!-- wp:group {\"align\":\"wide\",\"textColor\":\"black\",\"layout\":{\"type\":\"flex\",\"flexWrap\":\"wrap\",\"justifyContent\":\"center\"}} -->\n<div class=\"wp-block-group alignwide has-black-color has-text-color\"><!-- wp:paragraph {\"className\":\"is-style-highlight\"} -->\n<p class=\"is-style-highlight\"><strong>You're so fancy.</strong></p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Save 50% on everything in the store!</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph -->\n<p>Use code</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph {\"className\":\"is-style-dashed-border\"} -->\n<p class=\"is-style-dashed-border\"><strong>savebeauty</strong></p>\n<!-- /wp:paragraph -->\n\n<!-- wp:buttons -->\n<div class=\"wp-block-buttons\"><!-- wp:button {\"backgroundColor\":\"black\",\"textColor\":\"white\"} -->\n<div class=\"wp-block-button\"><a class=\"wp-block-button__link has-white-color has-black-background-color has-text-color has-background\"><strong>Start Shopping</strong></a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons --></div>\n<!-- /wp:group --></div>\n<!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
+		// Fancy Coupon Popup
+		register_block_pattern(
+			'swsales/fancy-coupon-popup',
+			array(
+				'title' => __( 'Fancy Coupon Popup', 'sitewide-sales' ),
+				'description' => _x( 'Sale callout with bright background, coupon code highlight, and a button to start shopping.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"style\":{\"color\":{\"background\":\"#ffd001\"}},\"textColor\":\"black\"} -->\n<div class=\"wp-block-group has-black-color has-text-color has-background\" style=\"background-color:#ffd001\"><!-- wp:group {\"textColor\":\"black\",\"layout\":{\"type\":\"default\"}} -->\n<div class=\"wp-block-group has-black-color has-text-color\"><!-- wp:heading {\"level\":3,\"textColor\":\"black\",\"className\":\"is-style-highlight\"} -->\n<h3 class=\"is-style-highlight has-black-color has-text-color\">You're so fancy.</h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph -->\n<p>Save 50% on everything in the store! Use code</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:paragraph {\"align\":\"center\",\"className\":\"is-style-dashed-border\"} -->\n<p class=\"has-text-align-center is-style-dashed-border\"><strong>savebeauty</strong></p>\n<!-- /wp:paragraph -->\n\n<!-- wp:buttons -->\n<div class=\"wp-block-buttons\"><!-- wp:button {\"backgroundColor\":\"black\",\"textColor\":\"white\",\"width\":100} -->\n<div class=\"wp-block-button has-custom-width wp-block-button__width-100\"><a class=\"wp-block-button__link has-white-color has-black-background-color has-text-color has-background\"><strong>Start Shopping</strong></a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons --></div>\n<!-- /wp:group --></div>\n<!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
+		// Gradient Banner
+		register_block_pattern(
+			'swsales/gradient-banner',
+			array(
+				'title' => __( 'Gradient Banner', 'sitewide-sales' ),
+				'description' => _x( 'Sale callout with gradient background, heading, text, and a call-to-action button displayed in two lines, vertically aligned.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"gradient\":\"vivid-cyan-blue-to-vivid-purple\"} -->\n<div class=\"wp-block-group has-vivid-cyan-blue-to-vivid-purple-gradient-background has-background\"><!-- wp:columns {\"verticalAlignment\":\"center\"} -->\n<div class=\"wp-block-columns are-vertically-aligned-center\"><!-- wp:column {\"verticalAlignment\":\"center\",\"width\":\"66.66%\"} -->\n<div class=\"wp-block-column is-vertically-aligned-center\" style=\"flex-basis:66.66%\"><!-- wp:heading {\"level\":3,\"textColor\":\"white\"} -->\n<h3 class=\"has-white-color has-text-color\"><strong>50% Off Premium</strong></h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph {\"textColor\":\"white\"} -->\n<p class=\"has-white-color has-text-color\">Don't miss out—this sale is fading fast. Use code <strong>FLASH</strong> now through November 30.</p>\n<!-- /wp:paragraph --></div>\n<!-- /wp:column -->\n\n<!-- wp:column {\"verticalAlignment\":\"center\",\"width\":\"33.33%\"} -->\n<div class=\"wp-block-column is-vertically-aligned-center\" style=\"flex-basis:33.33%\"><!-- wp:buttons {\"layout\":{\"type\":\"flex\",\"justifyContent\":\"center\"}} -->\n<div class=\"wp-block-buttons\"><!-- wp:button {\"backgroundColor\":\"white\",\"width\":100,\"style\":{\"border\":{\"radius\":\"100px\"}}} -->\n<div class=\"wp-block-button has-custom-width wp-block-button__width-100\"><a class=\"wp-block-button__link has-white-background-color has-background\" style=\"border-radius:100px\"><strong>Join Today &amp; Save!</strong></a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons --></div>\n<!-- /wp:column --></div>\n<!-- /wp:columns --></div>\n<!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+
+		// Gradient Popup
+		register_block_pattern(
+			'swsales/gradient-popup',
+			array(
+				'title' => __( 'Gradient Popup', 'sitewide-sales' ),
+				'description' => _x( 'Sale callout with gradient background, heading, text, and a call-to-action button stacked for a popup display.', 'Block pattern description', 'sitewide-sales' ),
+				'content' => "<!-- wp:group {\"textColor\":\"white\",\"gradient\":\"vivid-cyan-blue-to-vivid-purple\"} -->\n<div class=\"wp-block-group has-white-color has-vivid-cyan-blue-to-vivid-purple-gradient-background has-text-color has-background\"><!-- wp:heading {\"level\":3,\"textColor\":\"white\",\"className\":\"is-style-default\"} -->\n<h3 class=\"is-style-default has-white-color has-text-color\"><strong>50% Off Premium</strong></h3>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph {\"textColor\":\"white\"} -->\n<p class=\"has-white-color has-text-color\">Don't miss out—this sale is fading fast. Use code <strong>FLASH</strong> now through November 30.</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:buttons -->\n<div class=\"wp-block-buttons\"><!-- wp:button {\"backgroundColor\":\"white\",\"textColor\":\"black\",\"width\":100,\"style\":{\"border\":{\"radius\":\"100px\"}}} -->\n<div class=\"wp-block-button has-custom-width wp-block-button__width-100\"><a class=\"wp-block-button__link has-black-color has-white-background-color has-text-color has-background\" style=\"border-radius:100px\"><strong>Join Today &amp; Save!</strong></a></div>\n<!-- /wp:button --></div>\n<!-- /wp:buttons --></div>\n<!-- /wp:group -->",
+				'categories' => array( 'swsalesbanners' )
+			)
+		);
+	}
+
 }
 SWSales_Banner_Module_Blocks::init();
