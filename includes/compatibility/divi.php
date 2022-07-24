@@ -5,7 +5,7 @@
  * @since 1.3.0
  */
 
-class SWSalesDivi{
+class SWSalesDivi {
 
 	function __construct() {
 
