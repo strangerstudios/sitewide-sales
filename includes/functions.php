@@ -7,8 +7,8 @@
   * What is the active sitewide sale id?
   */
  function swsales_active_sitewide_sale_id() {
-     $options = \Sitewide_Sales\classes\SWSales_Settings::get_options();
-     return $options['active_sitewide_sale_id'];
+	 $options = \Sitewide_Sales\classes\SWSales_Settings::get_options();
+	 return $options['active_sitewide_sale_id'];
  }
  
  /**
@@ -16,27 +16,27 @@
   * Returns false if we're not even on a landing page.
   */
  function swsales_landing_page_template( $post_id = null ) {
-     // Default to queried object.
-     if ( empty( $post_id ) ) {
-         $post_id = get_queried_object_id();
-     }
+	 // Default to queried object.
+	 if ( empty( $post_id ) ) {
+		 $post_id = get_queried_object_id();
+	 }
 
-     // Return false if no post.
-     if ( empty( $post_id ) ) {
-         return false;
-     }
-     
-     // See if any Sitewide Sale CPTs have this post ID set as the Landing Page.
-     $sitewide_sale_id = get_post_meta( $post_id, 'swsales_sitewide_sale_id', true );
+	 // Return false if no post.
+	 if ( empty( $post_id ) ) {
+		 return false;
+	 }
+	 
+	 // See if any Sitewide Sale CPTs have this post ID set as the Landing Page.
+	 $sitewide_sale_id = get_post_meta( $post_id, 'swsales_sitewide_sale_id', true );
 
-     // Return false if not a landing page.
-     if ( empty( $sitewide_sale_id ) ) {
-         return false;
-     }
+	 // Return false if not a landing page.
+	 if ( empty( $sitewide_sale_id ) ) {
+		 return false;
+	 }
 
-     // Get the landing page template for the specific sale.
-     $template = get_post_meta( $sitewide_sale_id, 'swsales_landing_page_template', true );
-     return $template;
+	 // Get the landing page template for the specific sale.
+	 $template = get_post_meta( $sitewide_sale_id, 'swsales_landing_page_template', true );
+	 return $template;
  }
 
  /**
@@ -45,21 +45,21 @@
   */
  function swsales_banner_template( ) {
 
-    // Get the active sitewide sale or the sale being previewed.
-    if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
-        $sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
-    } else {
-        $sitewide_sale_id = swsales_active_sitewide_sale_id();
-    }
+	// Get the active sitewide sale or the sale being previewed.
+	if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
+		$sitewide_sale_id = intval( $_REQUEST['swsales_preview_sale_banner'] );
+	} else {
+		$sitewide_sale_id = swsales_active_sitewide_sale_id();
+	}
 
-     // Return false if no sale.
-     if ( empty( $sitewide_sale_id ) ) {
-         return false;
-     }
-     
-     // Get the banner template for the specific sale.
-     $template = get_post_meta( $sitewide_sale_id, 'swsales_banner_template', true );
-     return $template;
+	 // Return false if no sale.
+	 if ( empty( $sitewide_sale_id ) ) {
+		 return false;
+	 }
+	 
+	 // Get the banner template for the specific sale.
+	 $template = get_post_meta( $sitewide_sale_id, 'swsales_banner_template', true );
+	 return $template;
  }
 
 /**
@@ -100,34 +100,93 @@ function swsales_coupon( $sitewide_sale = null ) {
  * Ref: https://developer.wordpress.org/reference/functions/wp_schedule_event/
  */
 function swsales_maybe_schedule_event( $timestamp, $recurrence, $hook, $args = array() ) {
-    $next = wp_next_scheduled( $hooks, $args );
+	$next = wp_next_scheduled( $hooks, $args );
 
-    if ( empty( $next ) ) {
-        return wp_schedule_event( $timestamp, $recurrence, $hook, $args );
-    } else {
-        return false;
-    }
+	if ( empty( $next ) ) {
+		return wp_schedule_event( $timestamp, $recurrence, $hook, $args );
+	} else {
+		return false;
+	}
 }
 
 /**
  * Check if certain plugins or themes are installed and activated
  * and if found dynamically load the relevant /includes/compatibility/ files.
  */
-function swsales_compatibility_checker () {
-	$compat_checks = array(
-		array(
-			'file' => 'elementor.php',
-			'check_type' => 'constant',
-			'check_value' => 'ELEMENTOR_VERSION'
-		),
-	);
+function swsales_compatibility_checker() {
+	$compat_checks = [
+		[
+			'file'		=> 'elementor.php',
+			'check_type'  => 'constant',
+			'check_value' => 'ELEMENTOR_VERSION',
+		],
+        [
+			'file'		=> 'divi.php',
+			'check_type'  => 'constant',
+			'check_value' => 'ET_BUILDER_PLUGIN_DIR',
+		],
+	];
 
-	foreach ( $compat_checks as $key => $value ) {
-		if ( ( $value['check_type'] == 'constant' && defined( $value['check_value'] ) )
-		  || ( $value['check_type'] == 'function' && function_exists( $value['check_value'] ) )
-		  || ( $value['check_type'] == 'class' && class_exists( $value['check_value'] ) ) ) {
-			include( SWSALES_DIR . '/includes/compatibility/' . $value['file'] ) ;
+	foreach ( $compat_checks as $value ) {
+		if ( swsales_compatibility_checker_is_requirement_met( $value ) ) {
+			include_once( SWSALES_DIR . '/includes/compatibility/' . $value['file'] ) ;
 		}
 	}
 }
 add_action( 'plugins_loaded', 'swsales_compatibility_checker' );
+
+/**
+ * Check whether the requirement is met.
+ *
+ * @since 1.3.0
+ *
+ * @param array $requirement The requirement config (check_type, check_value, check_constant_true).
+ *
+ * @return bool Whether the requirement is met.
+ */
+function swsales_compatibility_checker_is_requirement_met( $requirement ) {
+	// Make sure we have the keys that we expect.
+	if ( ! isset( $requirement['check_type'], $requirement['check_value'] ) ) {
+		return false;
+	}
+
+	// Check for a constant and maybe check if the constant is true-ish.
+	if ( 'constant' === $requirement['check_type'] ) {
+		return (
+			defined( $requirement['check_value'] )
+			&& (
+				empty( $requirement['check_constant_true'] )
+				|| constant( $requirement['check_value'] )
+			)
+		);
+	}
+
+	// Check for a function.
+	if ( 'function' === $requirement['check_type'] ) {
+		return function_exists( $requirement['check_value'] );
+	}
+
+	// Check for a class.
+	if ( 'class' === $requirement['check_type'] ) {
+		return class_exists( $requirement['check_value'] );
+	}
+
+	return false;
+}
+
+function swsales_compatibility_checker_themes() {
+	$compat_checks = array(
+		array(
+			'file' => 'divi.php',
+			'check_type' => 'constant',
+			'check_value' => 'ET_BUILDER_THEME' //Adds support for the Divi theme.
+		)
+	);
+
+	foreach ( $compat_checks as $key => $value ) {
+		if ( swsales_compatibility_checker_is_requirement_met( $value ) ) {
+			include_once( SWSALES_DIR . '/includes/compatibility/' . $value['file'] ) ;
+		}
+	}
+}
+add_action( 'after_setup_theme', 'swsales_compatibility_checker_themes' );

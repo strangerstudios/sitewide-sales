@@ -125,7 +125,7 @@ class SWSales_Elementor_Sale_Content_Restriction extends SWSales_Elementor {
 			$sitewide_sale = $sale_found;
 		}
 
-		// Still no sale? Return nothing and don't render the inner blocks.
+		// Still no sale? Return nothing and don't render the content.
 		if ( ! $sale_found ) {
 			return;
 		}
@@ -137,7 +137,7 @@ class SWSales_Elementor_Sale_Content_Restriction extends SWSales_Elementor {
 		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_time_period'] ) ) {
 			$sale_period = $_REQUEST['swsales_preview_time_period'];
 		}
-		// If the block attributes period does not match the sale period, set to false.
+		// If the builder's setting for period does not match the sale period, set to false.
 		if ( $sale_period != $sale_period_setting ) {
 			$is_visible = false;
 		}
