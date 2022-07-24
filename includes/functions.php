@@ -108,3 +108,26 @@ function swsales_maybe_schedule_event( $timestamp, $recurrence, $hook, $args = a
         return false;
     }
 }
+
+/**
+ * Check if certain plugins or themes are installed and activated
+ * and if found dynamically load the relevant /includes/compatibility/ files.
+ */
+function swsales_compatibility_checker () {
+	$compat_checks = array(
+		array(
+			'file' => 'elementor.php',
+			'check_type' => 'constant',
+			'check_value' => 'ELEMENTOR_VERSION'
+		),
+	);
+
+	foreach ( $compat_checks as $key => $value ) {
+		if ( ( $value['check_type'] == 'constant' && defined( $value['check_value'] ) )
+		  || ( $value['check_type'] == 'function' && function_exists( $value['check_value'] ) )
+		  || ( $value['check_type'] == 'class' && class_exists( $value['check_value'] ) ) ) {
+			include( SWSALES_DIR . '/includes/compatibility/' . $value['file'] ) ;
+		}
+	}
+}
+add_action( 'plugins_loaded', 'swsales_compatibility_checker' );
