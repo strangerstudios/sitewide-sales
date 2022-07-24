@@ -25,3 +25,30 @@
 	background-color: #FFF;
 	padding: 16px;
 }
+
+/* Countdown Timer Block */
+.wp-block-swsales-countdown-timer {
+	background-color: rgba( 0, 0, 0, 0.5 );
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	text-align: center;
+}
+.swsales_countdown_timer_element {
+	flex: 25%;
+}
+.swsales_countdown_timer_inner {
+	background: rgba( 255, 255, 255, 0.1 );
+	border-radius: 3px;
+	margin: 10px 10px 10px 0;
+	padding: 10px;
+}
+.swsales_countdown_timer_element:first-child .swsales_countdown_timer_inner {
+	margin-left: 10px;
+}
+.swsales_countdown_timer_inner span {
+	font-weight: 700;
+	font-size: 40px;
+	line-height: 60px;
+}
+

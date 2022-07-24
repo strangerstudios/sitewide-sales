@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || die( 'File cannot be accessed directly' );
 /**
  * Dynamic Block Requires
  */
+require_once( 'countdown-timer/block.php' );
 require_once( 'sale-content/block.php' );
 require_once( 'sale-period-setting/block.php' );
 
