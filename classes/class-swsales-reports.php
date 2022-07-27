@@ -145,9 +145,9 @@ class SWSales_Reports {
 			// Build an array with each day of sale as a key to store revenue data in.
 			$date_array_all = array();
 			$period = new \DatePeriod(
-				new \DateTime( $sitewide_sale->get_start_date() ),
+				new \DateTime( $sitewide_sale->get_start_date( 'Y-m-d' ) ),
 				new \DateInterval('P1D'),
-				new \DateTime( $sitewide_sale->get_end_date() . ' + 1 day' )
+				new \DateTime( $sitewide_sale->get_end_date( 'Y-m-d' ) . ' + 1 day' )
 			);
 			foreach ($period as $key => $value) {
 				$date_array_all[ $value->format('Y-m-d') ] = 0.0;
