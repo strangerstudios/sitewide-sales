@@ -144,7 +144,7 @@ class SWSales_Landing_Pages {
 		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesMinutes"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Minutes', 'sitewide-sales' ) . '</div></div></div>';
 		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesSeconds"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Seconds', 'sitewide-sales' ) . '</div></div></div>';
 		$r .= '</div>';
-		$r .= '<script>const deadline = "' . $countdown_to . '";initializeClock("swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '", deadline);</script>';
+		$r .= '<script>const deadline = "' . esc_attr( $countdown_to ) . '";initializeClock("swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '", deadline);</script>';
 
 		return $r;
 	}
