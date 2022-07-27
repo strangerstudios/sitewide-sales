@@ -13,6 +13,7 @@ class SWSales_Landing_Pages {
 	public static function init() {
 		add_shortcode( 'sitewide_sales', array( __CLASS__, 'shortcode' ) );
 		add_shortcode( 'sitewide_sale', array( __CLASS__, 'shortcode' ) );
+		add_shortcode( 'sitewide_sale_countdown', array( __CLASS__, 'countdown' ) );
 		add_filter( 'edit_form_after_title', array( __CLASS__, 'add_edit_form_after_title' ) );
 		add_filter( 'body_class', array( __CLASS__, 'add_body_class' ) );
 		add_filter( 'the_content', array( __CLASS__, 'the_content' ), 99 );
@@ -78,6 +79,72 @@ class SWSales_Landing_Pages {
 				$r .= wpautop( do_shortcode( $sitewide_sale->get_sale_content_for_time_period( $sale_period ) ) );
 			}
 		}
+
+		return $r;
+	}
+
+	/**
+	 * Add a countdown timer shortcode.
+	 *
+	 * Attribute sitewide_sale_id sets Sitewide Sale to get meta from.
+	 * Attribute end_on sets datetime to countdown to. Accepts start_date or end_date. Default: sale_end.
+	 *
+	 * @param array $atts attributes passed with shortcode.
+	 */
+	public static function countdown( $atts, $content = null ) {
+		$sitewide_sale = new SWSales_Sitewide_Sale();
+
+		// $atts    ::= array of attributes
+		// $content ::= text within enclosing form of shortcode element
+		extract( shortcode_atts( array(
+			'sitewide_sale_id' => '',
+			'end_on' => '',
+		), $atts ) );
+
+		// Get the Sitewide Sale to show for this shortcode output from atts or load the active sale.
+		if ( ! empty( $sitewide_sale_id ) ) {
+			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+			if ( ! $sale_found ) {
+				return '';
+			}
+		} else {
+			// Get the Sitewide Sale associated with this post.
+			$sitewide_sale_id = get_post_meta( get_queried_object_id(), 'swsales_sitewide_sale_id', true );
+			if ( empty( $sitewide_sale_id ) ) {
+				// Fall back to current active sale.
+				$options = SWSales_Settings::get_options();
+				if ( ! empty( $options['active_sitewide_sale_id'] ) ) {
+					$sitewide_sale_id = $options['active_sitewide_sale_id'];
+				}
+			}
+			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+			if ( ! $sale_found ) {
+				return '';
+			}
+		}
+
+		// Get the countdown to datetime for the shortcode.
+		if ( empty( $end_on ) || $end_on === 'end_date' ) {
+			$countdown_to = $sitewide_sale->get_end_date( 'Y-m-d H:i:s' );
+		} else {
+			$countdown_to = $sitewide_sale->get_start_date( 'Y-m-d H:i:s' );
+		}
+
+		// Never show a negative countdown timer.
+		$current_date = date( 'Y-m-d H:i:s', current_time( 'timestamp' ) );
+		if ( $current_date > $countdown_to ) {
+			return;
+		}
+
+		// Our return string.
+		$r = '';
+		$r .= '<div id="swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '" class="swsales_countdown_timer">';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesDays"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Days', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesHours"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Hours', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesMinutes"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Minutes', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '<div class="swsales_countdown_timer_element"><div class="swsales_countdown_timer_inner"><span class="swsalesSeconds"></span><div class="swsales_countdown_timer_period">' . esc_html__( 'Seconds', 'sitewide-sales' ) . '</div></div></div>';
+		$r .= '</div>';
+		$r .= '<script>const deadline = "' . esc_attr( $countdown_to ) . '";initializeClock("swsales_countdown_timer-' . esc_attr( $sitewide_sale_id ) . '", deadline);</script>';
 
 		return $r;
 	}
