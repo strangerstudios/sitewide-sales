@@ -174,7 +174,7 @@
 	padding: 20px 15px;
 	position: fixed;
 	right: 0;
-	max-width: 370px;
+	width: 350px;
 	z-index: 400;
 }
 #swsales-banner-block-bottom-right {
@@ -182,7 +182,7 @@
 	box-shadow: 0 0 15px 0 rgba( 0, 0, 0, 0.6 );
 	position: fixed;
 	right: 0;
-	max-width: 370px;
+	width: 350px;
 	z-index: 400;
 }
 #swsales-banner-bottom-right a.swsales-dismiss,
@@ -209,7 +209,8 @@
 }
 
 @media only screen and (max-width: 767px) {
-	#swsales-banner-bottom-right {
+	#swsales-banner-bottom-right,
+	#swsales-banner-block-bottom-right {
 		max-width: 100%;
 		text-align: center;
 		width: 100%;
