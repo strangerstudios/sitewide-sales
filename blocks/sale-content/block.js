@@ -72,18 +72,12 @@ export default registerBlockType(
 				isSelected && <div className="swsales-wrapper-block" >
 				<span className="swsales-block-title">{ __( 'Sitewide Sale Content', 'sitewide-sales' ) }</span>
 				<InnerBlocks
-					renderAppender={ () => (
-						<InnerBlocks.ButtonBlockAppender />
-					) }
 					templateLock={ false }
 				/>
 				</div>,
 				! isSelected && <div className="swsales-wrapper-block" >
 				<span className="swsales-block-title">{ __( 'Sitewide Sale Content', 'sitewide-sales' ) }</span>
 				<InnerBlocks
-					renderAppender={ () => (
-						<InnerBlocks.ButtonBlockAppender />
-					) }
 					templateLock={ false }
 				/>
 				</div>,
