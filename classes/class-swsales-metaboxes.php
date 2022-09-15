@@ -251,7 +251,7 @@ class SWSales_MetaBoxes {
 			$cur_sale->load_sitewide_sale( $post->ID );
 		}
 		?>
-		<p><?php esc_html_e( 'These fields control when the banner (if applicable) and built-in sale reporting will be active for your site. They also control what content is displayed on your sale Landing Page according to the "Landing Page" settings in Step 3 below.', 'sitewide-sales' ); ?></p>
+		<p><?php esc_html_e( 'These fields control when the banner (if applicable) and built-in sale reporting will be active for your site. They also control what content is displayed on your sale Landing Page according to the "Landing Page" settings below.', 'sitewide-sales' ); ?></p>
 
 		<table class="form-table">
 			<tbody>
