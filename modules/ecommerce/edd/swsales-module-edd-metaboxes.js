@@ -29,12 +29,8 @@ jQuery( document ).ready(
 				var data = {
 					'action': 'swsales_edd_create_coupon',
 					'swsales_edd_id': $( '#post_ID' ).val(),
-					'swsales_start': $( '#swsales_start_year' ).val() + '-'
-							 + $( '#swsales_start_month' ).val() + '-'
-							 + $( '#swsales_start_day' ).val(),
-					'swsales_end': $( '#swsales_end_year' ).val() + '-'
-							 + $( '#swsales_end_month' ).val() + '-'
-							 + $( '#swsales_end_day' ).val(),
+					'swsales_start': $( '#swsales_start_day' ).val() + ' ' + $( '#swsales_start_time' ).val() + ':00',
+					'swsales_end': $( '#swsales_end_day' ).val() + ' ' + $( '#swsales_end_time' ).val() + ':59',
 					'nonce': swsales_edd_metaboxes.create_coupon_nonce,
 				};
 				$.post(
