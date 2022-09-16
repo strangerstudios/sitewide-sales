@@ -206,7 +206,7 @@ class SWSales_Sitewide_Sale {
 			$start_date = $this->post_meta['swsales_start_date'];
 		} else {
 			// Get a new date.
-			$start_date = date( 'Y-m-d', strtotime( '+1 week', current_time( 'timestamp' ) ) ) . ' 23:59:59';
+			$start_date = date( 'Y-m-d', strtotime( '+1 week', current_time( 'timestamp' ) ) ) . ' 00:00:00';
 		}
 
 		return date_i18n( $dateformatstring, strtotime( $start_date ) );
@@ -241,7 +241,7 @@ class SWSales_Sitewide_Sale {
 			$end_date = $this->post_meta['swsales_end_date'];
 		} else {
 			// Get a new date.
-			$end_date = date( 'Y-m-d', strtotime( '+1 week', current_time( 'timestamp' ) ) ) . ' 23:59:59';
+			$end_date = date( 'Y-m-d', strtotime( '+2 weeks', current_time( 'timestamp' ) ) ) . ' 23:59:00';
 		}
 
 		return date_i18n( $dateformatstring, strtotime( $end_date ) );
