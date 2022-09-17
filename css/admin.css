@@ -108,10 +108,10 @@
 }
 
 /* Sitewide Sales Custom Post Type */
-.post-type-sitewide_sale input[type=text] {
+.post-type-sitewide_sale #poststuff input[type=text] {
 	width: 88%;
 }
-.post-type-sitewide_sale textarea {
+.post-type-sitewide_sale #poststuff textarea {
 	line-height: 1.4;
 	resize: vertical;
 	width: 88%;
