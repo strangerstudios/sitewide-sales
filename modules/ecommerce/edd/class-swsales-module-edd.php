@@ -215,7 +215,7 @@ class SWSales_Module_EDD {
 			$coupon_code = strtoupper( substr( $scramble, 0, 10 ) );			
 		}
 
-		if( !class_exists('EDD_Discount' ) ){
+		if ( ! class_exists( 'EDD_Discount' ) ) {
 			return;
 		}
 		
@@ -228,8 +228,8 @@ class SWSales_Module_EDD {
 		$code->code = $coupon_code;
 		$code->type = $discount_type;
 		$code->amount = $amount;
-		$code->start = sanitize_text_field( $_REQUEST['swsales_start'] );
-		$code->expiration = sanitize_text_field( $_REQUEST['swsales_end'] );
+		$code->start = get_gmt_from_date( sanitize_text_field( $_REQUEST['swsales_start'] ), 'Y-m-d H:i:s' );
+		$code->expiration = get_gmt_from_date( sanitize_text_field( $_REQUEST['swsales_end'] ), 'Y-m-d H:i:s' );
 
 		$code->save();
 

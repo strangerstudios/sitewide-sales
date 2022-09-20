@@ -30,12 +30,8 @@ jQuery( document ).ready(
 				var data = {
 					'action': 'swsales_pmpro_create_discount_code',
 					'swsales_pmpro_id': $( '#post_ID' ).val(),
-					'swsales_start': $( '#swsales_start_year' ).val() + '-'
-							 + $( '#swsales_start_month' ).val() + '-'
-							 + $( '#swsales_start_day' ).val(),
-					'swsales_end': $( '#swsales_end_year' ).val() + '-'
-							 + $( '#swsales_end_month' ).val() + '-'
-							 + $( '#swsales_end_day' ).val(),
+					'swsales_start': $( '#swsales_start_day' ).val(),
+					'swsales_end': $( '#swsales_end_day' ).val(),
 					'nonce': swsales_pmpro_metaboxes.create_discount_code_nonce,
 				};
 				$.post(
