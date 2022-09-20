@@ -30,11 +30,14 @@ jQuery( document ).ready(
 		// toggling the reusable block input layout
 		function swsales_toggle_reusable_block_banner() {
 			var reusable_block_id = $( '#swsales_banner_block_id' ).val();
-			if (reusable_block_id == 0) {
+			if (reusable_block_id == '-1') {
 				$( '#swsales_after_reusable_block_select' ).hide();
+				$( '#swsales_banner_block_id' ).prop( 'disabled', true );
 			} else {
+				$( '#swsales_banner_block_id' ).prop( 'disabled', false );
 				$( '#swsales_edit_banner_block' ).attr( 'href', swsales.admin_url + 'post.php?post=' + reusable_block_id + '&action=edit' );
 				$( '#swsales_after_reusable_block_select' ).show();
+				$( '#swsales_banner_block_id_not_found' ).remove();
 			}
 		}
 		$( '#swsales_banner_block_id' ).change(

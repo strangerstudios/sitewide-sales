@@ -222,10 +222,10 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 		<tr>
 			<th scope="row" valign="top"><label><?php esc_html_e( 'Reusable Block', 'sitewide-sales' ); ?></label></th>
 			<td>
-				<?php
-					$block_found = false;
-					if ( $all_reusable_blocks->have_posts() ) { ?>
-						<select class="swsales_option" id="swsales_banner_block_id" name="swsales_banner_block_id">
+				<select class="swsales_option" id="swsales_banner_block_id" name="swsales_banner_block_id">
+					<?php
+						$block_found = false;
+						if ( $all_reusable_blocks->have_posts() ) { ?>
 							<option value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
 							<?php
 								while ( $all_reusable_blocks->have_posts() ) {
@@ -240,21 +240,14 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 									}
 									echo '<option value="' . esc_attr( $all_reusable_blocks->post->ID ) . '"' . selected( $banner_info['block_id'], $all_reusable_blocks->post->ID ) . '>' . esc_html( $all_reusable_blocks->post->post_title ) . $status_part . '</option>';
 								}
-							?>
-						</select>
-					<?php
-						wp_reset_postdata();
+							wp_reset_postdata();
 						} else { ?>
-							<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
-						<?php
-						}
+							<option id="swsales_banner_block_id_not_found" value="-1"><?php esc_html_e( 'No Blocks Found', 'sitewide-sales' ); ?></option>
+						<?php }
 					?>
+				</select>
 				<p>
-					<span id="swsales_after_reusable_block_select" 
-					<?php
-					if ( ! $block_found ) {
-						?>
-style="display: none;"<?php } ?>>
+					<span id="swsales_after_reusable_block_select">
 					<?php
 						$edit_block_url = admin_url( 'post.php?post=' . $banner_info['block_id'] . '&action=edit' );
 					?>
