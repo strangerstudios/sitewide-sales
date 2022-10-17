@@ -717,14 +717,11 @@ class SWSales_Module_PMPro {
 		// If the hidden levels is an empty string, convert to an array.
 		$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
 
-		// Get the current user's membership level.
-		$membership_level = pmpro_getMembershipLevelForUser();
-
 		// If this banner is hidden by level, check if the current user should see it.
-		if ( ! empty( $hide_for_levels ) && ! empty( $membership_level )
-			&& in_array( $membership_level->ID, $hide_for_levels ) ) {
-			return false;
+		if ( pmpro_hasMembershipLevel( $hide_for_levels ) ) {
+			$show_banner = false;
 		}
+
 		return $show_banner;
 	}
 
