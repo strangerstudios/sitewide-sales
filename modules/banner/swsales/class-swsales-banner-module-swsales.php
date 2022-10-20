@@ -305,14 +305,14 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		<tr>
 			<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
 			<td>
-				<input type="text" name="swsales_banner_title" value="<?php echo esc_attr( $banner_info['title'] ); ?>">
+				<input type="text" name="swsales_banner_title" value="<?php echo stripslashes( $banner_info['title'] ); ?>">
 				<p class="description"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="swsales_banner_text"><?php esc_html_e( 'Banner Text', 'sitewide-sales' ); ?></label></th>
 			<td>
-				<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo esc_textarea( $banner_info['text'] ); ?></textarea>
+				<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo stripslashes( $banner_info['text'] ); ?></textarea>
 				<p class="description"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
@@ -396,13 +396,15 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		}
 
 		if ( ! empty( $_POST['swsales_banner_title'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_title', wp_kses_post( $_POST['swsales_banner_title'] ) );
+			$swsales_banner_title = wp_kses_post( wp_unslash( $_POST['swsales_banner_title'] ) );
+			update_post_meta( $post_id, 'swsales_banner_title', $swsales_banner_title );
 		} elseif ( isset( $_POST['swsales_banner_title'] ) ) {
 			update_post_meta( $post_id, 'swsales_banner_title', $post->post_title );
 		}
 
 		if ( isset( $_POST['swsales_banner_text'] ) ) {
-			update_post_meta( $post_id, 'swsales_banner_text', sanitize_text_field( $_POST['swsales_banner_text'] ) );
+			$swsales_banner_text = wp_kses_post( wp_unslash( $_POST['swsales_banner_text'] ) );
+			update_post_meta( $post_id, 'swsales_banner_text', $swsales_banner_text );
 		}
 
 		if ( ! empty( $_POST['swsales_banner_button_text'] ) ) {
