@@ -386,7 +386,6 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	 * @param WP_Post $post The post being saved.
 	 */
     protected static function save_banner_settings( $post_id, $post ) {
-    	global $allowedposttags;
 		if ( isset( $_POST['swsales_banner_location'] ) ) {
 			update_post_meta( $post_id, 'swsales_banner_location', sanitize_text_field( $_POST['swsales_banner_location'] ) );
 			delete_post_meta( $post_id, 'swsales_use_banner' );
@@ -397,14 +396,14 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		}
 
 		if ( ! empty( $_POST['swsales_banner_title'] ) ) {
-			$swsales_banner_title = wp_kses( wp_unslash( $_POST['swsales_banner_title'] ), $allowedposttags );
+			$swsales_banner_title = wp_kses_post( wp_unslash( $_POST['swsales_banner_title'] ) );
 			update_post_meta( $post_id, 'swsales_banner_title', $swsales_banner_title );
 		} elseif ( isset( $_POST['swsales_banner_title'] ) ) {
 			update_post_meta( $post_id, 'swsales_banner_title', $post->post_title );
 		}
 
 		if ( isset( $_POST['swsales_banner_text'] ) ) {
-			$swsales_banner_text = wp_kses( wp_unslash( $_POST['swsales_banner_text'] ), $allowedposttags );
+			$swsales_banner_text = wp_kses_post( wp_unslash( $_POST['swsales_banner_text'] ) );
 			update_post_meta( $post_id, 'swsales_banner_text', $swsales_banner_text );
 		}
 
