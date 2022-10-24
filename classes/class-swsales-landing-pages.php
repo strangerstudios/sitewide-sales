@@ -203,7 +203,11 @@ class SWSales_Landing_Pages {
 
 			// Load the sale.
 			$sitewide_sale = new SWSales_Sitewide_Sale();
-			$sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
+			// The ID we have isn't a Sitewide Sale CPT, return the content.
+			if ( ! $sale_found ) {
+				return $content;
+			}
 
 			// Get the time period for the sale based on sale settings and current date.
 			$sale_period = $sitewide_sale->get_time_period();
