@@ -319,13 +319,29 @@ class SWSales_Module_WC {
 	 */
 	public static function strike_prices( $price, $product ) {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		
+		// If we're previewing a landing page, override the sale.
+		if ( ! empty( $_REQUEST['swsales_preview_time_period'] ) && current_user_can( 'administrator' ) ) {
+			$queried_object = get_queried_object();
+			if ( ! empty( $queried_object ) ) {
+				$landing_page_sale = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID );
+				if ( ! empty( $landing_page_sale) ) {
+					$active_sitewide_sale = $landing_page_sale;
+				}
+			}
+		}
+		
+		// Make sure there is a sale and it's for WC.
 		if ( null === $active_sitewide_sale || 'wc' !== $active_sitewide_sale->get_sale_type() || is_admin() ) {
 			return $price;
 		}
+		
+		// Get coupon for this sale.
 		$coupon_id = $active_sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
 		if ( null === $coupon_id ) {
 			return $price;
 		}
+		
 		// Check if we are on the landing page
 		$landing_page_post_id             = intval( $active_sitewide_sale->get_landing_page_post_id() );
 		$on_landing_page = false;
