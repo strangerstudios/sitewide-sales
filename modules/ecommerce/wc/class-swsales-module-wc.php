@@ -321,7 +321,7 @@ class SWSales_Module_WC {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		
 		// If we're previewing a landing page, override the sale.
-		if ( ! empty( $_REQUEST['swsales_preview_time_period'] ) && current_user_can( 'administrator' ) ) {
+		if ( ! empty( $_REQUEST['swsales_preview_time_period'] ) && $_REQUEST['swsales_preview_time_period'] === 'sale' && current_user_can( 'administrator' ) ) {
 			$queried_object = get_queried_object();
 			if ( ! empty( $queried_object ) ) {
 				$landing_page_sale = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID );
