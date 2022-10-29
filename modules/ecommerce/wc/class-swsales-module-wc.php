@@ -365,10 +365,12 @@ class SWSales_Module_WC {
 				if ( $product->is_type( 'simple' ) ) {
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
 					$discount_amount  = $coupon->get_discount_amount( $regular_price );
-					$discount_amount  = min( $regular_price, $discount_amount );
-					$discounted_price = max( $regular_price - $discount_amount, 0 );
-					// Update price variable so we can return it later.
-					$price = '<del aria-hidden="true">' . wc_price( $regular_price ) . '</del> <ins>' . wc_price( $discounted_price ) . '</ins>';
+					if ( $discount_amount > 0 ) {
+						$discount_amount  = min( $regular_price, $discount_amount );
+						$discounted_price = max( $regular_price - $discount_amount, 0 );
+						// Update price variable so we can return it later.
+						$price = '<del aria-hidden="true">' . wc_price( $regular_price ) . '</del> <ins>' . wc_price( $discounted_price ) . '</ins>';
+					}
 				}
 
 				// Get pricing for variable products.
@@ -385,9 +387,11 @@ class SWSales_Module_WC {
 					$max_discount_amount  = min( $max_price, $max_discount_amount );
 					$max_discounted_price = max( $max_price - $max_discount_amount, 0 );
 
-					$regular_range    = wc_format_price_range( $min_price, $max_price );
-					$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
-					$price            = '<del aria-hidden="true">' . $regular_range . '</del> <ins>' . $discounted_range . '</ins>';
+					if ( $min_discount_amount > 0 || $max_discount_amount > 0 ) {
+						$regular_range    = wc_format_price_range( $min_price, $max_price );
+						$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
+						$price            = '<del aria-hidden="true">' . $regular_range . '</del> <ins>' . $discounted_range . '</ins>';
+					}
 				}
 			}
 		}
