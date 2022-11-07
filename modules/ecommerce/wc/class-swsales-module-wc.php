@@ -317,7 +317,7 @@ class SWSales_Module_WC {
 	 * @param  WC_Product $product that price is being generated for.
 	 * @return string     new price.
 	 */
-	public static function strike_prices( $price, $product ) {
+	public static function strike_prices( $price, $product ) {		
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
 		
 		// If we're previewing a landing page, override the sale.
@@ -361,8 +361,9 @@ class SWSales_Module_WC {
 		) {
 			$coupon = new \WC_Coupon( wc_get_coupon_code_by_id( $coupon_id ) );
 			if ( $coupon->is_valid_for_product( $product ) ) {
-				// Get pricing for simple products.
-				if ( $product->is_type( 'simple' ) ) {
+				// Get pricing for simple products and similar.
+				$simple_product_types = array( 'simple', 'variation' );
+				if ( $product->is_type( $simple_product_types ) ) {
 					$regular_price = get_post_meta( $product->get_id(), '_regular_price', true );
 					$discount_amount  = $coupon->get_discount_amount( $regular_price );
 					if ( $discount_amount > 0 ) {
