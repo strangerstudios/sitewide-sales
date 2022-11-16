@@ -23,7 +23,7 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 
 == Changelog ==
 
-= 1.3.1 - 2022-11-15 =
+= 1.3.1 - 2022-11-16 =
 * ENHANCEMENT: Added Multiple Members Per User (MMPU) compatibility for banners (PMPro Module).
 * ENHANCEMENT: Adjusted order of metaboxes on Sitewide Sale CPT edit screen to reflect recommended workflow.
 * ENHANCEMENT: Now allowing certain HTML in custom banner title and banner text.
