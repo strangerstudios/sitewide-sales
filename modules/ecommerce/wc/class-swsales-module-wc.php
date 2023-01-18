@@ -375,6 +375,8 @@ class SWSales_Module_WC {
 				}
 
 				// Get pricing for variable products.
+
+
 				if ( $product->is_type( 'variable' ) ) {
 					$prices           = $product->get_variation_prices( true );
 					$min_price        = current( $prices['price'] );
@@ -389,9 +391,15 @@ class SWSales_Module_WC {
 					$max_discounted_price = max( $max_price - $max_discount_amount, 0 );
 
 					if ( $min_discount_amount > 0 || $max_discount_amount > 0 ) {
-						$regular_range    = wc_format_price_range( $min_price, $max_price );
-						$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
-						$price            = '<del aria-hidden="true">' . $regular_range . '</del> <ins>' . $discounted_range . '</ins>';
+						if ( $min_price == $max_price && $min_discounted_price == $max_discounted_price ) {
+								// All variations are the same price. Show as a single price with strikethrough.
+								$price = '<del aria-hidden="true">' . wc_price( $min_price ) . '</del> <ins>' . wc_price( $min_discounted_price ) . '</ins>';
+						} else {
+							// Show variations as a range of prices with strikethrough range.
+							$regular_range    = wc_format_price_range( $min_price, $max_price );
+							$discounted_range = wc_format_price_range( $min_discounted_price, $max_discounted_price );
+							$price            = '<del aria-hidden="true">' . $regular_range . '</del> <ins>' . $discounted_range . '</ins>';
+						}
 					}
 				}
 			}
