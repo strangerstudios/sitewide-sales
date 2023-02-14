@@ -796,8 +796,10 @@ class SWSales_Module_PMPro {
 		// Get the meta value for levels this banner should be hidden for.
 		$hide_for_levels = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
 
-		// If the hidden levels is an empty string, convert to an array.
-		$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
+		// Return if there is no data for hiding banner by level.
+		if ( empty( $hide_for_levels ) ) {
+			return $show_banner;
+		}
 
 		// If this banner is hidden by level, check if the current user should see it.
 		if ( pmpro_hasMembershipLevel( $hide_for_levels ) ) {
