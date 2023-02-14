@@ -465,7 +465,7 @@ class SWSales_Sitewide_Sale {
 		$hide_sale = false;
 
 		// Get the meta value for roles this sale should be hidden for.
-		$hide_for_roles = json_decode( $this->get_meta_value( 'swsales_hide_sale_by_role', '' ) );
+		$hide_for_roles = json_decode( $this->get_meta_value( 'swsales_hide_for_roles', '' ) );
 
 		// If the hidden roles is an empty string, convert to an array.
 		$hide_for_roles = empty( $hide_for_roles ) ? array() : $hide_for_roles;
@@ -559,6 +559,11 @@ class SWSales_Sitewide_Sale {
 	public function is_running() {
 		// Don't check if the sale is hidden in the admin.
 		if ( is_admin() ) {
+			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
+		}
+
+		// Allow admins to preview the sale period and banners regardless of whether sale is hidden using a URL attribute.
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_time_period'] ) || isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
 			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
 		}
 
