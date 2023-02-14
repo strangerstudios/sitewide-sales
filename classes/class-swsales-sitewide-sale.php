@@ -456,6 +456,36 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Whether the current sitewide sale should be hidden.
+	 *
+	 * @return string
+	 */
+	public function hide_sale() {
+		// Assume sale is visible to everyone.
+		$hide_sale = false;
+
+		// Get the meta value for roles this sale should be hidden for.
+		$hide_for_roles = json_decode( $this->get_meta_value( 'swsales_hide_sale_by_role', '' ) );
+
+		// If the hidden roles is an empty string, convert to an array.
+		$hide_for_roles = empty( $hide_for_roles ) ? array() : $hide_for_roles;
+
+		// Get the current user roles or if logged out, set the 'ghost' role.
+		if ( ! is_user_logged_in() ) {
+			$user_roles = array( 'logged_out' );
+		} else {
+			$user = wp_get_current_user();
+			$user_roles = ( array ) $user->roles;
+		}
+		// If this sale is hidden by role, check if the current user should see it.
+		if ( ! empty( $hide_for_roles ) && ! empty( array_intersect( $hide_for_roles, $user_roles ) ) ) {
+			$hide_sale = true;
+		}
+
+		return apply_filters( 'swsales_hide', $hide_sale, $this );
+	}
+
+	/**
 	 * Returns the number of times this sale's banner has been shown to unique users.
 	 *
 	 * @return int
@@ -527,7 +557,21 @@ class SWSales_Sitewide_Sale {
 	 * @return boolean
 	 */
 	public function is_running() {
-		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
+		// Don't check if the sale is hidden in the admin.
+		if ( is_admin() ) {
+			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
+		}
+
+		// Check whether the sale should be hidden for the current user.
+		$hide = $this->hide_sale();
+		
+		// If the sale is hidden for this user, return.
+		if ( $hide ) {
+			return;
+		} else {
+			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
+		}
+
 	}
 
 	/**

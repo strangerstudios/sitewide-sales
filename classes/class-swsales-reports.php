@@ -328,6 +328,10 @@ class SWSales_Reports {
 			return;
 		}
 
+		if ( null === $active_sitewide_sale->is_running() ) {
+			return;
+		}
+
 		wp_register_script( 'swsales_tracking', plugins_url( 'js/swsales.js', SWSALES_BASENAME ), array( 'jquery', 'utils' ) );
 
 		$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();

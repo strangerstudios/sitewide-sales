@@ -10,6 +10,7 @@ jQuery( document ).ready(
 		}
 
 		// multiselects
+		$( "#swsales_hide_sale_by_role_select" ).selectWoo();
 		$( "#swsales_landing_page_select" ).selectWoo();
 		$( "#swsales_hide_banner_by_role_select" ).selectWoo();
 
