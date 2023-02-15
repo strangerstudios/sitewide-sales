@@ -10,8 +10,9 @@ jQuery( document ).ready(
 		}
 
 		// multiselects
-		$( "#swsales_landing_page_select" ).selectWoo();
+		$( "#swsales_hide_for_roles_select" ).selectWoo();
 		$( "#swsales_hide_banner_by_role_select" ).selectWoo();
+		$( "#swsales_landing_page_select" ).selectWoo();
 
 		// removing some buttons from the edit post page for our CPT
 		$( '.wp-editor-tabs' ).remove();

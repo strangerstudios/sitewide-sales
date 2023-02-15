@@ -19,8 +19,8 @@ class SWSales_Module_PMPro {
 
 		// Add fields to Edit Sitewide Sale page.
 		add_action( 'swsales_after_choose_sale_type', array( __CLASS__, 'add_choose_discount_code' ) );
+		add_action( 'swsales_after_choose_sale_type', array( __CLASS__, 'add_hide_sale_by_level' ) );
 		add_action( 'swsales_after_choose_landing_page', array( __CLASS__, 'add_set_landing_page_default_level' ) );
-		add_action( 'swsales_after_banners_settings', array( __CLASS__, 'add_hide_banner_by_level' ) );
 
 		// Migration functionality from PMPro SWS
 		add_action( 'admin_init', array( __CLASS__, 'migrate_from_pmprosws' ) );
@@ -41,6 +41,9 @@ class SWSales_Module_PMPro {
 		// AJAX to create a discount code.
 		add_action( 'wp_ajax_swsales_pmpro_create_discount_code', array( __CLASS__, 'create_discount_code_ajax' ) );
 
+		// For the swsales_hide helper function
+		add_filter( 'swsales_hide', array( __CLASS__, 'swsales_hide' ), 10, 2 );
+
 		// For the swsales_coupon helper function
 		add_filter( 'swsales_coupon', array( __CLASS__, 'swsales_coupon' ), 10, 2 );
 
@@ -49,7 +52,6 @@ class SWSales_Module_PMPro {
 
 		// Custom PMPro banner rules (hide for levels and hide at checkout).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
-		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );
 
 		// PMPro automatic discount application.
 		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
@@ -148,6 +150,56 @@ class SWSales_Module_PMPro {
 	} // end add_choose_discount_code()
 
 	/**
+	 * Adds option to hide sale for users who have certain levels
+	 * in Edit Sitewide Sale page.
+	 *
+	 * @param SWSales_Sitewide_Sale $cur_sale that is being edited.
+	 */
+	public static function add_hide_sale_by_level( $cur_sale ) {
+		?>
+		<tr class='swsales-module-row swsales-module-row-pmpro'>
+			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
+				<th></th>
+				<td>
+					<div class="sitewide_sales_message sitewide_sales_error">
+						<p><?php echo esc_html( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></p>
+					</div>
+				</td>
+				<?php
+			} else {
+				?>
+				<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Sale by Level', 'sitewide-sales' ); ?></label></th>
+					<td>
+						<input type="hidden" name="swsales_pmpro_hide_for_levels_exists" value="1" />
+						<select multiple class="swsales_option" id="swsales_pmpro_hide_levels_select" name="swsales_pmpro_hide_for_levels[]" style="width:12em">
+						<?php
+							// Get all levels in PMPro settings.
+							$all_levels = pmpro_getAllLevels( true, true );
+							$all_levels = pmpro_sort_levels_by_order( $all_levels );
+
+							// Get the meta value for levels this banner should be hidden for.
+							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
+
+							// If the hidden levels is an empty string, convert to an array.
+							$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
+
+							// Loop through and display all level options.
+							foreach ( $all_levels as $level ) {
+								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
+								echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
+							}
+						?>
+						</select>
+						<p class="description"><?php esc_html_e( 'This setting will completely hide the sale from users with the selected levels (including the banner and discount logic).', 'sitewide-sales' ); ?></p>
+					</td>
+					<?php
+			}
+			?>
+		</tr>
+		<?php
+	}
+
+	/**
 	 * Adds option to choose the default level for checkout on SWSale
 	 * landing page in Edit Sitewide Sale page.
 	 *
@@ -187,56 +239,6 @@ class SWSales_Module_PMPro {
 				</tr>
 		<?php
 	} // end add_set_landing_page_default_level
-
-	/**
-	 * Adds option to hide banners for users who have certain levels
-	 * in Edit Sitewide Sale page.
-	 *
-	 * @param SWSales_Sitewide_Sale $cur_sale that is being edited.
-	 */
-	public static function add_hide_banner_by_level( $cur_sale ) {
-		?>
-		<tr class='swsales-module-row swsales-module-row-pmpro'>
-			<?php if ( ! defined( 'PMPRO_VERSION' ) ) { ?>
-				<th></th>
-				<td>
-					<div class="sitewide_sales_message sitewide_sales_error">
-						<p><?php echo esc_html( 'The Paid Memberships Pro plugin is not active.', 'sitewide-sales' ); ?></p>
-					</div>
-				</td>
-				<?php
-			} else {
-				?>
-				<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner by Membership Level', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<input type="hidden" name="swsales_pmpro_hide_for_levels_exists" value="1" />
-						<select multiple class="swsales_option" id="swsales_pmpro_hide_levels_select" name="swsales_pmpro_hide_for_levels[]" style="width:12em">
-						<?php
-							// Get all levels in PMPro settings.
-							$all_levels = pmpro_getAllLevels( true, true );
-							$all_levels = pmpro_sort_levels_by_order( $all_levels );
-
-							// Get the meta value for levels this banner should be hidden for.
-							$hide_for_levels = json_decode( $cur_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
-
-							// If the hidden levels is an empty string, convert to an array.
-							$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
-
-							// Loop through and display all level options.
-							foreach ( $all_levels as $level ) {
-								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
-								echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
-							}
-						?>
-						</select>
-						<p class="description"><?php esc_html_e( 'This setting will hide the banner for members of the selected levels.', 'sitewide-sales' ); ?></p>
-					</td>
-					<?php
-			}
-			?>
-		</tr>
-		<?php
-	}
 
 	/**
 	 * Show notice to migrate from PMPro SWS.
@@ -496,6 +498,27 @@ class SWSales_Module_PMPro {
 	} // end admin_enqueue_scripts()
 
 	/**
+	 * Whether the current sitewide sale should be hidden.
+	 * Callback for the swsales_hide filter.
+	 */
+	public static function swsales_hide( $hide_sale, $sitewide_sale ) {
+		// Get the meta value for levels this sale should be hidden for.
+		$hide_for_levels = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
+
+		// Return if there is no data for hiding sale by level.
+		if ( empty( $hide_for_levels ) ) {
+			return $hide_sale;
+		}
+
+		// If this sale is hidden by level, check if the current user should see it.
+		if ( pmpro_hasMembershipLevel( $hide_for_levels ) ) {
+			$hide_sale = true;
+		}
+
+		return $hide_sale;
+	}
+
+	/**
 	 * Get the coupon for a sitewide sale.
 	 * Callback for the swsales_coupon filter.
 	 */
@@ -701,31 +724,6 @@ class SWSales_Module_PMPro {
 	}
 
 	/**
-	 * Returns whether the banner should be shown for the current Sitewide Sale.
-	 *
-	 * @param boolean               $show_banner current value from filter.
-	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
-	 * @return boolean
-	 */
-	public static function show_banner( $show_banner, $sitewide_sale ) {
-		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
-			return $show_banner;
-		}
-		// Get the meta value for levels this banner should be hidden for.
-		$hide_for_levels = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
-
-		// If the hidden levels is an empty string, convert to an array.
-		$hide_for_levels = empty( $hide_for_levels ) ? array() : $hide_for_levels;
-
-		// If this banner is hidden by level, check if the current user should see it.
-		if ( pmpro_hasMembershipLevel( $hide_for_levels ) ) {
-			$show_banner = false;
-		}
-
-		return $show_banner;
-	}
-
-	/**
 	 * Automatically applies discount code if user has the cookie set from sale page
 	 */
 	public static function automatic_discount_application() {
@@ -733,6 +731,7 @@ class SWSales_Module_PMPro {
 		if ( null === $active_sitewide_sale || 'pmpro' !== $active_sitewide_sale->get_sale_type() || ! $active_sitewide_sale->should_apply_automatic_discount() ) {
 			return;
 		}
+
 		global $wpdb, $pmpro_pages;
 		if ( empty( $_REQUEST['level'] ) || ! empty( $_REQUEST['discount_code'] ) ) {
 			return;
