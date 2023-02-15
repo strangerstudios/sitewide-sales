@@ -85,15 +85,12 @@ class SWSales_Module_WC {
 				</td>
 				<?php
 			} else {
-				$args = array(
-					'posts_per_page'   => -1,
-					'orderby'          => 'title',
-					'order'            => 'asc',
-					'post_type'        => 'shop_coupon',
-					'post_status'      => 'publish',
-				);
+				global $wpdb;
 
-				$coupons = get_posts( $args );
+				// Query the database for the coupons and only retrieve ID and post_title (coupon name).
+				$coupons = $wpdb->get_results( $wpdb->prepare( "SELECT id, post_title FROM $wpdb->posts WHERE post_type = 'shop_coupon' AND post_status = 'publish'", OBJECT ) );
+
+				// Get the current coupon (if set) for the sale.
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
 				?>
 					<th><label for="swsales_wc_coupon_id"><?php esc_html_e( 'Coupon', 'sitewide-sales' );?></label></th>
