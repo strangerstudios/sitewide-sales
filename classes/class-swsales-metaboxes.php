@@ -748,13 +748,6 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_hide_for_roles', wp_json_encode( array() ) );
 		}
 
-		if ( ! empty( $_POST['swsales_hide_banner_by_role'] ) && is_array( $_POST['swsales_hide_banner_by_role'] )) {
-			$swsales_hide_banner_by_role = array_map( 'sanitize_text_field', $_POST['swsales_hide_banner_by_role'] );
-			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( $swsales_hide_banner_by_role ) );
-		} elseif ( ! empty( $_POST['swsales_hide_banner_by_role_exists'] ) ) {
-			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( array() ) );
-		}
-
 		if ( isset( $_POST['swsales_automatic_discount'] ) ) {
 			update_post_meta( $post_id, 'swsales_automatic_discount', sanitize_text_field( $_POST['swsales_automatic_discount'] ) );
 		}
