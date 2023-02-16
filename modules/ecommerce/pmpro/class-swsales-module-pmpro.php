@@ -502,6 +502,10 @@ class SWSales_Module_PMPro {
 	 * Callback for the swsales_hide filter.
 	 */
 	public static function swsales_hide( $hide_sale, $sitewide_sale ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+ 			return $hide_sale;
+ 		}
+
 		// Get the meta value for levels this sale should be hidden for.
 		$hide_for_levels = json_decode( $sitewide_sale->get_meta_value( 'swsales_pmpro_hide_for_levels', '' ) );
 

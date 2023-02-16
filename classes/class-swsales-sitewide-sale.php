@@ -567,16 +567,12 @@ class SWSales_Sitewide_Sale {
 			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
 		}
 
-		// Check whether the sale should be hidden for the current user.
-		$hide = $this->hide_sale();
-		
 		// If the sale is hidden for this user, return.
-		if ( $hide ) {
+		if ( $this->hide_sale()) {
 			return;
-		} else {
-			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
 		}
 
+		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
 	}
 
 	/**

@@ -328,7 +328,7 @@ class SWSales_Reports {
 			return;
 		}
 
-		if ( null === $active_sitewide_sale->is_running() ) {
+		if ( ! $active_sitewide_sale->is_running() ) {
 			return;
 		}
 
