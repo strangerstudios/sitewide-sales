@@ -3,6 +3,7 @@ jQuery( document ).ready(
 		// create new reusable block banner AJAX
 		$( '#swsales_create_reusable_block_banner' ).click(
 			function() {
+				$( '#swsales_create_reusable_block_banner' ).attr( 'disabled','disabled' );
 				var data = {
 					'action': 'swsales_create_reusable_block_banner',
 					'swsales_id': $( '#post_ID' ).val(),

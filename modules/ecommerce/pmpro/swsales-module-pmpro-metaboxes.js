@@ -27,6 +27,7 @@ jQuery( document ).ready(
 		// create new discount code AJAX
 		$( '#swsales_pmpro_create_discount_code' ).click(
 			function() {
+				$( '#swsales_pmpro_create_discount_code' ).attr( 'disabled','disabled' );
 				var data = {
 					'action': 'swsales_pmpro_create_discount_code',
 					'swsales_pmpro_id': $( '#post_ID' ).val(),
