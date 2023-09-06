@@ -153,6 +153,26 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Returns an Array containing the corresponding Sitewide Sale objects.
+	 *
+	 * @param Array $ids A set of SWSales_Sitewide_Sale ids to get.
+	 * @return Array An array containing SWSales_Sitewide_Sale objects.
+	 * @since TBD.
+	 */
+	public static function get_sitewide_sales( $ids ) {
+		if( !is_array($ids) ) 
+			return;
+		
+
+		$sales = array();
+		foreach ( $ids as $id ) {
+			$sales[] = self::get_sitewide_sale( $id );
+		}	
+
+		return $sales;
+	}
+
+	/**
 	 * -----------------------------
 	 * GETTER FUNCTIONS (POST META)
 	 * -----------------------------

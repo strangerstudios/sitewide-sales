@@ -982,51 +982,9 @@ class SWSales_Module_PMPro {
 			)
 		);
 
-		?>
-		<div class="swsales_reports-box">
-			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-			<p>
-				<?php
-				printf(
-					wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
-					$sitewide_sale->get_start_date(),
-					$sitewide_sale->get_end_date()
-				);
-				?>
-			</p>
-			<hr />
-			<div class="swsales_reports-data swsales_reports-data-4col">
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $new_rev_with_code ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $new_rev_without_code ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $renewals ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $total_rev ) ); ?></h1>
-					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
-				</div>
-			</div>
-		</div>
-		<?php
+		require_once ( SWSALES_DIR . '/modules/partials/revenue_breakdown_partial.php' );
+
+
 	}
 
 }
