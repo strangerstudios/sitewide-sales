@@ -348,24 +348,27 @@ class SWSales_Reports {
 	}
 
 	/**
-	 * Show report content for a Sitewide Sale.
+	 * Show report content for selected Sitewide Sales objects.
 	 *
-	 * @param SWSales_Sitewide_Sale $sitewide_sale to show report for.
+	 * @param Array An array of SWSales_Sitewide_Sale objects to show report for.
+	 * @since TBD.
 	 */
 	public static function show_compare_report( $sitewide_sales ) {
-
-		$sale1 = $sitewide_sales[0];
-		if( count($sitewide_sales) > 1 ) {
-			$sale2 = $sitewide_sales[1];
-		}
-
-		if ( ! is_array( $sitewide_sales ) ) {
+		//Bail if param it's not an array
+		if(! is_array( $sitewide_sales ) ) {
 			return;
 		}
 
-		if (! is_a( $sale1 , 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) || 
-			( count( $sitewide_sales ) > 1 && ! is_a( $sale2, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) ) {
+		// Bail if the array comes empty
+		if( count( $sitewide_sales ) < 1) {
+			return;
+		}
+
+		// Bail if given elements aren't SWSales_Sitewide_Sale objects.
+		foreach ($sitewide_sales as $sitewide_sale) {
+			if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
 				return;
+			}
 		}
 			?>
 		<div class="swsales_reports-box">
@@ -429,32 +432,36 @@ class SWSales_Reports {
 					function drawVisualization() {
 						const dataTable = new google.visualization.DataTable();
 						dataTable.addColumn('string', <?php echo wp_json_encode( esc_html__( 'Sale Day', 'sitewide-sales' ) ); ?>);
-						dataTable.addColumn('number', <?php echo wp_json_encode( esc_html( $sale1->get_name(),  'sitewide-sales' ) ); ?>);
-						<?php if( count( $sitewide_sales ) > 1 ) { ?>
-							dataTable.addColumn('number', <?php echo wp_json_encode( esc_html( $sale2->get_name(), 'sitewide-sales' ) ); ?>);
-						<?php }?>
-						dataTable.addColumn({type: 'string', role: 'style'});
+						<?php
+							foreach ($sitewide_sales as $sitewide_sale) {
+						?>
+							dataTable.addColumn('number', <?php echo wp_json_encode( esc_html( $sitewide_sale->get_name(), 'sitewide-sales' ) ); ?>);
+						<?php } ?>
 						dataTable.addColumn({type: 'string', role: 'annotation'});
 						dataTable.addRows([
-							<?php 
-								
-									$data = $ret[$sale1->get_id()];
+							<?php
+									$data = $ret[$sitewide_sales[0]->get_id()];
 									$daily_revenue_chart_data = $data['daily_revenue_chart_data'];
 									$date_array_all = $data['date_array_all'];
 									$highest_daily_revenue_key = $data['highest_daily_revenue_key'];
 									$daily_revenue_chart_days = $data['daily_revenue_chart_days'];
 									foreach( $daily_revenue_chart_data as $date => $value ) { ?>
 									[
-										<?php
+										 <?php
 											echo wp_json_encode( esc_html( date_i18n( get_option('date_format'), strtotime( $date ) ) ) );
-										?>,
-										<?php echo wp_json_encode( (int) $value ); ?>,
+										 ?>,
+										 <?php  echo wp_json_encode( (int) $value ); ?>,
 										<?php if( count( $sitewide_sales ) > 1 ) {
-											$revenue_to_compare = isset( $ret[$sale2->get_id()]['daily_revenue_chart_data'][$date] ) ? 
-											$ret[$sale2->get_id()]['daily_revenue_chart_data'][$date] : 0;
-												echo wp_json_encode( (int) $revenue_to_compare );
-											?>,
-										<?php }?>,
+											foreach( $sitewide_sales as $key => $sitewide_sale ) {
+												if( $key === 0 ) {
+													continue;
+												}
+												$revenue_to_compare = isset( $ret[$sitewide_sale->get_id()]['daily_revenue_chart_data'][$date] ) ?
+												$ret[$sitewide_sale->get_id()]['daily_revenue_chart_data'][$date] : 0;
+													echo wp_json_encode((int) $revenue_to_compare  ) . ',';
+											}
+										}
+										?>
 										<?php
 											if ( ! empty( $highest_daily_revenue_key ) && $date === $highest_daily_revenue_key ) {
 												echo wp_json_encode( esc_html__( 'Best Day', 'sitewide-sales' ) );
@@ -465,11 +472,12 @@ class SWSales_Reports {
 											}
 										?>,
 									],
-						<?php   }
-							// }
+						<?php
+							}
 						?>
 						]);
 						const options = {
+							//If we start supporting more than two we'll need to figure further colors below. Could be random hexa despite that could bring some ugly colors and accessibility issues. 
 							colors: ['#DC5D36', '#0D3D54'],
 							legend: {
 								position: 'top',
@@ -516,10 +524,13 @@ class SWSales_Reports {
 							'fractionDigits': <?php echo intval( $daily_revenue_chart_currency_format['decimals'] ); ?>,
 							'groupingSymbol': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['thousands_separator'] ) ); ?>',
 						});
-						formatter.format(dataTable, 1);
-						<?php if( count( $sitewide_sales ) > 1 ) { ?>
-							formatter.format(dataTable, 2);
-						<?php }?>
+						<?php
+							foreach( $sitewide_sales as $key => $sitewide_sale) {
+						?>
+								formatter.format(dataTable, <?php echo wp_json_encode( (int) $key ) + 1 ?>);
+
+						<?php }
+						?>
 
 
 						const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
