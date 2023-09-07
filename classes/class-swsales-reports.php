@@ -88,6 +88,14 @@ class SWSales_Reports {
 							<?php } ?>
 						</div>
 					</form>
+					<script>
+					jQuery(document).ready(function($) {
+						$('#swsales_select_report_left, #swsales_select_report_right').on('change', evt => {
+							$changed = $(evt.target);
+							$changed.closest('form').submit();
+							});
+						});
+					</script>
 					<hr />
 					<?php
 				} else { ?>
@@ -96,12 +104,209 @@ class SWSales_Reports {
 				}
 
 				// Show report for sitewide sale if applicable.
-				if ( $sales_to_show != null ) {
-					SWSales_Reports::show_report( $sales_to_show );
+				if ( $sales_to_show != null && count( $sales_to_show ) > 1) {
+					SWSales_Reports::show_compare_report( $sales_to_show );
+				} else if ( $sales_to_show != null && count( $sales_to_show ) == 1 ) {
+					SWSales_Reports::show_report( $sales_to_show[0] );
 				}
 			?>
 		</div> <!-- sitewide-sales_admin -->
 		<?php
+	}
+
+	/**
+	 * Show report content for a Sitewide Sale.
+	 *
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to show report for.
+	 */
+	public static function show_report( $sitewide_sale ) {
+		if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
+			return;
+		}
+		?>
+		<div class="swsales_reports-box">
+			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'sitewide-sales' ); ?></h1>
+			<p>
+			<?php
+				printf(
+					wp_kses_post( 'All visitors from %s to %s.', 'sitewide-sales' ),
+					esc_html( $sitewide_sale->get_start_date() ),
+					esc_html( $sitewide_sale->get_end_date() )
+				);
+			?>
+			</p>
+			<hr />
+			<div class="swsales_reports-data swsales_reports-data-4col">
+				<div id="swsales_reports-data-section_banner" class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $sitewide_sale->get_banner_impressions() ); ?></h1>
+					<p><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></p>
+				</div>
+				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $sitewide_sale->get_landing_page_visits() ); ?></h1>
+					<p>
+						<?php
+							printf(
+								wp_kses_post( '<a href="%s" title="%s">Landing</a> Page Visits', 'sitewide-sales' ),
+								get_permalink( $sitewide_sale->get_landing_page_post_id() ),
+								get_the_title( $sitewide_sale->get_landing_page_post_id() )
+							);
+						?>
+					</p>
+				</div>
+				<div id="swsales_reports-data-section_sales" class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $sitewide_sale->get_checkout_conversions() ); ?></h1>
+					<p>
+						<?php
+							printf(
+								wp_kses_post( apply_filters( 'swsales_checkout_conversions_title', __( 'Checkout Conversions', 'sitewide-sales' ), $sitewide_sale ) )
+							);
+						?>
+					</p>
+				</div>
+				<div class="swsales_reports-data-section">
+					<h1><?php echo esc_attr( $sitewide_sale->get_revenue() ); ?></h1>
+					<p><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></p>
+				</div>
+			</div>
+			<?php
+			// Daily Revenue Chart.
+			// Build an array with each day of sale as a key to store revenue data in.
+			$date_array_all = array();
+			$period = new \DatePeriod(
+				new \DateTime( $sitewide_sale->get_start_date( 'Y-m-d' ) ),
+				new \DateInterval('P1D'),
+				new \DateTime( $sitewide_sale->get_end_date( 'Y-m-d' ) . ' + 1 day' )
+			);
+			foreach ($period as $key => $value) {
+				$date_array_all[ $value->format('Y-m-d') ] = 0.0;
+			}
+
+			/**
+			 * Filter the number of days shown in the report chart. Defauly is 31 days.
+			 */
+			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
+			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
+
+			$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
+
+			// Get the best day to highlight in the chart.
+			$highest_daily_revenue = max( $daily_revenue_chart_data );
+			if ( $highest_daily_revenue > 0 ) {
+				$highest_daily_revenue_key = array_search( $highest_daily_revenue, $daily_revenue_chart_data );
+			}
+
+			// Display the chart.
+			if ( is_array( $daily_revenue_chart_data ) ) { ?>
+				<hr>
+				<div class="swsales_chart_area">
+					<div id="chart_div"></div>
+					<?php if ( count( $date_array_all ) > $daily_revenue_chart_days ) { ?>
+						<div class="swsales_chart_description"><p><center><em>
+							<?php esc_html_e( sprintf( __( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ) ); ?>
+						</em></center></p></div>
+					<?php } ?>
+				</div> <!-- end swsales_chart_area -->
+				<script>
+					// Draw the chart.
+					google.charts.load('current', {'packages':['corechart']});
+					google.charts.setOnLoadCallback(drawVisualization);
+					function drawVisualization() {
+						var dataTable = new google.visualization.DataTable();
+						dataTable.addColumn('string', <?php echo wp_json_encode( esc_html__( 'DAY', 'sitewide-sales' ) ); ?>);
+						dataTable.addColumn('number', <?php echo wp_json_encode( esc_html__( 'Sale Revenue', 'sitewide-sales' ) ); ?>);
+						dataTable.addColumn({type: 'string', role: 'style'});
+						dataTable.addColumn({type: 'string', role: 'annotation'});
+						dataTable.addRows([
+							<?php foreach( $daily_revenue_chart_data as $date => $value ) { ?>
+								[
+									<?php
+										echo wp_json_encode( esc_html( date_i18n( get_option('date_format'), strtotime( $date ) ) ) );
+									?>,
+									<?php echo wp_json_encode( (int) $value ); ?>,
+									<?php
+										if ( date( 'd.m.Y' ) === date( 'd.m.Y', strtotime( $date ) ) ) {
+											echo wp_json_encode( 'color: #5EC16C;' );
+										} else {
+											echo wp_json_encode( '' );
+										}
+									?>,
+									<?php
+										if ( ! empty( $highest_daily_revenue_key ) && $date === $highest_daily_revenue_key ) {
+											echo wp_json_encode( esc_html__( 'Best Day', 'sitewide-sales' ) );
+										} elseif ( date( 'd.m.Y' ) === date( 'd.m.Y', strtotime( $date ) ) ) {
+											echo wp_json_encode( esc_html__( 'Today', 'sitewide-sales' ) );
+										} else {
+											echo wp_json_encode( '' );
+										}
+									?>,
+								],
+							<?php } ?>
+						]);
+						var options = {
+							title: swsales_report_title(),
+							titlePosition: 'top',
+							titleTextStyle: {
+								color: '#555555',
+							},
+							legend: {position: 'none'},
+							colors: ['#31825D'],
+							chartArea: {
+								width: '90%',
+							},
+							hAxis: {
+								textStyle: {
+									color: '#555555',
+									fontSize: '12',
+									italic: false,
+								},
+							},
+							vAxis: {
+								textStyle: {
+									color: '#555555',
+									fontSize: '12',
+									italic: false,
+								},
+							},
+							seriesType: 'bars',
+							annotations: {
+								alwaysOutside: true,
+								stemColor : 'none',
+							},
+						};
+
+					<?php
+						$daily_revenue_chart_currency_format = array(
+							'currency_symbol' => '$',
+							'decimals' => 2,
+							'decimal_separator' => '.',
+							'thousands_separator' => ',',
+							'position' => 'prefix' // Either "prefix" or "suffix".
+						);
+						$daily_revenue_chart_currency_format = apply_filters( 'swsales_daily_revenue_chart_currency_format', $daily_revenue_chart_currency_format, $sitewide_sale );
+						?>
+						var formatter = new google.visualization.NumberFormat({
+							'<?php echo esc_html( $daily_revenue_chart_currency_format['position'] );?>': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['currency_symbol'] ) ); ?>',
+							'decimalSymbol': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['decimal_separator'] ) ); ?>',
+							'fractionDigits': <?php echo intval( $daily_revenue_chart_currency_format['decimals'] ); ?>,
+							'groupingSymbol': '<?php echo esc_html( html_entity_decode( $daily_revenue_chart_currency_format['thousands_separator'] ) ); ?>',
+						});
+						formatter.format(dataTable, 1);
+
+						var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+						chart.draw(dataTable, options);
+					}
+
+					function swsales_report_title() {
+						return <?php echo wp_json_encode( esc_html( sprintf( __( 'Sale Revenue by Day for %s to %s.', 'sitewide-sales' ), $sitewide_sale->get_start_date(), $sitewide_sale->get_end_date() ) ) ); ?>;
+					}
+
+				</script>
+				<?php
+			}
+			?>
+		</div>
+		<?php
+		do_action( 'swsales_additional_reports', $sitewide_sale );
 	}
 
 	/**
@@ -147,7 +352,7 @@ class SWSales_Reports {
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to show report for.
 	 */
-	public static function show_report( $sitewide_sales ) {
+	public static function show_compare_report( $sitewide_sales ) {
 
 		$sale1 = $sitewide_sales[0];
 		if( count($sitewide_sales) > 1 ) {
@@ -218,14 +423,6 @@ class SWSales_Reports {
 					<div id="chart_div"></div>
 				</div> <!-- end swsales_chart_area -->
 				<script>
-					jQuery(document).ready(function($) {
-
-						$('#swsales_select_report_left, #swsales_select_report_right').on('change', evt => {
-							$changed = $(evt.target);
-							$changed.closest('form').submit();
-						});
-
-					});
 					// Draw the chart.
 					google.charts.load('current', {'packages':['corechart']});
 					google.charts.setOnLoadCallback(drawVisualization);
