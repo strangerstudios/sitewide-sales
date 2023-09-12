@@ -560,20 +560,86 @@ class SWSales_Sitewide_Sale {
 	 * Returns the number of checkouts which used the sale's discount code/coupon.
 	 * Must be filtered by the sale's module, otherwise just shows N/A.
 	 *
-	 * @return string
+	 * @param bool formatted whether to format the revenue.
+	 * @return string number of checkouts using sale code.
 	 */
-	public function get_checkout_conversions() {
-		return apply_filters( 'swsales_get_checkout_conversions', 'N/A', $this );
+	public function get_checkout_conversions($formatted = false) {
+		return apply_filters( 'swsales_get_checkout_conversions', 'N/A', $this, $formatted );
 	}
 
 	/**
 	 * Returns the revenue generated during the sale period.
 	 * Must be filtered by the sale's module, otherwise just shows N/A.
 	 *
-	 * @return string
+	 * @param bool formatted whether to format the revenue.
+	 * @return string revenue from sale.
+	 * @since TBD
 	 */
-	public function get_revenue() {
-		return apply_filters( 'swsales_get_revenue', 'N/A', $this );
+	public function get_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_revenue', 'N/A', $this, $formatted );
+	}
+
+	/**
+	 * Returns the revenue generated during the sale period from sales using the sale's discount code/coupon.
+	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return string revenue from sale code.
+	 * since TBD
+	 */
+	public function get_other_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_other_revenue', 'N/A', $this, $formatted );
+	}
+
+	/**
+	 * Return revenue from renewals during the sale period.
+	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return string revenue from renewals.
+	 * @since TBD
+	 */
+	public function get_renewal_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_renewal_revenue','N/A', $this, $formatted );
+	}
+
+	/**
+	 * Gets total revenue from the sale period.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return string total revenue
+	 * @since TBD
+	 */
+	public function get_total_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_total_revenue', 'N/A', $this, $formatted );
+	}
+
+	/**
+	 * Gets an array with revenue by day.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return array revenue by day
+	 * @since TBD
+	 */
+	public function get_daily_revenue($formatted = false) {
+			// Daily Revenue Chart.
+			// Build an array with each day of sale as a key to store revenue data in.
+			$date_array_all = array();
+			$period = new \DatePeriod(
+				new \DateTime( $this->get_start_date( 'Y-m-d' ) ),
+				new \DateInterval('P1D'),
+				new \DateTime( $this->get_end_date( 'Y-m-d' ) . ' + 1 day' )
+			);
+			foreach ($period as $key => $value) {
+				$date_array_all[ $value->format('Y-m-d') ] = 0.0;
+			}
+
+			/**
+			 * Filter the number of days shown in the report chart. Defauly is 31 days.
+			 */
+			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
+			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
+		return apply_filters( 'swsales_daily_revenue_chart_data', 'N/A', $date_array, $this, $formatted );
 	}
 
 	/**

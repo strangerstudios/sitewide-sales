@@ -15,7 +15,10 @@ class SWSales_Reports {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		add_action( 'wp_ajax_swsales_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_swsales_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
+		add_action("wp_ajax_sws_stats_csv", array(__CLASS__, "sws_stats_csv"));
 	}
+
+
 
 	public static function add_reports_page() {
 		add_submenu_page(
@@ -26,6 +29,36 @@ class SWSales_Reports {
 			'sitewide_sales_reports',
 			array( __CLASS__, 'show_reports_page' )
 		);
+	}
+
+	/**
+	 * Handles the Sales Export
+	 */
+	public static function sws_stats_csv() {
+		require_once(dirname(__FILE__) . "/../adminpages/report-csv.php");
+		exit;
+	}
+
+	/**
+	 * Gets a $csv_export_link for a sitewide sale.
+	 *
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to get link for.
+	 * @return string $csv_export_link.
+	 * @since TBD.
+	 */
+	public static function build_CSV_report_link($sitewide_sale) {
+		//Bail if param is not correct.
+		if(! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
+			return;
+		}
+		$csv_export_link = add_query_arg(
+			array(
+				'action' => 'sws_stats_csv',
+				'sitewide_sale' => $sitewide_sale->get_id(),
+			),
+			admin_url( 'admin-ajax.php' ) );
+
+		return esc_url( $csv_export_link );
 	}
 
 	public static function show_reports_page() { ?>
@@ -85,7 +118,11 @@ class SWSales_Reports {
 									}
 									?>
 								</select>
-							<?php } ?>
+								<?php if ($selected != null) { ?>
+									<a target="_blank" href="<?php echo SWSales_Reports::build_CSV_report_link( $selected ); ?>" class="page-title-action pmpro-has-icon pmpro-has-icon-download"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
+						<?php	}
+							}
+						?>
 						</div>
 					</form>
 					<script>
@@ -187,7 +224,7 @@ class SWSales_Reports {
 			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
 			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
 
-			$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
+			$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', 'N/A', $date_array, $sitewide_sale );
 
 			// Get the best day to highlight in the chart.
 			$highest_daily_revenue = max( $daily_revenue_chart_data );
@@ -306,7 +343,8 @@ class SWSales_Reports {
 			?>
 		</div>
 		<?php
-		do_action( 'swsales_additional_reports', $sitewide_sale );
+
+		do_action( 'swsales_additional_reports', array( $sitewide_sale ) );
 	}
 
 	/**
@@ -336,7 +374,7 @@ class SWSales_Reports {
 		$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
 		$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
 
-		$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
+		$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', 'N/A', $date_array, $sitewide_sale );
 
 		// Get the best day to highlight in the chart.
 		$highest_daily_revenue = max( $daily_revenue_chart_data );
@@ -546,7 +584,7 @@ class SWSales_Reports {
 			}
 			?>
 		<?php
-		do_action( 'swsales_additional_reports', $sitewide_sale );
+		do_action( 'swsales_additional_reports', $sitewide_sales );
 	}
 
 	/**

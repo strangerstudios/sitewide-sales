@@ -1,47 +1,76 @@
-<div class="swsales_reports-box">
-    <h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-    <p> 
-        <?php
-        printf(
-            wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
-            $sitewide_sale->get_start_date(),
-            $sitewide_sale->get_end_date()
-        );
-        ?>
-    </p>
-    <hr />
-    <div class="swsales_reports-data swsales_reports-data-3col">
-        <div class="swsales_reports-data-section">
-            <h1><?php echo esc_attr( wp_strip_all_tags( get_revenue_by_module( $new_rev_with_code) ) );//edd_currency_filter( edd_format_amount( $new_rev_with_code ) ) ) ); ?></h1>
-            <p>
-                <?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
-                <br />
-                (<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-            </p>
-        </div>
-        <div class="swsales_reports-data-section">
-            <h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_without_code ) ) ) ); ?></h1>
-            <p>
-                <?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
-                <br />
-                (<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-            </p>
-        </div>
-        <div class="swsales_reports-data-section">
-            <h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) ); ?></h1>
-            <p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
-        </div>
-    </div>
-</div>
-
 <?php
-
-function get_revenue_by_module($rev) {
-    switch( get_class()) {
-        case 'a':
-        break;
-        default:
-    
+//Bail if param it's not an array
+if(! is_array( $sitewide_sales ) ) {
+    if ( ! is_a( $sitewide_sales, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' )) {
+        return;
+    }
+    //somehow do_action filter converts the array into a single object, so let's wrap in an array again.
+    $sitewide_sales = array( $sitewide_sales );
+} else {
+    // Bail if given elements aren't SWSales_Sitewide_Sale objects.
+    foreach ($sitewide_sales as $sitewide_sale) {
+        if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
+            return;
+        }
+    }
+    // Bail if the array comes empty
+    if( count( $sitewide_sales ) < 1) {
+        return;
     }
 }
+
+?>
+
+<div class="swsales_reports-box">
+    <h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
+    <table>
+        <tr>
+            <th>
+            </th>
+            <th>
+                <?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
+            </th>
+            <th>
+                <?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
+            </th>
+
+            <?php if ( $sitewide_sales[0]->get_sale_type() == 'pmpro' ) { ?>
+                <th>
+                    <?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
+                </th>
+            <?php } ?>
+            <th>
+                <?php esc_html_e( 'Total new revenue in Period', 'sitewide-sales' ); ?>
+            </th>
+        </tr>
+        <tbody>
+        <?php foreach ($sitewide_sales as $sitewide_sale) { ?>
+            <tr>
+                <td>
+                    <?php echo esc_html( $sitewide_sale->get_name() ); ?>
+                </td>
+                <td>
+                    <?php echo esc_html( $sitewide_sale->get_revenue(true) ); ?>
+                </td>
+                <td>
+                    <?php echo esc_html( $sitewide_sale->get_other_revenue(true) ); ?>
+                </td>
+                <?php if ( $sitewide_sales[0]->get_sale_type() == 'pmpro' ) { ?>
+                    <td>
+                        <?php if ( $sitewide_sale->get_sale_type() == 'pmpro' ) {
+                                echo esc_html( $sitewide_sale->get_renewal_revenue() );
+                            }
+                        ?>
+                    </td>
+                <?php } ?>
+                <td>
+                    <?php echo esc_html( $sitewide_sale->get_total_revenue() ); ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+
+function format
 	
