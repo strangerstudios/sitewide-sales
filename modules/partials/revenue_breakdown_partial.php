@@ -23,7 +23,7 @@ if(! is_array( $sitewide_sales ) ) {
 
 <div class="swsales_reports-box">
     <h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-    <table>
+    <table class="reports-comparison-table-below-chart">
         <tr>
             <th>
             </th>

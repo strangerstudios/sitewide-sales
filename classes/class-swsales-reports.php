@@ -410,7 +410,7 @@ class SWSales_Reports {
 		}
 			?>
 		<div class="swsales_reports-box">
-			<table>
+			<table class="reports-comparison-table-above-chart">
 				<tr>
 					<th>
 					</th>
@@ -432,22 +432,47 @@ class SWSales_Reports {
 					
 					<?php 
 					$ret = [];
-					foreach ($sitewide_sales as $sitewide_sale) { ?>
+					$diff_rate = [];
+					if( count( $sitewide_sales ) > 1 ) {
+						$diff_rate = self::build_diff_rate_array( $sitewide_sales[0], $sitewide_sales[1] );
+					}
+					foreach ($sitewide_sales as $key => $sitewide_sale) {
+						$should_print_diff = !empty( $diff_rate) && $key == 0;
+						?>
+
 						<tr>
-							<td>
+							<td class="sale_name">
 							<?php echo esc_attr( $sitewide_sale->get_name() ); ?>
 							</td>
-							<td>
-								<?php echo esc_attr( $sitewide_sale->get_banner_impressions() ); ?>
+							<td class="sale_numbers">
+								<?php echo esc_attr( $sitewide_sale->get_banner_impressions() );
+									if( $should_print_diff ) {
+										echo $diff_rate['banner_impressions'];
+									}
+								?>
+
 							</td>
-							<td>
-								<?php echo esc_attr( $sitewide_sale->get_landing_page_visits() ); ?>
+							<td class="sale_numbers">
+								<?php echo esc_attr( $sitewide_sale->get_landing_page_visits() );
+								if( $should_print_diff ) {
+									echo $diff_rate['landing_page_visits'];
+								}
+								?>
+
 							</td>
-							<td>
-								<?php echo esc_attr( $sitewide_sale->get_checkout_conversions() ); ?>
+							<td class="sale_numbers">
+								<?php echo esc_attr( $sitewide_sale->get_checkout_conversions() );
+									if( $should_print_diff ) {
+										echo $diff_rate['checkout_conversions'];
+									}
+								?>
 							</td>
-							<td>
-								<?php echo esc_attr( $sitewide_sale->get_revenue() ); ?>
+							<td class="sale_numbers">
+								<?php echo esc_attr( $sitewide_sale->get_revenue() );
+								if( $should_print_diff ) {
+									echo $diff_rate['revenue'];
+								}
+								?>
 							<td>
 						</tr>
 					<?php
@@ -671,5 +696,53 @@ class SWSales_Reports {
 		}
 		echo 'Invalid Report. ';
 		return;
+	}
+
+	/**
+	 * Given 2 SWSales_Sitewide_Sale objects, returns an array with the difference rate between them over several attributes.
+	 *
+	 * @param SWSales_Sitewide_Sale $sitewide_sale_1 A  SWSales_Sitewide_Sale.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale_2 A  SWSales_Sitewide_Sale.
+	 * @return an Array with the markup representing difference rate between them over several attributes.
+	 * @since TBD.
+	 */
+	private static function build_diff_rate_array($sitewide_sale_1, $sitewide_sale_2) {
+		// No need to validate params, we did it before.
+		$diff_rate = [];
+
+		$attributes = [
+			'banner_impressions' => 'get_banner_impressions',
+			'landing_page_visits' => 'get_landing_page_visits',
+			'checkout_conversions' => 'get_checkout_conversions',
+			'revenue' => 'get_revenue',
+		];
+
+		foreach ($attributes as $key => $method) {
+			$value_1 = $sitewide_sale_1->$method();
+			$value_2 = $sitewide_sale_2->$method();
+			if ($value_1 > $value_2) {
+				$diff = $value_2 != 0 ? ( ($value_1 - $value_2) / $value_2 ) * 100 : "-";
+				$diff_rate[$key] = self::build_rate_markup($diff, true);
+			} else {
+				$diff = $value_1 != 0 ?  ( ($value_1 - $value_2 - $value_1) ) * 100 / $value_1 : "-";
+				$diff_rate[$key] = self::build_rate_markup($diff, false);
+			}
+		}
+
+		return $diff_rate;
+	}
+
+	/**
+	 * Given a rate and a boolean indicating if it's a growth or decline, returns the markup representing the rate.
+	 *
+	 * @param Obj can be a float or a String $rate The rate to represent.
+	 * @param Boolean $is_growth Indicates if the rate is a growth or decline.
+	 * @return String with the markup representing the rate.
+	 * @since TBD.
+	 */
+	private static function build_rate_markup( $rate, $is_growth ) {
+		$dash_class = $is_growth ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2';
+		$span_class = $is_growth ? 'swsales_growth' : 'swsales_decline';
+		return '<span class="sale-rate ' . $span_class .'"><span class="dashicons ' . $dash_class . '"></span>(' . $rate . '%)</span>';
 	}
 }
