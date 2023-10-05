@@ -71,6 +71,3 @@ if(! is_array( $sitewide_sales ) ) {
         </tbody>
     </table>
 </div>
-
-function format
-	

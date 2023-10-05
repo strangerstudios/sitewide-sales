@@ -45,6 +45,10 @@ class SWSales_Module_EDD {
 		add_filter( 'edd_download_price', array( __CLASS__, 'strike_prices' ), 10, 2 );
 		add_filter( 'edd_purchase_link_args', array( __CLASS__, 'edd_purchase_link_args_strike_prices' ) );
 
+		//Revenue Breakdown specific filter
+		add_filter( 'swsales_get_other_revenue', array( __CLASS__, 'get_other_revenue' ), 10, 3 );
+		add_filter( 'swsales_get_total_revenue', array( __CLASS__, 'total_revenue' ), 10, 3 );
+
 		// EDD-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
@@ -434,11 +438,12 @@ class SWSales_Module_EDD {
 	/**
 	 * Set EDD total revenue for Sitewide Sale report.
 	 *
-	 * @param string               $cur_revenue set by filter.
+	 * @param string $cur_revenue set by filter.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
+	 * @param bool $format_price whether to format the price.
+	 * @return string The sale revenue.
 	 */
-	public static function sale_revenue( $cur_revenue, $sitewide_sale ) {
+	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
@@ -461,7 +466,7 @@ class SWSales_Module_EDD {
 			AND eddoa.type = 'discount'
 		" );
 
-		return wp_strip_all_tags( edd_currency_filter( edd_format_amount( $sale_revenue ) ) );
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $sale_revenue ) ) ) : $sale_revenue;
 	}
 
 	/**
@@ -530,39 +535,6 @@ class SWSales_Module_EDD {
 	 * @return string
 	 */
 	public static function additional_report( $sitewide_sale ) {
-		global $wpdb;
-		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
-			return;
-		}
-
-		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
-		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
-		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
-		$coupon_code = new \EDD_Discount( $coupon_id );
-
-		$total_rev = $wpdb->get_var( "
-			SELECT DISTINCT SUM(p.total)
-			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as pm ON p.id = pm.object_id
-			WHERE p.type = 'sale'
-			AND p.status = 'complete' 
-			AND p.date_completed >= '{$sale_start_date}'
-			AND p.date_completed <= '{$sale_end_date}'
-		" );
-		$new_rev_with_code = $wpdb->get_var( "
-			SELECT DISTINCT SUM(p.total)
-			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as eddoa ON p.id = eddoa.object_id			
-			WHERE p.type = 'sale'
-			AND p.status = 'complete' 
-			AND p.date_completed >= '{$sale_start_date}'
-			AND p.date_completed <= '{$sale_end_date}'
-			AND eddoa.description = upper('{$coupon_code->code}')
-			AND eddoa.type = 'discount'
-		" );
-
-		$new_rev_without_code = $total_rev - $new_rev_with_code;
-
 		require_once ( SWSALES_DIR . '/modules/partials/revenue_breakdown_partial.php' );
 	}
 
@@ -785,9 +757,45 @@ class SWSales_Module_EDD {
 		}
 		
 		$total_rev = $new_rev_without_code + $new_rev_with_code + $total_renewals;
-
-		require_once ( SWSALES_DIR . '/modules/partials/revenue_breakdown_partial.php' );
 		
+	}
+
+	/**
+	 * Get other revenue
+	 *
+	 * @param SWSales_Sitewide_Sale The sitewide sale.
+	 * @param $sale_start_date The sale start date.
+	 * @param $sale_end_date The sale end date.
+	 * @return Float other revenue.
+	 * @since TBD
+	 *
+	 */
+	public static function get_other_revenue ( $sitewide_sale, $sale_start_date, $sale_end_date ) {
+		return	 self::total_revenue( $sale_start_date, $sale_end_date ) - self::sale_revenue(null, $sitewide_sale, false );
+	}
+
+	/**
+	 * Get total revenue
+	 *
+	 * @param $sale_start_date The sale start date.
+	 * @param $sale_end_date The sale end date.
+	 * @param $format_price Whether to format the price.
+	 * @return Float total revenue.
+	 * @since TBD
+	 */
+	public static function total_revenue( $sale_start_date, $sale_end_date, $format_price = false ) {
+		global $wpdb;
+		$ret = $wpdb->get_var( "
+			SELECT DISTINCT SUM(p.total)
+			FROM {$wpdb->prefix}edd_orders as p
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as pm ON p.id = pm.object_id
+			WHERE p.type = 'sale'
+			AND p.status = 'complete'
+			AND p.date_completed >= '{$sale_start_date}'
+			AND p.date_completed <= '{$sale_end_date}'
+		" );
+
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $ret ) ) ) : $ret;
 	}
 }
 SWSales_Module_EDD::init();
