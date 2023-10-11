@@ -59,7 +59,6 @@ class SWSales_Module_WC {
 		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 3 );
 		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
 		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
-		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 	}
 
 	/**
@@ -609,48 +608,47 @@ class SWSales_Module_WC {
 	}
 
 	/**
-	 * Add additional PMPro module revenue report for Sitewide Sale.
-	 *
-	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
-	 */
-	public static function additional_report( $sitewide_sale ) {
-		require_once ( SWSALES_DIR . '/modules/partials/revenue_breakdown_partial.php' );
-	}
-
-	/**
 	 * Get other revenue
 	 *
-	 * @param SWSales_Sitewide_Sale The sitewide sale.
-	 * @param $sale_start_date The sale start date.
-	 * @param $sale_end_date The sale end date.
-	 * @return Float other revenue.
+	 * @param string $cur_revenue set by filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
 	 * @since TBD
 	 *
 	 */
-	public static function get_other_revenue ( $sitewide_sale, $sale_start_date, $sale_end_date ) {
-		return	 self::total_revenue( $sale_start_date, $sale_end_date )
-			- self::sale_revenue(null, $sitewide_sale, false ) - self::get_renewals( $sale_start_date, $sale_end_date);
+	public static function get_other_revenue ( $cur_revenue, $sitewide_sale, $format_price = false) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+
+		$total_revenue = self::total_revenue( null, $sitewide_sale, false );
+		$sale_revenue  = self::sale_revenue( null, $sitewide_sale, false );
+		$other_revenue = (float)$total_revenue - (float)$sale_revenue;
+
+		return $format_price ? wp_strip_all_tags( wc_price( $other_revenue ) ) : $other_revenue;
 	}
 
 	/**
 	 * get WC Renewals
 	 *
-	 * @param $cur_revenue set by filter.
-	 * @param SWSales_Sitewide_Sale The sitewide sale.
-	 * @param $format_price Whether to format the price.
-	 *
-	 * @return WC renewals
+	 * @param string $cur_revenue set by filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string
 	 * @since TBD
 	 */
 	public static function get_renewal_revenue( $cur_revenue, $sitewide_sale, $format_price = false) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+
 		global $wpdb;
-		$renewals = 0;
+		$renewal_revenue = 0;
 		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
 		if ( class_exists( 'WC_Subscriptions' ) ) {
 			// WC Subscrtions enabled, see if there are any renewals in the period.
-			$renewals = $wpdb->get_var(
+			$renewal_revenue = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT SUM(order_total_meta.meta_value)
 						FROM {$wpdb->postmeta} as order_total_meta
@@ -675,21 +673,23 @@ class SWSales_Module_WC {
 				)
 			);
 		}
-		return $renewals;
+		return $format_price ? wp_strip_all_tags( wc_price( $renewal_revenue ) ) : $renewal_revenue;
 	}
 
 	/**
 	 * Get total revenue
 	 *
-	 * @param $sale_start_date The sale start date.
-	 * @param $sale_end_date The sale end date.
-	 * @param $format_price Whether to format the price.
-	 * @return Float total revenue.
+	 * @param string $cur_revenue set by filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string
 	 * @since TBD
 	 */
-	public static function total_revenue( $sale_start_date, $sale_end_date, $format_price = false ) {
+	public static function total_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
 		global $wpdb;
-		$total_rev = 0;
 		$total_rev = $wpdb->get_var( "
 			SELECT DISTINCT SUM(pm.meta_value)
 			FROM {$wpdb->prefix}posts as p

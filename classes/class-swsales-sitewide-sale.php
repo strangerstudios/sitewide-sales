@@ -153,26 +153,6 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
-	 * Returns an Array containing the corresponding Sitewide Sale objects.
-	 *
-	 * @param Array $ids A set of SWSales_Sitewide_Sale ids to get.
-	 * @return Array An array containing SWSales_Sitewide_Sale objects.
-	 * @since TBD.
-	 */
-	public static function get_sitewide_sales( $ids ) {
-		if( !is_array($ids) ) 
-			return;
-		
-
-		$sales = array();
-		foreach ( $ids as $id ) {
-			$sales[] = self::get_sitewide_sale( $id );
-		}	
-
-		return $sales;
-	}
-
-	/**
 	 * -----------------------------
 	 * GETTER FUNCTIONS (POST META)
 	 * -----------------------------
@@ -575,7 +555,7 @@ class SWSales_Sitewide_Sale {
 	 * @return string revenue from sale.
 	 * @since TBD
 	 */
-	public function get_revenue($formatted = false) {
+	public function get_sale_revenue($formatted = false) {
 		return apply_filters( 'swsales_get_revenue', 'N/A', $this, $formatted );
 	}
 
@@ -585,7 +565,7 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from sale code.
-	 * since TBD
+	 * @since TBD
 	 */
 	public function get_other_revenue($formatted = false) {
 		return apply_filters( 'swsales_get_other_revenue', 'N/A', $this, $formatted );
@@ -621,7 +601,7 @@ class SWSales_Sitewide_Sale {
 	 * @return array revenue by day
 	 * @since TBD
 	 */
-	public function get_daily_revenue($formatted = false) {
+	public function get_daily_sale_revenue($formatted = false) {
 			// Daily Revenue Chart.
 			// Build an array with each day of sale as a key to store revenue data in.
 			$date_array_all = array();
@@ -639,7 +619,7 @@ class SWSales_Sitewide_Sale {
 			 */
 			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
 			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
-		return apply_filters( 'swsales_daily_revenue_chart_data', 'N/A', $date_array, $this, $formatted );
+		return apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $this, $formatted );
 	}
 
 	/**

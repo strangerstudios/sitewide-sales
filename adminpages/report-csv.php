@@ -8,19 +8,17 @@ if ( ! function_exists( "current_user_can" ) || ( ! current_user_can( "manage_op
 if(isset($_REQUEST['sitewide_sale'])) {
 	$id = sanitize_text_field($_REQUEST['sitewide_sale']);
 
-    $sitewide_sale =  \Sitewide_Sales\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $id );
-    $start_date = $sitewide_sale->get_start_date();
-    $end_date = $sitewide_sale->get_end_date();
-    $banner_reach = $sitewide_sale->get_banner_impressions();
-    $landing_page_visits = $sitewide_sale->get_landing_page_visits();
-    $checkhouts_using_coupon = $sitewide_sale->get_checkout_conversions();
-    $sale_revenue = $sitewide_sale->get_revenue();
-    $other_new_revenue = $sitewide_sale->get_other_revenue();
-    if( $sitewide_sale->get_sale_type() == 'pmpro' ) {
-        $renewals = $sitewide_sale->get_renewal_revenue();
-    }
+	$sitewide_sale =  \Sitewide_Sales\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $id );
+	$start_date = $sitewide_sale->get_start_date();
+	$end_date = $sitewide_sale->get_end_date();
+	$banner_reach = $sitewide_sale->get_banner_impressions();
+	$landing_page_visits = $sitewide_sale->get_landing_page_visits();
+	$checkhouts_using_coupon = $sitewide_sale->get_checkout_conversions();
+	$sale_revenue = $sitewide_sale->get_sale_revenue();
+	$other_new_revenue = $sitewide_sale->get_other_revenue();
+	$renewals = $sitewide_sale->get_renewal_revenue();
 	$total_revenue = $sitewide_sale->get_total_revenue();
-	$daily_revenue = $sitewide_sale->get_daily_revenue();
+	$daily_revenue = $sitewide_sale->get_daily_sale_revenue();
 
 }
 
@@ -42,12 +40,9 @@ $left_header=   array (
 	"checkhouts using coupon-" . $sitewide_sale->get_coupon(),
 	"sale revenue",
 	"other new revenue",
+	"renewals",
 	"total revenue in period"
 );
-
-if( $sitewide_sale->get_sale_type() == 'pmpro' ) {
-	array_push( $left_header,  "renewals" );
-}
 
 $csv_file_header_array = array_merge( $left_header, array_keys( $daily_revenue ) );
 
@@ -72,12 +67,9 @@ $csvoutput = array(
 	$checkhouts_using_coupon,
 	$sale_revenue,
 	$other_new_revenue,
+	$renewals,
 	$total_revenue		
 );
-
-if( $sitewide_sale->get_sale_type() == 'pmpro' ) {
-	array_push( $csvoutput, $renewals );
-}
 
 $csvoutput = array_merge( $csvoutput, array_values( $daily_revenue ) );
 		
@@ -86,10 +78,10 @@ fputcsv( $csv_fh, $csvoutput );
 //flush the buffer
 wp_cache_flush();
 
-pmpro_transmit_report_data( $csv_fh, $filename, $headers );
+swsales_transmit_report_data( $csv_fh, $filename, $headers );
 
 
-function pmpro_transmit_report_data( $csv_fh, $filename, $headers = array() ) {
+function swsales_transmit_report_data( $csv_fh, $filename, $headers = array() ) {
 
 	//close the temp file
 	fclose( $csv_fh );

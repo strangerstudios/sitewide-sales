@@ -18,8 +18,6 @@ class SWSales_Reports {
 		add_action("wp_ajax_sws_stats_csv", array(__CLASS__, "sws_stats_csv"));
 	}
 
-
-
 	public static function add_reports_page() {
 		add_submenu_page(
 			'edit.php?post_type=sitewide_sale',
@@ -75,17 +73,21 @@ class SWSales_Reports {
 				);
 
 				// Choose sale to show.
-				$sales_to_show = null;
+				$sales_to_show = array();
 				if ( isset( $_REQUEST['sitewide_sale'] ) ) {
-					if ( is_array( $_REQUEST['sitewide_sale'] ) ) {
-						$sales_to_show = SWSales_Sitewide_Sale::get_sitewide_sales( $_REQUEST['sitewide_sale'] );
-					} else {
-						$sales_to_show = array ( 0 => SWSales_Sitewide_Sale::get_sitewide_sale( $_REQUEST['sitewide_sale'] ) );
+					if ( ! is_array( $_REQUEST['sitewide_sale'] ) ) {
+						$_REQUEST['sitewide_sale'] = array( $_REQUEST['sitewide_sale'] );
 					}
-				} else {
-					$sales_to_show[0] =  SWSales_Sitewide_Sale::get_active_sitewide_sale();
+
+					foreach ($_REQUEST['sitewide_sale'] as $key => $value) {
+						$sales_to_show[] = SWSales_Sitewide_Sale::get_sitewide_sale( (int)$value );
+					}
+				}
+				if ( empty( $sales_to_show ) && ! empty( SWSales_Sitewide_Sale::get_active_sitewide_sale() ) ) {
+					$sales_to_show[] = SWSales_Sitewide_Sale::get_active_sitewide_sale();
 				}
 
+				// Show dropdown to choose sale to show.
 				if ( ! empty ( $all_sitewide_sales ) ) { ?>
 					<form method="get" action="/wp-admin/edit.php">
 						<input type="hidden" name="post_type" value="sitewide_sale" />
@@ -119,7 +121,7 @@ class SWSales_Reports {
 									?>
 								</select>
 								<?php if ($selected != null) { ?>
-									<a target="_blank" href="<?php echo SWSales_Reports::build_CSV_report_link( $selected ); ?>" class="page-title-action pmpro-has-icon pmpro-has-icon-download"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
+									<a target="_blank" href="<?php echo SWSales_Reports::build_CSV_report_link( $selected ); ?>" class="page-title-action"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
 						<?php	}
 							}
 						?>
@@ -141,9 +143,9 @@ class SWSales_Reports {
 				}
 
 				// Show report for sitewide sale if applicable.
-				if ( $sales_to_show != null && count( $sales_to_show ) > 1) {
+				if ( count( $sales_to_show ) > 1) {
 					SWSales_Reports::show_compare_report( $sales_to_show );
-				} else if ( $sales_to_show != null && count( $sales_to_show ) == 1 ) {
+				} else if ( count( $sales_to_show ) == 1 ) {
 					SWSales_Reports::show_report( $sales_to_show[0] );
 				}
 			?>
@@ -201,7 +203,7 @@ class SWSales_Reports {
 					</p>
 				</div>
 				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( $sitewide_sale->get_revenue() ); ?></h1>
+					<h1><?php echo esc_attr( $sitewide_sale->get_sale_revenue() ); ?></h1>
 					<p><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></p>
 				</div>
 			</div>
@@ -224,7 +226,7 @@ class SWSales_Reports {
 			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
 			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
 
-			$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', 'N/A', $date_array, $sitewide_sale );
+			$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
 
 			// Get the best day to highlight in the chart.
 			$highest_daily_revenue = max( $daily_revenue_chart_data );
@@ -342,9 +344,48 @@ class SWSales_Reports {
 			}
 			?>
 		</div>
+		<div class="swsales_reports-box">
+			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
+			<table class="reports-comparison-table-below-chart">
+				<tr>
+					<th>
+					</th>
+					<th>
+						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
+					</th>
+					<th>
+						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
+					</th>
+					<th>
+						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
+					</th>
+					<th>
+						<?php esc_html_e( 'Total new revenue in Period', 'sitewide-sales' ); ?>
+					</th>
+				</tr>
+				<tbody>
+					<tr>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_name() ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_sale_revenue(true) ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_other_revenue(true) ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_renewal_revenue(true) ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_total_revenue(true) ); ?>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<?php
-
-		do_action( 'swsales_additional_reports', array( $sitewide_sale ) );
+		do_action_deprecated( 'swsales_additional_reports', array( $sitewide_sale ), 'TBD' );
 	}
 
 	/**
@@ -374,7 +415,7 @@ class SWSales_Reports {
 		$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
 		$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
 
-		$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', 'N/A', $date_array, $sitewide_sale );
+		$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
 
 		// Get the best day to highlight in the chart.
 		$highest_daily_revenue = max( $daily_revenue_chart_data );
@@ -468,7 +509,7 @@ class SWSales_Reports {
 								?>
 							</td>
 							<td class="sale_numbers">
-								<?php echo esc_attr( $sitewide_sale->get_revenue() );
+								<?php echo esc_attr( $sitewide_sale->get_sale_revenue() );
 								if( $should_print_diff ) {
 									echo $diff_rate['revenue'];
 								}
@@ -608,8 +649,49 @@ class SWSales_Reports {
 				<?php
 			}
 			?>
+			<div class="swsales_reports-box">
+			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
+			<table class="reports-comparison-table-below-chart">
+				<tr>
+					<th>
+					</th>
+					<th>
+						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
+					</th>
+					<th>
+						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
+					</th>
+					<th>
+						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
+					</th>
+					<th>
+						<?php esc_html_e( 'Total new revenue in Period', 'sitewide-sales' ); ?>
+					</th>
+				</tr>
+				<tbody>
+				<?php foreach ( $sitewide_sales as $sitewide_sale ) { ?>
+					<tr>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_name() ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_sale_revenue(true) ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_other_revenue(true) ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_renewal_revenue() ); ?>
+						</td>
+						<td>
+							<?php echo esc_html( $sitewide_sale->get_total_revenue() ); ?>
+						</td>
+					</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+		</div>
 		<?php
-		do_action( 'swsales_additional_reports', $sitewide_sales );
 	}
 
 	/**
@@ -636,7 +718,7 @@ class SWSales_Reports {
 		</div>
 		<div class="swsales_reports-quick-data-section">
 			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></span>
-			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_revenue() ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_sale_revenue() ); ?></span>
 		</div>
 		<?php
 	}
@@ -714,7 +796,7 @@ class SWSales_Reports {
 			'banner_impressions' => 'get_banner_impressions',
 			'landing_page_visits' => 'get_landing_page_visits',
 			'checkout_conversions' => 'get_checkout_conversions',
-			'revenue' => 'get_revenue',
+			'revenue' => 'get_sale_revenue',
 		];
 
 		foreach ($attributes as $key => $method) {
