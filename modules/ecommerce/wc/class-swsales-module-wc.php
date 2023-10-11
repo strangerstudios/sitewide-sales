@@ -623,7 +623,8 @@ class SWSales_Module_WC {
 
 		$total_revenue = self::total_revenue( null, $sitewide_sale, false );
 		$sale_revenue  = self::sale_revenue( null, $sitewide_sale, false );
-		$other_revenue = (float)$total_revenue - (float)$sale_revenue;
+		$renewal_revenue = self::get_renewal_revenue( null, $sitewide_sale, false );
+		$other_revenue = (float)$total_revenue - (float)$sale_revenue - (float)$renewal_revenue;
 
 		return $format_price ? wp_strip_all_tags( wc_price( $other_revenue ) ) : $other_revenue;
 	}
@@ -690,6 +691,8 @@ class SWSales_Module_WC {
 			return $cur_revenue;
 		}
 		global $wpdb;
+		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
+		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
 		$total_rev = $wpdb->get_var( "
 			SELECT DISTINCT SUM(pm.meta_value)
 			FROM {$wpdb->prefix}posts as p

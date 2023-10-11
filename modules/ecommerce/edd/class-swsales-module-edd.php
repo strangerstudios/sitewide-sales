@@ -45,10 +45,6 @@ class SWSales_Module_EDD {
 		add_filter( 'edd_download_price', array( __CLASS__, 'strike_prices' ), 10, 2 );
 		add_filter( 'edd_purchase_link_args', array( __CLASS__, 'edd_purchase_link_args_strike_prices' ) );
 
-		//Revenue Breakdown specific filter
-		add_filter( 'swsales_get_other_revenue', array( __CLASS__, 'get_other_revenue' ), 10, 3 );
-		add_filter( 'swsales_get_total_revenue', array( __CLASS__, 'total_revenue' ), 10, 3 );
-
 		// EDD-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
@@ -56,12 +52,14 @@ class SWSales_Module_EDD {
 		if( version_compare( floatval( EDD_VERSION ), 3, '>=' ) ){
 			//EDD V3's Stats			
 			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-			add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
+			add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 3 );
 			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'daily_revenue_chart_data' ), 10, 2 );
+			add_filter( 'swsales_get_other_revenue', array( __CLASS__, 'get_other_revenue' ), 10, 3 );
+			add_filter( 'swsales_get_total_revenue', array( __CLASS__, 'total_revenue' ), 10, 3 );
 		} else {
 			//EDD Legacy Stats
 			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'legacy_checkout_conversions' ), 10, 2 );
-			add_filter( 'swsales_get_revenue', array( __CLASS__, 'legacy_sale_revenue' ), 10, 2 );
+			add_filter( 'swsales_get_revenue', array( __CLASS__, 'legacy_sale_revenue' ), 10, 3 );
 			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'legacy_daily_revenue_chart_data' ), 10, 2 );
 		}
 		
@@ -583,7 +581,7 @@ class SWSales_Module_EDD {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
-	public static function legacy_sale_revenue( $cur_revenue, $sitewide_sale ) {
+	public static function legacy_sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
@@ -622,7 +620,7 @@ class SWSales_Module_EDD {
 			}
 		}
 
-		return wp_strip_all_tags( edd_currency_filter( edd_format_amount( $cart_total ) ) );
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $cart_total ) ) ) : $cart_total;
 	}
 
 	/**
@@ -664,8 +662,7 @@ class SWSales_Module_EDD {
 				$cart_total = 0;
 				$payment_data = maybe_unserialize( $data->value );
 				
-				if( !empty( $payment_data['discount'] ) && $payment_data['discount'] == $coupon_code->code ){
-
+				if( !empty( $payment_data['user_info']['discount'] ) && $payment_data['user_info']['discount'] == $coupon_code->code ){
 					foreach( $payment_data['cart_details'] as $cart ){
 						$cart_total = $cart_total + $cart['price'];
 					}

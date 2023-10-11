@@ -512,7 +512,7 @@ class SWSales_Reports {
 				<div id="chart_div"></div>
 					<?php if ( ! empty( $data_sliced ) ) { ?>
 						<div class="swsales_chart_description"><p><center><em>
-							<?php esc_html_e( sprintf( __( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ) ); ?>
+							<?php esc_html_e( sprintf( __( 'This chart shows the first %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ) ); ?>
 						</em></center></p></div>
 					<?php } ?>
 				</div> <!-- end swsales_chart_area -->
