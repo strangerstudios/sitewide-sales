@@ -602,24 +602,20 @@ class SWSales_Sitewide_Sale {
 	 * @since TBD
 	 */
 	public function get_daily_sale_revenue($formatted = false) {
-			// Daily Revenue Chart.
-			// Build an array with each day of sale as a key to store revenue data in.
-			$date_array_all = array();
-			$period = new \DatePeriod(
-				new \DateTime( $this->get_start_date( 'Y-m-d' ) ),
-				new \DateInterval('P1D'),
-				new \DateTime( $this->get_end_date( 'Y-m-d' ) . ' + 1 day' )
-			);
-			foreach ($period as $key => $value) {
-				$date_array_all[ $value->format('Y-m-d') ] = 0.0;
-			}
+		// Daily Revenue Chart.
+		// Build an array with each day of sale as a key to store revenue data in.
+		$date_array_all = array();
+		$period = new \DatePeriod(
+			new \DateTime( $this->get_start_date( 'Y-m-d' ) ),
+			new \DateInterval('P1D'),
+			new \DateTime( $this->get_end_date( 'Y-m-d' ) . ' + 1 day' )
+		);
+		foreach ($period as $key => $value) {
+			$date_array_all[ $value->format('Y-m-d') ] = 0.0;
+		}
 
-			/**
-			 * Filter the number of days shown in the report chart. Defauly is 31 days.
-			 */
-			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
-			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
-		return apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $this, $formatted );
+		// Get revenue data from module.
+		return apply_filters( 'swsales_daily_revenue_chart_data', $date_array_all, $this, $formatted );
 	}
 
 	/**

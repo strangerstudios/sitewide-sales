@@ -209,24 +209,17 @@ class SWSales_Reports {
 			</div>
 			<?php
 			// Daily Revenue Chart.
-			// Build an array with each day of sale as a key to store revenue data in.
-			$date_array_all = array();
-			$period = new \DatePeriod(
-				new \DateTime( $sitewide_sale->get_start_date( 'Y-m-d' ) ),
-				new \DateInterval('P1D'),
-				new \DateTime( $sitewide_sale->get_end_date( 'Y-m-d' ) . ' + 1 day' )
-			);
-			foreach ($period as $key => $value) {
-				$date_array_all[ $value->format('Y-m-d') ] = 0.0;
-			}
+			$daily_revenue_chart_data = $sitewide_sale->get_daily_sale_revenue();
 
 			/**
 			 * Filter the number of days shown in the report chart. Defauly is 31 days.
 			 */
 			$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
-			$date_array = array_slice( $date_array_all, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
-
-			$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
+			if ( count( $daily_revenue_chart_data ) > $daily_revenue_chart_days ) {
+				// Slice the array to only show the last x days.
+				$daily_revenue_chart_data = array_slice( $daily_revenue_chart_data, ( $daily_revenue_chart_days * -1 ), $daily_revenue_chart_days, true );
+				$data_sliced = true;
+			}
 
 			// Get the best day to highlight in the chart.
 			$highest_daily_revenue = max( $daily_revenue_chart_data );
@@ -239,7 +232,7 @@ class SWSales_Reports {
 				<hr>
 				<div class="swsales_chart_area">
 					<div id="chart_div"></div>
-					<?php if ( count( $date_array_all ) > $daily_revenue_chart_days ) { ?>
+					<?php if ( ! empty( $data_sliced ) ) { ?>
 						<div class="swsales_chart_description"><p><center><em>
 							<?php esc_html_e( sprintf( __( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ) ); ?>
 						</em></center></p></div>
@@ -479,26 +472,19 @@ class SWSales_Reports {
 							<td>
 						</tr>
 					<?php
-					// Build an array with each day of sale as a key to store revenue data in.
-					$date_array_all = array();
-					$period = new \DatePeriod(
-						new \DateTime( $sitewide_sale->get_start_date( 'Y-m-d' ) ),
-						new \DateInterval('P1D'),
-						new \DateTime( $sitewide_sale->get_end_date( 'Y-m-d' ) . ' + 1 day' )
-					);
-					foreach ($period as $key => $value) {
-						$date_array_all[ $value->format('Y-m-d') ] = 0.0;
-					}
+					// Get daily sale revenue.
+					$daily_revenue_chart_data = $sitewide_sale->get_daily_sale_revenue();
 
 					/**
 					* Filter the number of days shown in the report chart. Default is 31 days.
 					* Since this is the compare report, let's show the first x days instead of the most recent.
 					*/
 					$daily_revenue_chart_days = (int) apply_filters( 'swsales_daily_revenue_chart_days', '31' );
-					$date_array = array_slice( $date_array_all, 0, $daily_revenue_chart_days, true );
-
-					// Allow modules to add data to the chart.
-					$daily_revenue_chart_data = apply_filters( 'swsales_daily_revenue_chart_data', $date_array, $sitewide_sale );
+					if ( count( $daily_revenue_chart_data ) > $daily_revenue_chart_days ) {
+						// Slice the array to only show the first x days.
+						$daily_revenue_chart_data = array_slice( $daily_revenue_chart_data, 0, $daily_revenue_chart_days, true );
+						$data_sliced = true;
+					}
 
 					// Scrap date keys.
 					$new_daily_revenue_chart_data = array();
@@ -524,6 +510,11 @@ class SWSales_Reports {
 				<hr>
 				<h3><?php esc_html_e( 'Revenue by Day', 'sitewide-sales' ); ?></h3>
 				<div id="chart_div"></div>
+					<?php if ( ! empty( $data_sliced ) ) { ?>
+						<div class="swsales_chart_description"><p><center><em>
+							<?php esc_html_e( sprintf( __( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ) ); ?>
+						</em></center></p></div>
+					<?php } ?>
 				</div> <!-- end swsales_chart_area -->
 				<script>
 					// Draw the chart.
