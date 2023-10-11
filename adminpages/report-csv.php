@@ -7,18 +7,9 @@ if ( ! function_exists( "current_user_can" ) || ( ! current_user_can( "manage_op
 //get values from form
 if(isset($_REQUEST['sitewide_sale'])) {
 	$id = sanitize_text_field($_REQUEST['sitewide_sale']);
-
 	$sitewide_sale =  \Sitewide_Sales\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $id );
-	$start_date = $sitewide_sale->get_start_date();
-	$end_date = $sitewide_sale->get_end_date();
-	$banner_reach = $sitewide_sale->get_banner_impressions();
-	$landing_page_visits = $sitewide_sale->get_landing_page_visits();
-	$checkhouts_using_coupon = $sitewide_sale->get_checkout_conversions();
-	$sale_revenue = $sitewide_sale->get_sale_revenue();
-	$other_new_revenue = $sitewide_sale->get_other_revenue();
-	$renewals = $sitewide_sale->get_renewal_revenue();
-	$total_revenue = $sitewide_sale->get_total_revenue();
 	$daily_revenue = $sitewide_sale->get_daily_sale_revenue();
+	$landing_page_post_id = $sitewide_sale->get_landing_page_post_id();
 
 }
 
@@ -33,11 +24,14 @@ $filename = $sitewide_sale->get_name() . "_" . date( "Y-m-d_H-i", current_time( 
 $headers[] = "Content-Disposition: attachment; filename={$filename};";
 
 $left_header=   array (
+	"sale ID",
+	"sale name",
+	"landing page",
 	"start date",
 	"end date",
 	"banner reach",
 	"landing page visits",
-	"checkhouts using coupon-" . $sitewide_sale->get_coupon(),
+	"checkouts using coupon " . $sitewide_sale->get_coupon(),
 	"sale revenue",
 	"other new revenue",
 	"renewals",
@@ -60,15 +54,18 @@ $csv_fh = fopen( $filename, 'a' );
 fputcsv( $csv_fh, $csv_file_header_array);
 
 $csvoutput = array(
-	$start_date,
-	$end_date,
-	$banner_reach,
-	$landing_page_visits,
-	$checkhouts_using_coupon,
-	$sale_revenue,
-	$other_new_revenue,
-	$renewals,
-	$total_revenue		
+	$id,
+	$sitewide_sale->get_name(),
+	get_permalink( $landing_page_post_id ),
+	$sitewide_sale->get_start_date(),
+	$sitewide_sale->get_end_date(),
+	$sitewide_sale->get_banner_impressions(),
+	$sitewide_sale->get_landing_page_visits(),
+	$sitewide_sale->get_checkout_conversions(),
+	$sitewide_sale->get_sale_revenue(),
+	$sitewide_sale->get_other_revenue(),
+	$sitewide_sale->get_renewal_revenue(),
+	$sitewide_sale->get_total_revenue()
 );
 
 $csvoutput = array_merge( $csvoutput, array_values( $daily_revenue ) );
