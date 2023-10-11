@@ -59,13 +59,16 @@ class SWSales_Module_PMPro {
 
 		// PMPro-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
-		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
-		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
-		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
-		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
+		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 3 );
+		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 3 );
+		add_filter( 'swsales_get_other_revenue', array( __CLASS__, 'get_other_revenue' ), 10, 3 );
+		add_filter( 'swsales_get_total_revenue', array( __CLASS__, 'total_revenue' ), 10, 3 );
+		add_filter( 'swsales_get_renewal_revenue', array( __CLASS__, 'get_renewal_revenue' ), 10, 3 );
 
+		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 4 );
+		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
 	}
+
 
 	/**
 	 * Register PMPro module with SWSales
@@ -811,20 +814,53 @@ class SWSales_Module_PMPro {
 	}
 
 	/**
-	 * Set PMPro module total revenue for Sitewide Sale report.
+	 * Total Revenue for the period of the Sitewide Sale.
 	 *
-	 * @param string               $cur_revenue set by filter.
+	 * @param string $cur_revenue set by filter. N/A
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @param bool                 $format_price whether to run output through pmpro_formatPrice().
-	 * @return string
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string total revenue for the Sitewide Sale's period, despite belongs to the given Sitewide Sale
+	 * @since TBD
 	 */
-	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = true ) {
+	public static function total_revenue($cur_revenue, $sitewide_sale, $format_price = false) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
 		}
-		global $wpdb;
 
-		$sale_rev = $wpdb->get_var(
+		global $wpdb;
+		$total_rev = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT SUM(mo.total)
+				FROM $wpdb->pmpro_membership_orders mo
+				WHERE mo.status NOT IN('refunded', 'review', 'token', 'error')
+					AND mo.timestamp >= %s
+					AND mo.timestamp < %s
+				",
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
+			)
+		);
+
+		return $format_price ? pmpro_formatPrice( $total_rev ) : $total_rev;
+	}
+
+	/**
+	 * Set PMPro module total revenue for Sitewide Sale report.
+	 *
+	 * @param string $cur_revenue set by filter. N/A
+	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string revenue for the period of the Sitewide Sale.
+	 * @since TBD
+	 */
+	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+
+		global $wpdb;
+		$sale_revenue = $wpdb->get_var(
 			$wpdb->prepare(
 				"
 				SELECT SUM(total) FROM (
@@ -838,13 +874,101 @@ class SWSales_Module_PMPro {
 						AND mo.timestamp < %s
 					GROUP BY mo.id
 				) temp
-			",
+				",
 				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
 				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
 				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
 			)
 		);
-		return $format_price ? pmpro_formatPrice( $sale_rev ) : $sale_rev;
+
+		return $format_price ? pmpro_formatPrice( $sale_revenue ) : $sale_revenue;
+	}
+
+	/**
+	 * Get revenue from other sales during the same time period.
+	 *
+	 * @param string $cur_revenue set by filter. N/A
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string revenue from other sales during the same time period.
+	 */
+	public static function get_other_revenue ($cur_revenue, $sitewide_sale, $format_price = false) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+		global $wpdb;
+		$other_revenue = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT SUM(total) FROM (
+					SELECT mo.total  as total
+					FROM $wpdb->pmpro_membership_orders mo
+						LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
+							ON dcu.order_id = mo.id
+						LEFT JOIN $wpdb->pmpro_membership_orders mo2
+							ON mo.user_id = mo2.user_id
+								AND mo2.id <> mo.id
+								AND mo2.status NOT IN('refunded', 'review', 'token', 'error')
+					WHERE (dcu.code_id IS NULL OR dcu.code_id <> %d) #null or different code
+						AND mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
+						#no other order for the same user
+						AND mo2.id IS NULL
+					GROUP BY mo.id
+					) temp
+				",
+				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
+			)
+		);
+
+		return $format_price ? pmpro_formatPrice( $other_revenue ) : $other_revenue;
+	}
+
+	/**
+	 * Get revenue from renewals during the same time period.
+	 *
+	 * @param string $cur_revenue set by filter. N/A
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string revenue from renewals during the same time period.
+	 */
+	public static function get_renewal_revenue($cur_revenue, $sitewide_sale, $format_price = false) {
+		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+		global $wpdb;
+
+		$renewal_revenue = $wpdb->get_var(
+			$wpdb->prepare(
+				"
+				SELECT SUM(total) FROM (
+					SELECT mo.total  as total
+					FROM $wpdb->pmpro_membership_orders mo
+						LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
+							ON dcu.order_id = mo.id
+						LEFT JOIN $wpdb->pmpro_membership_orders mo2
+							ON mo.user_id = mo2.user_id
+								AND mo2.id <> mo.id
+								AND mo2.status NOT IN('refunded', 'review', 'token', 'error')
+					WHERE (dcu.code_id IS NULL OR dcu.code_id <> %d) #null or different code
+						AND mo.status NOT IN('refunded', 'review', 'token', 'error')
+						AND mo.timestamp >= %s
+						AND mo.timestamp < %s
+						#another order for the same user
+						AND mo2.id IS NOT NULL
+					GROUP BY mo.id
+					) temp
+				",
+				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
+				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
+				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
+			)
+		);
+
+		return $format_price ? pmpro_formatPrice( $renewal_revenue ) : $renewal_revenue;
 	}
 
 	/**
@@ -901,133 +1025,5 @@ class SWSales_Module_PMPro {
 			'position' => pmpro_getCurrencyPosition() == 'right' ? 'suffix' : 'prefix'
 		);
 	}
-
-	/**
-	 * Add additional PMPro module revenue report for Sitewide Sale.
-	 *
-	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
-	 */
-	public static function additional_report( $sitewide_sale ) {
-		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
-			return;
-		}
-		global $wpdb;
-		$total_rev = floatval(
-			$wpdb->get_var(
-				$wpdb->prepare(
-					"
-					SELECT SUM(mo.total)
-					FROM $wpdb->pmpro_membership_orders mo
-					WHERE mo.status NOT IN('refunded', 'review', 'token', 'error')
-						AND mo.timestamp >= %s
-						AND mo.timestamp < %s
-				",
-					get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
-					get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
-				)
-			)
-		);
-		$new_rev_with_code = floatval( self::sale_revenue( null, $sitewide_sale, false ) );
-		$new_rev_without_code = $wpdb->get_var(
-			$wpdb->prepare(
-				"
-			SELECT SUM(total) FROM (
-				SELECT mo.total  as total
-				FROM $wpdb->pmpro_membership_orders mo
-					LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
-						ON dcu.order_id = mo.id
-					LEFT JOIN $wpdb->pmpro_membership_orders mo2
-						ON mo.user_id = mo2.user_id
-							AND mo2.id <> mo.id
-							AND mo2.status NOT IN('refunded', 'review', 'token', 'error')
-				WHERE (dcu.code_id IS NULL OR dcu.code_id <> %d) #null or different code
-					AND mo.status NOT IN('refunded', 'review', 'token', 'error')
-					AND mo.timestamp >= %s
-					AND mo.timestamp < %s
-					#no other order for the same user
-					AND mo2.id IS NULL
-				GROUP BY mo.id
-				) temp
-			",
-				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
-				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
-			)
-		);
-		$renewals = $wpdb->get_var(
-			$wpdb->prepare(
-				"
-				SELECT SUM(total) FROM (
-					SELECT mo.total  as total
-					FROM $wpdb->pmpro_membership_orders mo
-						LEFT JOIN $wpdb->pmpro_discount_codes_uses dcu
-							ON dcu.order_id = mo.id
-						LEFT JOIN $wpdb->pmpro_membership_orders mo2
-							ON mo.user_id = mo2.user_id
-								AND mo2.id <> mo.id
-								AND mo2.status NOT IN('refunded', 'review', 'token', 'error')
-					WHERE (dcu.code_id IS NULL OR dcu.code_id <> %d) #null or different code
-						AND mo.status NOT IN('refunded', 'review', 'token', 'error')
-						AND mo.timestamp >= %s
-						AND mo.timestamp < %s
-						#another order for the same user
-						AND mo2.id IS NOT NULL
-					GROUP BY mo.id
-					) temp
-			",
-				intval( $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null ) ),
-				get_gmt_from_date( $sitewide_sale->get_start_date( 'Y-m-d H:i:s' ) ),
-				get_gmt_from_date( $sitewide_sale->get_end_date( 'Y-m-d H:i:s' ) )
-			)
-		);
-
-		?>
-		<div class="swsales_reports-box">
-			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-			<p>
-				<?php
-				printf(
-					wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
-					$sitewide_sale->get_start_date(),
-					$sitewide_sale->get_end_date()
-				);
-				?>
-			</p>
-			<hr />
-			<div class="swsales_reports-data swsales_reports-data-4col">
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $new_rev_with_code ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $new_rev_without_code ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $renewals ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( pmpro_formatPrice( $total_rev ) ); ?></h1>
-					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
-				</div>
-			</div>
-		</div>
-		<?php
-	}
-
 }
 SWSales_Module_PMPro::init();

@@ -48,13 +48,17 @@ class SWSales_Module_WC {
 		// Show products with a coupon applied as "on sale".
 		add_filter( 'woocommerce_product_is_on_sale', array( __CLASS__, 'woocommerce_product_is_on_sale'), 10, 2 );
 
+		//Revenue Breakdown specific filter
+		add_filter( 'swsales_get_other_revenue', array( __CLASS__, 'get_other_revenue' ), 10, 3 );
+		add_filter( 'swsales_get_total_revenue', array( __CLASS__, 'total_revenue' ), 10, 3 );
+		add_filter( 'swsales_get_renewal_revenue', array( __CLASS__, 'get_renewal_revenue' ), 10, 3 );
+
 		// WC-specific reports.
 		add_filter( 'swsales_checkout_conversions_title', array( __CLASS__, 'checkout_conversions_title' ), 10, 2 );
 		add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
+		add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 3 );
 		add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'swsales_daily_revenue_chart_data' ), 10, 2 );
 		add_filter( 'swsales_daily_revenue_chart_currency_format', array( __CLASS__, 'swsales_daily_revenue_chart_currency_format' ), 10, 2 );
-		add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
 	}
 
 	/**
@@ -510,12 +514,15 @@ class SWSales_Module_WC {
 	/**
 	 * Set WC module total revenue for Sitewide Sale report.
 	 *
-	 * @param string               $cur_revenue set by filter.
+	 * @param string $cur_revenue set by filter. N/A
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string revenue for the period of the Sitewide Sale.
+	 * @since TBD
 	 */
-	public static function sale_revenue( $cur_revenue, $sitewide_sale ) {
+	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
+		// Bail if not a WC sale.
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
 		}
@@ -537,8 +544,7 @@ class SWSales_Module_WC {
 			AND wcoi.order_item_type = 'coupon'
 			AND pm.meta_key = '_order_total'
 		" );
-
-		return wp_strip_all_tags( wc_price( $sale_revenue ) );
+		return $format_price ? wp_strip_all_tags( wc_price( $sale_revenue ) ) : $sale_revenue;
 	}
 
 	/**
@@ -602,49 +608,48 @@ class SWSales_Module_WC {
 	}
 
 	/**
-	 * Add additional PMPro module revenue report for Sitewide Sale.
+	 * Get other revenue
 	 *
-	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
+	 * @param string $cur_revenue set by filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @since TBD
+	 *
 	 */
-	public static function additional_report( $sitewide_sale ) {
-		global $wpdb;
+	public static function get_other_revenue ( $cur_revenue, $sitewide_sale, $format_price = false) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $cur_revenue;
 		}
 
+		$total_revenue = self::total_revenue( null, $sitewide_sale, false );
+		$sale_revenue  = self::sale_revenue( null, $sitewide_sale, false );
+		$renewal_revenue = self::get_renewal_revenue( null, $sitewide_sale, false );
+		$other_revenue = (float)$total_revenue - (float)$sale_revenue - (float)$renewal_revenue;
+
+		return $format_price ? wp_strip_all_tags( wc_price( $other_revenue ) ) : $other_revenue;
+	}
+
+	/**
+	 * get WC Renewals
+	 *
+	 * @param string $cur_revenue set by filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string
+	 * @since TBD
+	 */
+	public static function get_renewal_revenue( $cur_revenue, $sitewide_sale, $format_price = false) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+
+		global $wpdb;
+		$renewal_revenue = 0;
 		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
-		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_wc_coupon_id', null );
-		$coupon_code = wc_get_coupon_code_by_id( $coupon_id );
-
-		$total_rev = $wpdb->get_var( "
-			SELECT DISTINCT SUM(pm.meta_value)
-			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-			WHERE p.post_type = 'shop_order'
-			AND p.post_status IN ('wc-processing','wc-completed')
-			AND p.post_date >= '{$sale_start_date}'
-			AND p.post_date <= '{$sale_end_date}'
-			AND pm.meta_key = '_order_total'
-		" );
-		$new_rev_with_code = $wpdb->get_var( "
-			SELECT DISTINCT SUM(pm.meta_value)
-			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}woocommerce_order_items as wcoi ON p.ID = wcoi.order_id
-			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
-			WHERE p.post_type = 'shop_order'
-			AND p.post_status IN ('wc-processing','wc-completed')
-			AND p.post_date >= '{$sale_start_date}'
-			AND p.post_date <= '{$sale_end_date}'
-			AND upper(wcoi.order_item_name) = upper('{$coupon_code}')
-			AND wcoi.order_item_type = 'coupon'
-			AND pm.meta_key = '_order_total'
-		" );
-		$renewals = 0;
 		if ( class_exists( 'WC_Subscriptions' ) ) {
 			// WC Subscrtions enabled, see if there are any renewals in the period.
-			$renewals = $wpdb->get_var(
+			$renewal_revenue = $wpdb->get_var(
 				$wpdb->prepare(
 					"SELECT SUM(order_total_meta.meta_value)
 						FROM {$wpdb->postmeta} as order_total_meta
@@ -669,55 +674,37 @@ class SWSales_Module_WC {
 				)
 			);
 		}
-		$new_rev_without_code = $total_rev - $new_rev_with_code - $renewals;
+		return $format_price ? wp_strip_all_tags( wc_price( $renewal_revenue ) ) : $renewal_revenue;
+	}
 
-		?>
-		<div class="swsales_reports-box">
-			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-			<p>
-				<?php
-				printf(
-					wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
-					$sitewide_sale->get_start_date(),
-					$sitewide_sale->get_end_date()
-				);
-				?>
-			</p>
-			<hr />
-			<div class="swsales_reports-data swsales_reports-data-<?php echo empty( $renewals ) ? 3 : 4 ?>col">
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_with_code ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $new_rev_without_code ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<?php if ( ! empty( $renewals ) ) { ?>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $renewals ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $renewals ? 'NA' : round( ( $renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<?php } ?>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( wc_price( $total_rev ) ) ); ?></h1>
-					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
-				</div>
-			</div>
-		</div>
-		<?php
+	/**
+	 * Get total revenue
+	 *
+	 * @param string $cur_revenue set by filter.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
+	 * @param bool $format_price whether to run output through pmpro_formatPrice().
+	 * @return string
+	 * @since TBD
+	 */
+	public static function total_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
+		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_revenue;
+		}
+		global $wpdb;
+		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
+		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
+		$total_rev = $wpdb->get_var( "
+			SELECT DISTINCT SUM(pm.meta_value)
+			FROM {$wpdb->prefix}posts as p
+			INNER JOIN {$wpdb->prefix}postmeta as pm ON p.ID = pm.post_id
+			WHERE p.post_type = 'shop_order'
+			AND p.post_status IN ('wc-processing','wc-completed')
+			AND p.post_date >= '{$sale_start_date}'
+			AND p.post_date <= '{$sale_end_date}'
+			AND pm.meta_key = '_order_total'
+		" );
+
+		return $format_price ? wp_strip_all_tags( wc_price( $total_rev ) ) : $total_rev;
 	}
 
 }

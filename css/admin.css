@@ -181,6 +181,46 @@
 	padding: 2rem;
 	text-align: center;
 }
+
+.swsales_reports-box table.reports-comparison-table-above-chart,
+.swsales_reports-box table.reports-comparison-table-below-chart {
+	width: 100%;
+}
+.swsales_reports-box table.reports-comparison-table-above-chart .dashicons-arrow-up-alt2,
+.swsales_reports-box table.reports-comparison-table-above-chart .sale-rate.swsales_growth {
+	color: green;
+	font-weight: 400;
+	font-size: 16px;
+	vertical-align: top;
+}
+
+.swsales_reports-box table.reports-comparison-table-above-chart .sale-rate.swsales_decline,
+.swsales_reports-box table.reports-comparison-table-above-chart .sale-rate .dashicons-arrow-down-alt2 {
+	color: red;
+	font-weight: 400;
+	font-size: 16px;
+	vertical-align: top;
+}
+
+.swsales_reports-box table.reports-comparison-table-above-chart th,
+.swsales_reports-box table.reports-comparison-table-below-chart th,
+.swsales_reports-box table.reports-comparison-table-above-chart td.sale_name,
+.swsales_reports-box table.reports-comparison-table-below-chart th	 {
+	color: #000;
+	font-family: "Open Sans", serif;
+	font-weight:400;
+	font-size: 20px;
+}
+.swsales_reports-box table.reports-comparison-table-above-chart td {
+	padding: 15px 0;
+}
+.swsales_reports-box table.reports-comparison-table-above-chart td.sale_numbers {
+	font-size: 30px;
+	color: #000;
+	font-family: "Open Sans", serif;
+	font-weight: 700;
+}
+
 .post-type-pmpro_sitewide_sale .swsales_reports-box {
 	border: none;
 	margin: 0;
@@ -205,8 +245,7 @@
 .swsales_reports-data-4col {
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 }
-.swsales_reports-data-section {
-}
+
 .swsales_reports-data-section h1 {
 	font-size: 30px;
 	line-height: 40px;
