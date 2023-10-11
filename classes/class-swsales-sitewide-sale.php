@@ -601,7 +601,7 @@ class SWSales_Sitewide_Sale {
 	 * @return array revenue by day
 	 * @since TBD
 	 */
-	public function get_daily_sale_revenue($formatted = false) {
+	public function get_daily_sale_revenue() {
 		// Daily Revenue Chart.
 		// Build an array with each day of sale as a key to store revenue data in.
 		$date_array_all = array();
@@ -615,7 +615,7 @@ class SWSales_Sitewide_Sale {
 		}
 
 		// Get revenue data from module.
-		return apply_filters( 'swsales_daily_revenue_chart_data', $date_array_all, $this, $formatted );
+		return apply_filters( 'swsales_daily_revenue_chart_data', $date_array_all, $this );
 	}
 
 	/**
