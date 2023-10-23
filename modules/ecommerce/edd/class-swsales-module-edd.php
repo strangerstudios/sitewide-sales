@@ -95,8 +95,12 @@ class SWSales_Module_EDD {
 			} else {
 
 				//Compatible with EDD 2.9 and 3.0
-				$coupons = edd_get_discounts( array( 'active' ) );
-
+				$coupons = edd_get_discounts(
+					array(
+						'fields' => array( 'id', 'code'),
+						'status' => 'active',
+					)
+				);
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 				?>
 					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
@@ -108,11 +112,11 @@ class SWSales_Module_EDD {
 							if( is_array( $coupons ) ){									
 								foreach ( $coupons as $coupon ) {
 									$selected_modifier = '';
-									if ( $coupon->ID === $current_coupon ) {
+									if ( (int)$coupon->id === $current_coupon ) {
 										$selected_modifier = ' selected="selected"';
 										$coupon_found      = $coupon;
 									}
-									echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
+									echo '<option value="' . esc_attr( $coupon->id ) . '"' . $selected_modifier . '>' . esc_html( $coupon->code ) . '</option>';
 								}
 							}
 							?>

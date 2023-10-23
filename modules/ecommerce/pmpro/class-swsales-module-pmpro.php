@@ -99,7 +99,11 @@ class SWSales_Module_PMPro {
 				<?php
 			} else {
 				global $wpdb;
-				$codes            = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
+
+				// Query the database for the discount codes.
+				$codes = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
+
+				// Get the discount code (if set) for the sale.
 				$current_discount = $cur_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
 				?>
 					<th><label for="swsales_pmpro_discount_code_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' ); ?></label></th>
