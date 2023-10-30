@@ -18,9 +18,12 @@ function swsales_admin_header() {
 	?>
 	<div class="sitewide_sales_banner">
 		<div class="sitewide_sales_banner_wrapper">
-			<a class="sitewide_sales_logo" title="<?php esc_attr_e( 'Sitewide Sales', 'sitewide-sales' ); ?>" target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ) ); ?>" width="250" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a>
-			<div class="sitewide_sales_meta">
+			<div class="sitewide_sales_logo">
+				<span class="screen-reader-text"><?php esc_html_e( 'Sitewide Sales', 'sitewide-sales' ); ?></span>
+				<h1><a target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ) ); ?>" width="250" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a></h1>
 				<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
+			</div> <!-- end sitewide_sales_logo -->
+			<div class="sitewide_sales_meta">
 				<a href="https://sitewidesales.com/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
 				<a href="https://sitewidesales.com/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 				<?php if ( swsales_license_is_valid() ) { ?>

@@ -174,7 +174,8 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_name() {
-		return $this->name;
+		$sale_name = $this->name ? $this->name : __( '(no title)', 'sitewide-sales' );
+		return $sale_name;
 	}
 
 	/**
@@ -538,49 +539,49 @@ class SWSales_Sitewide_Sale {
 
 	/**
 	 * Returns the number of checkouts which used the sale's discount code/coupon.
-	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 * Must be filtered by the sale's module.
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string number of checkouts using sale code.
 	 */
 	public function get_checkout_conversions($formatted = false) {
-		return apply_filters( 'swsales_get_checkout_conversions', 'N/A', $this, $formatted );
+		return apply_filters( 'swsales_get_checkout_conversions', '&#8212;', $this, $formatted );
 	}
 
 	/**
 	 * Returns the revenue generated during the sale period.
-	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 * Must be filtered by the sale's module.
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from sale.
 	 * @since TBD
 	 */
 	public function get_sale_revenue($formatted = false) {
-		return apply_filters( 'swsales_get_revenue', 'N/A', $this, $formatted );
+		return apply_filters( 'swsales_get_revenue', '&#8212;', $this, $formatted );
 	}
 
 	/**
 	 * Returns the revenue generated during the sale period from sales using the sale's discount code/coupon.
-	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 * Must be filtered by the sale's module.
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from sale code.
 	 * @since TBD
 	 */
 	public function get_other_revenue($formatted = false) {
-		return apply_filters( 'swsales_get_other_revenue', 'N/A', $this, $formatted );
+		return apply_filters( 'swsales_get_other_revenue', '&#8212;', $this, $formatted );
 	}
 
 	/**
 	 * Return revenue from renewals during the sale period.
-	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 * Must be filtered by the sale's module.
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from renewals.
 	 * @since TBD
 	 */
 	public function get_renewal_revenue($formatted = false) {
-		return apply_filters( 'swsales_get_renewal_revenue','N/A', $this, $formatted );
+		return apply_filters( 'swsales_get_renewal_revenue', '&#8212;', $this, $formatted );
 	}
 
 	/**
@@ -591,7 +592,7 @@ class SWSales_Sitewide_Sale {
 	 * @since TBD
 	 */
 	public function get_total_revenue($formatted = false) {
-		return apply_filters( 'swsales_get_total_revenue', 'N/A', $this, $formatted );
+		return apply_filters( 'swsales_get_total_revenue', '&#8212;', $this, $formatted );
 	}
 
 	/**
