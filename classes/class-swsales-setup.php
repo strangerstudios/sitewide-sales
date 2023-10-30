@@ -123,8 +123,10 @@ class SWSales_Setup {
 			$new_links = array(
 				'<a href="' . get_admin_url( null, 'edit.php?post_type=sitewide_sale' ) . '">' . __( 'View Sitewide Sales', 'sitewide-sales' ) . '</a>',
 			);
+
+			$links = array_merge( $new_links, $links );
 		}
-		return array_merge( $new_links, $links );
+		return $links;
 	}
 
 	/**
