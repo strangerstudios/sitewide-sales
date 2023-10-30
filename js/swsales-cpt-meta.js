@@ -54,6 +54,7 @@ jQuery( document ).ready(
 		// create new landing page AJAX
 		$( '#swsales_create_landing_page' ).click(
 			function() {
+				$( '#swsales_create_landing_page' ).attr( 'disabled', 'disabled' );
 				var data = {
 					'action': 'swsales_create_landing_page',
 					'swsales_id': $( '#post_ID' ).val(),
