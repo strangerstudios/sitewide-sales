@@ -46,7 +46,7 @@ class SWSales_Reports {
 	 */
 	public static function build_CSV_report_link($sitewide_sale) {
 		//Bail if param is not correct.
-		if(! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
+		if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
 			return;
 		}
 		$csv_export_link = add_query_arg(
