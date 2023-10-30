@@ -80,7 +80,9 @@ class SWSales_Reports {
 					}
 
 					foreach ($_REQUEST['sitewide_sale'] as $key => $value) {
-						$sales_to_show[] = SWSales_Sitewide_Sale::get_sitewide_sale( (int)$value );
+						if ( ! empty( $value ) ) {
+							$sales_to_show[] = SWSales_Sitewide_Sale::get_sitewide_sale( (int)$value );
+						}
 					}
 				}
 				if ( empty( $sales_to_show ) && ! empty( SWSales_Sitewide_Sale::get_active_sitewide_sale() ) ) {
@@ -106,7 +108,7 @@ class SWSales_Reports {
 									<?php
 									if($i == 1) {
 									?>
-									<option selected value><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
+									<option selected value="0"><?php esc_html_e( '- Choose One -', 'sitewide-sales' ); ?></option>
 									<?php
 									}
 									foreach ( $all_sitewide_sales as $sitewide_sale_id ) {
@@ -295,7 +297,7 @@ class SWSales_Reports {
 			$primary_sale_array_key = array_key_first( $daily_chart_data );
 			$primary_sale_chart_data = $daily_chart_data[$primary_sale_array_key];
 
-			if ( is_array( $daily_chart_data ) ) {
+			if ( sizeof( $daily_chart_data ) > 1 ) {
 				// We have a comparison sale. Set up an array of sale data without dates.
 				$comparison_sale_array_key = array_key_last( $daily_chart_data );
 				$comparison_sale_chart_data = array();
@@ -331,7 +333,9 @@ class SWSales_Reports {
 						dataTable.addColumn('number', <?php echo wp_json_encode( esc_html__( 'Sale Revenue', 'sitewide-sales' ) ); ?>);
 						dataTable.addColumn({type: 'string', role: 'style'});
 						dataTable.addColumn({type: 'string', role: 'annotation'});
-						dataTable.addColumn('number', <?php echo wp_json_encode( esc_html__( 'Comparison Sale Revenue', 'sitewide-sales' ) ); ?>);
+						<?php if ( ! empty( $comparison_sale_chart_data ) ) { ?>
+							dataTable.addColumn('number', <?php echo wp_json_encode( esc_html__( 'Comparison Sale Revenue', 'sitewide-sales' ) ); ?>);
+						<?php } ?>
 						dataTable.addRows([
 							<?php
 								$count_day = 0;
@@ -358,12 +362,14 @@ class SWSales_Reports {
 										}
 									?>,
 									<?php
-										if ( isset( $comparison_sale_chart_data[$count_day] ) ) {
-											echo wp_json_encode( (int) $comparison_sale_chart_data[$count_day] );
-										} else {
-											echo 0;
+										if ( ! empty( $comparison_sale_chart_data ) ) {
+											if ( isset( $comparison_sale_chart_data[$count_day] ) ) {
+												echo wp_json_encode( (int) $comparison_sale_chart_data[$count_day] );
+											} else {
+												echo 0;
+											}
 										}
-									?>,
+									?>
 								],
 								<?php
 								$count_day++;
