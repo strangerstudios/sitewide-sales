@@ -33,7 +33,7 @@ jQuery( document ).ready(
 				$( '.swsales_shortcode_warning' ).hide();
 			} else {
 				$( '#swsales_edit_landing_page' ).attr( 'href', swsales.admin_url + 'post.php?post=' + landing_page_id + '&action=edit' );
-				$( '#swsales_view_landing_page' ).attr( 'href', swsales.home_url + '?p=' + landing_page_id );
+				$( '#swsales_view_landing_page' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
 				if ( swsales.pages_with_shortcodes == null ) {
 					swsales.pages_with_shortcodes = [];
 				}
