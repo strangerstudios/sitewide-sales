@@ -544,11 +544,11 @@ class SWSales_MetaBoxes {
 								<p>
 									<?php esc_html_e( 'Select a period to preview the landing page for this sale:', 'sitewide-sales' ); ?>
 									<br />
-									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'Before (pre-sale)', 'sitewide-sales' ); ?></a>
+									<a target="_blank" id="swsales_view_landing_page_pre_sale" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'Before (pre-sale)', 'sitewide-sales' ); ?></a>
 									&nbsp;|&nbsp;
-									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'During (sale)', 'sitewide-sales' ); ?></a>
+									<a target="_blank" id="swsales_view_landing_page_sale" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'During (sale)', 'sitewide-sales' ); ?></a>
 									&nbsp;|&nbsp;
-									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'After (post-sale)', 'sitewide-sales' ); ?></a>
+									<a target="_blank" id="swsales_view_landing_page_post_sale" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'After (post-sale)', 'sitewide-sales' ); ?></a>
 								</p>
 							</td>
 						</tr>
