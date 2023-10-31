@@ -3,6 +3,7 @@ jQuery( document ).ready(
 
 		// multiselects
 		$( "#swsales_pmpro_discount_code_select" ).selectWoo();
+		$( "#swsales_pmpro_hide_sale_levels_select" ).selectWoo();
 		$( "#swsales_pmpro_hide_levels_select" ).selectWoo();
 
 		// toggling the discount code input layout
