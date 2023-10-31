@@ -518,8 +518,8 @@ class SWSales_MetaBoxes {
 								?>
  style="display: none;"<?php } ?>>
 							<?php
-								$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit' );
-								$view_page_url = get_permalink( $current_page );
+								$edit_page_url = add_query_arg( array( 'post' => $current_page, 'action' => 'edit' ), admin_url( 'post.php' ) );
+								$view_page_url = add_query_arg( array( 'page_id' => $current_page ), home_url( '/' ) );
 							?>
 							<a target="_blank" class="button button-secondary" id="swsales_edit_landing_page" href="<?php echo esc_url( $edit_page_url ); ?>"><?php esc_html_e( 'edit page', 'sitewide-sales' ); ?></a>
 							&nbsp;
