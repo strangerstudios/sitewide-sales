@@ -74,7 +74,7 @@ body[class*="post-type-sitewide_sale"] .wrap {
 	background-color: #FFF;
 	box-shadow: var(--sws-box-shadow);
 	margin-left: -20px;
-	padding-top: var(--spacing-medium);
+	padding-top: var(--sws-spacing-medium);
 }
 
 .sitewide_sales_banner .sitewide_sales_banner_wrapper {
@@ -300,11 +300,11 @@ body[class*="post-type-sitewide_sale"] .wrap {
 }
 
 .post-type-sitewide_sale #poststuff .postbox h2 {
-	padding: calc( var(--spacing-medium) / 2 );
+	padding: calc( var(--sws-spacing-medium) / 2 );
 }
 
 .post-type-sitewide_sale #poststuff .postbox .inside {
-	padding: 0 calc( var(--spacing-medium) / 2 ) calc( var(--spacing-medium) / 2 ) calc( var(--spacing-medium) / 2 );
+	padding: 0 calc( var(--sws-spacing-medium) / 2 ) calc( var(--sws-spacing-medium) / 2 ) calc( var(--sws-spacing-medium) / 2 );
 }
 
 .post-type-sitewide_sale #poststuff input[type=text] {
@@ -467,6 +467,15 @@ body[class*="post-type-sitewide_sale"] .wrap {
 	vertical-align: top;
 }
 
+#swsales_overall_sale_performance.swsales_reports-box table tbody th {
+	padding: var(--sws-spacing-small);
+}
+
+#swsales_overall_sale_performance.swsales_reports-box table tbody th .swsales_reports-sale-value,
+#swsales_overall_sale_performance.swsales_reports-box table tbody th .swsales_reports-sale-value-description {
+	margin-bottom: calc( var(--sws-spacing-small) / 2 );
+}
+
 .swsales_reports-box .swsales_reports-sale-value {
 	color: var(--sws-color-blue-dark);
 	line-height: 1.5;
@@ -528,7 +537,7 @@ body[class*="post-type-sitewide_sale"] .wrap {
 	max-width: 1600px;
 }
 .swsales_chart_description {
-	margin: 0 var(--spacing-medium) var(--spacing-medium) var(--spacing-medium);
+	margin: 0 var(--sws-spacing-medium);
 	text-align: left;
 }
 
@@ -585,11 +594,11 @@ body[class*="post-type-sitewide_sale"] .wrap {
 }
 
 .sitewide_sale_page_sitewide_sales_license hr {
-	margin: var(--spacing-medium) 0;
+	margin: var(--sws-spacing-medium) 0;
 }
 
 .sitewide_sale_page_sitewide_sales_license table.form-table {
-	margin: var(--spacing-medium) 0;
+	margin: var(--sws-spacing-medium) 0;
 
 }
 .sitewide_sale_page_sitewide_sales_license #swsales-settings-key-box td {
@@ -598,7 +607,7 @@ body[class*="post-type-sitewide_sale"] .wrap {
 
 .sitewide_sale_page_sitewide_sales_license img.swsales_icon{
 	height: auto;
-	margin: 0 0 var(--spacing-medium) var(--spacing-medium);
+	margin: 0 0 var(--sws-spacing-medium) var(--sws-spacing-medium);
 	width: 250px;
 }
 
