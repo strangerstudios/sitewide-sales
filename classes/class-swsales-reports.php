@@ -478,10 +478,21 @@ class SWSales_Reports {
 							<div class="swsales_reports-sale-value-description">
 								<?php
 									printf(
-										wp_kses_post( '%s to %s.', 'sitewide-sales' ),
+										wp_kses_post( '%s to %s', 'sitewide-sales' ),
 										esc_html( $sitewide_sale->get_start_date() ),
 										esc_html( $sitewide_sale->get_end_date() )
 									);
+								?>
+								<?php
+									$start_date = $sitewide_sale->get_start_date('Y-m-d');
+									$end_date = $sitewide_sale->get_end_date('Y-m-d');
+
+									$start_date = date_create($start_date);
+									$end_date = date_create($end_date);
+
+									// Calculate the date difference
+									$interval = $start_date->diff($end_date);
+									echo esc_html( sprintf( _n( '(%s Day)', '(%s Days)', $interval->days, 'sitewide-sales' ), number_format_i18n( $interval->days ) ) );
 								?>
 							</div>
 						</th>
