@@ -463,7 +463,13 @@ class SWSales_Reports {
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ( $sitewide_sales as $sitewide_sale ) { ?>
+				<?php foreach ( $sitewide_sales as $sitewide_sale ) {
+					// Get unformatted sale revenue raw values for calculations below.
+					$sitewide_sale_sale_revenue_raw = $sitewide_sale->get_sale_revenue(false);
+					$sitewide_sale_other_revenue_raw = $sitewide_sale->get_other_revenue(false);
+					$sitewide_sale_renewal_revenue_raw = $sitewide_sale->get_renewal_revenue(false);
+					$sitewide_sale_total_revenue_raw = $sitewide_sale->get_total_revenue(false);
+					?>
 					<tr>
 						<th>
 							<div class="swsales_reports-sale-value">
@@ -483,9 +489,9 @@ class SWSales_Reports {
 							<div class="swsales_reports-sale-value">
 								<?php echo esc_html( $sitewide_sale->get_sale_revenue(true) ); ?>
 							</div>
-							<?php if ( is_numeric( $sitewide_sale->get_sale_revenue(false) ) && $sitewide_sale->get_total_revenue(false) > 0 ) { ?>
+							<?php if ( is_numeric( $sitewide_sale_sale_revenue_raw ) && $sitewide_sale_total_revenue_raw > 0 ) { ?>
 								<div class="swsales_reports-sale-value-description">
-									<?php echo( esc_html( '(' . round( ( $sitewide_sale->get_sale_revenue(false) / $sitewide_sale->get_total_revenue(false) ) * 100, 2 ) . '%)' ) ); ?>
+									<?php echo( esc_html( '(' . round( ( $sitewide_sale_sale_revenue_raw / $sitewide_sale_total_revenue_raw ) * 100, 2 ) . '%)' ) ); ?>
 								</div>
 							<?php } ?>
 						</td>
@@ -493,9 +499,9 @@ class SWSales_Reports {
 							<div class="swsales_reports-sale-value">
 								<?php echo esc_html( $sitewide_sale->get_other_revenue(true) ); ?>
 							</div>
-							<?php if ( is_numeric( $sitewide_sale->get_other_revenue(false) ) && $sitewide_sale->get_total_revenue(false) > 0 ) { ?>
+							<?php if ( is_numeric( $sitewide_sale_other_revenue_raw ) && $sitewide_sale_total_revenue_raw > 0 ) { ?>
 								<div class="swsales_reports-sale-value-description">
-									<?php echo esc_html( '(' . round( ( $sitewide_sale->get_other_revenue(false) / $sitewide_sale->get_total_revenue(false) ) * 100, 2 ) . '%)' );
+									<?php echo esc_html( '(' . round( ( $sitewide_sale_other_revenue_raw / $sitewide_sale_total_revenue_raw ) * 100, 2 ) . '%)' );
 									?>
 								</div>
 							<?php } ?>
@@ -504,10 +510,10 @@ class SWSales_Reports {
 							<div class="swsales_reports-sale-value">
 								<?php echo esc_html( $sitewide_sale->get_renewal_revenue(true) ); ?>
 							</div>
-							<?php if ( is_numeric( $sitewide_sale->get_renewal_revenue(false) ) && $sitewide_sale->get_total_revenue(false) > 0 ) { ?>
+							<?php if ( is_numeric( $sitewide_sale_renewal_revenue_raw ) && $sitewide_sale_total_revenue_raw > 0 ) { ?>
 								<div class="swsales_reports-sale-value-description">
 									<?php
-										echo esc_html( '(' . round( ( $sitewide_sale->get_renewal_revenue(false) / $sitewide_sale->get_total_revenue(false) ) * 100, 2 ) . '%)' );
+										echo esc_html( '(' . round( ( $sitewide_sale_renewal_revenue_raw / $sitewide_sale_total_revenue_raw ) * 100, 2 ) . '%)' );
 									?>
 								</div>
 							<?php } ?>
