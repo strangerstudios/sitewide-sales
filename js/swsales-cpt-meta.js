@@ -75,6 +75,7 @@ jQuery( document ).ready(
 							$( '#swsales_landing_page_select' ).append( '<option value="' + response.post.ID + '">' + response.post.post_title + ' (' + swsales.str_draft + ')</option>' );
 							$( '#swsales_landing_page_select' ).val( response.post.ID );
 							swsales_toggle_landing_page();
+							swsales_toggle_landing_page_settings();
 						}
 					}
 				);
