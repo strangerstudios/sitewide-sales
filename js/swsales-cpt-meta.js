@@ -34,6 +34,9 @@ jQuery( document ).ready(
 			} else {
 				$( '#swsales_edit_landing_page' ).attr( 'href', swsales.admin_url + 'post.php?post=' + landing_page_id + '&action=edit' );
 				$( '#swsales_view_landing_page' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
+				$( '#swsales_view_landing_page_pre_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
+				$( '#swsales_view_landing_page_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
+				$( '#swsales_view_landing_page_post_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
 				if ( swsales.pages_with_shortcodes == null ) {
 					swsales.pages_with_shortcodes = [];
 				}
@@ -75,6 +78,7 @@ jQuery( document ).ready(
 							$( '#swsales_landing_page_select' ).append( '<option value="' + response.post.ID + '">' + response.post.post_title + ' (' + swsales.str_draft + ')</option>' );
 							$( '#swsales_landing_page_select' ).val( response.post.ID );
 							swsales_toggle_landing_page();
+							swsales_toggle_landing_page_settings();
 						}
 					}
 				);
