@@ -122,9 +122,7 @@ class SWSales_Reports {
 									}
 									?>
 								</select>
-								<?php if ($selected != null) { ?>
-									<a target="_blank" href="<?php echo SWSales_Reports::build_CSV_report_link( $selected ); ?>" class="button button-primary action"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
-						<?php	}
+								<?php
 							}
 						?>
 						</div>
@@ -169,12 +167,12 @@ class SWSales_Reports {
 			}
 		}
 		?>
-		<div class="swsales_reports-box">
+		<div id="swsales_overall_sale_performance" class="swsales_reports-box">
 			<h2 class="swsales_reports-box-title"><?php esc_html_e( 'Overall Sale Performance', 'sitewide-sales' ); ?></h2>
 			<table>
 				<thead>
 					<tr>
-						<th></th>
+						<th width="25%"></th>
 						<th><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></th>
 						<th><?php esc_html_e( 'Landing Page Visits', 'sitewide-sales' ); ?></th>
 						<th><?php esc_html_e( 'Conversions', 'sitewide-sales' ); ?></th>
@@ -187,31 +185,41 @@ class SWSales_Reports {
 					$max_sale_days = 0;
 					foreach ( $sitewide_sales as $key => $sitewide_sale ) {
 						$diff_rate = null;
-						/*
 						if ( count( $sitewide_sales ) > 1 && $key === 0 ) {
 							$diff_rate = self::build_diff_rate_array( $sitewide_sale, $sitewide_sales[1]  );
 						}
-						*/
 					?>
 					<tr>
 						<th>
 							<div class="swsales_reports-sale-value">
-								<a href="<?php echo esc_url( add_query_arg( array( 'post' => $sitewide_sale->get_id(), 'action' => 'edit' ), admin_url( 'post.php' ) ) ); ?>"><?php echo esc_attr( $sitewide_sale->get_name() ); ?></a>
+								<a href="<?php echo esc_url( add_query_arg( array( 'post' => $sitewide_sale->get_id(), 'action' => 'edit' ), admin_url( 'post.php' ) ) ); ?>"><?php echo esc_html( $sitewide_sale->get_name() ); ?></a>
 							</div>
 							<div class="swsales_reports-sale-value-description">
 								<?php
 									printf(
-										wp_kses_post( 'All visitors from %s to %s.', 'sitewide-sales' ),
+										wp_kses_post( '%s to %s', 'sitewide-sales' ),
 										esc_html( $sitewide_sale->get_start_date() ),
 										esc_html( $sitewide_sale->get_end_date() )
 									);
 								?>
+								<?php
+									$start_date = $sitewide_sale->get_start_date('Y-m-d');
+									$end_date = $sitewide_sale->get_end_date('Y-m-d');
+
+									$start_date = date_create($start_date);
+									$end_date = date_create($end_date);
+
+									// Calculate the date difference
+									$interval = $start_date->diff($end_date);
+									echo esc_html( sprintf( _n( '(%s Day)', '(%s Days)', $interval->days, 'sitewide-sales' ), number_format_i18n( $interval->days ) ) );
+								?>
 							</div>
+							<a target="_blank" href="<?php echo SWSales_Reports::build_CSV_report_link( $sitewide_sale ); ?>" class="button button-primary button-small"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
 						</th>
 						<td>
 							<div class="swsales_reports-sale-value">
 								<?php
-									echo esc_attr( $sitewide_sale->get_banner_impressions() );
+									echo esc_html( number_format_i18n( $sitewide_sale->get_banner_impressions() ) );
 									if ( ! empty( $diff_rate ) ) {
 										echo $diff_rate['banner_impressions'];
 									}
@@ -222,7 +230,7 @@ class SWSales_Reports {
 							<div class="swsales_reports-sale-value">
 								<?php
 									$landing_page_visits = $sitewide_sale->get_landing_page_visits();
-									echo esc_attr( $landing_page_visits );
+									echo esc_html( number_format_i18n( $landing_page_visits ) );
 									if ( ! empty( $diff_rate ) ) {
 										echo $diff_rate['landing_page_visits'];
 									}
@@ -241,7 +249,7 @@ class SWSales_Reports {
 						<td>
 							<div class="swsales_reports-sale-value">
 								<?php
-									echo esc_attr( $sitewide_sale->get_checkout_conversions() );
+									echo esc_html( number_format_i18n( $sitewide_sale->get_checkout_conversions() ) );
 									if ( ! empty( $diff_rate ) ) {
 										echo $diff_rate['checkout_conversions'];
 									}
@@ -258,7 +266,7 @@ class SWSales_Reports {
 						<td>
 							<div class="swsales_reports-sale-value">
 								<?php
-									echo esc_attr( $sitewide_sale->get_sale_revenue(true) );
+									echo esc_html( $sitewide_sale->get_sale_revenue(true) );
 									if ( ! empty( $diff_rate ) ) {
 										echo $diff_rate['revenue'];
 									}
@@ -314,7 +322,7 @@ class SWSales_Reports {
 
 			// Display the chart.
 			if ( is_array( $primary_sale_chart_data ) ) { ?>
-				<div class="swsales_reports-box swsales_chart_area">
+				<div id="swsales_sale_revenue_by_day" class="swsales_reports-box swsales_chart_area">
 					<h2><?php esc_html_e( 'Sale Revenue By Day', 'sitewide-sales' ); ?></h2>
 					<?php if ( ! empty( $data_sliced ) ) { ?>
 						<div class="swsales_chart_description">
@@ -442,7 +450,7 @@ class SWSales_Reports {
 				<?php
 			}
 		?>
-		<div class="swsales_reports-box">
+		<div id="swsales_sale_revenue_breakdown" class="swsales_reports-box">
 			<h2 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h2>
 			<table>
 				<thead>
@@ -459,7 +467,7 @@ class SWSales_Reports {
 					<tr>
 						<th>
 							<div class="swsales_reports-sale-value">
-								<a href="<?php echo esc_url( add_query_arg( array( 'post' => $sitewide_sale->get_id(), 'action' => 'edit' ), admin_url( 'post.php' ) ) ); ?>"><?php echo esc_attr( $sitewide_sale->get_name() ); ?></a>
+								<a href="<?php echo esc_url( add_query_arg( array( 'post' => $sitewide_sale->get_id(), 'action' => 'edit' ), admin_url( 'post.php' ) ) ); ?>"><?php echo esc_html( $sitewide_sale->get_name() ); ?></a>
 							</div>
 							<div class="swsales_reports-sale-value-description">
 								<?php
@@ -529,19 +537,19 @@ class SWSales_Reports {
 		?>
 		<div class="swsales_reports-quick-data-section">
 			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Banner Reach', 'sitewide-sales' ); ?></span>
-			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_banner_impressions() ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_html( $sitewide_sale->get_banner_impressions() ); ?></span>
 		</div>
 		<div class="swsales_reports-quick-data-section">
 			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Landing Page Visits', 'sitewide-sales' ); ?></span>
-			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_landing_page_visits() ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_html( $sitewide_sale->get_landing_page_visits() ); ?></span>
 		</div>
 		<div class="swsales_reports-quick-data-section">
 			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Conversions', 'sitewide-sales' ); ?></span>
-			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_checkout_conversions() ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_html( $sitewide_sale->get_checkout_conversions() ); ?></span>
 		</div>
 		<div class="swsales_reports-quick-data-section">
 			<span class="swsales_reports-quick-data-label"><?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?></span>
-			<span class="swsales_reports-quick-data-value"><?php echo esc_attr( $sitewide_sale->get_sale_revenue(true) ); ?></span>
+			<span class="swsales_reports-quick-data-value"><?php echo esc_html( $sitewide_sale->get_sale_revenue(true) ); ?></span>
 		</div>
 		<?php
 	}
