@@ -197,7 +197,7 @@ class SWSales_Reports {
 							<div class="swsales_reports-sale-value-description">
 								<?php
 									printf(
-										wp_kses_post( '%s to %s', 'sitewide-sales' ),
+										esc_html( '%s to %s', 'sitewide-sales' ),
 										esc_html( $sitewide_sale->get_start_date() ),
 										esc_html( $sitewide_sale->get_end_date() )
 									);
