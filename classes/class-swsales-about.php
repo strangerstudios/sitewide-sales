@@ -38,7 +38,7 @@ class SWSales_About {
 						'strong' => array(),
 						'em' => array(),		);
 				?>
-				<p><?php echo wp_kses( __( 'Sitewide Sales helps you run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.', 'sitewide-sales' ), $allowed_html ); ?></p>
+				<p><?php esc_html_e( 'Sitewide Sales helps you run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.', 'sitewide-sales' ); ?></p>
 				<p><?php echo sprintf( wp_kses( __( 'We currently offer integration for <a href="%s" title="Paid Memberships Pro" target="_blank">Paid Memberships Pro</a>, <a href="%s" title="WooCommerce" target="_blank">WooCommerce</a>, and <a href="%s" title="Easy Digital Downloads" target="_blank">Easy Digital Downloads</a>.', 'sitewide-sales' ), $allowed_html ), 'https://sitewidesales.com/modules/paid-memberships-pro/?utm_source=sitewide-sales&utm_medium=about&utm_campaign=module-pmpro', 'https://sitewidesales.com/modules/woocommerce/?utm_source=sitewide-sales&utm_medium=about&utm_campaign=module-wc', 'https://sitewidesales.com/modules/easy-digital-downloads/?utm_source=sitewide-sales&utm_medium=about&utm_campaign=module-edd' ); ?></p>
 				<p><?php echo sprintf( wp_kses( __( 'There is also a <a href="%s" title="Custom Module" target="_blank">custom module</a> you can use to track performance with any other platforms you choose.', 'sitewide-sales' ), $allowed_html ), 'https://sitewidesales.com/modules/custom-module/?utm_source=sitewide-sales&utm_medium=about&utm_campaign=module-custom' ); ?></p>
 				<h2><?php esc_html_e( 'Getting Started', 'sitewide-sales' ); ?></h2>
