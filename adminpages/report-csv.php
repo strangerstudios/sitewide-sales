@@ -96,7 +96,7 @@ function swsales_transmit_report_data( $csv_fh, $filename, $headers = array() ) 
 	if ( headers_sent() ) {
 		echo str_repeat( '-', 75 ) . "<br/>\n";
 		echo 'Please open a support case and paste in the warnings/errors you see above this text to\n ';
-		echo 'the <a href="http://paidmembershipspro.com/support/?utm_source=plugin&utm_medium=pmpro-sales-revenue-csv&utm_campaign=support" target="_blank">Paid Memberships Pro support forum</a><br/>\n';
+		echo '<a href="https://sitewidesales.com/support/?utm_source=plugin&utm_medium=swsales-report-csv&utm_campaign=support" target="_blank">Sitewide Sales support</a><br/>\n';
 		echo str_repeat( "=", 75 ) . "<br/>\n";
 		echo file_get_contents( $filename );
 		echo str_repeat( "=", 75 ) . "<br/>\n";
