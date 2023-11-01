@@ -45,7 +45,7 @@ class SWSales_Reports {
 	 * @since TBD.
 	 */
 	public static function build_CSV_report_link($sitewide_sale) {
-		//Bail if param is not correct.
+		// Bail if param is not correct.
 		if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
 			return;
 		}
@@ -155,9 +155,9 @@ class SWSales_Reports {
 	 * @since TBD.
 	 */
 	public static function show_report( $sitewide_sales ) {
-		// Bail if the array comes empty
-		if ( count( $sitewide_sales ) < 1 ) {
-			return;
+		// If $sitewide_sales is not an array, make it an array.
+		if ( ! is_array( $sitewide_sales ) ) {
+			$sitewide_sales = array( $sitewide_sales );
 		}
 
 		// Bail if given elements aren't SWSales_Sitewide_Sale objects.

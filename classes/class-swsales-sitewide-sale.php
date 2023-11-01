@@ -590,7 +590,7 @@ class SWSales_Sitewide_Sale {
 	 * @return string number of checkouts using sale code.
 	 */
 	public function get_checkout_conversions($formatted = false) {
-		return apply_filters( 'swsales_get_checkout_conversions', '&#8212;', $this, $formatted );
+		return apply_filters( 'swsales_get_checkout_conversions', '0', $this, $formatted );
 	}
 
 	/**
