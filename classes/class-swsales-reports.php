@@ -214,7 +214,7 @@ class SWSales_Reports {
 									echo esc_html( sprintf( _n( '(%s Day)', '(%s Days)', $interval->days, 'sitewide-sales' ), number_format_i18n( $interval->days ) ) );
 								?>
 							</div>
-							<a target="_blank" href="<?php echo SWSales_Reports::build_CSV_report_link( $sitewide_sale ); ?>" class="button button-primary button-small"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
+							<a target="_blank" href="<?php echo esc_url( SWSales_Reports::build_CSV_report_link( $sitewide_sale ) ); ?>" class="button button-primary button-small"><?php esc_html_e( 'Export to CSV', 'sitewide-sales' ); ?></a>
 						</th>
 						<td>
 							<div class="swsales_reports-sale-value">
