@@ -77,7 +77,7 @@ class SWSales_Reports {
 				$sales_to_show = array();
 				if ( isset( $_REQUEST['sitewide_sale'] ) ) {
 					if ( ! is_array( $_REQUEST['sitewide_sale'] ) ) {
-						$_REQUEST['sitewide_sale'] = array( $_REQUEST['sitewide_sale'] );
+						$_REQUEST['sitewide_sale'] = array( $_REQUEST['sitewide_sale'] ); // Sanitized below.
 					}
 
 					foreach ($_REQUEST['sitewide_sale'] as $key => $value) {
