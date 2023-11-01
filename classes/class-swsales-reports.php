@@ -100,11 +100,11 @@ class SWSales_Reports {
 
 							for ($i = 0; $i < 2; $i++) {
 								$class_modifier = ( $i === 0 ) ? 'left' : 'right';
-								$label_wording = ( $i === 0 ) ? 'Show reports for' : 'vs.';
+								$label_wording = ( $i === 0 ) ? __( 'Show reports for', 'sitewide-sales' ) : __( 'vs.', 'sitewide-sales' );
 								
 								$selected =  $sales_to_show !== null && array_key_exists( $i, $sales_to_show )  ? $sales_to_show[$i] : null;
 							?>
-								<label for="swsales_select_report_<?php echo esc_attr( $class_modifier ); ?>"><?php esc_html_e( $label_wording, 'sitewide-sales' ); ?></label>
+								<label for="swsales_select_report_<?php echo esc_attr( $class_modifier ); ?>"><?php esc_html( $label_wording ); ?></label>
 								<select id="swsales_select_report_<?php echo esc_attr( $class_modifier );?>"  name="sitewide_sale[]">
 									<?php
 									if($i == 1) {
