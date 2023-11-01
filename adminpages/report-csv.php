@@ -43,7 +43,7 @@ $csv_file_header_array = array_merge( $left_header, array_keys( $daily_revenue )
 $dateformat = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
 // Generate a temporary file to store the data in.
-$tmp_dir  = apply_filters( 'pmpro_sales_report_csv_export_tmp_dir', sys_get_temp_dir() );
+$tmp_dir  = apply_filters( 'swsales_report_csv_export_tmp_dir', sys_get_temp_dir() );
 
 $filename = tempnam( $tmp_dir, 'sws_reportcsv_' );
 
