@@ -6,7 +6,7 @@ if ( ! function_exists( "current_user_can" ) || ( ! current_user_can( "manage_op
 
 //get values from form
 if(isset($_REQUEST['sitewide_sale'])) {
-	$id = sanitize_text_field($_REQUEST['sitewide_sale']);
+	$id = intval($_REQUEST['sitewide_sale']);
 	$sitewide_sale =  \Sitewide_Sales\classes\SWSales_Sitewide_Sale::get_sitewide_sale( $id );
 	$daily_revenue = $sitewide_sale->get_daily_sale_revenue();
 	$landing_page_post_id = $sitewide_sale->get_landing_page_post_id();
