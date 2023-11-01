@@ -42,10 +42,11 @@ class SWSales_Reports {
 	 *
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to get link for.
 	 * @return string $csv_export_link.
-	 * @since TBD.
+	 *
+	 * @since 1.4
 	 */
 	public static function build_CSV_report_link($sitewide_sale) {
-		//Bail if param is not correct.
+		// Bail if param is not correct.
 		if ( ! is_a( $sitewide_sale, 'Sitewide_Sales\classes\SWSales_Sitewide_Sale' ) ) {
 			return;
 		}
@@ -152,12 +153,13 @@ class SWSales_Reports {
 	 * Show report content for selected Sitewide Sales objects.
 	 *
 	 * @param Array An array of SWSales_Sitewide_Sale objects to show report for.
-	 * @since TBD.
+	 *
+	 * @since 1.4
 	 */
 	public static function show_report( $sitewide_sales ) {
-		// Bail if the array comes empty
-		if ( count( $sitewide_sales ) < 1 ) {
-			return;
+		// If $sitewide_sales is not an array, make it an array.
+		if ( ! is_array( $sitewide_sales ) ) {
+			$sitewide_sales = array( $sitewide_sales );
 		}
 
 		// Bail if given elements aren't SWSales_Sitewide_Sale objects.
@@ -186,6 +188,7 @@ class SWSales_Reports {
 					foreach ( $sitewide_sales as $key => $sitewide_sale ) {
 						$diff_rate = null;
 						if ( count( $sitewide_sales ) > 1 && $key === 0 ) {
+							// This value is already escaped in the build_rate_markup() function.
 							$diff_rate = self::build_diff_rate_array( $sitewide_sale, $sitewide_sales[1]  );
 						}
 					?>
@@ -638,7 +641,8 @@ class SWSales_Reports {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale_1 A  SWSales_Sitewide_Sale.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale_2 A  SWSales_Sitewide_Sale.
 	 * @return an Array with the markup representing difference rate between them over several attributes.
-	 * @since TBD.
+	 *
+	 * @since 1.4
 	 */
 	private static function build_diff_rate_array($sitewide_sale_1, $sitewide_sale_2) {
 		// No need to validate params, we did it before.
@@ -672,6 +676,7 @@ class SWSales_Reports {
 			}
 		}
 
+		// This value is already escaped in the build_rate_markup() function.
 		return $diff_rate;
 	}
 
@@ -681,14 +686,20 @@ class SWSales_Reports {
 	 * @param Obj can be a float or a String $rate The rate to represent.
 	 * @param Boolean $is_growth Indicates if the rate is a growth or decline.
 	 * @return String with the markup representing the rate.
-	 * @since TBD.
+	 *
+	 * @since 1.4
 	 */
 	private static function build_rate_markup( $rate, $is_growth ) {
 		$dash_class = $is_growth ? 'dashicons-arrow-up-alt2' : 'dashicons-arrow-down-alt2';
 		$span_class = $is_growth ? 'swsales_growth' : 'swsales_decline';
+
+		$dash_class = esc_attr( $dash_class );
+		$span_class = esc_attr( $span_class );
+
 		if ( empty( $rate ) ) {
-			return '<span class="sale-rate ' . $span_class .'"><span class="dashicons ' . $dash_class . '">';
+			return '<span class="sale-rate ' . $span_class . '"><span class="dashicons ' . $dash_class . '"></span></span>';
 		}
-		return '<span class="sale-rate ' . $span_class .'"><span class="dashicons ' . $dash_class . '"></span>' . $rate . '%</span>';
+
+		return '<span class="sale-rate ' . $span_class . '"><span class="dashicons ' . $dash_class . '"></span>' . esc_html( $rate ) . '%</span>';
 	}
 }

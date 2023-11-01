@@ -590,7 +590,7 @@ class SWSales_Sitewide_Sale {
 	 * @return string number of checkouts using sale code.
 	 */
 	public function get_checkout_conversions($formatted = false) {
-		return apply_filters( 'swsales_get_checkout_conversions', '&#8212;', $this, $formatted );
+		return apply_filters( 'swsales_get_checkout_conversions', '0', $this, $formatted );
 	}
 
 	/**
@@ -599,7 +599,8 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from sale.
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public function get_sale_revenue($formatted = false) {
 		return apply_filters( 'swsales_get_revenue', '&#8212;', $this, $formatted );
@@ -611,7 +612,8 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from sale code.
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public function get_other_revenue($formatted = false) {
 		return apply_filters( 'swsales_get_other_revenue', '&#8212;', $this, $formatted );
@@ -623,7 +625,8 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string revenue from renewals.
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public function get_renewal_revenue($formatted = false) {
 		return apply_filters( 'swsales_get_renewal_revenue', '&#8212;', $this, $formatted );
@@ -634,7 +637,8 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return string total revenue
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public function get_total_revenue($formatted = false) {
 		return apply_filters( 'swsales_get_total_revenue', '&#8212;', $this, $formatted );
@@ -645,7 +649,8 @@ class SWSales_Sitewide_Sale {
 	 *
 	 * @param bool formatted whether to format the revenue.
 	 * @return array revenue by day
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public function get_daily_sale_revenue() {
 		// Daily Revenue Chart.

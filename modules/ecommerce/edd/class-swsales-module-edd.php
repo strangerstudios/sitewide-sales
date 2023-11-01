@@ -697,7 +697,8 @@ class SWSales_Module_EDD {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale The sitewide sale being reported on.
 	 * @param bool $format_price Whether to format the price.
 	 * @return string
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 *
 	 */
 	public static function get_other_revenue ( $cur_other_revenue, $sitewide_sale, $format_price = false ) {
@@ -718,7 +719,8 @@ class SWSales_Module_EDD {
 	 * @param string $cur_total_revenue The current total revenue.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale The sitewide sale being reported on.
 	 * @param bool $format_price Whether to format the price.
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public static function total_revenue( $cur_total_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
