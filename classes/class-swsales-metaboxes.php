@@ -314,7 +314,7 @@ class SWSales_MetaBoxes {
 				do_action( 'swsales_after_choose_sale_type', $cur_sale );
 				?>
 				<tr>
-					<th><label for="swsales_hide_for_roles"><?php esc_html_e( 'Hide Sale by Role', 'sitewide-sales' ); ?></label></th>
+					<th><label for="swsales_hide_for_roles_select"><?php esc_html_e( 'Hide Sale by Role', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="hidden" name="swsales_hide_for_roles_exists" value="1" />
 						<select multiple class="swsales_option" id="swsales_hide_for_roles_select" name="swsales_hide_for_roles[]">
@@ -381,7 +381,7 @@ class SWSales_MetaBoxes {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label for="swsales_banner_module"><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_banner_module" name="swsales_banner_module">
 							<option value=""><?php esc_html_e( '- No Banner -', 'sitewide-sales' ); ?></option>
@@ -409,7 +409,7 @@ class SWSales_MetaBoxes {
 		<table class="form-table" id="swsales_banner_options">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label for="swsales_banner_close_behavior"><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_banner_close_behavior" name="swsales_banner_close_behavior">
 							<option value="refresh" <?php selected( $cur_sale->get_meta_value('swsales_banner_close_behavior'), 'refresh' ); ?>><?php esc_html_e( 'Close Until Refresh', 'sitewide-sales' ); ?></option>
@@ -422,7 +422,7 @@ class SWSales_MetaBoxes {
 					<?php
 						$checked_modifier = $cur_sale->get_hide_on_checkout() ? ' checked' : '';
 					?>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label for="swsales_hide_on_checkout"><?php esc_html_e( 'Hide Banner at Checkout', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="hidden" name="swsales_hide_on_checkout_exists" value="1" />
 						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $cur_sale->get_hide_on_checkout(), 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
