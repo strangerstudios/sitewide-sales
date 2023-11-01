@@ -574,7 +574,7 @@ class SWSales_Reports {
 	public static function admin_enqueue_scripts() {
 		global $typenow;
 		$screen = get_current_screen();
-		$screens_to_load_on = array( 'sitewide_sale_page_sitewide_sales_reports', 'sitewide_sale' ); // Reports page and editing a sitewide sale.
+		$screens_to_load_on = array( 'sitewide_sale_page_sitewide_sales_reports' ); // Reports page.
 		if ( ! empty( $screen ) && in_array( $screen->id, $screens_to_load_on ) ) {
 			wp_enqueue_script( 'corechart', plugins_url( 'js/corechart.js', SWSALES_BASENAME ) );
 		}

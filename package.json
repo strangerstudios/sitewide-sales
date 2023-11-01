@@ -1,6 +1,6 @@
 {
   "name": "sitewide-sales",
-  "version": "1.3.1",
+  "version": "1.4.0",
   "description": "Flash Sales for WordPress",
   "main": "webpack.config.js",
   "directories": {
