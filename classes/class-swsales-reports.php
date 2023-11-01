@@ -33,7 +33,7 @@ class SWSales_Reports {
 	 * Handles the Sales Export
 	 */
 	public static function sws_stats_csv() {
-		require_once(dirname(__FILE__) . "/../adminpages/report-csv.php");
+		require_once( SWSALES_DIR . "/adminpages/report-csv.php");
 		exit;
 	}
 
