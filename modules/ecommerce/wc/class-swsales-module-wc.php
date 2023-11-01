@@ -516,7 +516,8 @@ class SWSales_Module_WC {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @param bool $format_price whether to run output through pmpro_formatPrice().
 	 * @return string revenue for the period of the Sitewide Sale.
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
@@ -611,7 +612,8 @@ class SWSales_Module_WC {
 	 * @param string $cur_revenue set by filter.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
 	 * @param bool $format_price whether to run output through pmpro_formatPrice().
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 *
 	 */
 	public static function get_other_revenue ( $cur_revenue, $sitewide_sale, $format_price = false) {
@@ -634,7 +636,8 @@ class SWSales_Module_WC {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
 	 * @param bool $format_price whether to run output through pmpro_formatPrice().
 	 * @return string
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public static function get_renewal_revenue( $cur_revenue, $sitewide_sale, $format_price = false) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
@@ -682,7 +685,8 @@ class SWSales_Module_WC {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being reported on.
 	 * @param bool $format_price whether to run output through pmpro_formatPrice().
 	 * @return string
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public static function total_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {

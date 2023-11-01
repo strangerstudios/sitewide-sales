@@ -827,7 +827,8 @@ class SWSales_Module_PMPro {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @param bool $format_price whether to run output through pmpro_formatPrice().
 	 * @return string total revenue for the Sitewide Sale's period, despite belongs to the given Sitewide Sale
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public static function total_revenue($cur_revenue, $sitewide_sale, $format_price = false) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
@@ -859,7 +860,8 @@ class SWSales_Module_PMPro {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @param bool $format_price whether to run output through pmpro_formatPrice().
 	 * @return string revenue for the period of the Sitewide Sale.
-	 * @since TBD
+	 *
+	 * @since 1.4
 	 */
 	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		if ( 'pmpro' !== $sitewide_sale->get_sale_type() ) {
