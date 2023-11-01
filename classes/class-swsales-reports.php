@@ -56,7 +56,7 @@ class SWSales_Reports {
 			),
 			admin_url( 'admin-ajax.php' ) );
 
-		return esc_url( $csv_export_link );
+		return $csv_export_link;
 	}
 
 	public static function show_reports_page() { ?>
