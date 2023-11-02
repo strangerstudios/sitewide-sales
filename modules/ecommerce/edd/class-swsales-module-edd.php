@@ -731,7 +731,7 @@ class SWSales_Module_EDD {
 		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
 
-		$ret = $wpdb->get_var( "
+		$total_rev = $wpdb->get_var( "
 			SELECT DISTINCT SUM(p.total)
 			FROM {$wpdb->prefix}edd_orders as p
 			INNER JOIN {$wpdb->prefix}edd_order_adjustments as pm ON p.id = pm.object_id
@@ -741,7 +741,7 @@ class SWSales_Module_EDD {
 			AND p.date_completed <= '{$sale_end_date}'
 		" );
 
-		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $ret ) ) ) : $ret;
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) : $total_rev;
 	}
 }
 SWSales_Module_EDD::init();
