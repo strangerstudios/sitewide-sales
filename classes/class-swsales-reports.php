@@ -104,7 +104,7 @@ class SWSales_Reports {
 								
 								$selected =  $sales_to_show !== null && array_key_exists( $i, $sales_to_show )  ? $sales_to_show[$i] : null;
 							?>
-								<label for="swsales_select_report_<?php echo esc_attr( $class_modifier ); ?>"><?php esc_html( $label_wording ); ?></label>
+								<label for="swsales_select_report_<?php echo esc_attr( $class_modifier ); ?>"><?php echo esc_html( $label_wording ); ?></label>
 								<select id="swsales_select_report_<?php echo esc_attr( $class_modifier );?>"  name="sitewide_sale[]">
 									<?php
 									if($i == 1) {
