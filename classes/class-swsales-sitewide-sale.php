@@ -565,7 +565,7 @@ class SWSales_Sitewide_Sale {
 
 		// Allow admins to preview the sale period and banners.
 		// This logic shows banner or landing page content regardless of whether sale is 'active' or in the 'sale' period.
-		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_time_period'] ) || isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
+		if ( current_user_can( 'administrator' ) && ( isset( $_REQUEST['swsales_preview_time_period'] ) || isset( $_REQUEST['swsales_preview_sale_banner'] ) ) ) {
 			return true;
 		}
 
