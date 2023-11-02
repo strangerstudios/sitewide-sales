@@ -15,7 +15,7 @@ class SWSales_Reports {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_tracking_js' ) );
 		add_action( 'wp_ajax_swsales_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
 		add_action( 'wp_ajax_nopriv_swsales_ajax_tracking', array( __CLASS__, 'ajax_tracking' ) );
-		add_action("wp_ajax_sws_stats_csv", array(__CLASS__, "sws_stats_csv"));
+		add_action( 'wp_ajax_swsales_stats_csv', array( __CLASS__, 'stats_csv' ) );
 	}
 
 	public static function add_reports_page() {
@@ -32,7 +32,7 @@ class SWSales_Reports {
 	/**
 	 * Handles the Sales Export
 	 */
-	public static function sws_stats_csv() {
+	public static function stats_csv() {
 		require_once( SWSALES_DIR . "/adminpages/report-csv.php");
 		exit;
 	}
@@ -52,7 +52,7 @@ class SWSales_Reports {
 		}
 		$csv_export_link = add_query_arg(
 			array(
-				'action' => 'sws_stats_csv',
+				'action' => 'swsales_stats_csv',
 				'sitewide_sale' => $sitewide_sale->get_id(),
 			),
 			admin_url( 'admin-ajax.php' ) );
