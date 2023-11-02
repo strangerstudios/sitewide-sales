@@ -34,9 +34,9 @@ jQuery( document ).ready(
 			} else {
 				$( '#swsales_edit_landing_page' ).attr( 'href', swsales.admin_url + 'post.php?post=' + landing_page_id + '&action=edit' );
 				$( '#swsales_view_landing_page' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
-				$( '#swsales_view_landing_page_pre_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
-				$( '#swsales_view_landing_page_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
-				$( '#swsales_view_landing_page_post_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id );
+				$( '#swsales_view_landing_page_pre_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id + '&swsales_preview_time_period=pre-sale' );
+				$( '#swsales_view_landing_page_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id + '&swsales_preview_time_period=sale' );
+				$( '#swsales_view_landing_page_post_sale' ).attr( 'href', swsales.home_url + '?page_id=' + landing_page_id + '&swsales_preview_time_period=post-sale' );
 				if ( swsales.pages_with_shortcodes == null ) {
 					swsales.pages_with_shortcodes = [];
 				}
