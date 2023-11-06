@@ -587,17 +587,29 @@ class SWSales_Reports {
 	 * Setup JS vars and enqueue our JS for tracking user behavior
 	 */
 	public static function enqueue_tracking_js() {
-		$active_sitewide_sale = SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		// If the user is an admin and the URL has a preview sale defined, return that sale as active.
+		if ( current_user_can( 'administrator' ) && isset( $_REQUEST['swsales_preview_sale_banner'] ) ) {
+			$active_sitewide_sale = SWSales_Sitewide_Sale::get_sitewide_sale( intval( $_REQUEST['swsales_preview_sale_banner'] ) );
+			$preview              = true;
+		} else {
+			// Otherwise, try to get the current defined active sale via settings.
+			$active_sitewide_sale = SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		}
+
+		// No active sale or previewed sale? Return.
 		if ( null === $active_sitewide_sale ) {
 			return;
 		}
 
+		// Is the active or previewed sale not running? Return.
 		if ( ! $active_sitewide_sale->is_running() ) {
 			return;
 		}
 
+		// Register our tracking script.
 		wp_register_script( 'swsales_tracking', plugins_url( 'js/swsales.js', SWSALES_BASENAME ), array( 'jquery', 'utils' ) );
 
+		// Set our JS vars.
 		$landing_page_post_id = $active_sitewide_sale->get_landing_page_post_id();
 		$swsales_data = array(
 			'landing_page'      => ! empty( $landing_page_post_id ) && is_page( $landing_page_post_id ),
@@ -606,6 +618,7 @@ class SWSales_Reports {
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 		);
 
+		// Localize and enqueue our tracking script.
 		wp_localize_script( 'swsales_tracking', 'swsales', $swsales_data );
 		wp_enqueue_script( 'swsales_tracking' );
 	}
