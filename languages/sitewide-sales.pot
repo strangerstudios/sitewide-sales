@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-01T20:27:20+00:00\n"
+"POT-Creation-Date: 2023-11-16T10:19:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: sitewide-sales\n"
@@ -41,6 +41,11 @@ msgstr ""
 
 #. Author URI of the plugin
 msgid "https://www.strangerstudios.com"
+msgstr ""
+
+#: adminpages/report-csv.php:4
+#: classes/class-swsales-license.php:35
+msgid "You do not have permissions to perform this action."
 msgstr ""
 
 #: blocks/blocks.php:50
@@ -137,10 +142,6 @@ msgstr ""
 
 #: classes/class-swsales-license.php:24
 msgid "<span style=\"color: "
-msgstr ""
-
-#: classes/class-swsales-license.php:35
-msgid "You do not have permissions to perform this action."
 msgstr ""
 
 #: classes/class-swsales-license.php:54
@@ -299,7 +300,7 @@ msgid "Set this date and time to when your sale should end."
 msgstr ""
 
 #: classes/class-swsales-metaboxes.php:297
-#: classes/class-swsales-reports.php:111
+#: classes/class-swsales-reports.php:112
 #: modules/banner/blocks/class-swsales-banner-module-blocks.php:229
 #: modules/ecommerce/edd/class-swsales-module-edd.php:109
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:114
@@ -559,7 +560,7 @@ msgstr ""
 #: classes/class-swsales-post-types.php:98
 #: classes/class-swsales-reports.php:24
 #: classes/class-swsales-reports.php:25
-#: classes/class-swsales-reports.php:64
+#: classes/class-swsales-reports.php:65
 msgid "Reports"
 msgstr ""
 
@@ -611,94 +612,102 @@ msgstr ""
 msgid "Administrators of our site have access to view sale reports. These reports include aggregate data that is non-personalized, including conversion rates, number of banner or landing page views, and total sale revenue data."
 msgstr ""
 
-#: classes/class-swsales-reports.php:140
+#: classes/class-swsales-reports.php:103
+msgid "Show reports for"
+msgstr ""
+
+#: classes/class-swsales-reports.php:103
+msgid "vs."
+msgstr ""
+
+#: classes/class-swsales-reports.php:141
 msgid "No Sitewide Sales found. <a href=\"%s\">Create your first Sitewide Sale &raquo;</a>"
 msgstr ""
 
-#: classes/class-swsales-reports.php:171
+#: classes/class-swsales-reports.php:173
 msgid "Overall Sale Performance"
 msgstr ""
 
-#: classes/class-swsales-reports.php:176
-#: classes/class-swsales-reports.php:556
+#: classes/class-swsales-reports.php:178
+#: classes/class-swsales-reports.php:559
 msgid "Banner Reach"
 msgstr ""
 
-#: classes/class-swsales-reports.php:177
-#: classes/class-swsales-reports.php:560
+#: classes/class-swsales-reports.php:179
+#: classes/class-swsales-reports.php:563
 msgid "Landing Page Visits"
 msgstr ""
 
-#: classes/class-swsales-reports.php:178
-#: classes/class-swsales-reports.php:564
+#: classes/class-swsales-reports.php:180
+#: classes/class-swsales-reports.php:567
 msgid "Conversions"
 msgstr ""
 
-#: classes/class-swsales-reports.php:179
-#: classes/class-swsales-reports.php:341
-#: classes/class-swsales-reports.php:459
-#: classes/class-swsales-reports.php:568
+#: classes/class-swsales-reports.php:181
+#: classes/class-swsales-reports.php:344
+#: classes/class-swsales-reports.php:462
+#: classes/class-swsales-reports.php:571
 msgid "Sale Revenue"
 msgstr ""
 
-#: classes/class-swsales-reports.php:214
-#: classes/class-swsales-reports.php:495
+#: classes/class-swsales-reports.php:217
+#: classes/class-swsales-reports.php:498
 msgid "(%s Day)"
 msgid_plural "(%s Days)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-swsales-reports.php:217
+#: classes/class-swsales-reports.php:220
 msgid "Export to CSV"
 msgstr ""
 
-#: classes/class-swsales-reports.php:243
+#: classes/class-swsales-reports.php:246
 msgid "Landing Page Visit"
 msgid_plural "Landing Page Visits"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-swsales-reports.php:261
+#: classes/class-swsales-reports.php:264
 msgid "Checkout Conversions"
 msgstr ""
 
-#: classes/class-swsales-reports.php:326
+#: classes/class-swsales-reports.php:329
 msgid "Sale Revenue By Day"
 msgstr ""
 
-#: classes/class-swsales-reports.php:329
+#: classes/class-swsales-reports.php:332
 msgid "This chart shows the last %s days of sale performance."
 msgstr ""
 
-#: classes/class-swsales-reports.php:340
+#: classes/class-swsales-reports.php:343
 msgid "DAY"
 msgstr ""
 
-#: classes/class-swsales-reports.php:345
+#: classes/class-swsales-reports.php:348
 msgid "Comparison Sale Revenue"
 msgstr ""
 
-#: classes/class-swsales-reports.php:365
+#: classes/class-swsales-reports.php:368
 msgid "Best Day"
 msgstr ""
 
-#: classes/class-swsales-reports.php:367
+#: classes/class-swsales-reports.php:370
 msgid "Today"
 msgstr ""
 
-#: classes/class-swsales-reports.php:454
+#: classes/class-swsales-reports.php:457
 msgid "Revenue Breakdown"
 msgstr ""
 
-#: classes/class-swsales-reports.php:460
+#: classes/class-swsales-reports.php:463
 msgid "Other New Revenue"
 msgstr ""
 
-#: classes/class-swsales-reports.php:461
+#: classes/class-swsales-reports.php:464
 msgid "Renewals"
 msgstr ""
 
-#: classes/class-swsales-reports.php:462
+#: classes/class-swsales-reports.php:465
 msgid "Total Revenue in Period"
 msgstr ""
 
