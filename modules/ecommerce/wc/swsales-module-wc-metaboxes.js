@@ -26,6 +26,7 @@ jQuery( document ).ready(
 		// create new coupon AJAX
 		$( '#swsales_wc_create_coupon' ).click(
 			function() {
+				$( '#swsales_wc_create_coupon' ).attr( 'disabled','disabled' );
 				var data = {
 					'action': 'swsales_wc_create_coupon',
 					'swsales_wc_id': $( '#post_ID' ).val(),

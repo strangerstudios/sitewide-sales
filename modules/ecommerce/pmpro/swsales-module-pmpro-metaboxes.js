@@ -3,6 +3,7 @@ jQuery( document ).ready(
 
 		// multiselects
 		$( "#swsales_pmpro_discount_code_select" ).selectWoo();
+		$( "#swsales_pmpro_hide_sale_levels_select" ).selectWoo();
 		$( "#swsales_pmpro_hide_levels_select" ).selectWoo();
 
 		// toggling the discount code input layout
@@ -27,6 +28,7 @@ jQuery( document ).ready(
 		// create new discount code AJAX
 		$( '#swsales_pmpro_create_discount_code' ).click(
 			function() {
+				$( '#swsales_pmpro_create_discount_code' ).attr( 'disabled','disabled' );
 				var data = {
 					'action': 'swsales_pmpro_create_discount_code',
 					'swsales_pmpro_id': $( '#post_ID' ).val(),

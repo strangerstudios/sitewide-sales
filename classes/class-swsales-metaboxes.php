@@ -314,6 +314,26 @@ class SWSales_MetaBoxes {
 				do_action( 'swsales_after_choose_sale_type', $cur_sale );
 				?>
 				<tr>
+					<th><label for="swsales_hide_for_roles_select"><?php esc_html_e( 'Hide Sale by Role', 'sitewide-sales' ); ?></label></th>
+					<td>
+						<input type="hidden" name="swsales_hide_for_roles_exists" value="1" />
+						<select multiple class="swsales_option" id="swsales_hide_for_roles_select" name="swsales_hide_for_roles[]">
+						<?php
+							$all_roles = get_editable_roles();
+							$all_roles['logged_out'] = array(
+								'name' => __( 'Logged Out', 'sitewide-sales' ),
+							);
+							$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_for_roles', '[]' ) );
+							foreach ( $all_roles as $slug => $role_data ) {
+								$selected_modifier = in_array( $slug, $hide_for_roles ) ? ' selected="selected"' : '';
+								echo '<option value="' . esc_attr( $slug ) . '"' . $selected_modifier . '>' . esc_html( $role_data['name'] ) . '</option>';
+							}
+						?>
+						</select>
+						<p class="description"><?php esc_html_e( 'This setting will completely hide the sale from users with the selected roles (including the banner and discount logic).', 'sitewide-sales' ); ?></p>
+					</td>
+				</tr>
+				<tr>
 					<th><label for="swsales_automatic_discount"><?php esc_html_e( 'Apply Discount Automatically', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_automatic_discount_select" name="swsales_automatic_discount">
@@ -361,7 +381,7 @@ class SWSales_MetaBoxes {
 		<table class="form-table">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label for="swsales_banner_module"><?php esc_html_e( 'Banner Type', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_banner_module" name="swsales_banner_module">
 							<option value=""><?php esc_html_e( '- No Banner -', 'sitewide-sales' ); ?></option>
@@ -389,7 +409,7 @@ class SWSales_MetaBoxes {
 		<table class="form-table" id="swsales_banner_options">
 			<tbody>
 				<tr>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label for="swsales_banner_close_behavior"><?php esc_html_e( 'Banner Close Behavior', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<select class="swsales_option" id="swsales_banner_close_behavior" name="swsales_banner_close_behavior">
 							<option value="refresh" <?php selected( $cur_sale->get_meta_value('swsales_banner_close_behavior'), 'refresh' ); ?>><?php esc_html_e( 'Close Until Refresh', 'sitewide-sales' ); ?></option>
@@ -402,33 +422,40 @@ class SWSales_MetaBoxes {
 					<?php
 						$checked_modifier = $cur_sale->get_hide_on_checkout() ? ' checked' : '';
 					?>
-					<th scope="row" valign="top"><label><?php esc_html_e( 'Hide Banner at Checkout', 'sitewide-sales' ); ?></label></th>
+					<th scope="row" valign="top"><label for="swsales_hide_on_checkout"><?php esc_html_e( 'Hide Banner at Checkout', 'sitewide-sales' ); ?></label></th>
 					<td>
 						<input type="hidden" name="swsales_hide_on_checkout_exists" value="1" />
 						<input class="swsales_option" type="checkbox" id="swsales_hide_on_checkout" name="swsales_hide_on_checkout" <?php checked( $cur_sale->get_hide_on_checkout(), 1 ); ?>> <label for="swsales_hide_on_checkout"><?php esc_html_e( 'Check this box to hide the banner on checkout pages.', 'sitewide-sales' ); ?></label>
 						<p class="description"><?php esc_html_e( 'Recommended: Leave checked so only users using your landing page will pay the sale price.', 'sitewide-sales' ); ?></p>
 					</td>
 				</tr>
-				<tr>
-					<th><label for="swsales_hide_banner_by_role"><?php esc_html_e( 'Hide Banner by Role', 'sitewide-sales' ); ?></label></th>
-					<td>
-						<input type="hidden" name="swsales_hide_banner_by_role_exists" value="1" />
-						<select multiple class="swsales_option" id="swsales_hide_banner_by_role_select" name="swsales_hide_banner_by_role[]">
+				<?php
+					// Old filter to hide banner by role. This is being deprecated in place of the field swsales_hide_for_roles.
+					$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_banner_by_role', '[]' ) );
+					if ( ! empty( $hide_for_roles ) ) { ?>
+						<tr>
+							<th><label for="swsales_hide_banner_by_role"><?php esc_html_e( 'Hide Banner by Role', 'sitewide-sales' ); ?></label></th>
+							<td>
+								<input type="hidden" name="swsales_hide_banner_by_role_exists" value="1" />
+								<select multiple class="swsales_option" id="swsales_hide_banner_by_role_select" name="swsales_hide_banner_by_role[]">
+								<?php
+									$all_roles = get_editable_roles();
+									$all_roles['logged_out'] = array(
+										'name' => __( 'Logged Out', 'sitewide-sales' ),
+									);
+									$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_banner_by_role', '[]' ) );
+									foreach ( $all_roles as $slug => $role_data ) {
+										$selected_modifier = in_array( $slug, $hide_for_roles ) ? ' selected="selected"' : '';
+										echo '<option value="' . esc_attr( $slug ) . '"' . $selected_modifier . '>' . esc_html( $role_data['name'] ) . '</option>';
+									}
+								?>
+								</select>
+								<p class="description"><?php esc_html_e( 'This setting will hide the banner for users with the selected roles.', 'sitewide-sales' ); ?></p>
+							</td>
+						</tr>
 						<?php
-							$all_roles = get_editable_roles();
-							$all_roles['logged_out'] = array(
-								'name' => __( 'Logged Out', 'sitewide-sales' ),
-							);
-							$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_banner_by_role', '[]' ) );
-							foreach ( $all_roles as $slug => $role_data ) {
-								$selected_modifier = in_array( $slug, $hide_for_roles ) ? ' selected="selected"' : '';
-								echo '<option value="' . esc_attr( $slug ) . '"' . $selected_modifier . '>' . esc_html( $role_data['name'] ) . '</option>';
-							}
-						?>
-						</select>
-						<p class="description"><?php esc_html_e( 'This setting will hide the banner for users with the selected roles.', 'sitewide-sales' ); ?></p>
-					</td>
-				</tr>
+					}
+				?>
 				<?php
 				//  Add filter for modlues (ex. hide banner for level)
 				do_action( 'swsales_after_banners_settings', $cur_sale );
@@ -491,8 +518,8 @@ class SWSales_MetaBoxes {
 								?>
  style="display: none;"<?php } ?>>
 							<?php
-								$edit_page_url = admin_url( 'post.php?post=' . $current_page . '&action=edit' );
-								$view_page_url = get_permalink( $current_page );
+								$edit_page_url = add_query_arg( array( 'post' => $current_page, 'action' => 'edit' ), admin_url( 'post.php' ) );
+								$view_page_url = add_query_arg( array( 'page_id' => $current_page ), home_url( '/' ) );
 							?>
 							<a target="_blank" class="button button-secondary" id="swsales_edit_landing_page" href="<?php echo esc_url( $edit_page_url ); ?>"><?php esc_html_e( 'edit page', 'sitewide-sales' ); ?></a>
 							&nbsp;
@@ -517,11 +544,11 @@ class SWSales_MetaBoxes {
 								<p>
 									<?php esc_html_e( 'Select a period to preview the landing page for this sale:', 'sitewide-sales' ); ?>
 									<br />
-									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'Before (pre-sale)', 'sitewide-sales' ); ?></a>
+									<a target="_blank" id="swsales_view_landing_page_pre_sale" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'pre-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'Before (pre-sale)', 'sitewide-sales' ); ?></a>
 									&nbsp;|&nbsp;
-									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'During (sale)', 'sitewide-sales' ); ?></a>
+									<a target="_blank" id="swsales_view_landing_page_sale" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'sale', $view_page_url ) ); ?>"><?php esc_html_e( 'During (sale)', 'sitewide-sales' ); ?></a>
 									&nbsp;|&nbsp;
-									<a target="_blank" id="swsales_view_landing_page" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'After (post-sale)', 'sitewide-sales' ); ?></a>
+									<a target="_blank" id="swsales_view_landing_page_post_sale" href="<?php echo esc_url( add_query_arg( 'swsales_preview_time_period', 'post-sale', $view_page_url ) ); ?>"><?php esc_html_e( 'After (post-sale)', 'sitewide-sales' ); ?></a>
 								</p>
 							</td>
 						</tr>
@@ -707,6 +734,20 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_sale_type', sanitize_text_field( $_POST['swsales_sale_type'] ) );
 		}
 
+		if ( ! empty( $_POST['swsales_hide_banner_by_role'] ) && is_array( $_POST['swsales_hide_banner_by_role'] )) {
+			$swsales_hide_banner_by_role = array_map( 'sanitize_text_field', $_POST['swsales_hide_banner_by_role'] );
+			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( $swsales_hide_banner_by_role ) );
+		} elseif ( ! empty( $_POST['swsales_hide_banner_by_role_exists'] ) ) {
+			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( array() ) );
+		}
+
+		if ( ! empty( $_POST['swsales_hide_for_roles'] ) && is_array( $_POST['swsales_hide_for_roles'] )) {
+			$swsales_hide_for_roles = array_map( 'sanitize_text_field', $_POST['swsales_hide_for_roles'] );
+			update_post_meta( $post_id, 'swsales_hide_for_roles', wp_json_encode( $swsales_hide_for_roles ) );
+		} elseif ( ! empty( $_POST['swsales_hide_for_roles_exists'] ) ) {
+			update_post_meta( $post_id, 'swsales_hide_for_roles', wp_json_encode( array() ) );
+		}
+
 		if ( isset( $_POST['swsales_automatic_discount'] ) ) {
 			update_post_meta( $post_id, 'swsales_automatic_discount', sanitize_text_field( $_POST['swsales_automatic_discount'] ) );
 		}
@@ -758,13 +799,6 @@ class SWSales_MetaBoxes {
 			update_post_meta( $post_id, 'swsales_hide_on_checkout', true );
 		} elseif ( isset( $_POST['swsales_hide_on_checkout_exists'] ) ) {
 			update_post_meta( $post_id, 'swsales_hide_on_checkout', false );
-		}
-
-		if ( ! empty( $_POST['swsales_hide_banner_by_role'] ) && is_array( $_POST['swsales_hide_banner_by_role'] )) {
-			$swsales_hide_banner_by_role = array_map( 'sanitize_text_field', $_POST['swsales_hide_banner_by_role'] );
-			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( $swsales_hide_banner_by_role ) );
-		} elseif ( ! empty( $_POST['swsales_hide_banner_by_role_exists'] ) ) {
-			update_post_meta( $post_id, 'swsales_hide_banner_by_role', wp_json_encode( array() ) );
 		}
 
 		$options = SWSales_Settings::get_options();

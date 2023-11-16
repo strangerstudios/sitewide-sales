@@ -204,8 +204,10 @@ class SWSales_Landing_Pages {
 			// Load the sale.
 			$sitewide_sale = new SWSales_Sitewide_Sale();
 			$sale_found = $sitewide_sale->load_sitewide_sale( $sitewide_sale_id );
-			// The ID we have isn't a Sitewide Sale CPT, return the content.
-			if ( ! $sale_found ) {
+			$landing_template = $sitewide_sale->get_landing_page_template();
+
+			// The ID we have isn't a Sitewide Sale CPT, or if we're not using a template we can return the content as they're most likely using blocks or a custom solution.
+			if ( ! $sale_found || $landing_template == '0' ) {
 				return $content;
 			}
 
@@ -221,12 +223,11 @@ class SWSales_Landing_Pages {
 			$r = '';
 
 			// Build the return string.
-			$r .= '<div class="swsales-landing-page-content swsales-landing-page-content-' . $sale_period . '">';
+			$r .= '<div class="swsales-landing-page-content swsales-landing-page-content-' . esc_attr( $sale_period ) . '">';
 			$r .= $content;
 			$r .= '</div>';
 
 			// Template specific filter only if we have a return string to adjust.
-			$landing_template = $sitewide_sale->get_landing_page_template();
 			if ( ! empty( $landing_template ) ) {
 				$r = apply_filters( 'swsales_landing_page_content_' . $landing_template, $r, $sitewide_sale );
 			}

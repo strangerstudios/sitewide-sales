@@ -174,7 +174,8 @@ class SWSales_Sitewide_Sale {
 	 * @return string
 	 */
 	public function get_name() {
-		return $this->name;
+		$sale_name = $this->name ? $this->name : __( '(no title)', 'sitewide-sales' );
+		return $sale_name;
 	}
 
 	/**
@@ -456,6 +457,36 @@ class SWSales_Sitewide_Sale {
 	}
 
 	/**
+	 * Whether the current sitewide sale should be hidden.
+	 *
+	 * @return string
+	 */
+	public function hide_sale() {
+		// Assume sale is visible to everyone.
+		$hide_sale = false;
+
+		// Get the meta value for roles this sale should be hidden for.
+		$hide_for_roles = json_decode( $this->get_meta_value( 'swsales_hide_for_roles', '' ) );
+
+		// If the hidden roles is an empty string, convert to an array.
+		$hide_for_roles = empty( $hide_for_roles ) ? array() : $hide_for_roles;
+
+		// Get the current user roles or if logged out, set the 'ghost' role.
+		if ( ! is_user_logged_in() ) {
+			$user_roles = array( 'logged_out' );
+		} else {
+			$user = wp_get_current_user();
+			$user_roles = ( array ) $user->roles;
+		}
+		// If this sale is hidden by role, check if the current user should see it.
+		if ( ! empty( $hide_for_roles ) && ! empty( array_intersect( $hide_for_roles, $user_roles ) ) ) {
+			$hide_sale = true;
+		}
+
+		return apply_filters( 'swsales_hide', $hide_sale, $this );
+	}
+
+	/**
 	 * Returns the number of times this sale's banner has been shown to unique users.
 	 *
 	 * @return int
@@ -527,6 +558,22 @@ class SWSales_Sitewide_Sale {
 	 * @return boolean
 	 */
 	public function is_running() {
+		// Don't check if the sale is hidden in the admin.
+		if ( is_admin() ) {
+			return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
+		}
+
+		// Allow admins to preview the sale period and banners.
+		// This logic shows banner or landing page content regardless of whether sale is 'active' or in the 'sale' period.
+		if ( current_user_can( 'administrator' ) && ( isset( $_REQUEST['swsales_preview_time_period'] ) || isset( $_REQUEST['swsales_preview_sale_banner'] ) ) ) {
+			return true;
+		}
+
+		// If the sale is hidden for this user, return.
+		if ( $this->hide_sale()) {
+			return;
+		}
+
 		return ( $this->is_active_sitewide_sale() && 'sale' === $this->get_time_period() );
 	}
 
@@ -538,22 +585,89 @@ class SWSales_Sitewide_Sale {
 
 	/**
 	 * Returns the number of checkouts which used the sale's discount code/coupon.
-	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 * Must be filtered by the sale's module.
 	 *
-	 * @return string
+	 * @param bool formatted whether to format the revenue.
+	 * @return string number of checkouts using sale code.
 	 */
-	public function get_checkout_conversions() {
-		return apply_filters( 'swsales_get_checkout_conversions', 'N/A', $this );
+	public function get_checkout_conversions($formatted = false) {
+		return apply_filters( 'swsales_get_checkout_conversions', '0', $this, $formatted );
 	}
 
 	/**
 	 * Returns the revenue generated during the sale period.
-	 * Must be filtered by the sale's module, otherwise just shows N/A.
+	 * Must be filtered by the sale's module.
 	 *
-	 * @return string
+	 * @param bool formatted whether to format the revenue.
+	 * @return string revenue from sale.
+	 *
+	 * @since 1.4
 	 */
-	public function get_revenue() {
-		return apply_filters( 'swsales_get_revenue', 'N/A', $this );
+	public function get_sale_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_revenue', '&#8212;', $this, $formatted );
+	}
+
+	/**
+	 * Returns the revenue generated during the sale period from sales using the sale's discount code/coupon.
+	 * Must be filtered by the sale's module.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return string revenue from sale code.
+	 *
+	 * @since 1.4
+	 */
+	public function get_other_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_other_revenue', '&#8212;', $this, $formatted );
+	}
+
+	/**
+	 * Return revenue from renewals during the sale period.
+	 * Must be filtered by the sale's module.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return string revenue from renewals.
+	 *
+	 * @since 1.4
+	 */
+	public function get_renewal_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_renewal_revenue', '&#8212;', $this, $formatted );
+	}
+
+	/**
+	 * Gets total revenue from the sale period.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return string total revenue
+	 *
+	 * @since 1.4
+	 */
+	public function get_total_revenue($formatted = false) {
+		return apply_filters( 'swsales_get_total_revenue', '&#8212;', $this, $formatted );
+	}
+
+	/**
+	 * Gets an array with revenue by day.
+	 *
+	 * @param bool formatted whether to format the revenue.
+	 * @return array revenue by day
+	 *
+	 * @since 1.4
+	 */
+	public function get_daily_sale_revenue() {
+		// Daily Revenue Chart.
+		// Build an array with each day of sale as a key to store revenue data in.
+		$date_array_all = array();
+		$period = new \DatePeriod(
+			new \DateTime( $this->get_start_date( 'Y-m-d' ) ),
+			new \DateInterval('P1D'),
+			new \DateTime( $this->get_end_date( 'Y-m-d' ) . ' + 1 day' )
+		);
+		foreach ($period as $key => $value) {
+			$date_array_all[ $value->format('Y-m-d') ] = 0.0;
+		}
+
+		// Get revenue data from module.
+		return apply_filters( 'swsales_daily_revenue_chart_data', $date_array_all, $this );
 	}
 
 	/**

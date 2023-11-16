@@ -3,7 +3,9 @@
 # [Sitewide Sales](https://sitewidesales.com) #
 
 ### Welcome to the Sitewide Sales GitHub Repository
-Sitewide Sales allows you to run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site. The plugin offers modules for [WooCommerce](https://woocommerce.com), [Paid Memberships Pro](https://www.paidmembershipspro.com), [Easy Digital Downloads](https://easydigitaldownloads.com/).
+Sitewide Sales allows you to run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
+
+This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/woocommerce/), [Paid Memberships Pro](https://sitewidesales.com/modules/paid-memberships-pro/), and [Easy Digital Downloads](https://sitewidesales.com/modules/easy-digital-downloads/). You can also use the [Custom sale module](https://sitewidesales.com/modules/custom-module/) to track any banner > landing page > conversion workflow. New integrations will be built as requested.
 
 Let Sitewide Sales handle your sale banners, notification bars, landing pages, and reporting. Running a sale like this used to require three or more separate plugins. Now you can run your sale with a single tool. At the same time, the Sitewide Sales plugin is flexible enough that you can use specific banner and landing page plugins if wanted.
 

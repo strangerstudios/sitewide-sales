@@ -16,7 +16,7 @@ class SWSales_License{
 		if ( swsales_license_is_valid( $key, NULL ) ) {
 			$span_color = '#33FF00';
 		} else {
-			$span_color = '#FF3333';
+			$span_color = '#FCD34D';
 		}
         add_submenu_page(
 			'edit.php?post_type=sitewide_sale',
@@ -80,7 +80,7 @@ class SWSales_License{
 					<a class="button button-hero" href="https://sitewidesales.com/pricing/?utm_source=plugin&utm_medium=swsales-license&utm_campaign=swsales-checkout&utm_content=view-license-details" target="_blank"><?php echo esc_html( 'View Support License Details', 'sitewide-sales' ); ?></a>
 				<?php } else { ?>
 					<a class="button button-primary button-hero" href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%swsales-license%26utm_campaign%3Daccount%26utm_content%3Dview-account" target="_blank"><?php echo esc_html( 'Manage My Account', 'sitewide-sales' ); ?></a>
-					<a class="button button-hero" href="https://www.strangerstudios.com/login/?redirect_to=%2Fnew-ticket%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Dsupport%26utm_content%3Dsupport" target="_blank"><?php echo esc_html( 'Open Support Ticket', 'sitewide-sales' ); ?></a>
+					<a class="button button-hero" href="https://www.strangerstudios.com/login/?redirect_to=%2Fwordpress-plugins%2Fsitewide-sales%2Fsupport%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Dsupport%26utm_content%3Dsupport" target="_blank"><?php echo esc_html( 'Open Support Ticket', 'sitewide-sales' ); ?></a>
 				<?php } ?>
 			</p>
 

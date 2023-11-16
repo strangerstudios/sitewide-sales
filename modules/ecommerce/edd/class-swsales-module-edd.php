@@ -52,16 +52,15 @@ class SWSales_Module_EDD {
 		if( version_compare( floatval( EDD_VERSION ), 3, '>=' ) ){
 			//EDD V3's Stats			
 			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'checkout_conversions' ), 10, 2 );
-			add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 2 );
+			add_filter( 'swsales_get_revenue', array( __CLASS__, 'sale_revenue' ), 10, 3 );
 			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'daily_revenue_chart_data' ), 10, 2 );
-			
-			add_action( 'swsales_additional_reports', array( __CLASS__, 'additional_report' ) );
+			add_filter( 'swsales_get_other_revenue', array( __CLASS__, 'get_other_revenue' ), 10, 3 );
+			add_filter( 'swsales_get_total_revenue', array( __CLASS__, 'total_revenue' ), 10, 3 );
 		} else {
 			//EDD Legacy Stats
 			add_filter( 'swsales_get_checkout_conversions', array( __CLASS__, 'legacy_checkout_conversions' ), 10, 2 );
-			add_filter( 'swsales_get_revenue', array( __CLASS__, 'legacy_sale_revenue' ), 10, 2 );
+			add_filter( 'swsales_get_revenue', array( __CLASS__, 'legacy_sale_revenue' ), 10, 3 );
 			add_filter( 'swsales_daily_revenue_chart_data', array( __CLASS__, 'legacy_daily_revenue_chart_data' ), 10, 2 );
-			add_action( 'swsales_additional_reports', array( __CLASS__, 'legacy_additional_report' ) );
 		}
 		
 	}
@@ -96,8 +95,12 @@ class SWSales_Module_EDD {
 			} else {
 
 				//Compatible with EDD 2.9 and 3.0
-				$coupons = edd_get_discounts( array( 'active' ) );
-
+				$coupons = edd_get_discounts(
+					array(
+						'fields' => array( 'id', 'code'),
+						'status' => 'active',
+					)
+				);
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 				?>
 					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
@@ -109,11 +112,11 @@ class SWSales_Module_EDD {
 							if( is_array( $coupons ) ){									
 								foreach ( $coupons as $coupon ) {
 									$selected_modifier = '';
-									if ( $coupon->ID === $current_coupon ) {
+									if ( (int)$coupon->id === $current_coupon ) {
 										$selected_modifier = ' selected="selected"';
 										$coupon_found      = $coupon;
 									}
-									echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
+									echo '<option value="' . esc_attr( $coupon->id ) . '"' . $selected_modifier . '>' . esc_html( $coupon->code ) . '</option>';
 								}
 							}
 							?>
@@ -434,11 +437,12 @@ class SWSales_Module_EDD {
 	/**
 	 * Set EDD total revenue for Sitewide Sale report.
 	 *
-	 * @param string               $cur_revenue set by filter.
+	 * @param string $cur_revenue set by filter.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
+	 * @param bool $format_price whether to format the price.
+	 * @return string The sale revenue.
 	 */
-	public static function sale_revenue( $cur_revenue, $sitewide_sale ) {
+	public static function sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
@@ -461,7 +465,7 @@ class SWSales_Module_EDD {
 			AND eddoa.type = 'discount'
 		" );
 
-		return wp_strip_all_tags( edd_currency_filter( edd_format_amount( $sale_revenue ) ) );
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $sale_revenue ) ) ) : $sale_revenue;
 	}
 
 	/**
@@ -524,85 +528,6 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Add additional EDD module revenue report for Sitewide Sale.
-	 *
-	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
-	 * @return string
-	 */
-	public static function additional_report( $sitewide_sale ) {
-		global $wpdb;
-		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
-			return;
-		}
-
-		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
-		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
-		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
-		$coupon_code = new \EDD_Discount( $coupon_id );
-
-		$total_rev = $wpdb->get_var( "
-			SELECT DISTINCT SUM(p.total)
-			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as pm ON p.id = pm.object_id
-			WHERE p.type = 'sale'
-			AND p.status = 'complete' 
-			AND p.date_completed >= '{$sale_start_date}'
-			AND p.date_completed <= '{$sale_end_date}'
-		" );
-		$new_rev_with_code = $wpdb->get_var( "
-			SELECT DISTINCT SUM(p.total)
-			FROM {$wpdb->prefix}edd_orders as p
-			INNER JOIN {$wpdb->prefix}edd_order_adjustments as eddoa ON p.id = eddoa.object_id			
-			WHERE p.type = 'sale'
-			AND p.status = 'complete' 
-			AND p.date_completed >= '{$sale_start_date}'
-			AND p.date_completed <= '{$sale_end_date}'
-			AND eddoa.description = upper('{$coupon_code->code}')
-			AND eddoa.type = 'discount'
-		" );
-
-		$new_rev_without_code = $total_rev - $new_rev_with_code;
-
-		?>
-		<div class="swsales_reports-box">
-			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-			<p>
-				<?php
-				printf(
-					wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
-					$sitewide_sale->get_start_date(),
-					$sitewide_sale->get_end_date()
-				);
-				?>
-			</p>
-			<hr />
-			<div class="swsales_reports-data swsales_reports-data-3col">
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_with_code ) ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_without_code ) ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) ); ?></h1>
-					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
-				</div>
-			</div>
-		</div>
-		<?php
-	}
-
-	/**
 	 * Set EDD checkout conversions for Sitewide Sale report.
 	 *
 	 * @param string               $cur_conversions set by filter.
@@ -660,7 +585,7 @@ class SWSales_Module_EDD {
 	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
 	 * @return string
 	 */
-	public static function legacy_sale_revenue( $cur_revenue, $sitewide_sale ) {
+	public static function legacy_sale_revenue( $cur_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
 			return $cur_revenue;
@@ -699,7 +624,7 @@ class SWSales_Module_EDD {
 			}
 		}
 
-		return wp_strip_all_tags( edd_currency_filter( edd_format_amount( $cart_total ) ) );
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $cart_total ) ) ) : $cart_total;
 	}
 
 	/**
@@ -741,8 +666,7 @@ class SWSales_Module_EDD {
 				$cart_total = 0;
 				$payment_data = maybe_unserialize( $data->value );
 				
-				if( !empty( $payment_data['discount'] ) && $payment_data['discount'] == $coupon_code->code ){
-
+				if( !empty( $payment_data['user_info']['discount'] ) && $payment_data['user_info']['discount'] == $coupon_code->code ){
 					foreach( $payment_data['cart_details'] as $cart ){
 						$cart_total = $cart_total + $cart['price'];
 					}
@@ -767,108 +691,57 @@ class SWSales_Module_EDD {
 	}
 
 	/**
-	 * Add additional PMPro module revenue report for Sitewide Sale.
+	 * Get other revenue
 	 *
-	 * @param SWSales_Sitewide_Sale $sitewide_sale to generate report for.
+	 * @param string $cur_other_revenue The current other revenue.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale The sitewide sale being reported on.
+	 * @param bool $format_price Whether to format the price.
 	 * @return string
+	 *
+	 * @since 1.4
+	 *
 	 */
-	public static function legacy_additional_report( $sitewide_sale ) {
+	public static function get_other_revenue ( $cur_other_revenue, $sitewide_sale, $format_price = false ) {
+		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
+			return $cur_other_revenue;
+		}
+
+		$total_revenue = self::total_revenue( null, $sitewide_sale, false );
+		$sale_revenue  = self::sale_revenue( null, $sitewide_sale, false );
+		$other_revenue = (float)$total_revenue - (float)$sale_revenue;
+
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $other_revenue ) ) ) : $other_revenue;
+	}
+
+	/**
+	 * Get total revenue
+	 *
+	 * @param string $cur_total_revenue The current total revenue.
+	 * @param SWSales_Sitewide_Sale $sitewide_sale The sitewide sale being reported on.
+	 * @param bool $format_price Whether to format the price.
+	 *
+	 * @since 1.4
+	 */
+	public static function total_revenue( $cur_total_revenue, $sitewide_sale, $format_price = false ) {
 		global $wpdb;
 		if ( 'edd' !== $sitewide_sale->get_sale_type() ) {
-			return;
+			return $cur_total_revenue;
 		}
 
 		$sale_start_date = $sitewide_sale->get_start_date('Y-m-d H:i:s');
 		$sale_end_date = $sitewide_sale->get_end_date('Y-m-d H:i:s');
-		$coupon_id   = $sitewide_sale->get_meta_value( 'swsales_edd_coupon_id', null );
-		$coupon_code = new \EDD_Discount( $coupon_id );
 
-		$sale_revenue = $wpdb->get_results( "
-			SELECT *
-			FROM {$wpdb->prefix}posts as p
-			INNER JOIN {$wpdb->prefix}postmeta as eddoa ON p.ID = eddoa.post_id
-			WHERE p.post_type = 'edd_payment'		
-			AND( p.post_status = 'publish' OR p.post_status = 'edd_subscription' )
-			AND p.post_date >= '{$sale_start_date}'
-			AND p.post_date <= '{$sale_end_date}'
-			AND eddoa.meta_key = '_edd_payment_meta' 
+		$total_rev = $wpdb->get_var( "
+			SELECT DISTINCT SUM(p.total)
+			FROM {$wpdb->prefix}edd_orders as p
+			INNER JOIN {$wpdb->prefix}edd_order_adjustments as pm ON p.id = pm.object_id
+			WHERE p.type = 'sale'
+			AND p.status = 'complete'
+			AND p.date_completed >= '{$sale_start_date}'
+			AND p.date_completed <= '{$sale_end_date}'
 		" );
 
-		$total_renewals = 0;
-		$new_rev_with_code = 0;
-		$new_rev_without_code = 0;
-
-		if( $sale_revenue ){
-			foreach( $sale_revenue as $con ){
-				$payment_data = maybe_unserialize( $con->meta_value );
-				if( $con->post_status == 'edd_subscription' ){
-					//Renewal.
-					foreach( $payment_data['cart_details'] as $cart ) {
-						$total_renewals += $cart['price'];
-					}
-				} elseif ( $payment_data['user_info']['discount'] === $coupon_code->code ) {
-					// Purchase with code.
-					foreach( $payment_data['cart_details'] as $cart ) {
-						$new_rev_with_code += $cart['price'];
-					}
-				} else {
-					// Purchase without code.
-					foreach( $payment_data['cart_details'] as $cart ) {
-						$new_rev_without_code += $cart['price'];
-					}
-				}				
-			}
-		}
-		
-		$total_rev = $new_rev_without_code + $new_rev_with_code + $total_renewals;
-
-		?>
-		<div class="swsales_reports-box">
-			<h1 class="swsales_reports-box-title"><?php esc_html_e( 'Revenue Breakdown', 'sitewide-sales' ); ?></h1>
-			<p>
-				<?php
-				printf(
-					wp_kses_post( 'All orders from %s to %s.', 'sitewide-sales' ),
-					$sitewide_sale->get_start_date(),
-					$sitewide_sale->get_end_date()
-				);
-				?>
-			</p>
-			<hr />
-			<div class="swsales_reports-data swsales_reports-data-<?php echo empty( $total_renewals ) ? 3 : 4 ?>col">
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_with_code ) ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Sale Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_with_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $new_rev_without_code ) ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Other New Revenue', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $new_rev_without_code / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<?php if ( ! empty( $total_renewals ) ) { ?>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_renewals ) ) ) ); ?></h1>
-					<p>
-						<?php esc_html_e( 'Renewals', 'sitewide-sales' ); ?>
-						<br />
-						(<?php echo( esc_html( 0 == $total_rev ? 'NA' : round( ( $total_renewals / $total_rev ) * 100, 2 ) ) ); ?>%)
-					</p>
-				</div>
-				<?php } ?>
-				<div class="swsales_reports-data-section">
-					<h1><?php echo esc_attr( wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) ); ?></h1>
-					<p><?php esc_html_e( 'Total Revenue in Period', 'sitewide-sales' ); ?></p>
-				</div>
-			</div>
-		</div>
-		<?php
+		return $format_price ?  wp_strip_all_tags( edd_currency_filter( edd_format_amount( $total_rev ) ) ) : $total_rev;
 	}
 }
 SWSales_Module_EDD::init();
