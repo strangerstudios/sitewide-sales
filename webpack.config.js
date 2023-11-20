@@ -1,13 +1,41 @@
-const path = require('path');
-const defaultConfig = require("./node_modules/@wordpress/scripts/config/webpack.config");
+/**
+ * `@wordpress/scripts` path-based name multi-block Webpack configuration.
+ * @see https://wordpress.stackexchange.com/questions/390282
+ */
 
-module.exports = {
-  ...defaultConfig,
-	entry: {
-		index: path.resolve( __dirname, 'blocks', 'blocks.js' ),
-	},
-	output: {
-		path: path.resolve( __dirname, 'js' ),
-		filename: 'blocks.build.js'
-	}
+// Native Depedencies.
+const path = require( 'path' );
+
+// Third-Party Dependencies.
+const CopyPlugin = require( 'copy-webpack-plugin' );
+const config = require( '@wordpress/scripts/config/webpack.config.js' );
+
+config.entry = {
+	'countdown-timer/index': path.resolve(
+		process.cwd(),
+		'blocks',
+		'src',
+		'countdown-timer',
+		'index.js'
+	),
 };
+
+config.output = {
+	filename: '[name].js',
+	path: path.resolve( process.cwd(), 'blocks', 'build' ),
+};
+
+// Add a CopyPlugin to copy over block.json files.
+config.plugins.push(
+	new CopyPlugin( {
+		patterns: [
+			{
+				context: 'blocks/src',
+				from: `*/block.json`,
+				noErrorOnMissing: true,
+			},
+		],
+	} )
+);
+
+module.exports = config;
