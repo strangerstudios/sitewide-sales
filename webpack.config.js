@@ -25,13 +25,13 @@ config.entry = {
 	// 	'sale-content',
 	// 	'index.js'
 	// ),
-	// 'sale-period-setting/index': path.resolve(
-	// 	process.cwd(),
-	// 	'blocks',
-	// 	'src',
-	// 	'sale-period-setting',
-	// 	'index.js'
-	// )
+	'sale-period-setting/index': path.resolve(
+		process.cwd(),
+		'blocks',
+		'src',
+		'sale-period-setting',
+		'index.js'
+	)
 	
 };
 config.output = {
