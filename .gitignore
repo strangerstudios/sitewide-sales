@@ -18,6 +18,7 @@ $RECYCLE.BIN/
 # npm
 node_modules
 package-lock.json
+build
 
 # Temporary files
 *~
