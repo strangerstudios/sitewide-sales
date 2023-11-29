@@ -11,13 +11,13 @@ const CopyPlugin = require( 'copy-webpack-plugin' );
 const config = require( '@wordpress/scripts/config/webpack.config.js' );
 
 config.entry = {
-	// 'countdown-timer/index': path.resolve(
-	// 	process.cwd(),
-	// 	'blocks',
-	// 	'src',
-	// 	'countdown-timer',
-	// 	'index.js'
-	// ),
+	'countdown-timer/index': path.resolve(
+		process.cwd(),
+		'blocks',
+		'src',
+		'countdown-timer',
+		'index.js'
+	),
 	// 'sale-content/index': path.resolve(
 	// 	process.cwd(),
 	// 	'blocks',
