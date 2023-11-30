@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "swsales/sale-content",
+    "title": "Sale Content",
+    "category": "swsales",
+    "description": "Build your Sitewide Sale landing page with blocks. Place blocks within this section to conditionally show the content before, during, or after the sale.",
+    "keywords": [ "sale visibility", "before sale", "after sale", "sale content"],
+    "attributes" : {
+        "period": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "supports": {
+        "anchor": true
+    },
+    "example": {
+    },
+    "textdomain": "paid-memberships-pro",
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

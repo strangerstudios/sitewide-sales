@@ -18,13 +18,13 @@ config.entry = {
 	// 	'countdown-timer',
 	// 	'index.js'
 	// ),
-	// 'sale-content/index': path.resolve(
-	// 	process.cwd(),
-	// 	'blocks',
-	// 	'src',
-	// 	'sale-content',
-	// 	'index.js'
-	// ),
+	'sale-content/index': path.resolve(
+		process.cwd(),
+		'blocks',
+		'src',
+		'sale-content',
+		'index.js'
+	),
 	// 'sale-period-setting/index': path.resolve(
 	// 	process.cwd(),
 	// 	'blocks',
