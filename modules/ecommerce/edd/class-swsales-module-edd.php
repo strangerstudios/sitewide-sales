@@ -94,13 +94,18 @@ class SWSales_Module_EDD {
 				<?php
 			} else {
 
-				//Compatible with EDD 2.9 and 3.0
+				// Get the latest active coupons.
+				$code_limit = apply_filters( 'swsales_edd_discount_code_limit', 5000 );
+				$code_limit = intval( $code_limit );
 				$coupons = edd_get_discounts(
 					array(
 						'fields' => array( 'id', 'code'),
 						'status' => 'active',
+						'number' => $code_limit,
+						'order' => 'DESC',
 					)
 				);
+
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 				?>
 					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>

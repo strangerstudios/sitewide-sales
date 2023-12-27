@@ -91,9 +91,18 @@ class SWSales_Module_WC {
 			} else {
 				global $wpdb;
 
-				// Query the database for the coupons and only retrieve ID and post_title (coupon name).
+				// Query the database for the latest coupons and only retrieve ID and post_title (coupon name).
 				$coupon_limit = apply_filters( 'swsales_wc_coupon_limit', 5000 );
-				$coupons = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_title FROM $wpdb->posts WHERE post_type = 'shop_coupon' AND post_status = 'publish' LIMIT %d", $coupon_limit ), OBJECT );
+				$coupon_limit = intval( $coupon_limit );
+				$coupons = $wpdb->get_results( $wpdb->prepare(
+					"SELECT ID, post_title
+					 FROM $wpdb->posts
+					 WHERE post_type = 'shop_coupon' AND post_status = 'publish'
+					 ORDER BY ID DESC
+					 LIMIT %d",
+					$coupon_limit ), 
+					OBJECT
+				);
 
 				// Get the current coupon (if set) for the sale.
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_wc_coupon_id', null ) );
