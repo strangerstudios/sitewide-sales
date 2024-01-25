@@ -49,7 +49,7 @@ class SWSales_Module_PMPro {
 		add_filter( 'swsales_show_banner', array( __CLASS__, 'show_banner' ), 10, 2 );
 
 		// PMPro automatic discount application and default levels.
-		if ( version_compare( PMPRO_VERSION, '3.0', '>=' ) ) {
+		if ( class_exists( 'PMPro_Subscription' ) ) {
 			// PMPro 3.0+. Use filters for default level and discount code.
 			add_filter( 'wp', array( __CLASS__, 'enable_shortcodes_for_legacy_sitewide_sale_setups' ), 2 ); // Priority 2 so that it is the same as core PMPro.
 			add_filter( 'pmpro_default_level', array( __CLASS__, 'filter_default_level' ) );
