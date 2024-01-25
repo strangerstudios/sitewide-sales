@@ -1,15 +1,15 @@
-# Copyright (C) 2023 Stranger Studios
+# Copyright (C) 2024 Stranger Studios
 # This file is distributed under the GNU GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sitewide Sales 1.4\n"
+"Project-Id-Version: Sitewide Sales 1.4.1\n"
 "Report-Msgid-Bugs-To: info@strangerstudios.com\n"
 "Last-Translator: Stranger Studios <info@strangerstudios.com>\n"
 "Language-Team: Stranger Studios <info@strangerstudios.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-11-16T10:19:05+00:00\n"
+"POT-Creation-Date: 2024-01-25T17:57:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "X-Domain: sitewide-sales\n"
@@ -117,6 +117,8 @@ msgstr ""
 #: classes/class-swsales-landing-pages.php:254
 #: classes/class-swsales-landing-pages.php:291
 #: classes/class-swsales-metaboxes.php:852
+#: classes/class-swsales-landing-pages.php:255
+#: classes/class-swsales-landing-pages.php:292
 msgid "Sitewide Sale Landing Page"
 msgstr ""
 
@@ -124,10 +126,13 @@ msgstr ""
 #: classes/class-swsales-landing-pages.php:275
 #: classes/class-swsales-landing-pages.php:307
 #: classes/class-swsales-post-types.php:43
+#: classes/class-swsales-landing-pages.php:276
+#: classes/class-swsales-landing-pages.php:308
 msgid "Edit Sitewide Sale"
 msgstr ""
 
 #: classes/class-swsales-landing-pages.php:303
+#: classes/class-swsales-landing-pages.php:304
 msgid "Use the Sale Content block or Sale Period Visibility setting to display content before, during, and after the sale on this landing page."
 msgstr ""
 
@@ -307,6 +312,10 @@ msgstr ""
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:231
 #: modules/ecommerce/wc/class-swsales-module-wc.php:104
 #: classes/class-swsales-reports.php:112
+#: modules/ecommerce/edd/class-swsales-module-edd.php:114
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:129
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:246
+#: modules/ecommerce/wc/class-swsales-module-wc.php:113
 msgid "- Choose One -"
 msgstr ""
 
@@ -404,6 +413,9 @@ msgstr ""
 #: modules/ecommerce/edd/class-swsales-module-edd.php:146
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:147
 #: modules/ecommerce/wc/class-swsales-module-wc.php:136
+#: modules/ecommerce/edd/class-swsales-module-edd.php:151
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:162
+#: modules/ecommerce/wc/class-swsales-module-wc.php:145
 msgid " or "
 msgstr ""
 
@@ -475,6 +487,9 @@ msgstr ""
 #: modules/ecommerce/edd/class-swsales-module-edd.php:203
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:561
 #: modules/ecommerce/wc/class-swsales-module-wc.php:193
+#: modules/ecommerce/edd/class-swsales-module-edd.php:208
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:576
+#: modules/ecommerce/wc/class-swsales-module-wc.php:202
 msgid "No sitewide sale ID given. Try doing it manually."
 msgstr ""
 
@@ -1042,6 +1057,7 @@ msgstr ""
 
 #: modules/ecommerce/custom/class-swsales-module-custom.php:62
 #: modules/ecommerce/wc/class-swsales-module-wc.php:101
+#: modules/ecommerce/wc/class-swsales-module-wc.php:110
 msgid "Coupon"
 msgstr ""
 
@@ -1219,70 +1235,91 @@ msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:106
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:111
+#: modules/ecommerce/edd/class-swsales-module-edd.php:111
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:126
 msgid "Discount Code"
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:128
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:130
+#: modules/ecommerce/edd/class-swsales-module-edd.php:133
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:145
 msgid "This discount code expires before the Sitewide Sale's end date."
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:130
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:132
+#: modules/ecommerce/edd/class-swsales-module-edd.php:135
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:147
 msgid "This discount code starts after the Sitewide Sale's start date."
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:144
+#: modules/ecommerce/edd/class-swsales-module-edd.php:149
 msgid "edit discount code"
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:149
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:150
+#: modules/ecommerce/edd/class-swsales-module-edd.php:154
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:165
 msgid "create a new discount code"
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:150
+#: modules/ecommerce/edd/class-swsales-module-edd.php:155
 msgid "Select the discount code that will be automatically applied for users when they visit your Landing Page."
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:356
+#: modules/ecommerce/edd/class-swsales-module-edd.php:361
 msgid "Original price"
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:356
+#: modules/ecommerce/edd/class-swsales-module-edd.php:361
 msgid "sale price"
 msgstr ""
 
 #: modules/ecommerce/edd/class-swsales-module-edd.php:397
 #: modules/ecommerce/wc/class-swsales-module-wc.php:473
+#: modules/ecommerce/edd/class-swsales-module-edd.php:402
+#: modules/ecommerce/wc/class-swsales-module-wc.php:482
 msgid "Purchases using <a href=\"%s\">%s</a>"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:145
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:160
 msgid "edit code"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:151
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:166
 msgid "Select the code that will be automatically applied for users that complete an applicable membership checkout after visiting your Landing Page."
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:178
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:193
 msgid "Hide Sale by Level"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:200
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:215
 msgid "This setting will completely hide the sale from users with the selected levels (including the banner and discount logic)."
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:228
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:243
 msgid "Checkout Level"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:243
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:258
 msgid "Using the [pmpro_checkout] shortcode on your Landing Page will display a checkout form for this level."
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:276
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:291
 msgid "Successfully migrated %d Sitewide Sale from the Sitewide Sales Add On for Paid Memberships Pro."
 msgid_plural "Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro."
 msgstr[0] ""
@@ -1290,47 +1327,60 @@ msgstr[1] ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:302
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:331
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:317
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:346
 msgid "Migrate Your Previous Sales Data"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:303
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:332
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:318
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:347
 msgid "We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient."
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:307
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:322
 msgid "Migrate PMPro Sitewide Sales Data"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:310
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:325
 msgid "Dismiss This Notice"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:336
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:351
 msgid "Migrate PMPro Sitewide Sales Data &raquo;"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:589
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:604
 msgid "Error inserting discount code. Try doing it manually."
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:788
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:947
 msgid "Checkouts using <a href=\"%s\">%s</a>"
 msgstr ""
 
 #: modules/ecommerce/wc/class-swsales-module-wc.php:121
+#: modules/ecommerce/wc/class-swsales-module-wc.php:130
 msgid "This coupon expires on or before the Sitewide Sale's end date."
 msgstr ""
 
 #: modules/ecommerce/wc/class-swsales-module-wc.php:134
+#: modules/ecommerce/wc/class-swsales-module-wc.php:143
 msgid "edit coupon"
 msgstr ""
 
 #: modules/ecommerce/wc/class-swsales-module-wc.php:139
+#: modules/ecommerce/wc/class-swsales-module-wc.php:148
 msgid "create a new coupon"
 msgstr ""
 
 #: modules/ecommerce/wc/class-swsales-module-wc.php:140
+#: modules/ecommerce/wc/class-swsales-module-wc.php:149
 msgid "Select the coupon that will be automatically applied for users when they visit your Landing Page."
 msgstr ""
 

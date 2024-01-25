@@ -47,14 +47,20 @@ class SWSales_Module_PMPro {
 		// For the swsales_coupon helper function
 		add_filter( 'swsales_coupon', array( __CLASS__, 'swsales_coupon' ), 10, 2 );
 
-		// Default level for sale page.
-		add_action( 'wp', array( __CLASS__, 'load_pmpro_preheader' ), 0 ); // Priority 0 so that the discount code applies.
-
 		// Custom PMPro banner rules (hide for levels and hide at checkout).
 		add_filter( 'swsales_is_checkout_page', array( __CLASS__, 'is_checkout_page' ), 10, 2 );
 
-		// PMPro automatic discount application.
-		add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
+		// PMPro automatic discount application and default levels.
+		if ( class_exists( 'PMPro_Subscription' ) ) {
+			// PMPro 3.0+. Use filters for default level and discount code.
+			add_filter( 'wp', array( __CLASS__, 'enable_shortcodes_for_legacy_sitewide_sale_setups' ), 2 ); // Priority 2 so that it is the same as core PMPro.
+			add_filter( 'pmpro_default_level', array( __CLASS__, 'filter_default_level' ) );
+			add_filter( 'pmpro_default_discount_code', array( __CLASS__, 'filter_default_discount_code' ), 10, 2 );
+		} else {
+			// Use legacy function automatic_discount_application.
+			add_action( 'wp', array( __CLASS__, 'load_pmpro_preheader' ), 0 ); // Priority 0 so that the discount code applies.
+			add_action( 'init', array( __CLASS__, 'automatic_discount_application' ) );
+		}
 
 		// Hide discount code fields on SWSales landing page.
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'wp_enqueue_scripts' ) );		
@@ -102,8 +108,17 @@ class SWSales_Module_PMPro {
 			} else {
 				global $wpdb;
 
-				// Query the database for the discount codes.
-				$codes = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
+				// Query the database for the latest discount codes.
+				$code_limit = apply_filters( 'swsales_pmpro_discount_code_limit', 5000 );
+				$code_limit = intval( $code_limit );
+				$codes = $wpdb->get_results( $wpdb->prepare(
+					"SELECT *
+					 FROM $wpdb->pmpro_discount_codes
+					 ORDER BY id DESC
+					 LIMIT %d",
+					$code_limit ), 
+					OBJECT
+				);
 
 				// Get the discount code (if set) for the sale.
 				$current_discount = $cur_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
@@ -649,7 +664,149 @@ class SWSales_Module_PMPro {
 	}
 
 	/**
+	 * If we are on a landing page using the legacy [sitewide_sales] shortcode,
+	 * enable PMPro shortcodes and load the corresponding preheaders.
+	 *
+	 * Only called in PMPro v3.0+.
+	 */
+	public static function enable_shortcodes_for_legacy_sitewide_sale_setups() {
+		// Make sure PMPro is loaded.
+		if ( ! defined( 'PMPRO_DIR' ) ) {
+			return;
+		}
+
+		// Don't do this in the dashboard.
+		if ( is_admin() ) {
+			return;
+		}
+
+		// Check if this is the landing page.
+		$queried_object = get_queried_object();
+		if ( empty( $queried_object ) || empty( $queried_object->ID ) || null === classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $queried_object->ID ) ) {
+			return;
+		}
+
+		// If the [sitewide_sales] shortcode is not present, we don't need to force loading PMPro Shortcodes.
+		if ( ! has_shortcode( $queried_object->post_content, 'sitewide_sales' ) ) {
+			return;
+		}
+
+		// Load checkout and levels shortcodes and preheaders in case they are used in the [sitewide_sales] shortcode.
+		add_shortcode( 'pmpro_checkout', array( __CLASS__, 'manual_pmpro_checkout_shortcode_implementation' ) );
+		require_once PMPRO_DIR . '/preheaders/checkout.php';
+		add_shortcode( 'pmpro_levels', array( __CLASS__, 'manual_pmpro_levels_shortcode_implementation' ) );
+		require_once PMPRO_DIR . '/preheaders/levels.php';
+	}
+
+	/**
+	 * Filter the default level at checkout.
+	 * 
+	 * If we are on a landing page, use the default level set for the corresponding sale.
+	 * If there is not a default level for this sale but the sale does have a discount code, choose a level that uses that code.
+	 *
+	 * If we we still don't have a level, we likely aren't on a specific landing page. Do the same steps for the active sale.
+	 *
+	 * Only called in PMPro v3.0+.
+	 *
+	 * @param int|null $level_id Default level ID.
+	 * @return int|null
+	 */
+	public static function filter_default_level( $level_id ) {
+		global $post, $wpdb;
+
+		// Check if we have a $post that may be a landing page.
+		if ( ! empty( $post ) && ! empty( $post->ID ) ) {
+			// Check if this post is a landing page.
+			$sitewide_sale = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $post->ID );
+			if ( null !== $sitewide_sale ) {
+				// If this post has a sale with a default level set, use it.
+				$default_level_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_landing_page_default_level' );
+				if ( ! empty( $default_level_id ) ) {
+					return (int)$default_level_id;
+				} 
+
+				// If this post has a sale without a default level set, choose a level that the sale applies to and show that.
+				$discount_code_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
+				if ( ! empty( $discount_code_id ) ) {
+					$first_code_level_id = $wpdb->get_var( "SELECT level_id FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = '" . esc_sql( $discount_code_id ) . "' ORDER BY level_id LIMIT 1" );
+					if ( ! empty( $first_code_level_id ) ) {
+						return (int)$first_code_level_id;
+					}
+				}
+			}
+		}
+
+		// Check if there is an active sale that we are planning to apply an automatic discount to.
+		$sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( null !== $sitewide_sale && $sitewide_sale->should_apply_automatic_discount() ) {
+			// If the active sale has a default level set, use it.
+			$default_level_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_landing_page_default_level' );
+			if ( ! empty( $default_level_id ) ) {
+				return (int)$default_level_id;
+			} 
+
+			// If the active sale does not have a default level set, choose a level that the sale applies to and show that.
+			$discount_code_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
+			if ( ! empty( $discount_code_id ) ) {
+				$first_code_level_id = $wpdb->get_var( "SELECT level_id FROM $wpdb->pmpro_discount_codes_levels WHERE code_id = '" . esc_sql( $discount_code_id ) . "' ORDER BY level_id LIMIT 1" );
+				if ( ! empty( $first_code_level_id ) ) {
+					return (int)$first_code_level_id;
+				}
+			}
+		}
+
+		// If we get here, SWS is not going to overwrite the default level. Return what we were passed.
+		return $level_id;
+	}
+
+	/**
+	 * Filter the default discount code at checkout.
+	 *
+	 * If we are on a landing page, use the discount code for that sale. 
+	 */
+	public static function filter_default_discount_code( $discount_code, $level_id ) {
+		global $post, $wpdb;
+
+		// Check if we have a $post that may be a landing page.
+		if ( ! empty( $post ) && ! empty( $post->ID ) ) {
+			// Check if this post is a landing page.
+			$sitewide_sale = classes\SWSales_Sitewide_Sale::get_sitewide_sale_for_landing_page( $post->ID );
+			if ( null !== $sitewide_sale ) {
+				// If this post has a sale with a discount code set, use it.
+				$discount_code_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
+				if ( ! empty( $discount_code_id ) ) {
+					$sale_discount_code = $wpdb->get_var( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id = '" . esc_sql( $discount_code_id ) . "' LIMIT 1" );
+					if ( ! empty( $sale_discount_code ) && pmpro_checkDiscountCode( $sale_discount_code, $level_id ) ) {
+						return $sale_discount_code;
+					}
+				}
+			}
+		}
+
+		// Check if there is an active sale that we should apply an automatic discount for.
+		$sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();
+		if ( null !== $sitewide_sale && $sitewide_sale->should_apply_automatic_discount() ) {
+			// If the active sale has a discount code set, use it.
+			$discount_code_id = $sitewide_sale->get_meta_value( 'swsales_pmpro_discount_code_id' );
+			if ( ! empty( $discount_code_id ) ) {
+				$sale_discount_code = $wpdb->get_var( "SELECT code FROM $wpdb->pmpro_discount_codes WHERE id = '" . esc_sql( $discount_code_id ) . "' LIMIT 1" );
+				if ( ! empty( $sale_discount_code ) && pmpro_checkDiscountCode( $sale_discount_code, $level_id ) ) {
+					return $sale_discount_code;
+				}
+			}
+		}
+
+		// If we get here, SWS is not going to overwrite the default discount code. Return what we were passed.
+		return $discount_code;
+	}
+
+
+	
+
+	/**
 	 * Load the checkout and levels preheaders on the landing page.
+	 *
+	 * Legacy function for before PMPro v3.0.
 	 */
 	public static function load_pmpro_preheader() {
 		global $wpdb;
@@ -736,6 +893,8 @@ class SWSales_Module_PMPro {
 
 	/**
 	 * Automatically applies discount code if user has the cookie set from sale page
+	 *
+	 * Legacy function for before PMPro v3.0.
 	 */
 	public static function automatic_discount_application() {
 		$active_sitewide_sale = classes\SWSales_Sitewide_Sale::get_active_sitewide_sale();

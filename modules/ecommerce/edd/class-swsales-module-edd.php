@@ -94,13 +94,18 @@ class SWSales_Module_EDD {
 				<?php
 			} else {
 
-				//Compatible with EDD 2.9 and 3.0
+				// Get the latest active coupons.
+				$code_limit = apply_filters( 'swsales_edd_discount_code_limit', 5000 );
+				$code_limit = intval( $code_limit );
 				$coupons = edd_get_discounts(
 					array(
 						'fields' => array( 'id', 'code'),
 						'status' => 'active',
+						'number' => $code_limit,
+						'order' => 'DESC',
 					)
 				);
+
 				$current_coupon = intval( $cur_sale->get_meta_value( 'swsales_edd_coupon_id', null ) );
 				?>
 					<th><label for="swsales_edd_coupon_id"><?php esc_html_e( 'Discount Code', 'sitewide-sales' );?></label></th>
@@ -123,7 +128,7 @@ class SWSales_Module_EDD {
 						</select>
 						<?php
 						if ( false !== $coupon_found ) {
-							$discount_object = new \EDD_Discount( $coupon_found->ID );
+							$discount_object = new \EDD_Discount( $coupon_found->id );
 							if ( ! empty( $discount_object->expiration ) && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) > date('Y-m-d H:i:s', strtotime( $discount_object->expiration ) ) ) {
 								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							} elseif ( ! empty( $discount_object->start ) && $cur_sale->get_start_date( 'Y-m-d H:i:s' ) < date('Y-m-d H:i:s', strtotime( $discount_object->start ) ) ) {
@@ -135,7 +140,7 @@ class SWSales_Module_EDD {
 							<span id="swsales_edd_after_coupon_select">
 							<?php
 							if ( false !== $coupon_found ) {
-								$edit_coupon_url = admin_url( 'edit.php?post_type=download&page=edd-discounts&edd-action=edit_discount&discount='.$coupon_found->ID );
+								$edit_coupon_url = admin_url( 'edit.php?post_type=download&page=edd-discounts&edd-action=edit_discount&discount='.$coupon_found->id );
 							} else {
 								$edit_coupon_url = '#';
 							}

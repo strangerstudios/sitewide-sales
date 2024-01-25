@@ -2,8 +2,8 @@
 Contributors: strangerstudios, dlparker1005
 Tags: sales, sale, woocommerce, paid memberships pro, pmpro, black friday, cyber monday, discount
 Requires at least: 5.2
-Tested up to: 6.3
-Stable tag: 1.4
+Tested up to: 6.4
+Stable tag: 1.4.1
 
 Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
 
@@ -22,6 +22,11 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 1. Create a new `Sitewide Sale` under `Sitewide Sales` > `Add New`.
 
 == Changelog ==
+= 1.4.1 - 2024-01-25 =
+* ENHANCEMENT: Updated the PMPro module to be compatible with PMPro 3.0+. #143 (@dparker1005)
+* ENHANCEMENT: Now showing the latest coupons or discount codes in select dropdown to help sites with a large number of codes. #168 (@kimcoleman)
+* ENHANCEMENT: Added filter `swsales_pmpro_discount_code_limit` to limit the number of PMPro discount codes shown in the dropdown. #168 (@kimcoleman)
+* ENHANCEMENT: Added filter `swsales_edd_discount_code_limit` to limit the number of EDD discount codes shown in the dropdown. #168 (@kimcoleman)
 
 = 1.4 - 2023-11-01 =
 * FEATURE: Added feature to compare sale data for two separate sales for Reports.
