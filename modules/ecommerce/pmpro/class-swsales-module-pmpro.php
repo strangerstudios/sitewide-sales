@@ -102,8 +102,17 @@ class SWSales_Module_PMPro {
 			} else {
 				global $wpdb;
 
-				// Query the database for the discount codes.
-				$codes = $wpdb->get_results( "SELECT * FROM $wpdb->pmpro_discount_codes", OBJECT );
+				// Query the database for the latest discount codes.
+				$code_limit = apply_filters( 'swsales_pmpro_discount_code_limit', 5000 );
+				$code_limit = intval( $code_limit );
+				$codes = $wpdb->get_results( $wpdb->prepare(
+					"SELECT *
+					 FROM $wpdb->pmpro_discount_codes
+					 ORDER BY id DESC
+					 LIMIT %d",
+					$code_limit ), 
+					OBJECT
+				);
 
 				// Get the discount code (if set) for the sale.
 				$current_discount = $cur_sale->get_meta_value( 'swsales_pmpro_discount_code_id', null );
