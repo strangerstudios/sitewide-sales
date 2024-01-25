@@ -128,7 +128,7 @@ class SWSales_Module_EDD {
 						</select>
 						<?php
 						if ( false !== $coupon_found ) {
-							$discount_object = new \EDD_Discount( $coupon_found->ID );
+							$discount_object = new \EDD_Discount( $coupon_found->id );
 							if ( ! empty( $discount_object->expiration ) && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) > date('Y-m-d H:i:s', strtotime( $discount_object->expiration ) ) ) {
 								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							} elseif ( ! empty( $discount_object->start ) && $cur_sale->get_start_date( 'Y-m-d H:i:s' ) < date('Y-m-d H:i:s', strtotime( $discount_object->start ) ) ) {
@@ -140,7 +140,7 @@ class SWSales_Module_EDD {
 							<span id="swsales_edd_after_coupon_select">
 							<?php
 							if ( false !== $coupon_found ) {
-								$edit_coupon_url = admin_url( 'edit.php?post_type=download&page=edd-discounts&edd-action=edit_discount&discount='.$coupon_found->ID );
+								$edit_coupon_url = admin_url( 'edit.php?post_type=download&page=edd-discounts&edd-action=edit_discount&discount='.$coupon_found->id );
 							} else {
 								$edit_coupon_url = '#';
 							}
