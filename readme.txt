@@ -73,7 +73,7 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 * ENHANCEMENT: Improved the "Vintage" template.
 * ENHANCEMENT: Adjusting "Photo" template for EDD and other improvements.
 * ENHANCEMENT: Now showing 'Best Day' and 'Today' on the sale report chart.
-* ENHANCEMENT: Added filter swsales_daily_revenue_chart_days to limit days shown on chart. Default is 31 days.
+* ENHANCEMENT: Added filter swsales_daily_revenue_chart_days to limit days shown on chart. Default is 21 days.
 * BUG FIX/ENHANCEMENT: Fixed warning for PMPro module and hiding banner by membership level.
 * BUG FIX/ENHANCEMENT: Hiding the banner if the "shop" page is chosen as the landing page.
 * BUG FIX/ENHANCEMENT: Removed strikethrough pricing on variable downloads.
