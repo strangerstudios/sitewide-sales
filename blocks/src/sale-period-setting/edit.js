@@ -1,35 +1,26 @@
-/*
- * Sale Period Setting
+/**
+ * Retrieves the translation of text.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
  */
+import { __ } from '@wordpress/i18n';
 
- /**
- * WordPress Dependencies
+/**
+ * WordPress dependencies
  */
-const { __ } = wp.i18n;
-const {
-	addFilter
-} = wp.hooks;
-const {
-	Fragment
-}	= wp.element;
-const {
-	InspectorAdvancedControls
-}	= wp.blockEditor;
-const {
-	createHigherOrderComponent
-} = wp.compose;
-const {
-	SelectControl
-} = wp.components;
-
+import { addFilter } from '@wordpress/hooks';
+import { Fragment } from '@wordpress/element';
+import { InspectorAdvancedControls } from '@wordpress/block-editor';
+import { createHigherOrderComponent } from '@wordpress/compose';
+import { SelectControl } from '@wordpress/components';
 const allowed_on_blocks = ['core/columns','core/cover','core/group'];
 
 /**
- * Add sale period select controls on Advanced Block Panel.
+ * Render the Membership Checkout block in the editor.
  *
- * @param {function} BlockEdit Block edit component.
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
  *
- * @return {function} BlockEdit Modified block edit component.
+ * @return {WPElement} Element to render.
  */
 const withAdvancedControls = createHigherOrderComponent( ( BlockEdit ) => {
 	return ( props ) => {
@@ -73,6 +64,7 @@ addFilter(
 	'swsales/sale-period-setting',
 	withAdvancedControls
 );
+
 
 /**
  * Add custom attribute for sale period visibility.
