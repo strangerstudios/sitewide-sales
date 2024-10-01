@@ -317,12 +317,6 @@ class SWSales_Reports {
 				}
 			}
 
-			// Get the best day for primary sale to highlight in the chart.
-			$highest_daily_revenue = max( $primary_sale_chart_data );
-			if ( $highest_daily_revenue > 0 ) {
-				$highest_daily_revenue_key = array_search( $highest_daily_revenue, $primary_sale_chart_data );
-			}
-
 			// Display the chart.
 			if ( is_array( $primary_sale_chart_data ) ) { ?>
 				<div id="swsales_sale_revenue_by_day" class="swsales_reports-box swsales_chart_area">
@@ -364,6 +358,11 @@ class SWSales_Reports {
 										}
 									?>,
 									<?php
+										// Get the best day for primary sale to highlight in the chart.
+										$highest_daily_revenue = max( $primary_sale_chart_data );
+										if ( $highest_daily_revenue > 0 ) {
+											$highest_daily_revenue_key = array_search( $highest_daily_revenue, $primary_sale_chart_data );
+										}
 										if ( ! empty( $highest_daily_revenue_key ) && $date === $highest_daily_revenue_key ) {
 											echo wp_json_encode( esc_html__( 'Best Day', 'sitewide-sales' ) );
 										} elseif ( date( 'd.m.Y' ) === date( 'd.m.Y', strtotime( $date ) ) ) {
