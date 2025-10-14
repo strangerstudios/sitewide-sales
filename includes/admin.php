@@ -27,9 +27,13 @@ function swsales_admin_header() {
 				<a href="https://sitewidesales.com/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
 				<a href="https://sitewidesales.com/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 				<?php if ( swsales_license_is_valid() ) { ?>
-					<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					<?php 
+					/* Translators: %s Link to Sitewide Sales License page. */	
+					printf(__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
 				<?php } elseif ( ! defined( 'SWSALES_LICENSE_NAG' ) || SWSALES_LICENSE_NAG == true ) { ?>
-					<?php printf(__( '<a class="swsales_license_tag swsales_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					<?php
+					/* Translators: %s Link to Sitewide Sales License page. */
+					printf(__( '<a class="swsales_license_tag swsales_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
 				<?php } ?>
 			</div> <!-- end sitewide_sales_meta -->
 		</div> <!-- end sitewide_sales_banner_wrapper -->

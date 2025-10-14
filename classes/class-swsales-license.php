@@ -21,7 +21,7 @@ class SWSales_License{
         add_submenu_page(
 			'edit.php?post_type=sitewide_sale',
 			__( 'License', 'sitewide-sales' ),
-			__( '<span style="color: ' . $span_color . '">License</span>', 'sitewide-sales' ),
+			'<span style="color: ' . esc_attr( $span_color ) . '">' . __( 'License', 'sitewide-sales' ) . '</span>',
 			'manage_options',
 			'sitewide_sales_license',
 			array( __CLASS__, 'show_license_page' )
@@ -53,9 +53,10 @@ class SWSales_License{
             ?>
             <h1><?php esc_html_e( 'Sitewide Sales Support License', 'sitewide-sales' ); ?></h1>
             <?php if(!swsales_license_is_valid() && empty($key)) { ?>
-                <p class="sitewide_sales_message sitewide_sales_alert"><strong><?php _e('Enter your support license key.</strong> Your license key can be found in your purchase confirmation email or in your <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dno-key" target="_blank">account area</a>.', 'sitewide-sales' );?></p>
+                <p class="sitewide_sales_message sitewide_sales_alert"><strong><?php
+					_e('Enter your support license key.</strong> Your license key can be found in your purchase confirmation email or in your <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dno-key" target="_blank">account area</a>.', 'sitewide-sales' ); /* PHPCS:Ignore */?></p>
             <?php } elseif(!swsales_license_is_valid()) { ?>
-                <p class="sitewide_sales_message sitewide_sales_error"><strong><?php _e('Your license is invalid or expired.', 'sitewide-sales' );?></strong> <?php _e('Visit the <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dkey-not-valid" target="_blank">account area</a> to confirm that your account is active and to find your license key.', 'sitewide-sales' );?></p>
+                <p class="sitewide_sales_message sitewide_sales_error"><strong><?php _e('Your license is invalid or expired.', 'sitewide-sales' );?></strong> <?php _e('Visit the <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dkey-not-valid" target="_blank">account area</a> to confirm that your account is active and to find your license key.', 'sitewide-sales' ); /* PHPCS:Ignore */?></p>
             <?php } else { ?>													
                 <p class="sitewide_sales_message sitewide_sales_success"><?php _e('<strong>Thank you!</strong> A valid license key has been used to activate your support license on this site.', 'sitewide-sales');?></p>
             <?php } ?>
@@ -105,14 +106,14 @@ class SWSales_License{
             ?>
 
             <?php
-                echo '<p>' . wp_kses( __( '<strong>Stranger Studios, the author of this plugin, offers a plan for automatic updates and premium support.</strong> Your Sitewide Sales purchase includes a support license key which we recommend for all public websites running Sitewide Sales. A support license key allows you to automatically update when a new security, bug fix, or feature enhancement is released.' ), $allowed_swsales_license_strings_html ) . '</p>';
+                echo '<p>' . wp_kses( __( '<strong>Stranger Studios, the author of this plugin, offers a plan for automatic updates and premium support.</strong> Your Sitewide Sales purchase includes a support license key which we recommend for all public websites running Sitewide Sales. A support license key allows you to automatically update when a new security, bug fix, or feature enhancement is released.', 'sitewide-sales' ), $allowed_swsales_license_strings_html ) . '</p>';
             ?>
 
             <?php
-                echo '<p>' . wp_kses( __( '<strong>Need help?</strong> Your license allows you to open new tickets in our private support area. Purchases are backed by a 30 day, no questions asked refund policy.' ), $allowed_swsales_license_strings_html ) . '</p>';
+                echo '<p>' . wp_kses( __( '<strong>Need help?</strong> Your license allows you to open new tickets in our private support area. Purchases are backed by a 30 day, no questions asked refund policy.', 'sitewide-sales' ), $allowed_swsales_license_strings_html ) . '</p>';
             ?>
 
-            <p><a href="https://sitewidesales.com/pricing/?utm_source=plugin&utm_medium=swsales-license&utm_campaign=swsales-checkout&utm_content=view-license-option" target="_blank"><?php echo esc_html( 'View Support License Options &raquo;', 'sitewide-sales' ); ?></a></p>
+            <p><a href="https://sitewidesales.com/pricing/?utm_source=plugin&utm_medium=swsales-license&utm_campaign=swsales-checkout&utm_content=view-license-option" target="_blank"><?php esc_html_e( 'View Support License Options &raquo;', 'sitewide-sales' ); ?></a></p>
 			</div> <!-- end swsales-wrap -->
 		</div> <!-- end sitewide_sales_admin -->
         <?php

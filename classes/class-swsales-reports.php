@@ -116,7 +116,7 @@ class SWSales_Reports {
 										$sale   = SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sale_id );
 										$selected_modifier =  $selected != null && $sale === $selected ? 'selected="selected"' : '';
 									?>
-										<option value="<?php esc_attr_e( $sale->get_id() ); ?>" <?php echo( esc_html( $selected_modifier ) ); ?>>
+										<option value="<?php echo esc_attr( $sale->get_id() ); ?>" <?php echo( esc_html( $selected_modifier ) ); ?>>
 											<?php echo( esc_html( $sale->get_name() ) ); ?>
 										</option>
 										<?php
@@ -138,7 +138,9 @@ class SWSales_Reports {
 					</script>
 					<?php
 				} else { ?>
-					<div class="sitewide_sales_message sitewide_sales_alert"><?php printf(__( 'No Sitewide Sales found. <a href="%s">Create your first Sitewide Sale &raquo;</a>', 'sitewide-sales' ), admin_url( 'post-new.php?post_type=sitewide_sale' ) ); ?></div>
+					<div class="sitewide_sales_message sitewide_sales_alert"><?php 
+					/* Translators: %s: link to create new sitewide sale */
+					printf(__( 'No Sitewide Sales found. <a href="%s">Create your first Sitewide Sale &raquo;</a>', 'sitewide-sales' ), admin_url( 'post-new.php?post_type=sitewide_sale' ) ); ?></div>
 					<?php
 				}
 
@@ -214,6 +216,7 @@ class SWSales_Reports {
 
 									// Calculate the date difference
 									$interval = $start_date->diff($end_date);
+									/* Translators: %s: number of days */
 									echo esc_html( sprintf( _n( '(%s Day)', '(%s Days)', $interval->days, 'sitewide-sales' ), number_format_i18n( $interval->days ) ) );
 								?>
 							</div>
@@ -323,7 +326,9 @@ class SWSales_Reports {
 					<h2><?php esc_html_e( 'Sale Revenue By Day', 'sitewide-sales' ); ?></h2>
 					<?php if ( ! empty( $data_sliced ) ) { ?>
 						<div class="swsales_chart_description">
-							<?php esc_html_e( sprintf( __( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ) ); ?>
+							<?php 
+							/* Translators: %s: number of days */
+							printf( esc_html__( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ); ?>
 						</div>
 					<?php } ?>
 					<div id="chart_div"></div>
@@ -494,6 +499,7 @@ class SWSales_Reports {
 
 									// Calculate the date difference
 									$interval = $start_date->diff($end_date);
+									/* Translators: %s: number of days */
 									echo esc_html( sprintf( _n( '(%s Day)', '(%s Days)', $interval->days, 'sitewide-sales' ), number_format_i18n( $interval->days ) ) );
 								?>
 							</div>

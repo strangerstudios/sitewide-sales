@@ -503,7 +503,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				),
 			),
 			'top'          => array(
-				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
+				'option_title'  => __( 'Top of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 				'css_selectors' => array(
 					'#swsales-banner-top',

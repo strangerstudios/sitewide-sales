@@ -195,7 +195,7 @@ class SWSales_MetaBoxes {
 	}
 
 	public static function documentation( $post ) { ?>
-		<p><?php esc_html_e( 'Explore how to set up a sale using the Sitewide Sales plugin.' ); ?></p>
+		<p><?php esc_html_e( 'Explore how to set up a sale using the Sitewide Sales plugin.', 'sitewide-sales' ); ?></p>
 		<ul>
 			<li><a href="https://sitewidesales.com/?utm_source=plugin&utm_medium=edit-swsales-meta-box&utm_campaign=about-plugin" target="_blank" title="<?php esc_attr_e( 'About the Plugin', 'sitewide-sales' ); ?>">
 				<?php esc_html_e( 'About the Plugin', 'sitewide-sales' ); ?>
@@ -577,8 +577,8 @@ class SWSales_MetaBoxes {
 				<p>
 					<?php
 						/* translators: Strings here are button open and close tags. */
-						$button_text = __( 'Or, use the [sitewide_sales] shortcode on your page and %sthe legacy fields here to create a basic landing page%s.', 'sitewide-sales' );
-						printf( wp_kses( $button_text, $allowed_html), '<button class="swsales-table-trigger-button" type="button">', '</button>' );
+						$button_text = __( 'Or, use the [sitewide_sales] shortcode on your page and %1$sthe legacy fields here to create a basic landing page%2$s.', 'sitewide-sales' );
+						printf( wp_kses( $button_text, $allowed_html ), '<button class="swsales-table-trigger-button" type="button">', '</button>' );
 					?>
 				</p>
 			</div>
