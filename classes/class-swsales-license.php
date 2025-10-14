@@ -113,7 +113,7 @@ class SWSales_License{
                 echo '<p>' . wp_kses( __( '<strong>Need help?</strong> Your license allows you to open new tickets in our private support area. Purchases are backed by a 30 day, no questions asked refund policy.', 'sitewide-sales' ), $allowed_swsales_license_strings_html ) . '</p>';
             ?>
 
-            <p><a href="https://sitewidesales.com/pricing/?utm_source=plugin&utm_medium=swsales-license&utm_campaign=swsales-checkout&utm_content=view-license-option" target="_blank"><?php echo esc_html__( 'View Support License Options &raquo;', 'sitewide-sales' ); ?></a></p>
+            <p><a href="https://sitewidesales.com/pricing/?utm_source=plugin&utm_medium=swsales-license&utm_campaign=swsales-checkout&utm_content=view-license-option" target="_blank"><?php esc_html_e( 'View Support License Options &raquo;', 'sitewide-sales' ); ?></a></p>
 			</div> <!-- end swsales-wrap -->
 		</div> <!-- end sitewide_sales_admin -->
         <?php
