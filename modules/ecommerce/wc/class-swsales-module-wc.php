@@ -479,7 +479,8 @@ class SWSales_Module_WC {
 		}
 
 		return sprintf(
-			__( 'Purchases using <a href="%s">%s</a>', 'sitewide-sales' ),
+			/* Translators: %1$s: edit coupon code link, %2$s: coupon code */
+			__( 'Purchases using <a href="%1$s">%2$s</a>', 'sitewide-sales' ),
 			get_edit_post_link( $coupon_id ),
 			$coupon_code
 		);

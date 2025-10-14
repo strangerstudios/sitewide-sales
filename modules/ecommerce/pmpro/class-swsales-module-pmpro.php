@@ -288,7 +288,15 @@ class SWSales_Module_PMPro {
 		if ( ! empty( $_REQUEST['swsales_pmpro_migrated_sales'] ) ) {
 			?>
 			<div class="notice notice-success notice-large inline">
-					<p><?php esc_html_e( sprintf( _n( 'Successfully migrated %d Sitewide Sale from the Sitewide Sales Add On for Paid Memberships Pro.', 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', intval($_REQUEST['swsales_pmpro_migrated_sales']), 'sitewide-sales' ), $_REQUEST['swsales_pmpro_migrated_sales'] ) ); ?></p>
+					<p>
+						<?php echo esc_html( 
+						sprintf( 
+							/* translators: %d Number of Sitewide Sales migrated. */
+							_n( 'Successfully migrated %d Sitewide Sale from the Sitewide Sales Add On for Paid Memberships Pro.', 'Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro.', intval($_REQUEST['swsales_pmpro_migrated_sales']), 'sitewide-sales' ), 
+							$_REQUEST['swsales_pmpro_migrated_sales'] 
+							)
+					 	); ?>
+					</p>
 				</div>
 			<?php
 		}
@@ -944,7 +952,8 @@ class SWSales_Module_PMPro {
 		}
 
 		return sprintf(
-			__( 'Checkouts using <a href="%s">%s</a>', 'sitewide-sales' ),
+			/* Translators: 1: Discount code URL, 2: Discount code. */
+			__( 'Checkouts using <a href="%1$s">%2$s</a>', 'sitewide-sales' ),
 			admin_url( 'admin.php?page=pmpro-orders&filter=with-discount-code&discount-code=' . $discount_code_id ),
 			$discount_code
 		);

@@ -232,7 +232,7 @@ function swsales_get_updates() {
                 $connection_error = true;
                 ?>
                 <div class="error">
-                <p><?php _e( 'Could not connect to the Stranger Studios License Server to get update information. Try again later.', 'error' ); ?></p>
+                <p><?php _e( 'Could not connect to the Stranger Studios License Server to get update information. Try again later.', 'sitewide-sales' ); ?></p>
                 </div>
                 <?php
             }
@@ -494,7 +494,7 @@ function swsales_admin_init_updating_plugins() {
 		if ( ! empty( $update ) && ! swsales_license_is_valid( null, 'plus' ) ) {
 			require_once( ABSPATH . 'wp-admin/admin-header.php' );
 
-			echo '<div class="wrap"><h2>' . __( 'Update Plugin' ) . '</h2>';
+			echo '<div class="wrap"><h2>' . __( 'Update Plugin', 'sitewide-sales' ) . '</h2>';
 
 			$msg = __( 'You must have a <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=update">valid Sitewide Sales License Key</a> to update Sitewide Salses.', 'sitewide-sales' );
 			echo '<div class="error"><p>' . $msg . '</p></div>';

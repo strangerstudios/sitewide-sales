@@ -334,7 +334,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 				'callback'      => array( __CLASS__, 'hook_bottom_banner' ),
 			),
 			'top'          => array(
-				'option_title'  => __( 'Top of Site', 'sitewide_Sales' ),
+				'option_title'  => __( 'Top of Site', 'sitewide-sales' ),
 				'callback'      => array( __CLASS__, 'hook_top_banner' ),
 			),
 		);
