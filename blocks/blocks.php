@@ -39,34 +39,45 @@ if ( function_exists( 'get_default_block_categories' ) ) {
 }
 
 /**
- * Register a dashed border block style
+ * Register block styles.
  */
-$dashed_border_block_types = array( 'core/heading', 'core/paragraph' );
-foreach ( $dashed_border_block_types as $dashed_border_block_type ) {
-	register_block_style(
-		$dashed_border_block_type,
-		array(
-			'name'         => 'dashed-border',
-			'label'        => __( 'Dashed Border', 'sitewide-sales' ),
-			'inline_style' => '.is-style-dashed-border { border: 2px dashed; padding: 1px 3px; }',
-		)
-	);
-}
+function swsales_register_block_styles() {
+	// Check if function exists.
+	if ( ! function_exists( 'register_block_style' ) ) {
+		return;
+	}
 
-/**
- * Register a highlighted background block style
- */
-$highlight_block_types = array( 'core/heading', 'core/paragraph' );
-foreach ( $highlight_block_types as $highlight_block_type ) {
-	register_block_style(
-		$highlight_block_type,
-		array(
-			'name'         => 'highlight',
-			'label'        => __( 'Highlight', 'sitewide-sales' ),
-			'inline_style' => '.is-style-highlight { background: rgba( 255, 255, 255, 0.3 ); padding: 1px 3px; }',
-		)
-	);
+	/**
+	 * Register a dashed border block style
+	 */
+	$dashed_border_block_types = array( 'core/heading', 'core/paragraph' );
+	foreach ( $dashed_border_block_types as $dashed_border_block_type ) {
+		register_block_style(
+			$dashed_border_block_type,
+			array(
+				'name'         => 'dashed-border',
+				'label'        => __( 'Dashed Border', 'sitewide-sales' ),
+				'inline_style' => '.is-style-dashed-border { border: 2px dashed; padding: 1px 3px; }',
+			)
+		);
+	}
+
+	/**
+	 * Register a highlighted background block style
+	 */
+	$highlight_block_types = array( 'core/heading', 'core/paragraph' );
+	foreach ( $highlight_block_types as $highlight_block_type ) {
+		register_block_style(
+			$highlight_block_type,
+			array(
+				'name'         => 'highlight',
+				'label'        => __( 'Highlight', 'sitewide-sales' ),
+				'inline_style' => '.is-style-highlight { background: rgba( 255, 255, 255, 0.3 ); padding: 1px 3px; }',
+			)
+		);
+	}
 }
+add_action( 'init', 'swsales_register_block_styles' );
 
 /**
  * Enqueue block editor only JavaScript and CSS
