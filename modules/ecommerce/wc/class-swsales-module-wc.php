@@ -119,7 +119,7 @@ class SWSales_Module_WC {
 									$selected_modifier = ' selected="selected"';
 									$coupon_found      = $coupon;
 								}
-								echo '<option value="' . esc_attr( $coupon->ID ) . '"' . $selected_modifier . '>' . esc_html( $coupon->post_title ) . '</option>';
+								echo '<option value="' . esc_attr( $coupon->ID ) . '"' . esc_attr( $selected_modifier ) . '>' . esc_html( $coupon->post_title ) . '</option>';
 							}
 							?>
 						</select>
@@ -127,7 +127,7 @@ class SWSales_Module_WC {
 						if ( false !== $coupon_found ) {
 							$coupon_obj = new \WC_Coupon( $coupon_found->ID );
 							if ( null !== $coupon_obj->get_date_expires() && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) > $coupon_obj->get_date_expires()->date_i18n( 'Y-m-d' ) . ' 23:59:00' ) {
-								echo "<p id='swsales_wc_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_wc_coupon_expiry_error' class='sitewide_sales_message sitewide_sales_error'>" . esc_html__( "This coupon expires on or before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>

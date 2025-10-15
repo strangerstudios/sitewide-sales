@@ -101,10 +101,20 @@ class SWSales_Setup {
 					$has_swsales_post = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'sitewide_sale' LIMIT 1" );
 				if ( $has_swsales_post ) {
 					/* Translators: %s Link to Sitewide Sales edit Sitewide Sale CPT. */
-					printf( __( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'sitewide-sales' ), get_admin_url( null, 'edit.php?post_type=sitewide_sale' ) );
+					echo wp_kses_post(
+						sprintf(
+							__( 'Thank you for activating. You can <a href="%s">view your Sitewide Sales here</a>.', 'sitewide-sales' ),
+							esc_url( get_admin_url( null, 'edit.php?post_type=sitewide_sale' ) )
+						)
+					);
 				} else {
 					/* Translators: %s Link to create a new Sitewide Sale */
-					printf( __( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'sitewide-sales' ), get_admin_url( null, 'post-new.php?post_type=sitewide_sale' ) );
+					echo wp_kses_post(
+						printf(
+							__( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'sitewide-sales' ),
+							esc_url( get_admin_url( null, 'post-new.php?post_type=sitewide_sale' ) )
+						)
+					);
 				}
 				?>
 				</p>

@@ -107,7 +107,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		<style type="text/css">
 		<?php
 		if ( ! empty( $css ) ) {
-			echo $css;
+			echo wp_kses_post( $css );
 		}
 		?>
 		</style>
@@ -169,10 +169,10 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 						<?php
 						switch ( $name ) {
 							case 'show_top_banner':
-								echo $banner_dismiss_link_html;
+								echo wp_kses_post( $banner_dismiss_link_html );
 								?>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
-								<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'top', $active_sitewide_sale ); ?></p>
+								<p class="swsales-banner-content"><?php echo wp_kses_post( apply_filters( 'swsales_banner_text', $banner_info['text'], 'top', $active_sitewide_sale ) ); ?></p>
 								<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
 								<?php
 									if ( ! empty( $landing_page_url ) && ! is_wp_error( $landing_page_url ) ) { ?>
@@ -183,11 +183,11 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								<?php
 								break;
 							case 'show_bottom_banner':
-								echo $banner_dismiss_link_html;
+								echo wp_kses_post( $banner_dismiss_link_html );
 								?>
 								<div class="swsales-banner-inner-left">
 									<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
-									<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom', $active_sitewide_sale ); ?></p>
+									<p class="swsales-banner-content"><?php echo wp_kses_post( apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom', $active_sitewide_sale ) ); ?></p>
 								</div>
 								<div class="swsales-banner-inner-right">
 									<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
@@ -201,10 +201,10 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								<?php
 								break;
 							case 'show_bottom_right_banner':
-								echo $banner_dismiss_link_html;
+								echo wp_kses_post( $banner_dismiss_link_html );
 								?>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
-								<p class="swsales-banner-content"><?php echo apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom_right', $active_sitewide_sale ); ?></p>
+								<p class="swsales-banner-content"><?php echo wp_kses_post( apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom_right', $active_sitewide_sale ) ); ?></p>
 								<?php do_action( 'swsales_before_banner_button', $active_sitewide_sale ); ?>
 								<?php
 									if ( ! empty( $landing_page_url ) && ! is_wp_error( $landing_page_url ) ) { ?>
@@ -232,11 +232,11 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				$content = apply_filters( 'swsales_banner_content', $content, $banner_info['template'], $banner_info['location'] );
 
 				// Echo the banner content.	
-				echo $content;
+				echo wp_kses_post( $content );
 				break;
 			default:
 				// Throw exception if method not supported.
-				throw new Exception('The ' . $name . ' method is not supported.');
+				throw new Exception('The ' . esc_html( $name ) . ' method is not supported.');
 		}
 	}
 
@@ -246,7 +246,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 	 * @return string
 	 */
 	protected static function get_module_label() {
-		return __( 'Custom Banner', 'sitewide-sales' );
+		return __( 'Custom Banner', 'sitewide-sales' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -305,14 +305,14 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 		<tr>
 			<th><label for="swsales_banner_title"><?php esc_html_e( 'Banner Title', 'sitewide-sales' ); ?></label></th>
 			<td>
-				<input type="text" name="swsales_banner_title" value="<?php echo stripslashes( $banner_info['title'] ); ?>">
+				<input type="text" name="swsales_banner_title" value="<?php echo wp_kses_post( $banner_info['title'] ); ?>">
 				<p class="description"><?php esc_html_e( 'A brief title for your sale, such as the holiday or purpose of the sale. (i.e. "Limited Time Offer")', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
 		<tr>
 			<th><label for="swsales_banner_text"><?php esc_html_e( 'Banner Text', 'sitewide-sales' ); ?></label></th>
 			<td>
-				<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo stripslashes( $banner_info['text'] ); ?></textarea>
+				<textarea class="swsales_option" id="swsales_banner_text" name="swsales_banner_text"><?php echo wp_kses_post( $banner_info['text'] ); ?></textarea>
 				<p class="description"><?php esc_html_e( 'A brief message about your sale. (i.e. "Save 50% on membership through December.")', 'sitewide-sales' ); ?></p>
 			</td>
 		</tr>
@@ -343,11 +343,11 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 						<?php
 						$css_selectors = $registered_location_data['css_selectors'];
 						if ( is_string( $css_selectors ) ) {
-							echo $css_selectors;
+							echo wp_kses_post( $css_selectors );
 						} elseif ( is_array( $css_selectors ) ) {
 							foreach ( $css_selectors as $css_selector ) {
 								if ( is_string( $css_selector ) ) {
-									echo $css_selector . ' { }<br/>';
+									echo wp_kses_post( $css_selector ) . ' { }<br/>';
 								}
 							}
 						}

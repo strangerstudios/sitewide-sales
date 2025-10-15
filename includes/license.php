@@ -168,13 +168,13 @@ function swsales_license_nag() {
             <?php
                 //only show the invalid part if they've entered a key
 				if ( ! empty( $key ) ) { ?>
-					<strong><?php _e( 'Your Sitewide Sales license key is invalid or expired.', 'sitewide-sales' );?></strong>
+					<strong><?php esc_html_e( 'Your Sitewide Sales license key is invalid or expired.', 'sitewide-sales' );?></strong>
 				<?php } else { ?>
-					<strong><?php _e( 'Enter your Sitewide Sales license key.', 'sitewide-sales' ); ?></strong>
+					<strong><?php esc_html_e( 'Enter your Sitewide Sales license key.', 'sitewide-sales' ); ?></strong>
 				<?php }
 			?>
-            <?php _e( 'A license key is required to receive automatic updates and support.', 'sitewide-sales' );?>
-            <a href="<?php echo admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license');?>"><?php _e('More Info', 'sitewide-sales' );?></a>&nbsp;|&nbsp;<a href="<?php echo add_query_arg('swsales_nag_paused', '1', $_SERVER['REQUEST_URI']);?>"><?php _e('Dismiss', 'sitewide-sales' );?></a>
+            <?php esc_html_e( 'A license key is required to receive automatic updates and support.', 'sitewide-sales' );?>
+            <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) );?>"><?php esc_html_e('More Info', 'sitewide-sales' );?></a>&nbsp;|&nbsp;<a href="<?php echo esc_url( add_query_arg('swsales_nag_paused', '1', $_SERVER['REQUEST_URI'] ) );?>"><?php esc_html_e( 'Dismiss', 'sitewide-sales' );?></a>
         </p>
     </div>
     <?php
@@ -232,7 +232,7 @@ function swsales_get_updates() {
                 $connection_error = true;
                 ?>
                 <div class="error">
-                <p><?php _e( 'Could not connect to the Stranger Studios License Server to get update information. Try again later.', 'sitewide-sales' ); ?></p>
+                <p><?php esc_html_e( 'Could not connect to the Stranger Studios License Server to get update information. Try again later.', 'sitewide-sales' ); ?></p>
                 </div>
                 <?php
             }
@@ -476,8 +476,12 @@ function swsales_admin_init_updating_plugins() {
 		// if Plus addons found, check license key
 		if ( ! empty( $updates_plugins ) && ! swsales_license_is_valid( null, 'plus' ) ) {
 			// show error
-			$msg = __( 'You must have a <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=bulkupdate">valid Sitewide Sales License Key</a> to update Sitewide Sales. The following plugins will not be updated:', 'sitewide-sales' );
-			echo '<div class="error"><p>' . $msg . ' <strong>' . implode( ', ', $updates_plugin_names ) . '</strong></p></div>';
+			$msg = sprintf(
+				/* translators: %s: plugin names */
+				__( 'You must have a <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=bulkupdate">valid Sitewide Sales License Key</a> to update Sitewide Sales. The following plugins will not be updated: %s', 'sitewide-sales' ),
+				'<strong>' . implode( ', ', array_map( 'esc_html', $updates_plugin_names ) ) . '</strong>'
+			);
+			echo '<div class="error"><p>' . wp_kses_post( $msg ) . '</p></div>';
 		}
 
 		// can exit out of this function now
@@ -494,10 +498,10 @@ function swsales_admin_init_updating_plugins() {
 		if ( ! empty( $update ) && ! swsales_license_is_valid( null, 'plus' ) ) {
 			require_once( ABSPATH . 'wp-admin/admin-header.php' );
 
-			echo '<div class="wrap"><h2>' . __( 'Update Plugin', 'sitewide-sales' ) . '</h2>';
+			echo '<div class="wrap"><h2>' . esc_html__( 'Update Plugin', 'sitewide-sales' ) . '</h2>';
 
-			$msg = __( 'You must have a <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=update">valid Sitewide Sales License Key</a> to update Sitewide Salses.', 'sitewide-sales' );
-			echo '<div class="error"><p>' . $msg . '</p></div>';
+			$msg = __( 'You must have a <a href="https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=update">valid Sitewide Sales License Key</a> to update Sitewide Sales.', 'sitewide-sales' );
+			echo '<div class="error"><p>' . wp_kses_post( $msg ) . '</p></div>';
 
 			echo '</div>';
 
@@ -517,7 +521,7 @@ function swsales_admin_init_updating_plugins() {
 		$update = swsales_get_update_by_slug( $slug );
 		if ( ! empty( $update ) && ! swsales_license_is_valid( null, 'plus' ) ) {
 			$msg = __( 'You must enter a valid Sitewide Sales License Key under Sitewide Sales > License to update this plugin.', 'sitewide-sales' );
-			echo '<div class="error"><p>' . $msg . '</p></div>';
+			echo '<div class="error"><p>' . esc_html( $msg ) . '</p></div>';
 
 			// can exit WP now
 			exit;

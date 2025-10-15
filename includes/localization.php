@@ -1,8 +1,4 @@
 <?php
-/**
- * Localization functions.
- */
-
 function swsales_load_textdomain() {
 	load_plugin_textdomain( 'sitewide-sales', false, dirname( __DIR__) . '/languages/' );
 }

@@ -21,19 +21,31 @@ function swsales_admin_header() {
 			<div class="sitewide_sales_logo">
 				<span class="screen-reader-text"><?php esc_html_e( 'Sitewide Sales', 'sitewide-sales' ); ?></span>
 				<h1><a target="_blank" href="https://sitewidesales.com/?utm_source=plugin&utm_medium=sitewide-sales-reports&utm_campaign=homepage"><img src="<?php echo esc_url( plugins_url( 'images/Sitewide-Sales.png', SWSALES_BASENAME ) ); ?>" width="250" border="0" alt="<?php esc_attr_e( 'Sitewide Sales(c) - All Rights Reserved', 'sitewide-sales' ); ?>" /></a></h1>
-				<span class="sitewide_sales_version">v<?php echo SWSALES_VERSION; ?></span>
+				<span class="sitewide_sales_version">v<?php echo esc_html( SWSALES_VERSION ); ?></span>
 			</div> <!-- end sitewide_sales_logo -->
 			<div class="sitewide_sales_meta">
 				<a href="https://sitewidesales.com/documentation/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=documentation" target="_blank" title="<?php esc_attr_e( 'Documentation', 'sitewide-sales' ); ?>"><?php esc_html_e( 'Documentation', 'sitewide-sales' ); ?></a>
 				<a href="https://sitewidesales.com/support/?utm_source=plugin&utm_medium=swsales-admin-header&utm_campaign=support" target="_blank" title="<?php esc_attr_e( 'Get Support', 'sitewide-sales' );?>"><?php esc_html_e( 'Get Support', 'sitewide-sales' );?></a>
 				<?php if ( swsales_license_is_valid() ) { ?>
 					<?php 
-					/* Translators: %s Link to Sitewide Sales License page. */	
-					printf(__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ), admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					/* Translators: %s Link to Sitewide Sales License page. */
+					echo wp_kses_post(
+						sprintf(
+							__( '<a class="swsales_license_tag swsales_license_tag-valid" href="%s">Valid License</a>', 'sitewide-sales' ),
+							esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) )
+						)
+					);
+					?>
 				<?php } elseif ( ! defined( 'SWSALES_LICENSE_NAG' ) || SWSALES_LICENSE_NAG == true ) { ?>
 					<?php
 					/* Translators: %s Link to Sitewide Sales License page. */
-					printf(__( '<a class="swsales_license_tag swsales_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ), admin_url('edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) ); ?>
+					echo wp_kses_post( 
+						sprintf(
+							__( '<a class="swsales_license_tag swsales_license_tag-invalid" href="%s">No License</a>', 'sitewide-sales' ),
+							esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_license' ) )
+						)
+					);
+					?>
 				<?php } ?>
 			</div> <!-- end sitewide_sales_meta -->
 		</div> <!-- end sitewide_sales_banner_wrapper -->

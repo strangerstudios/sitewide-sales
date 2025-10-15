@@ -1,7 +1,7 @@
 <?php
 //only admins can get this
 if ( ! function_exists( "current_user_can" ) || ( ! current_user_can( "manage_options" ) ) ) {
-	die( __( "You do not have permissions to perform this action.", 'sitewide-sales' ) );
+	die( esc_html__( "You do not have permissions to perform this action.", 'sitewide-sales' ) );
 }
 
 //get values from form

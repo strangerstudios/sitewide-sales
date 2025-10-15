@@ -173,7 +173,7 @@ class SWSales_MetaBoxes {
 							break;
 					}
 				}
-				echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' );
+				echo ' ' . $error_message . ' ' . esc_html( 'Banner will not be shown.', 'sitewide-sales' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 			echo '</div>';
 		?>
@@ -303,7 +303,7 @@ class SWSales_MetaBoxes {
 									$selected_modifier = ' selected="selected"';
 									$sale_type_found        = true;
 								}
-								echo '<option value="' . esc_attr( $sale_type_short ) . '"' . $selected_modifier . '>' . esc_html( $sale_type_nice ) . '</option>';
+								echo '<option value="' . esc_attr( $sale_type_short ) . '"' . esc_attr( $selected_modifier  ). '>' . esc_html( $sale_type_nice ) . '</option>';
 							}
 							?>
 						</select>
@@ -326,7 +326,7 @@ class SWSales_MetaBoxes {
 							$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_for_roles', '[]' ) );
 							foreach ( $all_roles as $slug => $role_data ) {
 								$selected_modifier = in_array( $slug, $hide_for_roles ) ? ' selected="selected"' : '';
-								echo '<option value="' . esc_attr( $slug ) . '"' . $selected_modifier . '>' . esc_html( $role_data['name'] ) . '</option>';
+								echo '<option value="' . esc_attr( $slug ) . '"' . esc_attr( $selected_modifier ) . '>' . esc_html( $role_data['name'] ) . '</option>';
 							}
 						?>
 						</select>
@@ -446,7 +446,7 @@ class SWSales_MetaBoxes {
 									$hide_for_roles = json_decode( $cur_sale->get_meta_value( 'swsales_hide_banner_by_role', '[]' ) );
 									foreach ( $all_roles as $slug => $role_data ) {
 										$selected_modifier = in_array( $slug, $hide_for_roles ) ? ' selected="selected"' : '';
-										echo '<option value="' . esc_attr( $slug ) . '"' . $selected_modifier . '>' . esc_html( $role_data['name'] ) . '</option>';
+										echo '<option value="' . esc_attr( $slug ) . '"' . esc_attr( $selected_modifier ) . '>' . esc_html( $role_data['name'] ) . '</option>';
 									}
 								?>
 								</select>
@@ -494,11 +494,11 @@ class SWSales_MetaBoxes {
 									$page_found        = true;
 								}
 								if ( $page->post_status == 'draft' ) {
-									$status_part = ' (' . esc_html__( 'Draft', 'sitewide-sales' ) . ')';
+									$status_part = ' (' . __( 'Draft', 'sitewide-sales' ) . ')';
 								} else {
 									$status_part = '';
 								}
-								echo '<option value="' . esc_attr( $page->ID ) . '"' . $selected_modifier . '>' . esc_html( $page->post_title ) . $status_part . '</option>';
+								echo '<option value="' . esc_attr( $page->ID ) . '"' . esc_attr( $selected_modifier ) . '>' . esc_html( $page->post_title ) . esc_html( $status_part ) . '</option>';
 							}
 							?>
 						</select>

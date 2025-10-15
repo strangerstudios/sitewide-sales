@@ -142,9 +142,9 @@ class SWSales_Module_PMPro {
 						<?php
 						if ( false !== $code_found ) {
 							if ( $cur_sale->get_end_date( 'Y-m-d' ) > $code_found->expires ) {
-								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . esc_html__( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							} elseif ( $cur_sale->get_start_date( 'Y-m-d' ) < $code_found->starts ) {
-								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . esc_html__( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>
@@ -208,7 +208,7 @@ class SWSales_Module_PMPro {
 							// Loop through and display all level options.
 							foreach ( $all_levels as $level ) {
 								$selected_modifier = in_array( $level->id, $hide_for_levels ) ? ' selected="selected"' : '';
-								echo '<option value="' . esc_attr( $level->id ) . '"' . $selected_modifier . '>' . esc_html( $level->name ) . '</option>';
+								echo '<option value="' . esc_attr( $level->id ) . '"' . esc_attr( $selected_modifier ) . '>' . esc_html( $level->name ) . '</option>';
 							}
 						?>
 						</select>
@@ -326,10 +326,10 @@ class SWSales_Module_PMPro {
 				<p><?php esc_html_e( 'We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient.', 'sitewide-sales' ); ?>
 				</p>
 				<p class="submit">
-					<a href="<?php echo wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ); ?>" class="button-primary">
+					<a href="<?php echo esc_url( wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ) ); ?>" class="button-primary">
 						<?php esc_html_e( 'Migrate PMPro Sitewide Sales Data', 'sitewide-sales' ); ?>
 					</a>
-					<a href="<?php echo add_query_arg('swsales_pmpro_migration_notice_dismissed', '1', $_SERVER['REQUEST_URI']);?>" class="button-secondary">
+					<a href="<?php echo esc_url( add_query_arg( 'swsales_pmpro_migration_notice_dismissed', '1', $_SERVER['REQUEST_URI'] ) );?>" class="button-secondary">
 						<?php esc_html_e( 'Dismiss This Notice', 'sitewide-sales' ); ?>
 					</a>
 				</p>
@@ -355,7 +355,7 @@ class SWSales_Module_PMPro {
 			<p><?php esc_html_e( 'We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient.', 'sitewide-sales' ); ?>
 			</p>
 			<p>
-				<a href="<?php echo wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ); ?>">
+				<a href="<?php echo esc_url( wp_nonce_url( $_SERVER['REQUEST_URI'], 'swsales_pmpro_migrate', 'swsales_pmpro_migrate' ) ); ?>">
 					<?php esc_html_e( 'Migrate PMPro Sitewide Sales Data &raquo;', 'sitewide-sales' ); ?>
 				</a>
 			</p>

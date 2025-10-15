@@ -140,7 +140,13 @@ class SWSales_Reports {
 				} else { ?>
 					<div class="sitewide_sales_message sitewide_sales_alert"><?php 
 					/* Translators: %s: link to create new sitewide sale */
-					printf(__( 'No Sitewide Sales found. <a href="%s">Create your first Sitewide Sale &raquo;</a>', 'sitewide-sales' ), admin_url( 'post-new.php?post_type=sitewide_sale' ) ); ?></div>
+					printf(
+						esc_html__( 'No Sitewide Sales found.', 'sitewide-sales' ) . ' <a href="%s">%s</a>',
+						esc_url( admin_url( 'post-new.php?post_type=sitewide_sale' ) ),
+						esc_html__( 'Create your first Sitewide Sale »', 'sitewide-sales' )
+					);
+					?>
+				</div>
 					<?php
 				}
 
@@ -227,7 +233,7 @@ class SWSales_Reports {
 								<?php
 									echo esc_html( number_format_i18n( $sitewide_sale->get_banner_impressions() ) );
 									if ( ! empty( $diff_rate ) ) {
-										echo $diff_rate['banner_impressions'];
+										echo intval( $diff_rate['banner_impressions'] );
 									}
 								?>
 							</div>
@@ -238,15 +244,15 @@ class SWSales_Reports {
 									$landing_page_visits = $sitewide_sale->get_landing_page_visits();
 									echo esc_html( number_format_i18n( $landing_page_visits ) );
 									if ( ! empty( $diff_rate ) ) {
-										echo $diff_rate['landing_page_visits'];
+										echo intval( $diff_rate['landing_page_visits'] );
 									}
 								?>
 							</div>
 							<?php
 								if ( ! empty( $sitewide_sale->get_landing_page_post_id() ) ) {
 									echo '<div class="swsales_reports-sale-value-description">';
-									echo '<a target="_blank" href="' . get_permalink( $sitewide_sale->get_landing_page_post_id() ) . '" title="' . get_the_title( $sitewide_sale->get_landing_page_post_id() ) . '">';
-									echo _n( 'Landing Page Visit', 'Landing Page Visits', $landing_page_visits, 'sitewide-sales' );
+									echo '<a target="_blank" href="' . esc_url( get_permalink( $sitewide_sale->get_landing_page_post_id() ) ) . '" title="' . esc_attr( get_the_title( $sitewide_sale->get_landing_page_post_id() ) ) . '">';
+									echo esc_html( _n( 'Landing Page Visit', 'Landing Page Visits', $landing_page_visits, 'sitewide-sales' ) );
 									echo '</a>';
 									echo '</div>';
 								}
@@ -257,7 +263,7 @@ class SWSales_Reports {
 								<?php
 									echo esc_html( number_format_i18n( $sitewide_sale->get_checkout_conversions() ) );
 									if ( ! empty( $diff_rate ) ) {
-										echo $diff_rate['checkout_conversions'];
+										echo intval( $diff_rate['checkout_conversions'] );
 									}
 								?>
 							</div>
@@ -274,7 +280,7 @@ class SWSales_Reports {
 								<?php
 									echo esc_html( $sitewide_sale->get_sale_revenue(true) );
 									if ( ! empty( $diff_rate ) ) {
-										echo $diff_rate['revenue'];
+										echo floatval( $diff_rate['revenue'] );
 									}
 								?>
 							</div>
@@ -328,7 +334,8 @@ class SWSales_Reports {
 						<div class="swsales_chart_description">
 							<?php 
 							/* Translators: %s: number of days */
-							printf( esc_html__( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ); ?>
+							printf( esc_html__( 'This chart shows the last %s days of sale performance.', 'sitewide-sales' ), $daily_revenue_chart_days ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							?>
 						</div>
 					<?php } ?>
 					<div id="chart_div"></div>
