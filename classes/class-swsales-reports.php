@@ -233,7 +233,7 @@ class SWSales_Reports {
 								<?php
 									echo esc_html( number_format_i18n( $sitewide_sale->get_banner_impressions() ) );
 									if ( ! empty( $diff_rate ) ) {
-										echo intval( $diff_rate['banner_impressions'] );
+										echo $diff_rate['banner_impressions']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 								?>
 							</div>
@@ -244,7 +244,7 @@ class SWSales_Reports {
 									$landing_page_visits = $sitewide_sale->get_landing_page_visits();
 									echo esc_html( number_format_i18n( $landing_page_visits ) );
 									if ( ! empty( $diff_rate ) ) {
-										echo intval( $diff_rate['landing_page_visits'] );
+										echo $diff_rate['landing_page_visits']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 								?>
 							</div>
@@ -263,7 +263,7 @@ class SWSales_Reports {
 								<?php
 									echo esc_html( number_format_i18n( $sitewide_sale->get_checkout_conversions() ) );
 									if ( ! empty( $diff_rate ) ) {
-										echo intval( $diff_rate['checkout_conversions'] );
+										echo $diff_rate['checkout_conversions']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 								?>
 							</div>
@@ -280,7 +280,7 @@ class SWSales_Reports {
 								<?php
 									echo esc_html( $sitewide_sale->get_sale_revenue(true) );
 									if ( ! empty( $diff_rate ) ) {
-										echo floatval( $diff_rate['revenue'] );
+										echo $diff_rate['revenue']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 									}
 								?>
 							</div>
