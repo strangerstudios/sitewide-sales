@@ -134,14 +134,14 @@ class SWSales_Post_Types {
 				}
 				break;
 			case 'reports':
-					echo '<a class="button button-primary" href="' . admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post_id ) . '">' . esc_html__( 'View Reports', 'sitewide-sales' ) . '</a>';
+					echo '<a class="button button-primary" href="' . esc_url( admin_url( 'edit.php?post_type=sitewide_sale&page=sitewide_sales_reports&sitewide_sale=' . $post_id ) ) . '">' . esc_html__( 'View Reports', 'sitewide-sales' ) . '</a>';
 				break;
 			case 'set_active':
 				$options = SWSales_Settings::get_options();
 				if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $post_id == $options['active_sitewide_sale_id'] ) {
-					echo '<button class="button button-primary swsales_column_set_active" id="swsales_column_set_active_' . $post_id . '">' . __( 'Remove Active', 'sitewide-sales' ) . '</button>';
+					echo '<button class="button button-primary swsales_column_set_active" id="swsales_column_set_active_' . esc_attr( $post_id ) . '">' . esc_html__( 'Remove Active', 'sitewide-sales' ) . '</button>';
 				} else {
-					echo '<button class="button button-secondary swsales_column_set_active" id="swsales_column_set_active_' . $post_id . '">' . __( 'Set Active', 'sitewide-sales' ) . '</button>';
+					echo '<button class="button button-secondary swsales_column_set_active" id="swsales_column_set_active_' . esc_attr( $post_id ) . '">' . esc_html__( 'Set Active', 'sitewide-sales' ) . '</button>';
 				}
 				break;
 		}

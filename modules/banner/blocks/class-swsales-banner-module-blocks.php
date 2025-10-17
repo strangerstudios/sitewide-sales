@@ -156,8 +156,8 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 							case 'show_top_banner':
 							case 'show_bottom_banner':
 							case 'show_bottom_right_banner':
-								echo $banner_dismiss_link_html;
-								echo $banner_content;
+								echo wp_kses_post( $banner_dismiss_link_html );
+								echo wp_kses_post( $banner_content );
 								break;
 						}
 					?>
@@ -171,11 +171,11 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 				$content = apply_filters( 'swsales_banner_content', $content, $banner_info['template'], 'top' );
 
 				// Echo the banner content.	
-				echo $content;
+				echo wp_kses_post( $content );
 				break;
 			default:
 				// Throw exception if method not supported.
-				throw new Exception('The ' . $name . ' method is not supported.');
+				throw new Exception('The ' . esc_html( $name ) . ' method is not supported.');
 		}
 	}
 
@@ -185,7 +185,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 	 * @return string
 	 */
 	protected static function get_module_label() {
-		return __( 'Reusable Block', 'sitewide-sales' );
+		return __( 'Reusable Block', 'sitewide-sales' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -238,7 +238,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 									} else {
 										$status_part = '';
 									}
-									echo '<option value="' . esc_attr( $all_reusable_blocks->post->ID ) . '"' . selected( $banner_info['block_id'], $all_reusable_blocks->post->ID ) . '>' . esc_html( $all_reusable_blocks->post->post_title ) . $status_part . '</option>';
+									echo '<option value="' . esc_attr( $all_reusable_blocks->post->ID ) . '"' . selected( $banner_info['block_id'], $all_reusable_blocks->post->ID ) . '>' . esc_html( $all_reusable_blocks->post->post_title ) . $status_part . '</option>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								}
 							wp_reset_postdata();
 						} else { ?>

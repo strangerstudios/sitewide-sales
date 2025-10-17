@@ -32,7 +32,7 @@ class SWSales_License{
 
         //only let admins get here
         if ( ! function_exists( 'current_user_can' ) || ( ! current_user_can( 'manage_options' ) && ! current_user_can( 'swsales_license') ) ) {
-            die( __( 'You do not have permissions to perform this action.', 'sitewide-sales' ) );
+            die( esc_html__( 'You do not have permissions to perform this action.', 'sitewide-sales' ) );
         } ?>
         <div class="wrap sitewide_sales_admin">
             <div class="swsales-wrap">
@@ -54,11 +54,11 @@ class SWSales_License{
             <h1><?php esc_html_e( 'Sitewide Sales Support License', 'sitewide-sales' ); ?></h1>
             <?php if(!swsales_license_is_valid() && empty($key)) { ?>
                 <p class="sitewide_sales_message sitewide_sales_alert"><strong><?php
-					_e('Enter your support license key.</strong> Your license key can be found in your purchase confirmation email or in your <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dno-key" target="_blank">account area</a>.', 'sitewide-sales' ); /* PHPCS:Ignore */?></p>
+					echo wp_kses_post('Enter your support license key.</strong> Your license key can be found in your purchase confirmation email or in your <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dno-key" target="_blank">account area</a>.', 'sitewide-sales' );?></p>
             <?php } elseif(!swsales_license_is_valid()) { ?>
-                <p class="sitewide_sales_message sitewide_sales_error"><strong><?php _e('Your license is invalid or expired.', 'sitewide-sales' );?></strong> <?php _e('Visit the <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dkey-not-valid" target="_blank">account area</a> to confirm that your account is active and to find your license key.', 'sitewide-sales' ); /* PHPCS:Ignore */?></p>
+                <p class="sitewide_sales_message sitewide_sales_error"><strong><?php esc_html_e('Your license is invalid or expired.', 'sitewide-sales' );?></strong> <?php echo wp_kses_post('Visit the <a href="https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dkey-not-valid" target="_blank">account area</a> to confirm that your account is active and to find your license key.', 'sitewide-sales' ); ?></p>
             <?php } else { ?>													
-                <p class="sitewide_sales_message sitewide_sales_success"><?php _e('<strong>Thank you!</strong> A valid license key has been used to activate your support license on this site.', 'sitewide-sales');?></p>
+                <p class="sitewide_sales_message sitewide_sales_success"><?php echo wp_kses_post( __('<strong>Thank you!</strong> A valid license key has been used to activate your support license on this site.', 'sitewide-sales') );?></p>
             <?php } ?>
 
             <form action="" method="post">
@@ -66,9 +66,9 @@ class SWSales_License{
 				<tbody>
 					<tr id="swsales-settings-key-box">
 						<td>
-							<input type="password" name="swsales-license-key" id="swsales-license-key" value="<?php echo esc_attr($key);?>" placeholder="<?php _e('Enter license key here...', 'sitewide-sales' );?>" size="40"  />
+							<input type="password" name="swsales-license-key" id="swsales-license-key" value="<?php echo esc_attr($key);?>" placeholder="<?php esc_html_e('Enter license key here...', 'sitewide-sales' );?>" size="40"  />
 							<?php wp_nonce_field( 'swsales-key-nonce', 'swsales-key-nonce' ); ?>
-							<?php submit_button( __( 'Validate Key', 'sitewide-sales' ), 'primary', 'swsales-verify-submit', false ); ?>
+							<?php submit_button( esc_html__( 'Validate Key', 'sitewide-sales' ), 'primary', 'swsales-verify-submit', false ); ?>
 						</td>
 					</tr>
 				</tbody>

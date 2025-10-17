@@ -121,7 +121,7 @@ class SWSales_Module_EDD {
 										$selected_modifier = ' selected="selected"';
 										$coupon_found      = $coupon;
 									}
-									echo '<option value="' . esc_attr( $coupon->id ) . '"' . $selected_modifier . '>' . esc_html( $coupon->code ) . '</option>';
+									echo '<option value="' . esc_attr( $coupon->id ) . '"' . esc_attr( $selected_modifier ) . '>' . esc_html( $coupon->code ) . '</option>';
 								}
 							}
 							?>
@@ -130,9 +130,9 @@ class SWSales_Module_EDD {
 						if ( false !== $coupon_found ) {
 							$discount_object = new \EDD_Discount( $coupon_found->id );
 							if ( ! empty( $discount_object->expiration ) && $cur_sale->get_end_date( 'Y-m-d H:i:s' ) > date('Y-m-d H:i:s', strtotime( $discount_object->expiration ) ) ) {
-								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . esc_html__( "This discount code expires before the Sitewide Sale's end date.", 'sitewide-sales' ) . '</p>';
 							} elseif ( ! empty( $discount_object->start ) && $cur_sale->get_start_date( 'Y-m-d H:i:s' ) < date('Y-m-d H:i:s', strtotime( $discount_object->start ) ) ) {
-								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . __( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
+								echo "<p id='swsales_pmpro_discount_code_error' class='sitewide_sales_message sitewide_sales_error'>" . esc_html__( "This discount code starts after the Sitewide Sale's start date.", 'sitewide-sales' ) . '</p>';
 							}
 						}
 						?>

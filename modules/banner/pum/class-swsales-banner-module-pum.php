@@ -77,7 +77,7 @@ class SWSales_Banner_Module_PUM extends SWSales_Banner_Module {
 			$sitewide_sales_using_this_popup = self::get_sitewide_sales_using_this_popup( $post_id );
 			if ( ! empty( $sitewide_sales_using_this_popup ) ) {
 				$sitewide_sale_to_link_to = \Sitewide_Sales\Classes\SWSales_Sitewide_Sale::get_sitewide_sale( $sitewide_sales_using_this_popup[0]->ID );
-				echo '<a href="' . esc_url( admin_url( 'post.php?post=' . $sitewide_sale_to_link_to->get_id() . '&action=edit' ) ) . '">' . $sitewide_sale_to_link_to->get_name() . '</a>';
+				echo '<a href="' . esc_url( admin_url( 'post.php?post=' . $sitewide_sale_to_link_to->get_id() . '&action=edit' ) ) . '">' . esc_html( $sitewide_sale_to_link_to->get_name() ) . '</a>';
 			}
 		}
 	}

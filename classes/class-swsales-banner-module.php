@@ -62,7 +62,7 @@ abstract class SWSales_Banner_Module {
 				<th></th>
 				<td>
 					<div class="sitewide_sales_message sitewide_sales_error">
-						<p><?php printf( esc_html( 'The %s plugin is not active.', 'sitewide-sales' ),  static::get_module_label() ); ?></p>
+						<p><?php printf( esc_html( 'The %s plugin is not active.', 'sitewide-sales' ),  esc_html( static::get_module_label() ) ); ?></p>
 					</div>
 				</td>
 			</tr>

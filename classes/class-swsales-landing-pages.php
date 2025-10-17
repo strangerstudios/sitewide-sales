@@ -160,7 +160,11 @@ class SWSales_Landing_Pages {
 		$sitewide_sale_id = get_post_meta( $post->ID, 'swsales_sitewide_sale_id', true );
 
 		if ( ! empty( $sitewide_sale_id ) ) {
-			echo '<div id="message" class="notice notice-info inline"><p>This is a Sitewide Sale Landing Page. <a target="_blank" href="' . get_edit_post_link( $sitewide_sale_id ) . '">Edit the Sitewide Sale</a></p></div>';
+			echo '<div id="message" class="notice notice-info inline"><p>' . sprintf(
+				/* translators: %s: Edit Sitewide Sale link */
+				esc_html__( 'This is a Sitewide Sale Landing Page. %s', 'sitewide-sales' ),
+				'<a target="_blank" href="' . esc_url( get_edit_post_link( $sitewide_sale_id ) ) . '">' . esc_html__( 'Edit the Sitewide Sale', 'sitewide-sales' ) . '</a>'
+			) . '</p></div>';
 		}
 	}
 
@@ -305,7 +309,7 @@ class SWSales_Landing_Pages {
 	</p>
 	</br>
 	<p>
-		<?php printf( "<a href='%s' target='_blank'>" . __( 'Edit Sitewide Sale', 'sitewide-sales' ) . '</a>', esc_url( get_edit_post_link( get_post_meta( $post->ID, 'swsales_sitewide_sale_id', true ) ) ) ); ?>
+		<?php printf( "<a href='%s' target='_blank'>" . esc_html__( 'Edit Sitewide Sale', 'sitewide-sales' ) . '</a>', esc_url( get_edit_post_link( get_post_meta( $post->ID, 'swsales_sitewide_sale_id', true ) ) ) ); ?>
 	</p>
 		<?php
 	}
