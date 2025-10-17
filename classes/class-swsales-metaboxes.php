@@ -706,6 +706,11 @@ class SWSales_MetaBoxes {
 			return;
 		}
 
+		// Bail if we're moving from trashed to published.
+		if ( isset( $_REQUEST['action'] ) && 'untrash' === $_REQUEST['action'] ) {
+			return;
+		}
+
 		// Add nonce for security and authentication.
 		$nonce_name   = isset( $_POST['custom_nonce'] ) ? sanitize_text_field( $_POST['custom_nonce'] ) : '';
 		$nonce_action = 'custom_nonce_action';
