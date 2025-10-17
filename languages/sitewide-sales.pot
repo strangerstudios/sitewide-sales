@@ -1,20 +1,21 @@
-# Copyright (C) 2024 Stranger Studios
+# Copyright (C) 2025 Stranger Studios
 # This file is distributed under the GNU GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sitewide Sales 1.4.1\n"
+"Project-Id-Version: Sitewide Sales 1.4.2\n"
 "Report-Msgid-Bugs-To: info@strangerstudios.com\n"
 "Last-Translator: Stranger Studios <info@strangerstudios.com>\n"
 "Language-Team: Stranger Studios <info@strangerstudios.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-01-25T17:57:54+00:00\n"
+"POT-Creation-Date: 2025-10-17T13:14:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: sitewide-sales\n"
 
 #. Plugin Name of the plugin
+#: sitewide-sales.php
 #: blocks/blocks.php:26
 #: classes/class-swsales-post-types.php:37
 #: classes/class-swsales-post-types.php:38
@@ -28,18 +29,22 @@ msgid "Sitewide Sales"
 msgstr ""
 
 #. Plugin URI of the plugin
+#: sitewide-sales.php
 msgid "https://sitewidesales.com"
 msgstr ""
 
 #. Description of the plugin
+#: sitewide-sales.php
 msgid "Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site."
 msgstr ""
 
 #. Author of the plugin
+#: sitewide-sales.php
 msgid "Stranger Studios"
 msgstr ""
 
 #. Author URI of the plugin
+#: sitewide-sales.php
 msgid "https://www.strangerstudios.com"
 msgstr ""
 
@@ -48,11 +53,11 @@ msgstr ""
 msgid "You do not have permissions to perform this action."
 msgstr ""
 
-#: blocks/blocks.php:50
+#: blocks/blocks.php:59
 msgid "Dashed Border"
 msgstr ""
 
-#: blocks/blocks.php:65
+#: blocks/blocks.php:74
 msgid "Highlight"
 msgstr ""
 
@@ -69,33 +74,37 @@ msgstr ""
 msgid "Sitewide Sales helps you run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site."
 msgstr ""
 
-#: classes/class-swsales-about.php:42
-msgid "We currently offer integration for <a href=\"%s\" title=\"Paid Memberships Pro\" target=\"_blank\">Paid Memberships Pro</a>, <a href=\"%s\" title=\"WooCommerce\" target=\"_blank\">WooCommerce</a>, and <a href=\"%s\" title=\"Easy Digital Downloads\" target=\"_blank\">Easy Digital Downloads</a>."
+#. Translators: 1: Paid Memberships Pro, 2: WooCommerce, 3: Easy Digital Downloads
+#: classes/class-swsales-about.php:44
+#, php-format
+msgid "We currently offer integration for <a href=\"%1$s\" title=\"Paid Memberships Pro\" target=\"_blank\">Paid Memberships Pro</a>, <a href=\"%2$s\" title=\"WooCommerce\" target=\"_blank\">WooCommerce</a>, and <a href=\"%3$s\" title=\"Easy Digital Downloads\" target=\"_blank\">Easy Digital Downloads</a>."
 msgstr ""
 
-#: classes/class-swsales-about.php:43
+#. Translators: %s Custom Module Link
+#: classes/class-swsales-about.php:47
+#, php-format
 msgid "There is also a <a href=\"%s\" title=\"Custom Module\" target=\"_blank\">custom module</a> you can use to track performance with any other platforms you choose."
 msgstr ""
 
-#: classes/class-swsales-about.php:44
+#: classes/class-swsales-about.php:48
 msgid "Getting Started"
 msgstr ""
 
-#: classes/class-swsales-about.php:45
+#: classes/class-swsales-about.php:49
 msgid "This plugin handles your banners, notification bars, landing pages, and reporting. Running a sale like this used to require three or more separate plugins. Now you can run your sale with a single tool. At the same time, the Sitewide Sales plugin is flexible enough that you can use specific banner and landing page plugins if wanted."
 msgstr ""
 
-#: classes/class-swsales-about.php:46
+#: classes/class-swsales-about.php:50
 msgid "Check out the Sitewide Sales documentation site for additional setup instructions, sample landing page and banner content, as well as developer documentation to further extend the templates, reporting, and integration options."
 msgstr ""
 
-#: classes/class-swsales-about.php:48
+#: classes/class-swsales-about.php:52
 #: classes/class-swsales-metaboxes.php:85
 #: includes/admin.php:27
 msgid "Documentation"
 msgstr ""
 
-#: classes/class-swsales-about.php:48
+#: classes/class-swsales-about.php:52
 msgid "View Support Options &raquo;"
 msgstr ""
 
@@ -119,61 +128,72 @@ msgstr ""
 msgid "Seconds"
 msgstr ""
 
-#: classes/class-swsales-landing-pages.php:255
-#: classes/class-swsales-landing-pages.php:292
-#: classes/class-swsales-metaboxes.php:852
+#. translators: %s: Edit Sitewide Sale link
+#: classes/class-swsales-landing-pages.php:165
+#, php-format
+msgid "This is a Sitewide Sale Landing Page. %s"
+msgstr ""
+
+#: classes/class-swsales-landing-pages.php:166
+msgid "Edit the Sitewide Sale"
+msgstr ""
+
+#: classes/class-swsales-landing-pages.php:259
+#: classes/class-swsales-landing-pages.php:296
+#: classes/class-swsales-metaboxes.php:857
 msgid "Sitewide Sale Landing Page"
 msgstr ""
 
-#: classes/class-swsales-landing-pages.php:275
-#: classes/class-swsales-landing-pages.php:276
-#: classes/class-swsales-landing-pages.php:308
+#: classes/class-swsales-landing-pages.php:279
+#: classes/class-swsales-landing-pages.php:280
+#: classes/class-swsales-landing-pages.php:312
 #: classes/class-swsales-post-types.php:43
 msgid "Edit Sitewide Sale"
 msgstr ""
 
-#: classes/class-swsales-landing-pages.php:304
+#: classes/class-swsales-landing-pages.php:308
 msgid "Use the Sale Content block or Sale Period Visibility setting to display content before, during, and after the sale on this landing page."
 msgstr ""
 
 #: classes/class-swsales-license.php:23
-msgid "License"
-msgstr ""
-
 #: classes/class-swsales-license.php:24
-msgid "<span style=\"color: "
+msgid "License"
 msgstr ""
 
 #: classes/class-swsales-license.php:54
 msgid "Sitewide Sales Support License"
 msgstr ""
 
-#: classes/class-swsales-license.php:56
-msgid "Enter your support license key.</strong> Your license key can be found in your purchase confirmation email or in your <a href=\"https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dno-key\" target=\"_blank\">account area</a>."
-msgstr ""
-
-#: classes/class-swsales-license.php:58
+#: classes/class-swsales-license.php:59
 msgid "Your license is invalid or expired."
 msgstr ""
 
-#: classes/class-swsales-license.php:58
-msgid "Visit the <a href=\"https://www.strangerstudios.com/login/?redirect_to=%2Faccount%2F%3Futm_source%3Dplugin%26utm_medium%3Dswsales-license%26utm_campaign%3Daccount%26utm_content%3Dkey-not-valid\" target=\"_blank\">account area</a> to confirm that your account is active and to find your license key."
-msgstr ""
-
-#: classes/class-swsales-license.php:60
+#: classes/class-swsales-license.php:61
 msgid "<strong>Thank you!</strong> A valid license key has been used to activate your support license on this site."
 msgstr ""
 
-#: classes/class-swsales-license.php:68
+#: classes/class-swsales-license.php:69
 msgid "Enter license key here..."
 msgstr ""
 
-#: classes/class-swsales-license.php:70
+#: classes/class-swsales-license.php:71
 msgid "Validate Key"
 msgstr ""
 
-#: classes/class-swsales-license.php:104
+#: classes/class-swsales-license.php:105
 msgid "Sitewide Sales is distributed under the GPLv2 license. This means, among other things, that you may use the software on this site or any other site free of charge."
+msgstr ""
+
+#: classes/class-swsales-license.php:109
+msgid "<strong>Stranger Studios, the author of this plugin, offers a plan for automatic updates and premium support.</strong> Your Sitewide Sales purchase includes a support license key which we recommend for all public websites running Sitewide Sales. A support license key allows you to automatically update when a new security, bug fix, or feature enhancement is released."
+msgstr ""
+
+#: classes/class-swsales-license.php:113
+msgid "<strong>Need help?</strong> Your license allows you to open new tickets in our private support area. Purchases are backed by a 30 day, no questions asked refund policy."
+msgstr ""
+
+#: classes/class-swsales-license.php:116
+msgid "View Support License Options &raquo;"
 msgstr ""
 
 #: classes/class-swsales-metaboxes.php:48
@@ -220,6 +240,10 @@ msgstr ""
 #: classes/class-swsales-metaboxes.php:465
 #: classes/class-swsales-metaboxes.php:658
 msgid "Save All Settings"
+msgstr ""
+
+#: classes/class-swsales-metaboxes.php:198
+msgid "Explore how to set up a sale using the Sitewide Sales plugin."
 msgstr ""
 
 #: classes/class-swsales-metaboxes.php:200
@@ -436,7 +460,8 @@ msgstr ""
 
 #. translators: Strings here are button open and close tags.
 #: classes/class-swsales-metaboxes.php:580
-msgid "Or, use the [sitewide_sales] shortcode on your page and %sthe legacy fields here to create a basic landing page%s."
+#, php-format
+msgid "Or, use the [sitewide_sales] shortcode on your page and %1$sthe legacy fields here to create a basic landing page%2$s."
 msgstr ""
 
 #: classes/class-swsales-metaboxes.php:588
@@ -465,19 +490,19 @@ msgstr ""
 msgid "View Detailed Sale Report"
 msgstr ""
 
-#: classes/class-swsales-metaboxes.php:727
+#: classes/class-swsales-metaboxes.php:732
 msgid "Sitewide Sale"
 msgstr ""
 
-#: classes/class-swsales-metaboxes.php:841
+#: classes/class-swsales-metaboxes.php:846
 #: modules/banner/blocks/class-swsales-banner-module-blocks.php:355
 #: modules/ecommerce/edd/class-swsales-module-edd.php:208
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:576
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:584
 #: modules/ecommerce/wc/class-swsales-module-wc.php:202
 msgid "No sitewide sale ID given. Try doing it manually."
 msgstr ""
 
-#: classes/class-swsales-metaboxes.php:868
+#: classes/class-swsales-metaboxes.php:873
 #: modules/banner/blocks/class-swsales-banner-module-blocks.php:381
 msgid "Error inserting post. Try doing it manually."
 msgstr ""
@@ -568,6 +593,10 @@ msgstr ""
 msgid "Select Active Sale"
 msgstr ""
 
+#: classes/class-swsales-post-types.php:137
+msgid "View Reports"
+msgstr ""
+
 #: classes/class-swsales-post-types.php:142
 msgid "Remove Active"
 msgstr ""
@@ -620,122 +649,132 @@ msgstr ""
 msgid "vs."
 msgstr ""
 
-#: classes/class-swsales-reports.php:141
-msgid "No Sitewide Sales found. <a href=\"%s\">Create your first Sitewide Sale &raquo;</a>"
+#: classes/class-swsales-reports.php:144
+msgid "No Sitewide Sales found."
 msgstr ""
 
-#: classes/class-swsales-reports.php:173
-msgid "Overall Sale Performance"
-msgstr ""
-
-#: classes/class-swsales-reports.php:178
-#: classes/class-swsales-reports.php:559
-msgid "Banner Reach"
-msgstr ""
-
-#: classes/class-swsales-reports.php:179
-#: classes/class-swsales-reports.php:563
-msgid "Landing Page Visits"
-msgstr ""
-
-#: classes/class-swsales-reports.php:180
-#: classes/class-swsales-reports.php:567
-msgid "Conversions"
+#: classes/class-swsales-reports.php:146
+msgid "Create your first Sitewide Sale »"
 msgstr ""
 
 #: classes/class-swsales-reports.php:181
-#: classes/class-swsales-reports.php:344
-#: classes/class-swsales-reports.php:462
+msgid "Overall Sale Performance"
+msgstr ""
+
+#: classes/class-swsales-reports.php:186
 #: classes/class-swsales-reports.php:571
+msgid "Banner Reach"
+msgstr ""
+
+#: classes/class-swsales-reports.php:187
+#: classes/class-swsales-reports.php:575
+msgid "Landing Page Visits"
+msgstr ""
+
+#: classes/class-swsales-reports.php:188
+#: classes/class-swsales-reports.php:579
+msgid "Conversions"
+msgstr ""
+
+#: classes/class-swsales-reports.php:189
+#: classes/class-swsales-reports.php:350
+#: classes/class-swsales-reports.php:473
+#: classes/class-swsales-reports.php:583
 msgid "Sale Revenue"
 msgstr ""
 
-#: classes/class-swsales-reports.php:217
-#: classes/class-swsales-reports.php:498
+#. Translators: %s: number of days
+#: classes/class-swsales-reports.php:226
+#: classes/class-swsales-reports.php:510
+#, php-format
 msgid "(%s Day)"
 msgid_plural "(%s Days)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-swsales-reports.php:220
+#: classes/class-swsales-reports.php:229
 msgid "Export to CSV"
 msgstr ""
 
-#: classes/class-swsales-reports.php:246
+#: classes/class-swsales-reports.php:255
 msgid "Landing Page Visit"
 msgid_plural "Landing Page Visits"
 msgstr[0] ""
 msgstr[1] ""
 
-#: classes/class-swsales-reports.php:264
+#: classes/class-swsales-reports.php:273
 msgid "Checkout Conversions"
 msgstr ""
 
-#: classes/class-swsales-reports.php:329
+#: classes/class-swsales-reports.php:332
 msgid "Sale Revenue By Day"
 msgstr ""
 
-#: classes/class-swsales-reports.php:332
+#. Translators: %s: number of days
+#: classes/class-swsales-reports.php:337
+#, php-format
 msgid "This chart shows the last %s days of sale performance."
 msgstr ""
 
-#: classes/class-swsales-reports.php:343
+#: classes/class-swsales-reports.php:349
 msgid "DAY"
 msgstr ""
 
-#: classes/class-swsales-reports.php:348
+#: classes/class-swsales-reports.php:354
 msgid "Comparison Sale Revenue"
 msgstr ""
 
-#: classes/class-swsales-reports.php:368
+#: classes/class-swsales-reports.php:379
 msgid "Best Day"
 msgstr ""
 
-#: classes/class-swsales-reports.php:370
+#: classes/class-swsales-reports.php:381
 msgid "Today"
 msgstr ""
 
-#: classes/class-swsales-reports.php:457
+#: classes/class-swsales-reports.php:468
 msgid "Revenue Breakdown"
 msgstr ""
 
-#: classes/class-swsales-reports.php:463
+#: classes/class-swsales-reports.php:474
 msgid "Other New Revenue"
 msgstr ""
 
-#: classes/class-swsales-reports.php:464
+#: classes/class-swsales-reports.php:475
 msgid "Renewals"
 msgstr ""
 
-#: classes/class-swsales-reports.php:465
+#: classes/class-swsales-reports.php:476
 msgid "Total Revenue in Period"
 msgstr ""
 
-#: classes/class-swsales-setup.php:103
+#: classes/class-swsales-setup.php:106
+#, php-format
 msgid "Thank you for activating. You can <a href=\"%s\">view your Sitewide Sales here</a>."
 msgstr ""
 
-#: classes/class-swsales-setup.php:105
+#: classes/class-swsales-setup.php:114
+#, php-format
 msgid "Thank you for activating. You can <a href=\"%s\">create your first Sitewide Sale here</a>."
 msgstr ""
 
-#: classes/class-swsales-setup.php:124
+#: classes/class-swsales-setup.php:136
 msgid "View Sitewide Sales"
 msgstr ""
 
-#: classes/class-swsales-setup.php:141
+#: classes/class-swsales-setup.php:153
 msgid "View Documentation"
 msgstr ""
 
-#: classes/class-swsales-setup.php:141
+#: classes/class-swsales-setup.php:153
 msgid "Docs"
 msgstr ""
 
-#: classes/class-swsales-setup.php:142
+#: classes/class-swsales-setup.php:154
 msgid "Visit Customer Support Forum"
 msgstr ""
 
-#: classes/class-swsales-setup.php:142
+#: classes/class-swsales-setup.php:154
 msgid "Support"
 msgstr ""
 
@@ -751,11 +790,13 @@ msgstr ""
 msgid "Get Support"
 msgstr ""
 
-#: includes/admin.php:30
+#: includes/admin.php:34
+#, php-format
 msgid "<a class=\"swsales_license_tag swsales_license_tag-valid\" href=\"%s\">Valid License</a>"
 msgstr ""
 
-#: includes/admin.php:32
+#: includes/admin.php:44
+#, php-format
 msgid "<a class=\"swsales_license_tag swsales_license_tag-invalid\" href=\"%s\">No License</a>"
 msgstr ""
 
@@ -827,19 +868,29 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+#: includes/license.php:235
+msgid "Could not connect to the Stranger Studios License Server to get update information. Try again later."
+msgstr ""
+
 #: includes/license.php:426
 msgid "Important: This plugin requires a valid Sitewide Sales license key to update."
 msgstr ""
 
-#: includes/license.php:479
-msgid "You must have a <a href=\"https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=bulkupdate\">valid Sitewide Sales License Key</a> to update Sitewide Sales. The following plugins will not be updated:"
+#. translators: %s: plugin names
+#: includes/license.php:481
+#, php-format
+msgid "You must have a <a href=\"https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=bulkupdate\">valid Sitewide Sales License Key</a> to update Sitewide Sales. The following plugins will not be updated: %s"
 msgstr ""
 
-#: includes/license.php:499
-msgid "You must have a <a href=\"https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=update\">valid Sitewide Sales License Key</a> to update Sitewide Salses."
+#: includes/license.php:501
+msgid "Update Plugin"
 msgstr ""
 
-#: includes/license.php:519
+#: includes/license.php:503
+msgid "You must have a <a href=\"https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=update\">valid Sitewide Sales License Key</a> to update Sitewide Sales."
+msgstr ""
+
+#: includes/license.php:523
 msgid "You must enter a valid Sitewide Sales License Key under Sitewide Sales > License to update this plugin."
 msgstr ""
 
@@ -877,6 +928,11 @@ msgstr ""
 #: modules/banner/blocks/class-swsales-banner-module-blocks.php:333
 #: modules/banner/swsales/class-swsales-banner-module-swsales.php:491
 msgid "Bottom of Site"
+msgstr ""
+
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:337
+#: modules/banner/swsales/class-swsales-banner-module-swsales.php:506
+msgid "Top of Site"
 msgstr ""
 
 #: modules/banner/blocks/class-swsales-banner-module-blocks.php:366
@@ -1049,6 +1105,7 @@ msgid "N/A"
 msgstr ""
 
 #: modules/ecommerce/custom/class-swsales-module-custom.php:191
+#: modules/ecommerce/custom/class-swsales-module-custom.php:317
 msgid "US Dollars (&#36;)"
 msgstr ""
 
@@ -1232,9 +1289,12 @@ msgstr ""
 msgid "sale price"
 msgstr ""
 
-#: modules/ecommerce/edd/class-swsales-module-edd.php:402
-#: modules/ecommerce/wc/class-swsales-module-wc.php:482
-msgid "Purchases using <a href=\"%s\">%s</a>"
+#. Translators: %1$s Link to edit coupon, %2$s Coupon code name
+#. Translators: %1$s: edit coupon code link, %2$s: coupon code
+#: modules/ecommerce/edd/class-swsales-module-edd.php:403
+#: modules/ecommerce/wc/class-swsales-module-wc.php:483
+#, php-format
+msgid "Purchases using <a href=\"%1$s\">%2$s</a>"
 msgstr ""
 
 #: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:160
@@ -1261,40 +1321,44 @@ msgstr ""
 msgid "Using the [pmpro_checkout] shortcode on your Landing Page will display a checkout form for this level."
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:291
+#. translators: %d Number of Sitewide Sales migrated.
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:295
+#, php-format
 msgid "Successfully migrated %d Sitewide Sale from the Sitewide Sales Add On for Paid Memberships Pro."
 msgid_plural "Successfully migrated %d Sitewide Sales from the Sitewide Sales Add On for Paid Memberships Pro."
 msgstr[0] ""
 msgstr[1] ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:317
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:346
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:325
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:354
 msgid "Migrate Your Previous Sales Data"
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:318
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:347
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:326
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:355
 msgid "We have detected data from the Sitewide Sales Add On for Paid Memberships Pro. You can migrate this data into the new Sitewide Sales plugin and maintain access to previous sales, settings, and reports. The database migration process will attempt to run in a single process, so please be patient."
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:322
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:330
 msgid "Migrate PMPro Sitewide Sales Data"
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:325
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:333
 msgid "Dismiss This Notice"
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:351
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:359
 msgid "Migrate PMPro Sitewide Sales Data &raquo;"
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:604
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:612
 msgid "Error inserting discount code. Try doing it manually."
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:947
-msgid "Checkouts using <a href=\"%s\">%s</a>"
+#. Translators: 1: Discount code URL, 2: Discount code.
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:956
+#, php-format
+msgid "Checkouts using <a href=\"%1$s\">%2$s</a>"
 msgstr ""
 
 #: modules/ecommerce/wc/class-swsales-module-wc.php:130
