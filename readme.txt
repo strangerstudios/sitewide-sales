@@ -23,7 +23,7 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 
 == Changelog ==
 = 1.4.2 - 2025-10-17 =
-* SECURITY: Improved security by sanitzation and escaping of output data. #177 (@andrelimwaza)
+* SECURITY: Improved security by sanitization and escaping of output data. #177 (@andrelimwaza)
 * ENHANCEMENT: Improved localizations and text domains for better translation support. #176 (@andrewlimaza)
 * BUG FIX: Fixed warnings that localization was loaded too early. #175 (@kimcoleman)
 * BUG FIX: Fixed an issue where a nonce failed message would show when restoring a sale from the trash. #179 (@andrewlimaza)
