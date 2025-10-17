@@ -110,7 +110,7 @@ class SWSales_Setup {
 				} else {
 					/* Translators: %s Link to create a new Sitewide Sale */
 					echo wp_kses_post(
-						printf(
+						sprintf(
 							__( 'Thank you for activating. You can <a href="%s">create your first Sitewide Sale here</a>.', 'sitewide-sales' ),
 							esc_url( get_admin_url( null, 'post-new.php?post_type=sitewide_sale' ) )
 						)
