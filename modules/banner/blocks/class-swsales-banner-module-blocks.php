@@ -156,8 +156,8 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 							case 'show_top_banner':
 							case 'show_bottom_banner':
 							case 'show_bottom_right_banner':
-								echo wp_kses_post( $banner_dismiss_link_html );
-								echo wp_kses_post( $banner_content );
+								echo $banner_dismiss_link_html;
+								echo $banner_content;
 								break;
 						}
 					?>
@@ -171,7 +171,7 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 				$content = apply_filters( 'swsales_banner_content', $content, $banner_info['template'], 'top' );
 
 				// Echo the banner content.	
-				echo wp_kses_post( $content );
+				echo $content;
 				break;
 			default:
 				// Throw exception if method not supported.

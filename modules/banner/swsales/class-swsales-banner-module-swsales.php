@@ -169,7 +169,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 						<?php
 						switch ( $name ) {
 							case 'show_top_banner':
-								echo wp_kses_post( $banner_dismiss_link_html );
+								echo $banner_dismiss_link_html;
 								?>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 								<p class="swsales-banner-content"><?php echo wp_kses_post( apply_filters( 'swsales_banner_text', $banner_info['text'], 'top', $active_sitewide_sale ) ); ?></p>
@@ -183,7 +183,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								<?php
 								break;
 							case 'show_bottom_banner':
-								echo wp_kses_post( $banner_dismiss_link_html );
+								echo $banner_dismiss_link_html;
 								?>
 								<div class="swsales-banner-inner-left">
 									<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
@@ -201,7 +201,7 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 								<?php
 								break;
 							case 'show_bottom_right_banner':
-								echo wp_kses_post( $banner_dismiss_link_html );
+								echo $banner_dismiss_link_html;
 								?>
 								<p class="swsales-banner-title"><?php echo wp_kses_post( $banner_info['title'] ); ?></p>
 								<p class="swsales-banner-content"><?php echo wp_kses_post( apply_filters( 'swsales_banner_text', $banner_info['text'], 'bottom_right', $active_sitewide_sale ) ); ?></p>
@@ -231,8 +231,8 @@ class SWSales_Banner_Module_SWSales extends SWSales_Banner_Module {
 				// Filter for themes and plugins to modify the banner content.
 				$content = apply_filters( 'swsales_banner_content', $content, $banner_info['template'], $banner_info['location'] );
 
-				// Echo the banner content.	
-				echo wp_kses_post( $content );
+				// Echo the banner content.
+				echo $content;
 				break;
 			default:
 				// Throw exception if method not supported.
