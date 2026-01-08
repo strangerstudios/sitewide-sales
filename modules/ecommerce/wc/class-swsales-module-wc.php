@@ -264,7 +264,23 @@ class SWSales_Module_WC {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
 			return $is_checkout_page;
 		}
-		return ( ! empty( wc_get_page_id( 'cart' ) ) && is_page( wc_get_page_id( 'cart' ) ) ) ? true : $is_checkout_page;
+
+		// Check for cart page.
+		if ( ! empty( wc_get_page_id( 'cart' ) ) && is_page( wc_get_page_id( 'cart' ) ) ) {
+			return true;
+		}
+
+		// Check for checkout page.
+		if ( is_checkout() ) {
+			return true;
+		}
+
+		// Check for order confirmation/thank you page.
+		if ( is_wc_endpoint_url( 'order-received' ) ) {
+			return true;
+		}
+
+		return $is_checkout_page;
 	}
 
 	/**
