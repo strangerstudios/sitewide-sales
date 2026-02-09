@@ -2,8 +2,8 @@
 Contributors: strangerstudios, dlparker1005
 Tags: sales, sale, woocommerce, paid memberships pro, pmpro, black friday, cyber monday, discount
 Requires at least: 5.2
-Tested up to: 6.8
-Stable tag: 1.4.3
+Tested up to: 6.9
+Stable tag: 1.4.4
 
 Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
 
@@ -22,6 +22,9 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 1. Create a new `Sitewide Sale` under `Sitewide Sales` > `Add New`.
 
 == Changelog ==
+= 1.4.4 - 2026-02-09 =
+* BUG FIX: BUG FIX: Fixed a bug with hiding banners at checkout in WooCommerce module, this now includes the checkout and order confirmation pages. #182 (@kimcoleman)
+
 = 1.4.3 - 2025-10-29 =
 * BUG FIX: Fixed an issue where the close banner functionality was not working as expected. #180 (@andrelimwaza)
 
