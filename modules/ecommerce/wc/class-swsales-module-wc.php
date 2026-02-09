@@ -253,12 +253,11 @@ class SWSales_Module_WC {
 	} // end create_discount_code_ajax()
 
 	/**
-	 * Returns whether the current page is the landing page
-	 * for the passed Sitewide Sale.
+	 * Returns whether the current page is the the checkout, cart or confirmation page.
 	 *
 	 * @param boolean               $is_checkout_page current value from filter.
 	 * @param SWSales_Sitewide_Sale $sitewide_sale being checked.
-	 * @return boolean
+	 * @return boolean 				$is_checkout_page true if we are on the checkout, cart, or confirmation page, false otherwise.
 	 */
 	public static function is_checkout_page( $is_checkout_page, $sitewide_sale ) {
 		if ( 'wc' !== $sitewide_sale->get_sale_type() ) {
@@ -266,12 +265,13 @@ class SWSales_Module_WC {
 		}
 
 		// Check for cart page.
-		if ( ! empty( wc_get_page_id( 'cart' ) ) && is_page( wc_get_page_id( 'cart' ) ) ) {
+		$is_cart_page = wc_get_page_id( 'cart' );
+		if ( ! empty( $is_cart_page ) && is_page( $is_cart_page ) ) {
 			return true;
 		}
 
 		// Check for checkout page.
-		if ( is_checkout() ) {
+		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
 			return true;
 		}
 
