@@ -140,7 +140,7 @@ class SWSales_Module_EDD {
 							<span id="swsales_edd_after_coupon_select">
 							<?php
 							if ( false !== $coupon_found ) {
-								$edit_coupon_url = admin_url( 'edit.php?post_type=download&page=edd-discounts&edd-action=edit_discount&discount='.$coupon_found->id );
+								$edit_coupon_url = admin_url( 'edit.php?post_type=download&page=edd-discounts&view=edit_discount&discount=' . $coupon_found->id );
 							} else {
 								$edit_coupon_url = '#';
 							}
