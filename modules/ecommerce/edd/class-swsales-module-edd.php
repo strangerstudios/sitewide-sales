@@ -299,8 +299,13 @@ class SWSales_Module_EDD {
 
 			$code = new \EDD_Discount( $discount_code_id );
 	 		if ( !empty( $code ) && empty( $_REQUEST['discount'] ) ) {
+				// Skip if the discount's product requirements aren't met for the current cart.
+				if ( edd_get_cart_contents() && ! $code->is_product_requirements_met( false ) ) {
+					return;
+				}
+
  				//Set it in the $_REQUEST and EDD Session as the EDD init runs at priority 0
-	 			$_REQUEST['discount'] = $code->code;		 			
+	 			$_REQUEST['discount'] = $code->code;
 	 			EDD()->session->set( 'preset_discount', $code->code );
 	 		} 
 		}		 		
