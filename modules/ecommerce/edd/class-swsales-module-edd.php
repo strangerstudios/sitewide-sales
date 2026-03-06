@@ -299,8 +299,8 @@ class SWSales_Module_EDD {
 
 			$code = new \EDD_Discount( $discount_code_id );
 	 		if ( !empty( $code ) && empty( $_REQUEST['discount'] ) ) {
-				// Skip if the discount's product requirements aren't met for the current cart.
-				if ( edd_get_cart_contents() && ! $code->is_product_requirements_met( false ) ) {
+				// At checkout, skip if the discount's product requirements aren't met for the current cart.
+				if ( edd_is_checkout() && edd_get_cart_contents() && ! $code->is_product_requirements_met( false ) ) {
 					return;
 				}
 
