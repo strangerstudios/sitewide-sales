@@ -299,8 +299,11 @@ class SWSales_Module_EDD {
 
 			$code = new \EDD_Discount( $discount_code_id );
 	 		if ( !empty( $code ) && empty( $_REQUEST['discount'] ) ) {
-				// At checkout, skip if the discount's product requirements aren't met for the current cart.
-				if ( edd_is_checkout() && edd_get_cart_contents() && ! $code->is_product_requirements_met( false ) ) {
+				// If there's a cart, check product requirements before applying.
+				if ( edd_get_cart_contents() && ! $code->is_product_requirements_met( false ) ) {
+					// Remove the discount if it was previously applied (e.g., before a Lifetime product was added to cart).
+					edd_unset_cart_discount( $code->code );
+					EDD()->session->set( 'preset_discount', null );
 					return;
 				}
 
