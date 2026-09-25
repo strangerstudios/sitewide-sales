@@ -189,7 +189,6 @@ add_action( 'admin_notices', 'swsales_license_nag' );
 function swsales_updates_setup() {
 	add_filter( 'plugins_api', 'swsales_plugins_api', 10, 3 );
 	add_filter( 'pre_set_site_transient_update_plugins', 'swsales_update_plugins_filter' );
-	add_filter( 'http_request_args', 'swsales_http_request_args_for_addons', 10, 2 );
 	add_action( 'update_option_swsales_license_key', 'swsales_reset_update_plugins_cache', 10, 2 );
 }
 add_action( 'init', 'swsales_updates_setup' );
@@ -328,19 +327,20 @@ function swsales_update_plugins_filter( $value ) {
 }
 
 /**
- * Disables SSL verification to prevent download package failures.
+ * Previously disabled SSL verification for update package downloads.
+ *
+ * SSL verification is no longer disabled. This function returns the args unchanged
+ * and is no longer hooked to http_request_args.
  *
  * @since 1.0
+ * @deprecated TBD
  *
  * @param array  $args  Array of request args.
  * @param string $url  The URL to be pinged.
- * @return array $args Amended array of request args.
+ * @return array $args Unchanged array of request args.
  */
 function swsales_http_request_args_for_addons( $args, $url ) {
-	// If this is an SSL request and we are performing an upgrade routine, disable SSL verification.
-	if ( strpos( $url, 'https://' ) !== false && strpos( $url, SS_LICENSE_SERVER ) !== false && strpos( $url, 'download' ) !== false ) {
-		$args['sslverify'] = false;
-	}
+	_deprecated_function( __FUNCTION__, 'TBD' );
 
 	return $args;
 }
@@ -397,8 +397,9 @@ function swsales_get_plugin_api_object_from_update( $update ) {
 	$api->tested                = isset( $update['Tested'] ) ? $update['Tested'] : '';
 	$api->last_updated          = isset( $update['LastUpdated'] ) ? $update['LastUpdated'] : '';
 	$api->homepage              = isset( $update['URI'] ) ? $update['URI'] : '';
-	$api->download_link         = isset( $update['Download'] ) ? $update['Download'] : '';
-	$api->package               = isset( $update['Download'] ) ? $update['Download'] : '';
+	$download                   = ! empty( $update['Download'] ) ? set_url_scheme( $update['Download'], 'https' ) : '';
+	$api->download_link         = $download;
+	$api->package               = $download;
 
 	// add sections
 	if ( !empty( $update['Description'] ) ) {
