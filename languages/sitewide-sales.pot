@@ -2,14 +2,14 @@
 # This file is distributed under the GNU GPLv2+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Sitewide Sales 1.4.3\n"
+"Project-Id-Version: Sitewide Sales 1.4.5\n"
 "Report-Msgid-Bugs-To: info@strangerstudios.com\n"
 "Last-Translator: Stranger Studios <info@strangerstudios.com>\n"
 "Language-Team: Stranger Studios <info@strangerstudios.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-09T09:05:24+00:00\n"
+"POT-Creation-Date: 2026-11-20T16:14:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: sitewide-sales\n"
@@ -140,7 +140,7 @@ msgstr ""
 
 #: classes/class-swsales-landing-pages.php:259
 #: classes/class-swsales-landing-pages.php:296
-#: classes/class-swsales-metaboxes.php:857
+#: classes/class-swsales-metaboxes.php:870
 msgid "Sitewide Sale Landing Page"
 msgstr ""
 
@@ -216,7 +216,7 @@ msgstr ""
 
 #: classes/class-swsales-metaboxes.php:101
 #: classes/class-swsales-metaboxes.php:294
-#: classes/class-swsales-post-types.php:96
+#: classes/class-swsales-post-types.php:103
 msgid "Sale Type"
 msgstr ""
 
@@ -226,7 +226,7 @@ msgstr ""
 
 #: classes/class-swsales-metaboxes.php:117
 #: classes/class-swsales-metaboxes.php:484
-#: classes/class-swsales-post-types.php:97
+#: classes/class-swsales-post-types.php:104
 msgid "Landing Page"
 msgstr ""
 
@@ -502,8 +502,16 @@ msgstr ""
 msgid "No sitewide sale ID given. Try doing it manually."
 msgstr ""
 
-#: classes/class-swsales-metaboxes.php:873
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:381
+#: classes/class-swsales-metaboxes.php:859
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:368
+#: modules/ecommerce/edd/class-swsales-module-edd.php:221
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:597
+#: modules/ecommerce/wc/class-swsales-module-wc.php:215
+msgid "You do not have permission to edit this sitewide sale."
+msgstr ""
+
+#: classes/class-swsales-metaboxes.php:886
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:394
 msgid "Error inserting post. Try doing it manually."
 msgstr ""
 
@@ -578,30 +586,30 @@ msgstr ""
 msgid "Filter Sitewide Sales list"
 msgstr ""
 
-#: classes/class-swsales-post-types.php:95
+#: classes/class-swsales-post-types.php:102
 msgid "Sale Date"
 msgstr ""
 
-#: classes/class-swsales-post-types.php:98
+#: classes/class-swsales-post-types.php:105
 #: classes/class-swsales-reports.php:24
 #: classes/class-swsales-reports.php:25
 #: classes/class-swsales-reports.php:65
 msgid "Reports"
 msgstr ""
 
-#: classes/class-swsales-post-types.php:99
+#: classes/class-swsales-post-types.php:106
 msgid "Select Active Sale"
 msgstr ""
 
-#: classes/class-swsales-post-types.php:137
+#: classes/class-swsales-post-types.php:144
 msgid "View Reports"
 msgstr ""
 
-#: classes/class-swsales-post-types.php:142
+#: classes/class-swsales-post-types.php:149
 msgid "Remove Active"
 msgstr ""
 
-#: classes/class-swsales-post-types.php:144
+#: classes/class-swsales-post-types.php:151
 msgid "Set Active"
 msgstr ""
 
@@ -868,29 +876,29 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: includes/license.php:235
+#: includes/license.php:234
 msgid "Could not connect to the Stranger Studios License Server to get update information. Try again later."
 msgstr ""
 
-#: includes/license.php:426
+#: includes/license.php:427
 msgid "Important: This plugin requires a valid Sitewide Sales license key to update."
 msgstr ""
 
 #. translators: %s: plugin names
-#: includes/license.php:481
+#: includes/license.php:482
 #, php-format
 msgid "You must have a <a href=\"https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=bulkupdate\">valid Sitewide Sales License Key</a> to update Sitewide Sales. The following plugins will not be updated: %s"
 msgstr ""
 
-#: includes/license.php:501
+#: includes/license.php:502
 msgid "Update Plugin"
 msgstr ""
 
-#: includes/license.php:503
+#: includes/license.php:504
 msgid "You must have a <a href=\"https://www.strangerstudios.com/wordpress-plugins/sitewide-sales/?utm_source=wp-admin&utm_pluginlink=update\">valid Sitewide Sales License Key</a> to update Sitewide Sales."
 msgstr ""
 
-#: includes/license.php:523
+#: includes/license.php:524
 msgid "You must enter a valid Sitewide Sales License Key under Sitewide Sales > License to update this plugin."
 msgstr ""
 
@@ -935,78 +943,78 @@ msgstr ""
 msgid "Top of Site"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:366
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:379
 msgid "Sitewide Sale Reusable Block Banner"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:402
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:415
 msgid "Sale Banners"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:410
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:423
 msgid "Fancy Coupon Banner"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:411
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:422
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:424
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:435
 msgctxt "Block pattern description"
 msgid "Sale callout with bright background, coupon code highlight, and a button to start shopping."
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:421
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:434
 msgid "Fancy Coupon Popup"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:432
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:445
 msgid "Gradient Banner"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:433
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:446
 msgctxt "Block pattern description"
 msgid "Sale callout with gradient background, heading, text, and a call-to-action button displayed in two lines, vertically aligned."
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:443
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:456
 msgid "Gradient Popup"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:444
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:457
 msgctxt "Block pattern description"
 msgid "Sale callout with gradient background, heading, text, and a call-to-action button stacked for a popup display."
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:454
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:467
 msgid "Clean Banner"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:455
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:468
 msgctxt "Block pattern description"
 msgid "Simple sale banner with light background and black text, and a call-to-action link."
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:465
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:478
 msgid "Clean Popup"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:466
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:479
 msgctxt "Block pattern description"
 msgid "Simple sale popup with light background and black text, and a call-to-action link."
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:476
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:489
 msgid "Dark Mode Banner"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:477
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:490
 msgctxt "Block pattern description"
 msgid "Inverted banner with a calendar emoji, dark background, light text, and a red CTA button."
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:487
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:500
 msgid "Dark Mode Popup"
 msgstr ""
 
-#: modules/banner/blocks/class-swsales-banner-module-blocks.php:488
+#: modules/banner/blocks/class-swsales-banner-module-blocks.php:501
 msgctxt "Block pattern description"
 msgid "Inverted popup with a calendar emoji, dark background, light text, and a red CTA button."
 msgstr ""
@@ -1281,18 +1289,18 @@ msgstr ""
 msgid "Select the discount code that will be automatically applied for users when they visit your Landing Page."
 msgstr ""
 
-#: modules/ecommerce/edd/class-swsales-module-edd.php:361
+#: modules/ecommerce/edd/class-swsales-module-edd.php:374
 msgid "Original price"
 msgstr ""
 
-#: modules/ecommerce/edd/class-swsales-module-edd.php:361
+#: modules/ecommerce/edd/class-swsales-module-edd.php:374
 msgid "sale price"
 msgstr ""
 
 #. Translators: %1$s Link to edit coupon, %2$s Coupon code name
 #. Translators: %1$s: edit coupon code link, %2$s: coupon code
-#: modules/ecommerce/edd/class-swsales-module-edd.php:403
-#: modules/ecommerce/wc/class-swsales-module-wc.php:499
+#: modules/ecommerce/edd/class-swsales-module-edd.php:416
+#: modules/ecommerce/wc/class-swsales-module-wc.php:512
 #, php-format
 msgid "Purchases using <a href=\"%1$s\">%2$s</a>"
 msgstr ""
@@ -1351,12 +1359,12 @@ msgstr ""
 msgid "Migrate PMPro Sitewide Sales Data &raquo;"
 msgstr ""
 
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:612
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:625
 msgid "Error inserting discount code. Try doing it manually."
 msgstr ""
 
 #. Translators: 1: Discount code URL, 2: Discount code.
-#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:956
+#: modules/ecommerce/pmpro/class-swsales-module-pmpro.php:969
 #, php-format
 msgid "Checkouts using <a href=\"%1$s\">%2$s</a>"
 msgstr ""
