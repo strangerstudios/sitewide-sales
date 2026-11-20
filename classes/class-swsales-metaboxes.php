@@ -852,6 +852,19 @@ class SWSales_MetaBoxes {
 			exit;
 		}
 
+		if ( 'sitewide_sale' !== get_post_type( $sitewide_sale_id ) || ! current_user_can( 'edit_post', $sitewide_sale_id ) ) {
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'You do not have permission to edit this sitewide sale.',
+						'sitewide-sales'
+					),
+				)
+			);
+			exit;
+		}
+
 		$landing_page_title = sanitize_text_field( $_REQUEST['swsales_landing_page_title'] );
 		if ( empty( $landing_page_title ) ) {
 			$landing_page_title = esc_html__( 'Sitewide Sale Landing Page', 'sitewide-sales' );

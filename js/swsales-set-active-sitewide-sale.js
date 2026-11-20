@@ -5,6 +5,7 @@ jQuery( document ).ready(
 				var data = {
 					'action': 'swsales_set_active_sitewide_sale',
 					'sitewide_sale_id': this.id.substr( 26 ),
+					'nonce': swsales_set_active.nonce,
 				};
 				$.post( ajaxurl, data )
 			}

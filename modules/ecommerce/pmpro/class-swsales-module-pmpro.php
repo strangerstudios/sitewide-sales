@@ -589,6 +589,19 @@ class SWSales_Module_PMPro {
 			);
 			exit;
 		}
+
+		if ( 'sitewide_sale' !== get_post_type( $sitewide_sale_id ) || ! current_user_can( 'edit_post', $sitewide_sale_id ) ) {
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'You do not have permission to edit this sitewide sale.',
+						'sitewide-sales'
+					),
+				)
+			);
+			exit;
+		}
 		$wpdb->insert(
 			$wpdb->pmpro_discount_codes,
 			array(
