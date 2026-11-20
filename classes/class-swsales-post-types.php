@@ -81,7 +81,14 @@ class SWSales_Post_Types {
 	 * @return [type] [description]
 	 */
 	public static function enqueue_scripts() {
-		wp_register_script( 'swsales_set_active_sitewide_sale', plugins_url( 'js/swsales-set-active-sitewide-sale.js', SWSALES_BASENAME ), array( 'jquery' ), '1.0.4' );
+		wp_register_script( 'swsales_set_active_sitewide_sale', plugins_url( 'js/swsales-set-active-sitewide-sale.js', SWSALES_BASENAME ), array( 'jquery' ), SWSALES_VERSION );
+		wp_localize_script(
+			'swsales_set_active_sitewide_sale',
+			'swsales_set_active',
+			array(
+				'nonce' => wp_create_nonce( 'swsales_set_active_sitewide_sale' ),
+			)
+		);
 		wp_enqueue_script( 'swsales_set_active_sitewide_sale' );
 	}
 
@@ -151,8 +158,14 @@ class SWSales_Post_Types {
 	 * [set_active_sitewide_sale description]
 	 */
 	public static function set_active_sitewide_sale() {
-		$sitewide_sale_id = $_POST['sitewide_sale_id'];
-		$options          = SWSales_Settings::get_options();
+		check_ajax_referer( 'swsales_set_active_sitewide_sale', 'nonce' );
+
+		$sitewide_sale_id = intval( $_POST['sitewide_sale_id'] );
+		if ( 'sitewide_sale' !== get_post_type( $sitewide_sale_id ) || ! current_user_can( 'edit_post', $sitewide_sale_id ) ) {
+			wp_die( -1, 403 );
+		}
+
+		$options = SWSales_Settings::get_options();
 
 		if ( array_key_exists( 'active_sitewide_sale_id', $options ) && $sitewide_sale_id == $options['active_sitewide_sale_id'] ) {
 			$options['active_sitewide_sale_id'] = false;

@@ -361,6 +361,19 @@ class SWSales_Banner_Module_Blocks extends SWSales_Banner_Module {
 			exit;
 		}
 
+		if ( 'sitewide_sale' !== get_post_type( $sitewide_sale_id ) || ! current_user_can( 'edit_post', $sitewide_sale_id ) ) {
+			echo json_encode(
+				array(
+					'status' => 'error',
+					'error'  => esc_html__(
+						'You do not have permission to edit this sitewide sale.',
+						'sitewide-sales'
+					),
+				)
+			);
+			exit;
+		}
+
 		$reusable_block_banner_title = sanitize_text_field( $_REQUEST['swsales_reusable_block_banner_title'] );
 		if ( empty( $reusable_block_banner_title ) ) {
 			$reusable_block_banner_title = esc_html__( 'Sitewide Sale Reusable Block Banner', 'sitewide-sales' );
