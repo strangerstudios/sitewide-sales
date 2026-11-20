@@ -2,8 +2,8 @@
 Contributors: strangerstudios, dlparker1005
 Tags: sales, sale, woocommerce, paid memberships pro, pmpro, black friday, cyber monday, discount
 Requires at least: 5.2
-Tested up to: 6.9
-Stable tag: 1.4.4
+Tested up to: 7.1
+Stable tag: 1.4.5
 
 Run Black Friday, Cyber Monday, or other flash sales on your WordPress-powered eCommerce or membership site.
 
@@ -22,6 +22,11 @@ This plugin offers modules for [WooCommerce](https://sitewidesales.com/modules/w
 1. Create a new `Sitewide Sale` under `Sitewide Sales` > `Add New`.
 
 == Changelog ==
+= 1.4.5 - 2026-11-20 =
+* SECURITY: Required permission to edit the sale when setting the active sale or creating a coupon, discount code, landing page or banner block for it. #187 (@dparker1005, @kta1kri)
+* SECURITY: Update downloads from the license server are now always requested over HTTPS with SSL verification enabled. #186 (@dparker1005)
+* BUG FIX: Fixed the "edit discount code" link for Easy Digital Downloads sales showing an invalid nonce error instead of opening the discount editor. #184 (@zackkatz)
+
 = 1.4.4 - 2026-02-09 =
 * BUG FIX: BUG FIX: Fixed a bug with hiding banners at checkout in WooCommerce module, this now includes the checkout and order confirmation pages. #182 (@kimcoleman)
 

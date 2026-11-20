@@ -333,14 +333,14 @@ function swsales_update_plugins_filter( $value ) {
  * and is no longer hooked to http_request_args.
  *
  * @since 1.0
- * @deprecated TBD
+ * @deprecated 1.4.5
  *
  * @param array  $args  Array of request args.
  * @param string $url  The URL to be pinged.
  * @return array $args Unchanged array of request args.
  */
 function swsales_http_request_args_for_addons( $args, $url ) {
-	_deprecated_function( __FUNCTION__, 'TBD' );
+	_deprecated_function( __FUNCTION__, '1.4.5' );
 
 	return $args;
 }
